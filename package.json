@@ -13,7 +13,7 @@
     "prettier": "prettier \"**/*.ts\" \"**/*.js\" \"**/*.md\"",
     "prettier:check": "npm run prettier -- -l",
     "prettier:cli": "npm run prettier -- -c",
-    "prettier:fix": "npm run prettier:cli -- --write",
+    "prettier:fix": "npm run prettier:cli -- --write"
   },
   "private": true,
   "dependencies": {
