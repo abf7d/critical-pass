@@ -13,7 +13,8 @@
     "prettier": "prettier \"**/*.ts\" \"**/*.js\" \"**/*.md\"",
     "prettier:check": "npm run prettier -- -l",
     "prettier:cli": "npm run prettier -- -c",
-    "prettier:fix": "npm run prettier:cli -- --write"
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -54,10 +55,11 @@
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
-    "husky": "^8.0.2",
+    "husky": "^8.0.0",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
     "jest-preset-angular": "~12.2.3",
+    "lint-staged": "^13.1.0",
     "nx": "15.3.0",
     "prettier": "^2.8.1",
     "ts-jest": "28.0.5",
