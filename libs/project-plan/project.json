@@ -1,32 +1,25 @@
 {
     "name": "project-plan",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot": "libs/project-plan/src",
     "projectType": "library",
+    "sourceRoot": "libs/project-plan/src",
+    "prefix": "critical-pass",
     "targets": {
         "build": {
-            "executor": "@nrwl/js:tsc",
-            "outputs": ["{options.outputPath}"],
+            "executor": "@nrwl/angular:package",
+            "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
             "options": {
-                "outputPath": "dist/libs/project-plan",
-                "main": "libs/project-plan/src/index.ts",
-                "tsConfig": "libs/project-plan/tsconfig.lib.json",
-                "assets": ["libs/project-plan/*.md"]
-            }
-        },
-        "publish": {
-            "executor": "nx:run-commands",
-            "options": {
-                "command": "node tools/scripts/publish.mjs project-plan {args.ver} {args.tag}"
+                "project": "libs/project-plan/ng-package.json"
             },
-            "dependsOn": ["build"]
-        },
-        "lint": {
-            "executor": "@nrwl/linter:eslint",
-            "outputs": ["{options.outputFile}"],
-            "options": {
-                "lintFilePatterns": ["libs/project-plan/**/*.ts"]
-            }
+            "configurations": {
+                "production": {
+                    "tsConfig": "libs/project-plan/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "libs/project-plan/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
         },
         "test": {
             "executor": "@nrwl/jest:jest",
@@ -34,6 +27,13 @@
             "options": {
                 "jestConfig": "libs/project-plan/jest.config.ts",
                 "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/project-plan/**/*.ts", "libs/project-plan/**/*.html"]
             }
         }
     },
