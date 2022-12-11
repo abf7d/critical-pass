@@ -1,20 +1,31 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {}
-  },
-  "exclude": ["node_modules", "tmp"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "lib": ["es2017", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@critical-pass/app-core": ["libs/app-core/src/index.ts"],
+            "@critical-pass/charts": ["libs/charts/src/index.ts"],
+            "@critical-pass/data-access": ["libs/data-access/src/index.ts"],
+            "@critical-pass/history": ["libs/history/src/index.ts"],
+            "@critical-pass/models": ["libs/models/src/index.ts"],
+            "@critical-pass/network": ["libs/network/src/index.ts"],
+            "@critical-pass/profile": ["libs/profile/src/index.ts"],
+            "@critical-pass/project-plan": ["libs/project-plan/src/index.ts"],
+            "@critical-pass/resources": ["libs/resources/src/index.ts"],
+            "@critical-pass/shared": ["libs/shared/src/index.ts"]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
 }
