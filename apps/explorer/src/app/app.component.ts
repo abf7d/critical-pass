@@ -7,7 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
     title = 'explorer';
-    constructor() {
-      let x = "fsa"
-    }
 }
