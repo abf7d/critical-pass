@@ -17,14 +17,15 @@
         "paths": {
             "@critical-pass/app-core": ["libs/app-core/src/index.ts"],
             "@critical-pass/charts": ["libs/charts/src/index.ts"],
-            "@critical-pass/data-access": ["libs/data-access/src/index.ts"],
-            "@critical-pass/history": ["libs/history/src/index.ts"],
-            "@critical-pass/models": ["libs/models/src/index.ts"],
-            "@critical-pass/network": ["libs/network/src/index.ts"],
-            "@critical-pass/profile": ["libs/profile/src/index.ts"],
-            "@critical-pass/project-plan": ["libs/project-plan/src/index.ts"],
-            "@critical-pass/resources": ["libs/resources/src/index.ts"],
-            "@critical-pass/shared": ["libs/shared/src/index.ts"]
+            "@critical-pass/features/history": ["libs/features/history/src/index.ts"],
+            "@critical-pass/features/network": ["libs/features/network/src/index.ts"],
+            "@critical-pass/features/profile": ["libs/features/profile/src/index.ts"],
+            "@critical-pass/features/resources": ["libs/features/resources/src/index.ts"],
+            "@critical-pass/project/models": ["libs/project/models/src/index.ts"],
+            "@critical-pass/project/processor": ["libs/project/processor/src/index.ts"],
+            "@critical-pass/shared/activity": ["libs/shared/activity/src/index.ts"],
+            "@critical-pass/shared/data-access": ["libs/shared/data-access/src/index.ts"],
+            "@critical-pass/shared/file-management": ["libs/shared/file-management/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]
