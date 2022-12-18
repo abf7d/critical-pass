@@ -63,7 +63,7 @@ export class ActivitySorterService {
         this.sortActivities(project, resourceGroups, invalidActivities);
     }
 
-    private sortActivities(project: Project, resourceGroups: PlanningResource[][], invalidActivities: Activity[]): void  {
+    private sortActivities(project: Project, resourceGroups: PlanningResource[][], invalidActivities: Activity[]): void {
         const activities: Activity[] = [];
         resourceGroups.forEach(rg => {
             rg.forEach(resource => {

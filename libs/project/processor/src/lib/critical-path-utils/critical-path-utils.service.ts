@@ -36,7 +36,7 @@ export class CriticalPathUtilsService {
         return true;
     }
 
-    // Does one iteration of Dijkstra's 
+    // Does one iteration of Dijkstra's
     public runForwardPath(route: Route, curVertex: Vertex, prevVertSeen: number[], pathTxt = '') {
         // Algorithm:
         // From start node:

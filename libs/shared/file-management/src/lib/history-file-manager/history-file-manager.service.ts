@@ -12,7 +12,6 @@ import { HistoryWorkbook } from '../../../../models/history/history-workbook';
 export class HistoryFileManagerService implements FileManagerBaseService<TreeNode[]> {
     constructor(private mapper: HistoryMapperService) {}
 
-    
     public export(history: TreeNode[]): void {
         let arrowProfiles = [];
         let arrowChartInfos = [];
@@ -66,7 +65,7 @@ export class HistoryFileManagerService implements FileManagerBaseService<TreeNod
         XLSX.utils.book_append_sheet(wb, activityResourcesWs, Keys.activityResourcesWsName);
         XLSX.utils.book_append_sheet(wb, activityPhasesWs, Keys.activityPhasesWsName);
         XLSX.utils.book_append_sheet(wb, resourceRolesWs, Keys.resourceRolesWsName);
-       
+
         const name = 'critical-pass-project';
         XLSX.writeFile(wb, name + '.xlsx');
     }
@@ -90,10 +89,10 @@ export class HistoryFileManagerService implements FileManagerBaseService<TreeNod
                 const activityResourceData = this.getWorksheetData(wb, Keys.activityResourcesWsName);
                 const activityPhaseData = this.getWorksheetData(wb, Keys.activityPhasesWsName);
                 const resourceRoleData = this.getWorksheetData(wb, Keys.resourceRolesWsName);
-               
+
                 const tagPoolData = this.getWorksheetData(wb, Keys.tagPoolWsName);
                 const activityTagData = this.getWorksheetData(wb, Keys.activityTagsWsName);
-  
+
                 const workbook: HistoryWorkbook = {
                     phaseData,
                     rolesData,
@@ -104,8 +103,8 @@ export class HistoryFileManagerService implements FileManagerBaseService<TreeNod
                     activityData,
                     arrowData,
                     integrationData,
-                    tagPoolData, 
-                    activityTagData
+                    tagPoolData,
+                    activityTagData,
                 };
 
                 const nodes = profileData.map(profileEntry => this.mapper.getNode(profileEntry, workbook));
@@ -118,5 +117,3 @@ export class HistoryFileManagerService implements FileManagerBaseService<TreeNod
         return XLSX.utils.sheet_to_json(ws);
     }
 }
-
-

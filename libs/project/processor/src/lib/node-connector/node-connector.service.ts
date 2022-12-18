@@ -10,16 +10,16 @@ export class NodeConnectorService {
 
     public connectArrowsToNodes(project: Project): void {
         const nodeCollection = {};
-        for( const node of project.integrations) {
+        for (const node of project.integrations) {
             nodeCollection[node.id] = node;
         }
         for (const arrow of project.activities) {
             if (arrow.chartInfo.source_id !== null && arrow.chartInfo.target_id !== null) {
-                const sourceNode = nodeCollection[arrow.chartInfo.source_id]; 
+                const sourceNode = nodeCollection[arrow.chartInfo.source_id];
                 const targetNode = nodeCollection[arrow.chartInfo.target_id];
 
                 if (!sourceNode || !targetNode) {
-                    this.logger.error('Connecting arrows to nodes: target or source node null')
+                    this.logger.error('Connecting arrows to nodes: target or source node null');
                 }
 
                 arrow.chartInfo.source = sourceNode ? sourceNode : null;
@@ -27,7 +27,7 @@ export class NodeConnectorService {
             }
 
             if (arrow.chartInfo.milestoneNodeId) {
-                const milestone = nodeCollection[arrow.chartInfo.milestoneNodeId]; 
+                const milestone = nodeCollection[arrow.chartInfo.milestoneNodeId];
                 if (milestone) {
                     milestone.milestoneActivity = arrow;
                 }

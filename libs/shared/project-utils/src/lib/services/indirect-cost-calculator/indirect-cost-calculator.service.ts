@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { TreeNode } from '../../../models/assign/tree-node';
 import { Activity } from '../../../models/project/activity/activity';
 import { Project } from '../../../models/project/project';
-import { parse} from 'date-fns';
-import * as Keys from '../../../constants/keys'
+import { parse } from 'date-fns';
+import * as Keys from '../../../constants/keys';
 
 @Injectable({
     providedIn: 'root',
@@ -107,7 +107,7 @@ export class IndirectCostCalculatorService {
         if (!activity) {
             let x = 5;
         }
-        const pcdIsValid = parse(activity.profile.planned_completion_date, Keys.mainDateFormat, new Date()) //isValid(activity.profile.planned_completion_date); //moment(activity.profile.planned_completion_date, 'M/D/YYYY');
+        const pcdIsValid = parse(activity.profile.planned_completion_date, Keys.mainDateFormat, new Date()); //isValid(activity.profile.planned_completion_date); //moment(activity.profile.planned_completion_date, 'M/D/YYYY');
 
         if (!isNaN(pcdIsValid.getTime())) {
             activity.profile.planned_completion_date_dt = pcdIsValid; //pcd.toDate();
@@ -119,7 +119,7 @@ export class IndirectCostCalculatorService {
     }
 
     private getActivityPlannedEndMs(activity: Activity) {
-        const pcdIsValid = parse(activity.profile.planned_completion_date, Keys.mainDateFormat, new Date()) //isValid(activity.profile.planned_completion_date);
+        const pcdIsValid = parse(activity.profile.planned_completion_date, Keys.mainDateFormat, new Date()); //isValid(activity.profile.planned_completion_date);
 
         if (!isNaN(pcdIsValid.getTime())) {
             activity.profile.planned_completion_date_dt = pcdIsValid; //pcd.toDate();
@@ -129,11 +129,11 @@ export class IndirectCostCalculatorService {
     }
 
     private getPlannedStartDate(activity: Activity) {
-       const pcdIsValid = parse(activity.profile.planned_completion_date, Keys.mainDateFormat, new Date()) //isValid(activity.profile.planned_completion_date);
+        const pcdIsValid = parse(activity.profile.planned_completion_date, Keys.mainDateFormat, new Date()); //isValid(activity.profile.planned_completion_date);
 
-       if (!isNaN(pcdIsValid.getTime())) {
-           activity.profile.planned_completion_date_dt = pcdIsValid; //pcd.toDate();
-       }
+        if (!isNaN(pcdIsValid.getTime())) {
+            activity.profile.planned_completion_date_dt = pcdIsValid; //pcd.toDate();
+        }
 
         const durationMs = activity.profile.duration * 1000 * 60 * 60 * 24;
         const start = activity.profile.planned_completion_date_dt.getTime() - durationMs;

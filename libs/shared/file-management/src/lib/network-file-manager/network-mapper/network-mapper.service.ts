@@ -167,7 +167,7 @@ export class NetworkMapperService {
                         roleProfile[attr] = roleEntry[attr];
                     }
                 }
-                roleProfile.view.color = roleEntry.backgroundcolor; 
+                roleProfile.view.color = roleEntry.backgroundcolor;
                 return roleProfile;
             });
         return roles;
@@ -335,15 +335,17 @@ export class NetworkMapperService {
         if (project.tags) {
             project.tags
                 .map((p, i) => {
-                    if(!p.tags?.length) {
-                        return [{
-                            group: p.name,
-                            graphId: project.profile.id,
-                            nodeId: treeNode.nodeId,
-                            groupColor: p.color,
-                            groupBackgroundcolor: p.backgroundcolor,
-                            index: i,
-                        }];
+                    if (!p.tags?.length) {
+                        return [
+                            {
+                                group: p.name,
+                                graphId: project.profile.id,
+                                nodeId: treeNode.nodeId,
+                                groupColor: p.color,
+                                groupBackgroundcolor: p.backgroundcolor,
+                                index: i,
+                            },
+                        ];
                     }
                     return p.tags.map(t => {
                         return {

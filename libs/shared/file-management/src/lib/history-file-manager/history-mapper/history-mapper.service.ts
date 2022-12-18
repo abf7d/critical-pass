@@ -106,7 +106,7 @@ export class HistoryMapperService {
                         roleProfile[attr] = roleEntry[attr];
                     }
                 }
-                roleProfile.view.color = roleEntry.backgroundcolor; 
+                roleProfile.view.color = roleEntry.backgroundcolor;
                 return roleProfile;
             });
         return roles;

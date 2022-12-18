@@ -33,20 +33,19 @@ export class ProjectCompilerService {
         private idGenerator: IdGeneratorService,
         private nodeArranger: NodeArrangerService,
         private activitySorter: ActivitySorterService,
-        private activityValidator: ActivityValidatorService
-    ) {
-    }
+        private activityValidator: ActivityValidatorService,
+    ) {}
     public processProject(project: Project): void {
-       this.nodeConstructor.connectArrowsToNodes(project);
-       this.riskCompiler.compileRiskProperties(project);
-       this.completionCalc.calculateCompleted(project);
-       this.dateUtils.calculateEarliestFinishDate(project);
-       this.dateUtils.setMaxPCDs(project);
-       this.projectUtils.calculateDanglingActivities(project);
-       this.activityValidator.validateActivities(project);
+        this.nodeConstructor.connectArrowsToNodes(project);
+        this.riskCompiler.compileRiskProperties(project);
+        this.completionCalc.calculateCompleted(project);
+        this.dateUtils.calculateEarliestFinishDate(project);
+        this.dateUtils.setMaxPCDs(project);
+        this.projectUtils.calculateDanglingActivities(project);
+        this.activityValidator.validateActivities(project);
     }
-    
-    public updateParentRisk(project: Project): void{
+
+    public updateParentRisk(project: Project): void {
         this.riskCompiler.compileRiskProperties(project);
         this.dateUtils.calculateEarliestFinishDate(project);
         this.parentRiskRefresh.updateParentRisk(project);
@@ -61,7 +60,7 @@ export class ProjectCompilerService {
         this.nodeArranger.arrangeNodes(project);
         this.activitySorter.sortDummiesLast(project);
     }
-   
+
     public setStartEndNodes(project: Project): void {
         this.endNodesLocator.setStartEndNodesFromLongestPath(project);
     }

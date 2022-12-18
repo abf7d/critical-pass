@@ -28,7 +28,7 @@ export class StatsCalculatorService {
         // When the decompressAmount is > 0
         // The first values for criticality and fibonacci are low because the critical
         // are being interpreted as highrisk, they should be a 3 not a 2
-        const nonInfLinks = project.activities.filter(a => a.chartInfo.tf !== Infinity && !a.chartInfo.isDummy); 
+        const nonInfLinks = project.activities.filter(a => a.chartInfo.tf !== Infinity && !a.chartInfo.isDummy);
         for (const l of nonInfLinks) {
             if (l.chartInfo.tf != null && l.chartInfo.tf !== Infinity && !l.chartInfo.isDummy) {
                 const totalFloat = extraFloat + +l.chartInfo.tf;
@@ -49,7 +49,7 @@ export class StatsCalculatorService {
                         thisFloat = totalFloat;
                     }
 
-                    sumFloat = sumFloat + thisFloat; 
+                    sumFloat = sumFloat + thisFloat;
                     if (thisFloat > maxFloat) {
                         maxFloat = thisFloat;
                     }
@@ -127,6 +127,6 @@ export class StatsCalculatorService {
 
 export class Stats {
     mean: number;
-    variance: number; 
+    variance: number;
     deviation: number;
 }

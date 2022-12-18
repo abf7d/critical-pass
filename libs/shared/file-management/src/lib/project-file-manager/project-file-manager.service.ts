@@ -59,7 +59,7 @@ export class ProjectFileManagerService implements FileManagerBaseService<Project
     }
 
     public getWorksheetData(wb, sheetName) {
-      const ws = wb.Sheets[sheetName];
-      return XLSX.utils.sheet_to_json(ws);
-  }
+        const ws = wb.Sheets[sheetName];
+        return XLSX.utils.sheet_to_json(ws);
+    }
 }

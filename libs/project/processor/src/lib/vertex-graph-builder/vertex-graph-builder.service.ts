@@ -20,7 +20,7 @@ export class VertexGraphBuilderService {
         return this.graphModels.createRoute(project.profile.start, project.profile.end);
     }
 
-    public createRoute(project: Project): Route { 
+    public createRoute(project: Project): Route {
         const route = this.initializeRoute(project);
         if (route.startId === null || route.endId === null) {
             this.logger.info('Invalid Start and End nodes');
@@ -45,7 +45,7 @@ export class VertexGraphBuilderService {
     }
 
     public createEdges(project: Project, route: Route) {
-        route.vertices.forEach(vertex =>  {
+        route.vertices.forEach(vertex => {
             const contents = project.activities.filter(e => e.chartInfo.source_id === vertex.id || e.chartInfo.target_id === vertex.id);
             for (const arrow of contents) {
                 const alreadyExists = route.edges.find(e => e.id === arrow.profile.id);

@@ -72,12 +72,12 @@ export class RiskCompilerService {
 
     private setMultipleCriticalPaths(project: Project) {
         project.activities.forEach(a => {
-            if(a.chartInfo.tf === 0) {
-                a.chartInfo.risk =  Keys.RiskCode.Critical;
-                a.chartInfo.source.risk =  Keys.RiskCode.Critical;
-                a.chartInfo.target.risk =  Keys.RiskCode.Critical;
-            } 
-        })
+            if (a.chartInfo.tf === 0) {
+                a.chartInfo.risk = Keys.RiskCode.Critical;
+                a.chartInfo.source.risk = Keys.RiskCode.Critical;
+                a.chartInfo.target.risk = Keys.RiskCode.Critical;
+            }
+        });
     }
     private overwriteWithCriticalPath(forwardPath: Route, project: Project) {
         let pathEnd = forwardPath.end;

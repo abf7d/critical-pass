@@ -6,6 +6,6 @@ export * from './project-compiler/project-compiler.service';
 export * from './file-managers/history-file-manager/history-file-manager.service';
 export * from './file-managers/mapping-file-manager/mapping-file-manager.service';
 export * from './file-managers/mapping-file-manager/import-mapper/import-mapper.service';
-export * from './file-managers/network-file-manager/network-file-manager.service'; 
+export * from './file-managers/network-file-manager/network-file-manager.service';
 export * from './file-managers/project-file-manager/project-file-manager.service';
 export * from './project-extractor/project-extractor.service';

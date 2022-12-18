@@ -30,21 +30,21 @@ export class DependencyCrawlerService {
                 deps.push(a.profile.id);
             }
         }
-        deps = this.uniq(deps); 
+        deps = this.uniq(deps);
         return deps;
     }
-    private uniq(array: number []): number[] {
-      return [...new Set(array)];
+    private uniq(array: number[]): number[] {
+        return [...new Set(array)];
     }
     private union(array1: number[], array2: number[]) {
-      const set1 = new Set(array1);
-      const set2 = new Set(array2);
-      return [... new Set([...set1, ...set2])];
+        const set1 = new Set(array1);
+        const set2 = new Set(array2);
+        return [...new Set([...set1, ...set2])];
     }
     private getInArrows(node: Integration, project: Project) {
-      return project.activities.filter( a => a.chartInfo.target === node);
+        return project.activities.filter(a => a.chartInfo.target === node);
     }
-    private setMilestoneDependencies(project: Project, milestoneId: number): number [] {
+    private setMilestoneDependencies(project: Project, milestoneId: number): number[] {
         if (milestoneId === null) {
             return;
         }
