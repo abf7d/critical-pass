@@ -26,6 +26,7 @@
             "@critical-pass/shared/activity": ["libs/shared/activity/src/index.ts"],
             "@critical-pass/shared/data-access": ["libs/shared/data-access/src/index.ts"],
             "@critical-pass/shared/file-management": ["libs/shared/file-management/src/index.ts"],
+            "@critical-pass/shared/project-utils": ["libs/shared/project-utils/src/index.ts"],
             "@critical-pass/shared/serializers": ["libs/shared/serializers/src/index.ts"]
         }
     },
