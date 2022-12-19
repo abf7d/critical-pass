@@ -1,7 +1,6 @@
 import { Activity } from '../project/activity/activity';
 
 export class ScheduleEntry {
-    
     private endDate;
     private duration;
     public startDate;

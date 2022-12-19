@@ -37,17 +37,17 @@ export class GraphFactoryService {
     }
 
     public createRoute(start: number, end: number): Route {
-      return {
-        startId: start,
-        endId: end,
-        vertices: [],
-        edges: [],
-        found: false,
-        unvisited: [],
-        start: null,
-        end: null,
-        pathFound: false,
-        isRunning: false,
-    } as Route;
+        return {
+            startId: start,
+            endId: end,
+            vertices: [],
+            edges: [],
+            found: false,
+            unvisited: [],
+            start: null,
+            end: null,
+            pathFound: false,
+            isRunning: false,
+        } as Route;
     }
 }
