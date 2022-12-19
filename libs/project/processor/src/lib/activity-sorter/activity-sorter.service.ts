@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Activity } from '../../../models/project/activity/activity';
-import { Project } from '../../../models/project/project';
-import { PlanningResource } from '../../../models/scheduling/planning-resource';
+// import { Activity } from '../../../models/project/activity/activity';
+// import { Project } from '../../../models/project/project';
+// import { PlanningResource } from '../../../models/scheduling/planning-resource';
+import {Project, Activity} from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
