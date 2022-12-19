@@ -23,7 +23,7 @@
             "@critical-pass/features/resources": ["libs/features/resources/src/index.ts"],
             "@critical-pass/project/models": ["libs/project/models/src/index.ts"],
             "@critical-pass/project/processor": ["libs/project/processor/src/index.ts"],
-            "@critical-pass/shared/activity": ["libs/shared/activity/src/index.ts"],
+            "@critical-pass/shared/components": ["libs/shared/components/src/index.ts"],
             "@critical-pass/shared/data-access": ["libs/shared/data-access/src/index.ts"],
             "@critical-pass/shared/file-management": ["libs/shared/file-management/src/index.ts"],
             "@critical-pass/shared/project-utils": ["libs/shared/project-utils/src/index.ts"],
