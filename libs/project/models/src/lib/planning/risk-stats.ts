@@ -4,7 +4,7 @@ export interface RiskStats {
     activity: number;
     extraFloat: number;
     criticalCount: number;
-    redCount: number; 
-    yellowCount: number; 
+    redCount: number;
+    yellowCount: number;
     greenCount: number;
-  }
+}

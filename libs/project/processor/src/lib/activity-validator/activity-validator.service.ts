@@ -17,7 +17,7 @@ export class ActivityValidatorService {
     }
     private validateProperties(activity: Activity, project: Project, stats: Stats) {
         const duration = activity.profile.duration ?? 0;
-        const remainder = +(duration) % 5;
+        const remainder = +duration % 5;
         if (activity.profile.duration !== undefined && !isNaN(activity.profile.duration)) {
             if (remainder !== 0) {
                 activity.errors.showDivisibleBy5Error = true;

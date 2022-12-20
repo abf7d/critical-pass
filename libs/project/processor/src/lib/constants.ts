@@ -48,21 +48,21 @@ export const RiskColor = {
     Completed: '#ffddff',
     Start: '#f00',
     End: '#00f',
-    Unassigned: '#555'
+    Unassigned: '#555',
 };
 export const DonutColor = {
     Low: '#7c7',
     Medium: '#ff7',
     High: '#f44',
     Critical: '#555',
-    Unprocessed: '#bbb'
-}
+    Unprocessed: '#bbb',
+};
 export const transitionTime = 1200;
 export const arrowEaseType = d3.easeExpInOut;
 export const weeks = 21;
 export const floatIncrements = 7;
 export const shallowSFormat = 'M-d-yyyy';
-export const europeanDateFormat = 'd-M-YYYY'; 
+export const europeanDateFormat = 'd-M-YYYY';
 
 export const activitiesWsName = 'Activities';
 export const arrowWsName = 'Arrow Info';

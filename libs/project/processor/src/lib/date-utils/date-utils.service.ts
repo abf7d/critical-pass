@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Integration, Project } from '@critical-pass/project/models';
 import { addBusinessDays, lightFormat } from 'date-fns';
-import * as CONST from '../const'
+import * as CONST from '../const';
 
 @Injectable({
     providedIn: 'root',
@@ -33,7 +33,7 @@ export class DateUtilsService {
             }
         }
         if (dates.length > 0) {
-            dates.sort((a, b) => +new Date((b) ?? '') - +new Date(a));
+            dates.sort((a, b) => +new Date(b ?? '') - +new Date(a));
             greatestPCD = dates[dates.length - 1];
         }
         return greatestPCD;

@@ -14,7 +14,7 @@ import { FloatSerializerService } from '../../serializers/risk/float-serializer/
 import { CriticalPathUtilsService } from '../critical-path-utils/critical-path-utils.service';
 import { DateUtilsService } from '../date-utils/date-utils.service';
 import { ProjectValidatorService } from '../project-validator/project-validator.service';
-import * as Keys from '../../../constants/keys';
+import * as CONST from '../constants';
 import { Activity, Integration, Project, RiskStats, Route, Vertex } from '@critical-pass/project/models';
 
 @Injectable({
@@ -74,9 +74,9 @@ export class RiskCompilerService {
     private setMultipleCriticalPaths(project: Project) {
         project.activities.forEach(a => {
             if (a.chartInfo.tf === 0) {
-                a.chartInfo.risk = Keys.RiskCode.Critical;
-                a.chartInfo.source.risk = Keys.RiskCode.Critical;
-                a.chartInfo.target.risk = Keys.RiskCode.Critical;
+                a.chartInfo.risk = CONST.RiskCode.Critical;
+                if (a.chartInfo.source) a.chartInfo.source.risk = CONST.RiskCode.Critical;
+                if (a.chartInfo.target) a.chartInfo.target.risk = CONST.RiskCode.Critical;
             }
         });
     }
@@ -113,7 +113,7 @@ export class RiskCompilerService {
         let redLimit = project.profile.redLimit;
         let yellowLimit = project.profile.yellowLimit;
         const integrationDict = new Map<number, Integration>();
-        project.integrations.forEach(i => (integrationDict.set(i.id, i)));
+        project.integrations.forEach(i => integrationDict.set(i.id, i));
         const activityDict = {};
         project.activities.forEach(a => (activityDict[a.profile.id] = a));
         if (isNaN(redLimit) || isNaN(yellowLimit)) {
