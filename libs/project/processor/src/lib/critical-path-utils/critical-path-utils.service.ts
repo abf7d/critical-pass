@@ -1,9 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
+import { Edge, Project, Route, Vertex } from '@critical-pass/project/models';
 import { LoggerBase } from '../../../models/base/logger-base';
-import { Project } from '../../../models/project/project';
-import { Edge } from '../../../models/risk/edge';
-import { Route } from '../../../models/risk/route';
-import { Vertex } from '../../../models/risk/vertex';
 
 @Injectable({
     providedIn: 'root',
@@ -37,7 +34,7 @@ export class CriticalPathUtilsService {
     }
 
     // Does one iteration of Dijkstra's
-    public runForwardPath(route: Route, curVertex: Vertex, prevVertSeen: number[], pathTxt = '') {
+    public runForwardPath(route: Route, curVertex: Vertex, prevVertSeen: number[], pathTxt = ''): boolean {
         // Algorithm:
         // From start node:
         //   - calculate tenative distances for all adjacent nodes (curNode dist + edge weight)

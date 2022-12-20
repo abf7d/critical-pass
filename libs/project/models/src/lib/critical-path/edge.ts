@@ -6,6 +6,6 @@ export interface Edge {
     weight: number;
     origin: Vertex;
     destination: Vertex;
-    float: FloatInfo;
+    float: FloatInfo | null;
     minEST: number;
 }

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Edge } from '../../../../models/risk/edge';
-import { FloatInfo } from '../../../../models/risk/float-info';
-// import { FloatInfo } from '../../../../models/risk/route';
+import { Edge, FloatInfo } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
@@ -11,7 +9,7 @@ export class FloatFactoryService {
 
     createFloatInfo(forwardActivity: Edge): FloatInfo {
         let est = forwardActivity.origin.distance;
-        if (!!forwardActivity.minEST && est < forwardActivity.minEST) {
+        if (!!forwardActivity.minEST && est !== null && est < forwardActivity.minEST) {
             est = forwardActivity.minEST;
         }
         return {
@@ -23,13 +21,13 @@ export class FloatFactoryService {
             LFTE_Head: forwardActivity.destination.LFT,
             minEST: forwardActivity.minEST,
             EST: est,
-            EFT: est + forwardActivity.weight,
+            EFT: (est ?? 0) + forwardActivity.weight,
             LFT: forwardActivity.destination.LFT,
-            LST: forwardActivity.origin.LFT - forwardActivity.weight,
-            TF: forwardActivity.destination.LFT - (est + forwardActivity.weight),
+            LST: (forwardActivity.origin.LFT ?? 0) - forwardActivity.weight,
+            TF: (forwardActivity.destination.LFT ?? 0) - ((est ?? 0) + forwardActivity.weight),
             forwardActivity,
             FF: 0,
-            IF: null,
+            IF: 0,
         } as FloatInfo;
     }
 }

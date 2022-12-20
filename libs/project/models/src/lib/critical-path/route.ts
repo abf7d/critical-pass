@@ -8,8 +8,8 @@ export interface Route {
     edges: Array<Edge>;
     found: boolean;
     unvisited: Array<any>;
-    end: Vertex;
-    start: Vertex;
+    end: Vertex | null;
+    start: Vertex | null;
     pathFound: boolean;
     isRunning: boolean;
 }

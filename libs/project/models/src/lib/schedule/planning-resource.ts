@@ -4,15 +4,9 @@ import { ScheduleEntry } from './schedule-entry';
 export class PlanningResource {
     public name;
     public schedule: ScheduleEntry[];
-
-    // private phases;
-    // private skills;
-
     constructor() {
         this.name = '';
-        // this.phases = [];
         this.schedule = [];
-        // this.skills = [];
     }
     public scheduleActivity(activity: Activity) {
         let isAvailable = true;

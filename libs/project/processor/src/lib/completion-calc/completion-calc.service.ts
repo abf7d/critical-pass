@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '../../../models/project/project';
+import { Project } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
@@ -26,8 +26,8 @@ export class CompletionCalcService {
             if (
                 (link.chartInfo.target != null || link.chartInfo.source != null) &&
                 link.chartInfo.isDummy &&
-                link.chartInfo.target.completed === true &&
-                link.chartInfo.source.completed === true
+                link.chartInfo.target?.completed === true &&
+                link.chartInfo.source?.completed === true
             ) {
                 link.processInfo.completed = true;
             }

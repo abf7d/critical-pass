@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
-import { LoggerBase } from '../../../models/base/logger-base';
-import { Project } from '../../../models/project/project';
+import { Project } from '@critical-pass/project/models';
+// import { LoggerBase } from '../../../models/base/logger-base';
+// import { Project } from '../../../models/project/project';
 
 @Injectable({
     providedIn: 'root',

@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-// import { Activity } from '../../../models/project/activity/activity';
-// import { Project } from '../../../models/project/project';
-// import { PlanningResource } from '../../../models/scheduling/planning-resource';
-import { Project, Activity } from '@critical-pass/project/models';
+import { Project, Activity, PlanningResource } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
@@ -68,11 +65,11 @@ export class ActivitySorterService {
         const activities: Activity[] = [];
         resourceGroups.forEach(rg => {
             rg.forEach(resource => {
-                const sortedSchedule = resource.schedule.sort((a, b) => a.startDate - b.startDate);
+                const sortedSchedule = resource.schedule.sort((a, b) => (a.startDate ?? 0) - (b.startDate ?? 0));
                 let index = 0;
                 sortedSchedule.forEach(entry => {
                     const found = project.activities.find(a => a.profile.id === entry.activityId);
-                    if (found !== null) {
+                    if (found !== null && found !== undefined) {
                         if (index === 0) {
                             found.assign.isStartBranch = true;
                         }
@@ -89,8 +86,8 @@ export class ActivitySorterService {
     }
 
     private getStartDate(activity: Activity): number {
-        const startDate = new Date(activity.profile.planned_completion_date);
-        const startDateDays = startDate.getTime() - 1000 * 60 * 60 * 24 * activity.profile.duration;
+        const startDate = new Date(activity.profile.planned_completion_date ?? '');
+        const startDateDays = startDate.getTime() - 1000 * 60 * 60 * 24 * (activity.profile.duration ?? 0);
 
         return startDateDays;
     }
@@ -109,7 +106,7 @@ export class ActivitySorterService {
     private assignResources(activities: Activity[]): PlanningResource[] {
         const isValid = this.validateActivities(activities);
         if (!isValid) {
-            return;
+            return [];
         }
         const resources: PlanningResource[] = [];
         activities.forEach(a => {

@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@angular/core';
-import { LoggerBase } from '../../../models/base/logger-base';
-import { RiskOption } from '../../../models/charts/risk-curve';
-import { Activity } from '../../../models/project/activity/activity';
-import { Integration } from '../../../models/project/integration/integration';
-import { Project } from '../../../models/project/project';
-import { Edge } from '../../../models/risk/edge';
-import { FloatInfo } from '../../../models/risk/float-info';
-import { Route } from '../../../models/risk/route';
-import { Vertex } from '../../../models/risk/vertex';
+// import { LoggerBase } from '../../../models/base/logger-base';
+// import { RiskStats } from '../../../models/charts/risk-curve';
+// import { Activity } from '../../../models/project/activity/activity';
+// import { Integration } from '../../../models/project/integration/integration';
+// import { Project } from '../../../models/project/project';
+// import { Edge } from '../../../models/risk/edge';
+// import { FloatInfo } from '../../../models/risk/float-info';
+// import { Route } from '../../../models/risk/route';
+// import { Vertex } from '../../../models/risk/vertex';
 import { VertexGraphBuilderService } from '../vertex-graph-builder/vertex-graph-builder.service';
 import { StatsCalculatorService } from '../stats-calculator/stats-calculator.service';
 import { FloatSerializerService } from '../../serializers/risk/float-serializer/float-serializer.service';
@@ -15,6 +15,7 @@ import { CriticalPathUtilsService } from '../critical-path-utils/critical-path-u
 import { DateUtilsService } from '../date-utils/date-utils.service';
 import { ProjectValidatorService } from '../project-validator/project-validator.service';
 import * as Keys from '../../../constants/keys';
+import { Activity, Integration, Project, RiskStats, Route, Vertex } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
@@ -51,7 +52,7 @@ export class RiskCompilerService {
         }
     }
 
-    public setProjectRiskStats(project: Project, riskStats: RiskOption) {
+    public setProjectRiskStats(project: Project, riskStats: RiskStats) {
         const { activity, fibonacci, criticalCount, greenCount, redCount, yellowCount, criticality } = riskStats;
         project.profile.risk.activityRisk = activity;
         project.profile.risk.fibonacciRisk = fibonacci;
@@ -111,8 +112,8 @@ export class RiskCompilerService {
         const processedActivities = floatStats.activities;
         let redLimit = project.profile.redLimit;
         let yellowLimit = project.profile.yellowLimit;
-        const integrationDict = {};
-        project.integrations.forEach(i => (integrationDict[i.id] = i));
+        const integrationDict = new Map<number, Integration>();
+        project.integrations.forEach(i => (integrationDict.set(i.id, i)));
         const activityDict = {};
         project.activities.forEach(a => (activityDict[a.profile.id] = a));
         if (isNaN(redLimit) || isNaN(yellowLimit)) {
