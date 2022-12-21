@@ -34,38 +34,37 @@ export class ProjectSerializerService implements Serializer<Project> {
         return obj;
     }
     toJson(obj: Project): any {}
+}
 
+@Injectable({
+    providedIn: 'root',
+})
+export class ProjectProfileSerializerService implements Serializer<Profile> {
+    fromJson(json?: any): Profile {
+        json = json ?? {};
+        const obj: Profile = {
+            name: json?.name ?? '',
+            id: json?.id ?? null,
+            description: json?.description ?? '',
+            start: json?.start ?? null,
+            end: json?.end ?? null,
+            startDate: json?.startDate ?? '',
+            endDate: json?.endDate ?? '',
+            libraryView: json?.libraryView ?? false,
+            numStDev: json?.numStDev || 1,
+            redLimit: json?.redLimit || 9,
+            yellowLimit: json?.yellowLimit || 25,
+            lft: json?.lft ?? json?.LFT ?? null,
+            loopDetected: json?.loopDetected ?? false,
+            timestamp: json?.timestamp,
+            view: new ProjectViewSerializerService().fromJson(json.view),
+            staffing: new StaffingSerializerService().fromJson(json.staffing),
+            risk: new ProjectRiskSerializerService().fromJson(json.risk),
+            subProject: new ProjectSubprojectSerializerService().fromJson(json.subProject),
+            permissions: new PermissionsSerializerService().fromJson(json.permissions),
+            parentProject: json.parentProject ? new ProjectSerializerService().fromJson(json.parentProject) : null,
+        };
+        return obj;
     }
-
-    @Injectable({
-        providedIn: 'root',
-    })
-    export class ProjectProfileSerializerService implements Serializer<Profile> {
-        fromJson(json?: any): Profile {
-            json = json ?? {};
-            const obj: Profile = {
-                name: json?.name ?? '',
-                id: json?.id ?? null,
-                description: json?.description ?? '',
-                start: json?.start ?? null,
-                end: json?.end ?? null,
-                startDate: json?.startDate ?? '',
-                endDate: json?.endDate ?? '',
-                libraryView: json?.libraryView ?? false,
-                numStDev: json?.numStDev || 1,
-                redLimit: json?.redLimit || 9,
-                yellowLimit: json?.yellowLimit || 25,
-                lft: json?.lft ?? json?.LFT ?? null,
-                loopDetected: json?.loopDetected ?? false,
-                timestamp: json?.timestamp,
-                view: new ProjectViewSerializerService().fromJson(json.view),
-                staffing: new StaffingSerializerService().fromJson(json.staffing),
-                risk: new ProjectRiskSerializerService().fromJson(json.risk),
-                subProject: new ProjectSubprojectSerializerService().fromJson(json.subProject),
-                permissions: new PermissionsSerializerService().fromJson(json.permissions),
-                parentProject: json.parentProject ? new ProjectSerializerService().fromJson(json.parentProject) : null,
-            };
-            return obj;
-        }
-        toJson(obj: Profile): any {}
-    }
+    toJson(obj: Profile): any {}
+}

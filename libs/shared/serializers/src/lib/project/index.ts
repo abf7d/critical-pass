@@ -1,6 +1,6 @@
 export * from './phase/phase-serializer/phase-serializer.service';
 export * from './resource/resource-serializer/resource-serializer.service';
-export * from './role/role-serializer.service'
+export * from './role/role-serializer.service';
 export * from './activity/activity-serializer.service';
 export * from './activity/chart/chart-serializer.service';
 export * from './integration/integration-serializer/integration-serializer.service';

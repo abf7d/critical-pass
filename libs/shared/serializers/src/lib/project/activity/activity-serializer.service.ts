@@ -26,7 +26,7 @@ export class ActivitySerializerService implements Serializer<Activity> {
         };
         return obj;
     }
-    new(id: number, name: string, sourceId: number, targetId: number, risk: number, duration: number): Activity{
+    new(id: number, name: string, sourceId: number, targetId: number, risk: number, duration: number): Activity {
         const activity = this.fromJson();
         activity.profile.id = id;
         activity.profile.name = name;
@@ -35,7 +35,7 @@ export class ActivitySerializerService implements Serializer<Activity> {
         activity.chartInfo.risk - risk;
         activity.profile.duration = duration;
         activity.assign.phases = [];
-        activity.assign.resources =[];
+        activity.assign.resources = [];
         return activity;
     }
     toJson(obj: Activity): any {}

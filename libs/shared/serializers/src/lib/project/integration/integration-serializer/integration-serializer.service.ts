@@ -28,7 +28,7 @@ export class IntegrationSerializerService implements Serializer<Integration> {
             lft: json.lft ?? json.LFT ?? null, // delete this
             maxPCD: json.maxPCD ?? null,
             completed: json.completed ?? null,
-            label: json.label ?? ''
+            label: json.label ?? '',
         };
         return obj;
     }

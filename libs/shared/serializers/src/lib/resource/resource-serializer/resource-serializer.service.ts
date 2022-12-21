@@ -29,7 +29,7 @@ export class ResourceSerializerService implements Serializer<Resource> {
 export class ResourceAssignSerializerService implements Serializer<ResourceAssign> {
     public fromJson(json?: ResourceAssign): ResourceAssign {
         const obj: ResourceAssign = {
-            roles: json?.roles ? json.roles.map(r => new RoleSummarySerializerService().fromJson(r)) : [], 
+            roles: json?.roles ? json.roles.map(r => new RoleSummarySerializerService().fromJson(r)) : [],
             phases: json?.phases ? json.phases.map(p => new PhaseSummarySerializerService().fromJson(p)) : [],
             isSelected: false,
         };
@@ -95,10 +95,4 @@ export class ResourceSummarySerializerService implements Serializer<ResourceSumm
         return obj;
     }
     toJson(obj: ResourceSummary): any {}
-
 }
-
-
-
-
-

@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { ColorView } from "../../../../models/project/resource/resource";
-import { Serializer } from "../../serializer";
+import { Injectable } from '@angular/core';
+import { ColorView } from '../../../../models/project/resource/resource';
+import { Serializer } from '../../serializer';
 
 @Injectable({
     providedIn: 'root',
@@ -15,5 +15,4 @@ export class ColorViewSerializerService implements Serializer<ColorView> {
         return obj;
     }
     toJson(obj: ColorView): any {}
-
 }

@@ -32,7 +32,7 @@ export class ProjectViewSerializerService implements Serializer<View> {
             isSubProjSelected: false,
             lassoStart: null,
             lassoEnd: null,
-            selectedTagGroup: null
+            selectedTagGroup: null,
         };
         return obj;
     }

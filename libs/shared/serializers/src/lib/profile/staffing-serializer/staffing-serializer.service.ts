@@ -17,7 +17,7 @@ export class StaffingSerializerService implements Serializer<StaffingInfo> {
             directCost: json.directCost ?? 0,
             indirectCost: json.indirectCost ?? 0,
             earliestFinishDate: json.earliestFinishDate ?? json.EarliestFinishDate ?? '', // delete this
-            lft: json.lft ?? json.LFT ?? '',  // delete this
+            lft: json.lft ?? json.LFT ?? '', // delete this
         };
         return obj;
     }
