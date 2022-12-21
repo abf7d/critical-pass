@@ -9,7 +9,7 @@ export interface RiskStats {
     greenCount: number;
 }
 export interface Stats {
-  mean: number;
-  variance: number;
-  deviation: number;
+    mean: number;
+    variance: number;
+    deviation: number;
 }

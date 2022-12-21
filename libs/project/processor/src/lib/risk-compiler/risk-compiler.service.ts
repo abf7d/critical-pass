@@ -49,7 +49,7 @@ export class RiskCompilerService {
             this.setProjectRiskStats(project, riskStats);
         } else {
             project.profile.loopDetected = true;
-            throw('loop detected while calculating risk');
+            throw 'loop detected while calculating risk';
             // this.logger.error('loop detected while calculating risk');
         }
     }
@@ -118,7 +118,7 @@ export class RiskCompilerService {
         const integrationDict = new Map<number | undefined, Integration>();
         project.integrations.forEach(i => integrationDict.set(i.id, i));
         const activityDict = new Map<number | undefined, Activity>();
-        project.activities.forEach(a => (activityDict.set(a.profile.id, a)));
+        project.activities.forEach(a => activityDict.set(a.profile.id, a));
         if (isNaN(redLimit) || isNaN(yellowLimit)) {
             redLimit = 0;
             yellowLimit = 0;
@@ -136,7 +136,7 @@ export class RiskCompilerService {
             } else if (totalfloat > yellowLimit) {
                 risk = CONST.RiskCode.Low;
             } else {
-                risk = CONST.RiskCode.New
+                risk = CONST.RiskCode.New;
             }
 
             const link = activityDict.get(float.id);
