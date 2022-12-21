@@ -6,7 +6,7 @@ import { Integration, Project } from '@critical-pass/project/models';
     providedIn: 'root',
 })
 export class NodeConnectorService {
-    constructor(@Inject('LoggerBase') private logger: LoggerBase) {}
+    constructor(/*@Inject('LoggerBase') private logger: LoggerBase*/) {}
 
     public connectArrowsToNodes(project: Project): void {
         const nodeCollection = new Map<number, Integration>();
@@ -19,7 +19,8 @@ export class NodeConnectorService {
                 const targetNode = nodeCollection.get(arrow.chartInfo.target_id);
 
                 if (!sourceNode || !targetNode) {
-                    this.logger.error('Connecting arrows to nodes: target or source node null');
+                    // this.logger.error('Connecting arrows to nodes: target or source node null');
+                    console.error('Connecting arrows to nodes: target or source node null');
                 }
 
                 arrow.chartInfo.source = sourceNode ? sourceNode : undefined;

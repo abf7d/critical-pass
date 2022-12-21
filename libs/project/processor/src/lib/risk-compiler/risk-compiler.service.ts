@@ -10,26 +10,27 @@ import { Inject, Injectable } from '@angular/core';
 // import { Vertex } from '../../../models/risk/vertex';
 import { VertexGraphBuilderService } from '../vertex-graph-builder/vertex-graph-builder.service';
 import { StatsCalculatorService } from '../stats-calculator/stats-calculator.service';
-import { FloatSerializerService } from '../../serializers/risk/float-serializer/float-serializer.service';
+// import { FloatSerializerService } from '../../serializers/risk/float-serializer/float-serializer.service';
 import { CriticalPathUtilsService } from '../critical-path-utils/critical-path-utils.service';
 import { DateUtilsService } from '../date-utils/date-utils.service';
 import { ProjectValidatorService } from '../project-validator/project-validator.service';
 import * as CONST from '../constants';
-import { Activity, Integration, Project, RiskStats, Route, Vertex } from '@critical-pass/project/models';
+import { Activity, Edge, FloatInfo, Integration, Project, RiskStats, Route, Vertex } from '@critical-pass/project/models';
+import { FloatFactoryService } from '../path-factories/float-factory/float-factory.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class RiskCompilerService {
-    private floatFactory: FloatSerializerService;
+    private floatFactory: FloatFactoryService;
     constructor(
-        @Inject('LoggerBase') private logger: LoggerBase,
+        // @Inject('LoggerBase') private logger: LoggerBase,
         private validator: ProjectValidatorService,
         private statsCalc: StatsCalculatorService,
         private criticalPathUtils: CriticalPathUtilsService,
         private graphBuilder: VertexGraphBuilderService,
     ) {
-        this.floatFactory = new FloatSerializerService();
+        this.floatFactory = new FloatFactoryService();
     }
     public compileRiskProperties(project: Project): void {
         const valid = this.validator.validateProject(project);
@@ -48,7 +49,8 @@ export class RiskCompilerService {
             this.setProjectRiskStats(project, riskStats);
         } else {
             project.profile.loopDetected = true;
-            this.logger.error('loop detected while calculating risk');
+            throw('loop detected while calculating risk');
+            // this.logger.error('loop detected while calculating risk');
         }
     }
 
@@ -84,26 +86,27 @@ export class RiskCompilerService {
         let pathEnd = forwardPath.end;
         const pathStart = forwardPath.start;
         if (forwardPath.pathFound) {
-            while (pathEnd !== pathStart) {
-                const endNode = project.integrations.find((n: Integration) => n.id === pathEnd.id);
+            while (pathEnd !== null && pathEnd !== pathStart) {
+                const endNode = project.integrations.find((n: Integration) => n.id === pathEnd?.id);
                 const edge = this.findEdge(pathEnd, pathEnd.previous);
-                const activity = project.activities.find((l: Activity) => l.profile.id === edge.id);
-                if (activity.chartInfo.tf === 0) {
-                    activity.chartInfo.risk = Keys.RiskCode.Critical;
-                    endNode.risk = Keys.RiskCode.Critical;
+                const activity = project.activities.find((l: Activity) => l.profile.id === edge?.id);
+                if (activity && endNode && activity.chartInfo.tf === 0) {
+                    activity.chartInfo.risk = CONST.RiskCode.Critical;
+                    endNode.risk = CONST.RiskCode.Critical;
                 }
                 pathEnd = pathEnd.previous;
             }
-
-            const node = project.integrations.find(n => n.id === pathEnd.id);
-            const activity = project.activities.find(a => a.chartInfo.source_id === node.id);
-            if (activity != null && activity.chartInfo.tf === 0) {
-                node.risk = Keys.RiskCode.Critical;
+            if (pathEnd !== null) {
+                const node = project.integrations.find(n => n.id === pathEnd?.id);
+                const activity = project.activities.find(a => a.chartInfo.source_id === node?.id);
+                if (node != undefined && activity != null && activity.chartInfo.tf === 0) {
+                    node.risk = CONST.RiskCode.Critical;
+                }
             }
         }
     }
-    private findEdge(vertex: Vertex, opposing: Vertex) {
-        return vertex.edges.find(e => e.destination.id === opposing.id || e.origin.id === opposing.id);
+    private findEdge(vertex: Vertex, opposing: Vertex | null) {
+        return vertex.edges.find(e => e.destination.id === opposing?.id || e.origin.id === opposing?.id);
     }
 
     private setRiskAndFloat(project: Project, forwardPath: Route) {
@@ -112,49 +115,52 @@ export class RiskCompilerService {
         const processedActivities = floatStats.activities;
         let redLimit = project.profile.redLimit;
         let yellowLimit = project.profile.yellowLimit;
-        const integrationDict = new Map<number, Integration>();
+        const integrationDict = new Map<number | undefined, Integration>();
         project.integrations.forEach(i => integrationDict.set(i.id, i));
-        const activityDict = {};
-        project.activities.forEach(a => (activityDict[a.profile.id] = a));
+        const activityDict = new Map<number | undefined, Activity>();
+        project.activities.forEach(a => (activityDict.set(a.profile.id, a)));
         if (isNaN(redLimit) || isNaN(yellowLimit)) {
             redLimit = 0;
             yellowLimit = 0;
         }
         for (const float of floats) {
-            let risk;
+            let risk: number;
             let x;
             const totalfloat = float.TF + +project.profile.risk.decompressAmount;
             if (totalfloat === 0) {
-                risk = Keys.RiskCode.High;
-            }
-            if (totalfloat <= redLimit && totalfloat > 0) {
-                risk = Keys.RiskCode.High;
-            }
-            if (totalfloat <= yellowLimit && totalfloat > redLimit) {
-                risk = Keys.RiskCode.Medium;
-            }
-            if (totalfloat > yellowLimit) {
-                risk = Keys.RiskCode.Low;
+                risk = CONST.RiskCode.High;
+            } else if (totalfloat <= redLimit && totalfloat > 0) {
+                risk = CONST.RiskCode.High;
+            } else if (totalfloat <= yellowLimit && totalfloat > redLimit) {
+                risk = CONST.RiskCode.Medium;
+            } else if (totalfloat > yellowLimit) {
+                risk = CONST.RiskCode.Low;
+            } else {
+                risk = CONST.RiskCode.New
             }
 
-            const link = activityDict[float.id];
+            const link = activityDict.get(float.id);
 
-            const source: Integration = integrationDict[link.chartInfo.source.id];
-            const target: Integration = integrationDict[link.chartInfo.target.id];
+            const source = integrationDict.get(link?.chartInfo.source?.id);
+            const target = integrationDict.get(link?.chartInfo.target?.id);
 
             if (source !== undefined && target !== undefined) {
                 source.risk = risk;
                 target.risk = risk;
-                link.chartInfo.risk = risk;
-                link.chartInfo.tf = totalfloat;
-                link.chartInfo.ff = float.FF;
+                if (link !== undefined) {
+                    link.chartInfo.risk = risk;
+                    link.chartInfo.tf = totalfloat;
+                    link.chartInfo.ff = float.FF;
+                }
 
                 const processedActivity = processedActivities.find(l => l.id === float.id);
 
-                source.lft = processedActivity.origin.LFT;
-                source.eft = processedActivity.origin.distance;
-                target.lft = processedActivity.destination.LFT;
-                target.eft = processedActivity.destination.distance;
+                if (processedActivity) {
+                    source.lft = processedActivity.origin.LFT ?? Infinity;
+                    source.eft = processedActivity.origin.distance ?? Infinity;
+                    target.lft = processedActivity.destination.LFT ?? Infinity;
+                    target.eft = processedActivity.destination.distance ?? Infinity;
+                }
             }
         }
     }
@@ -190,7 +196,7 @@ export class RiskCompilerService {
         const activity = float.forwardActivity;
         const { edges } = activity.destination;
 
-        const estList = edges.map(e => (e === activity || activity.destination === e.destination ? Infinity : e.float.EST));
+        const estList = edges.map(e => (e === activity || activity.destination === e.destination || !e.float ? Infinity : e.float.EST));
         let minEST = Math.min(...estList);
 
         const outArrows = edges.filter(e => activity.destination !== e.destination);

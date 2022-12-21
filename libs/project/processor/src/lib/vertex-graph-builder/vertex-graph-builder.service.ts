@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@angular/core';
-import { LoggerBase } from '../../../models/base/logger-base';
-import { Project } from '../../../models/project/project';
-import { Route } from '../../../models/risk/route';
-import { GraphSerializerService } from '../../serializers/risk/graph-builder/graph-serializer.service';
+import { Project, Route } from '@critical-pass/project/models';
+import { GraphFactoryService } from '../path-factories/graph-factory/graph-factory.service';
+// import { LoggerBase } from '../../../models/base/logger-base';
+// import { GraphSerializerService } from '../../serializers/risk/graph-builder/graph-serializer.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class VertexGraphBuilderService {
-    constructor(@Inject('LoggerBase') private logger: LoggerBase, private graphModels: GraphSerializerService) {}
+    constructor(/*@Inject('LoggerBase') private logger: LoggerBase,*/ private graphModels: GraphFactoryService) {}
 
     public validateStartEndNodes(project: Project) {
         const ends = project.integrations.filter(x => project.activities.find(a => a.chartInfo.source === x) === undefined);
@@ -20,10 +20,10 @@ export class VertexGraphBuilderService {
         return this.graphModels.createRoute(project.profile.start, project.profile.end);
     }
 
-    public createRoute(project: Project): Route {
+    public createRoute(project: Project): Route | null {
         const route = this.initializeRoute(project);
         if (route.startId === null || route.endId === null) {
-            this.logger.info('Invalid Start and End nodes');
+            // this.logger.info('Invalid Start and End nodes');
             return null;
         }
         this.createVertices(project, route);
@@ -52,14 +52,16 @@ export class VertexGraphBuilderService {
                 if (!alreadyExists) {
                     const source = route.vertices.find(x => x.id === arrow.chartInfo.source_id);
                     const target = route.vertices.find(x => x.id === arrow.chartInfo.target_id);
-                    let weight = arrow.profile.duration;
-                    if (!weight === undefined) {
-                        weight = Infinity;
+                    if (source && target) {
+                        let weight = arrow.profile.duration;
+                        if (!weight === undefined) {
+                            weight = Infinity;
+                        }
+                        const edge = this.graphModels.createEdge(arrow.profile.id, source, target, weight ?? 0, arrow.profile.minEST);
+                        if (source) source.edges.push(edge);
+                        if (target) target.edges.push(edge);
+                        route.edges.push(edge);
                     }
-                    const edge = this.graphModels.createEdge(arrow.profile.id, source, target, weight, arrow.profile.minEST);
-                    source.edges.push(edge);
-                    target.edges.push(edge);
-                    route.edges.push(edge);
                 }
             }
         });

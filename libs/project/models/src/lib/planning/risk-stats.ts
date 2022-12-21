@@ -8,3 +8,8 @@ export interface RiskStats {
     yellowCount: number;
     greenCount: number;
 }
+export interface Stats {
+  mean: number;
+  variance: number;
+  deviation: number;
+}

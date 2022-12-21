@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Stats, StatsCalculatorService } from '../stats-calculator/stats-calculator.service';
+// import { Stats, StatsCalculatorService } from '../stats-calculator/stats-calculator.service';
 import { getISODay, subBusinessDays } from 'date-fns';
-import { Activity, Project } from '@critical-pass/project/models';
+import { Activity, Project, Stats } from '@critical-pass/project/models';
+import { StatsCalculatorService } from '../stats-calculator/stats-calculator.service';
 
 @Injectable({
     providedIn: 'root',

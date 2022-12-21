@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@angular/core';
 import { Edge, Project, Route, Vertex } from '@critical-pass/project/models';
-import { LoggerBase } from '../../../models/base/logger-base';
+// import { LoggerBase } from '../../../models/base/logger-base';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CriticalPathUtilsService {
-    constructor(@Inject('LoggerBase') private logger: LoggerBase) {}
+    constructor(/*@Inject('LoggerBase') private logger: LoggerBase*/) {}
 
     public hasDuplicates(project: Project) {
         const dups = project.integrations.filter(i => project.integrations.filter(x => x.id === i.id).length > 1);
@@ -22,14 +22,18 @@ export class CriticalPathUtilsService {
             vertex.previous = null;
             vertex.visited = false;
         }
-        route.start.distance = 0;
-        const success = this.runForwardPath(route, route.start, []);
-        if (!success) {
-            return false;
+        if (route !== null && route.start !== null) {
+            route.start.distance = 0;
+            const success = this.runForwardPath(route, route.start, []);
+            if (!success) {
+                return false;
+            }
+            if (route.end !== null) {
+                route.pathFound = false;
+                route.end.LFT = route.end.distance;
+                this.runReversePath(route, route.end, []);
+            }
         }
-        route.pathFound = false;
-        route.end.LFT = route.end.distance;
-        this.runReversePath(route, route.end, []);
         return true;
     }
 
@@ -52,7 +56,7 @@ export class CriticalPathUtilsService {
         if (curVertex === route.end) {
             route.pathFound = true;
             return true;
-        } else if (curVertex !== null && curVertex.distance > -1) {
+        } else if (curVertex !== null && curVertex.distance !== null && curVertex.distance > -1) {
             if (prevVertSeen.indexOf(curVertex.id) !== -1) {
                 console.error('loop detected');
                 return false;
@@ -69,7 +73,7 @@ export class CriticalPathUtilsService {
                     const tentativeVertex = this.getOpposingVertex(edge, curVertex);
 
                     // edge is an out arrow (curVertex is not destination) and new distance is greater than current node value
-                    if (curVertex !== edge.destination && tentativeDistance > tentativeVertex.distance) {
+                    if (curVertex !== edge.destination && tentativeVertex.distance !== null && tentativeDistance > tentativeVertex.distance) {
                         tentativeVertex.distance = tentativeDistance;
                         tentativeVertex.previous = curVertex;
                         success = success && this.runForwardPath(route, tentativeVertex, prevVertSeen.slice(), pathTxt + ' > ' + curVertex.id);
@@ -78,6 +82,7 @@ export class CriticalPathUtilsService {
             }
             return success;
         }
+        return false;
     }
 
     public getOpposingVertex(edge: Edge, current: Vertex): Vertex {
@@ -91,7 +96,7 @@ export class CriticalPathUtilsService {
         if (curVertex === route.start) {
             route.pathFound = true;
             return;
-        } else if (curVertex !== null && curVertex.LFT > -1) {
+        } else if (curVertex !== null && curVertex.LFT !== null && curVertex.LFT > -1) {
             // -1 is the default for no distance
             // done to detect loops if current vertex has already been seen, we've hit a loop
             if (prevVertSeen.indexOf(curVertex.id) !== -1) {
@@ -104,7 +109,7 @@ export class CriticalPathUtilsService {
                 if (edge !== null) {
                     const tentativeDistance = curVertex.LFT - edge.weight;
                     const tentativeVertex = this.getOpposingVertex(edge, curVertex);
-                    if (curVertex !== edge.origin && tentativeDistance < tentativeVertex.LFT) {
+                    if (curVertex !== edge.origin && tentativeVertex.LFT !== null && tentativeDistance < tentativeVertex.LFT) {
                         tentativeVertex.LFT = tentativeDistance;
                         this.runReversePath(route, tentativeVertex, prevVertSeen.slice(), pathTxt + ' > ' + curVertex.id);
                     }

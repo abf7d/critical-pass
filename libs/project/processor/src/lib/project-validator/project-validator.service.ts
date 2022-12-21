@@ -7,7 +7,7 @@ import { Project } from '@critical-pass/project/models';
     providedIn: 'root',
 })
 export class ProjectValidatorService {
-    constructor(@Inject('LoggerBase') private logger: LoggerBase) {}
+    constructor(/*@Inject('LoggerBase') private logger: LoggerBase*/) {}
 
     public validateProject(project: Project) {
         if (project.profile.start === null || !project.profile.end === null) {
@@ -16,7 +16,8 @@ export class ProjectValidatorService {
 
         const hasDups = this.hasDuplicates(project);
         if (hasDups) {
-            this.logger.error('dups', project.integrations, project.activities);
+            // this.logger.error('dups', project.integrations, project.activities);
+            console.error('project has dups');
             return false;
         }
         return true;

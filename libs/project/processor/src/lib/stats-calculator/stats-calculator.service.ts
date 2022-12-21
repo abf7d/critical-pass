@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RiskOption } from '../../../models/charts/risk-curve';
-import { Project } from '../../../models/project/project';
-import * as Keys from '../../../constants/keys';
+import { Project, RiskStats, Stats } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
@@ -9,7 +7,7 @@ import * as Keys from '../../../constants/keys';
 export class StatsCalculatorService {
     constructor() {}
 
-    public getRiskStats(extraFloat: number, project: Project): RiskOption {
+    public getRiskStats(extraFloat: number, project: Project): RiskStats {
         let criticalCount = 0;
         let redCount = 0;
         let yellowCount = 0;
@@ -102,7 +100,7 @@ export class StatsCalculatorService {
             activity = parseFloat((1 - sumFloat / (numLinks * maxFloat)).toFixed(2));
         }
 
-        return { criticality, fibonacci, activity, extraFloat: adjustedFloat, criticalCount, redCount, yellowCount, greenCount } as RiskOption;
+        return { criticality, fibonacci, activity, extraFloat: adjustedFloat, criticalCount, redCount, yellowCount, greenCount } as RiskStats;
     }
 
     public getStatProps(project: Project, extraFloat: number): Stats {
@@ -125,8 +123,3 @@ export class StatsCalculatorService {
     }
 }
 
-export class Stats {
-    mean: number;
-    variance: number;
-    deviation: number;
-}

@@ -14,6 +14,7 @@ import { CompletionCalcService } from '../completion-calc/completion-calc.servic
 // import { NodeArrangerService } from '../node-arranger/node-arranger.service';
 import { ActivitySorterService } from '../activity-sorter/activity-sorter.service';
 import { ActivityValidatorService } from '../activity-validator/activity-validator.service';
+import { Project } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
@@ -25,14 +26,14 @@ export class ProjectCompilerService {
         private projectUtils: DanglingArrowService,
         private riskCompiler: RiskCompilerService,
         private completionCalc: CompletionCalcService,
-        private parentRiskRefresh: ParentRiskRefreshService,
-        private endNodesLocator: EndNodesLocatorService,
-        private pcdAutogen: PcdAutogenService,
-        private activityBuilder: ActivityBuilder,
-        private dependencyCrawler: DependencyCrawlerService,
-        private idGenerator: IdGeneratorService,
-        private nodeArranger: NodeArrangerService,
-        private activitySorter: ActivitySorterService,
+        // private parentRiskRefresh: ParentRiskRefreshService,
+        // private endNodesLocator: EndNodesLocatorService,
+        // private pcdAutogen: PcdAutogenService,
+        // private activityBuilder: ActivityBuilder,
+        // private dependencyCrawler: DependencyCrawlerService,
+        // private idGenerator: IdGeneratorService,
+        // private nodeArranger: NodeArrangerService,
+        // private activitySorter: ActivitySorterService,
         private activityValidator: ActivityValidatorService,
     ) {}
     public processProject(project: Project): void {
@@ -45,43 +46,43 @@ export class ProjectCompilerService {
         this.activityValidator.validateActivities(project);
     }
 
-    public updateParentRisk(project: Project): void {
-        this.riskCompiler.compileRiskProperties(project);
-        this.dateUtils.calculateEarliestFinishDate(project);
-        this.parentRiskRefresh.updateParentRisk(project);
-        this.riskCompiler.compileRiskProperties(project.profile.parentProject);
-        this.dateUtils.calculateEarliestFinishDate(project.profile.parentProject);
-    }
+    // public updateParentRisk(project: Project): void {
+    //     this.riskCompiler.compileRiskProperties(project);
+    //     this.dateUtils.calculateEarliestFinishDate(project);
+    //     this.parentRiskRefresh.updateParentRisk(project);
+    //     this.riskCompiler.compileRiskProperties(project.profile.parentProject);
+    //     this.dateUtils.calculateEarliestFinishDate(project.profile.parentProject);
+    // }
 
-    public compileProjectFromFile(project: Project) {
-        this.nodeConstructor.connectArrowsToNodes(project);
-        this.endNodesLocator.setStartEndNodesFromLongestPath(project);
-        this.riskCompiler.compileRiskProperties(project);
-        this.nodeArranger.arrangeNodes(project);
-        this.activitySorter.sortDummiesLast(project);
-    }
+    // public compileProjectFromFile(project: Project) {
+    //     this.nodeConstructor.connectArrowsToNodes(project);
+    //     this.endNodesLocator.setStartEndNodesFromLongestPath(project);
+    //     this.riskCompiler.compileRiskProperties(project);
+    //     this.nodeArranger.arrangeNodes(project);
+    //     this.activitySorter.sortDummiesLast(project);
+    // }
 
-    public setStartEndNodes(project: Project): void {
-        this.endNodesLocator.setStartEndNodesFromLongestPath(project);
-    }
+    // public setStartEndNodes(project: Project): void {
+    //     this.endNodesLocator.setStartEndNodesFromLongestPath(project);
+    // }
 
-    public connectArrowsToNodes(project: Project): void {
-        this.nodeConstructor.connectArrowsToNodes(project);
-    }
+    // public connectArrowsToNodes(project: Project): void {
+    //     this.nodeConstructor.connectArrowsToNodes(project);
+    // }
 
-    public autogeneratePcds(project: Project): void {
-        this.pcdAutogen.autogeneratePcds(project);
-    }
+    // public autogeneratePcds(project: Project): void {
+    //     this.pcdAutogen.autogeneratePcds(project);
+    // }
 
-    public addActivity(project: Project): void {
-        this.activityBuilder.addActivity(project);
-    }
+    // public addActivity(project: Project): void {
+    //     this.activityBuilder.addActivity(project);
+    // }
 
-    public updateDependencyData(project: Project): void {
-        this.dependencyCrawler.setDependencyDataFromGraph(project);
-    }
+    // public updateDependencyData(project: Project): void {
+    //     this.dependencyCrawler.setDependencyDataFromGraph(project);
+    // }
 
-    public resetIds(project: Project): void {
-        this.idGenerator.resetIds(project);
-    }
+    // public resetIds(project: Project): void {
+    //     this.idGenerator.resetIds(project);
+    // }
 }
