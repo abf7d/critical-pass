@@ -5,7 +5,7 @@ import { SubProject } from './subproject';
 import { Permissions } from './permissions';
 import { Project } from '../project';
 
-export interface FeaturesProfile {
+export interface ProjectProfile {
     name: string;
     id: number;
     description: string;
@@ -23,7 +23,7 @@ export interface FeaturesProfile {
     risk: Risk;
     subProject: SubProject;
     permissions: Permissions;
-    parentProject: Project;
+    parentProject: Project | null;
     parentProjectId?: number;
     loopDetected: boolean;
     lft: number;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Integration, Project } from '@critical-pass/project/models';
 import { addBusinessDays, lightFormat } from 'date-fns';
-import * as CONST from '../const';
+import * as CONST from '../constants';
 
 @Injectable({
     providedIn: 'root',

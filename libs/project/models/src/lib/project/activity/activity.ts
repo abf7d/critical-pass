@@ -1,6 +1,6 @@
 import { Chart } from './chart';
 import { Processed } from './processed';
-import { SubProject } from './subproject';
+import { ActivitySubProject } from './subproject';
 import { Risk } from './risk';
 import { Errors } from './errors';
 import { FeaturesProfile } from './profile';
@@ -10,7 +10,7 @@ import { TagGroup } from '../tag/tag-group';
 export interface Activity {
     processInfo: Processed;
     chartInfo: Chart;
-    subProject: SubProject;
+    subProject: ActivitySubProject;
     risk: Risk;
     errors: Errors;
     assign: AssignResources;

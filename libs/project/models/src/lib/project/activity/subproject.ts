@@ -1,6 +1,6 @@
 import { Project } from '../project';
 
-export interface SubProject {
+export interface ActivitySubProject {
     subGraphId: number;
     isParent: boolean;
     subGraphLoaded?: Project;
