@@ -102,21 +102,21 @@ export class ActivityBuilder {
 
     private calculatePos(x: Activity, internal: Activity[], originX: number, originY: number, index: number): number {
         if (x.chartInfo.target) {
-        x.chartInfo.target.x = originX + 120;
-        const neg = index % 2 === 0 ? -1 : 1;
-        const targetY = neg * 30 * Math.ceil(index / 2);
-        x.chartInfo.target.y = originY + targetY;
-        const samePos = internal.find(
-            y =>
-                !!y.chartInfo.target &&
-                y.profile.id !== x.profile.id &&
-                y.chartInfo.target.y === x.chartInfo.target?.y &&
-                y.chartInfo.target.x === x.chartInfo.target?.x,
-        );
-        if (samePos) {
-            index = this.calculatePos(x, internal, originX, originY, index + 1);
+            x.chartInfo.target.x = originX + 120;
+            const neg = index % 2 === 0 ? -1 : 1;
+            const targetY = neg * 30 * Math.ceil(index / 2);
+            x.chartInfo.target.y = originY + targetY;
+            const samePos = internal.find(
+                y =>
+                    !!y.chartInfo.target &&
+                    y.profile.id !== x.profile.id &&
+                    y.chartInfo.target.y === x.chartInfo.target?.y &&
+                    y.chartInfo.target.x === x.chartInfo.target?.x,
+            );
+            if (samePos) {
+                index = this.calculatePos(x, internal, originX, originY, index + 1);
+            }
         }
-    }
         return index;
     }
 }

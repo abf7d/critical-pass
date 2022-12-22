@@ -6,7 +6,7 @@ import { Activity, Project, TreeNode } from '@critical-pass/project/models';
 import { parse } from 'date-fns';
 // import * as Keys from '../../../constants/keys';
 // import * as CONST from '../../constants';
-import {P_CONST} from '@critical-pass/project/processor'
+import { P_CONST } from '@critical-pass/project/processor';
 
 @Injectable({
     providedIn: 'root',

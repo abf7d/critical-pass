@@ -1,16 +1,16 @@
 import { Serializer } from '../../services/serializers/serializer';
 import { Project } from '../project/project';
 
-export interface TreeNode/*<T, U>*/ {
+export interface TreeNode /*<T, U>*/ {
     parent: TreeNode;
-    children: TreeNode/*<T, U>*/[];
+    children: TreeNode /*<T, U>*/[];
     data: Project; //T;
     name: string;
     id: number;
     group: number;
     subgroup: number;
     parentNodeId: number; // This is for reconstructing tree after file load
-    metadata: ProjectMetadata //U;
+    metadata: ProjectMetadata; //U;
     // assignmentCompleted: boolean;
     // cost: number;
     // time: number;
@@ -25,22 +25,22 @@ export interface TreeNode/*<T, U>*/ {
     //   this.cost = 0;
     //   this.time = 0;
     // }
-  }
+}
 
-  export interface ProjectMetadata {
+export interface ProjectMetadata {
     assignmentCompleted: boolean;
     cost: number;
     time: number;
     //   this.cost = 0;
     //   this.time = 0;
-  }
- 
-  export class ProjectTreeNodeSerializerService implements Serializer<TreeNode> /*<T, U>>*/ {
+}
+
+export class ProjectTreeNodeSerializerService implements Serializer<TreeNode> /*<T, U>>*/ {
     fromJson(json?: any): TreeNode {
         json = json ?? {};
         const obj: TreeNode = {
-           // parentNodeId: json?.parentNodeId ?? null,
-           // nodeId: json?.nodeId ?? null,
+            // parentNodeId: json?.parentNodeId ?? null,
+            // nodeId: json?.nodeId ?? null,
             name: json?.name ?? null,
             group: json?.group ?? null,
             subgroup: json?.subgroup ?? null,
@@ -49,7 +49,7 @@ export interface TreeNode/*<T, U>*/ {
             children: json?.children ?? [],
             id: json?.id ?? null,
             parent: json.parent ?? null,
-            parentNodeId: json?.parentNodeId ?? null
+            parentNodeId: json?.parentNodeId ?? null,
         };
         return obj;
     }
@@ -65,8 +65,7 @@ export interface TreeNode/*<T, U>*/ {
             children: [],
             parent: null,
             metadata: null,
-            parentNodeId: null
-        }
-        
+            parentNodeId: null,
+        };
     }
 }

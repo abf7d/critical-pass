@@ -56,7 +56,7 @@ export class EndNodesLocatorService {
     }
     private walkTree(proj: Project, node: Integration | undefined, path: Integration[], endNode: Integration | undefined) {
         const curPath = path.slice(0);
-        if(node === undefined) {
+        if (node === undefined) {
             return curPath;
         }
         curPath.push(node);
