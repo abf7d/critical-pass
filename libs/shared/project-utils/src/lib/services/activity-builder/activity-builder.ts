@@ -1,6 +1,6 @@
 import { ActivitySerializerService, IntegrationSerializerService } from '@critical-pass/shared/serializers';
 import { Injectable } from '@angular/core';
-import { P_CONST} from '@critical-pass/project/processor';
+import { P_CONST } from '@critical-pass/project/processor';
 import { Activity, Integration, Project } from '@critical-pass/project/models';
 
 @Injectable({

@@ -31,7 +31,7 @@ export class ActivitySerializerService implements Serializer<Activity> {
         activity.profile.id = id;
         activity.profile.name = name;
         activity.chartInfo.source_id = sourceId ?? Infinity; // Infinity is a placeholder for milestone... milestone has no traget or source
-        activity.chartInfo.target_id = targetId  ?? Infinity; // Infinity is a placeholder for milestone... milestone has no traget or source
+        activity.chartInfo.target_id = targetId ?? Infinity; // Infinity is a placeholder for milestone... milestone has no traget or source
         activity.chartInfo.risk - risk;
         activity.profile.duration = duration;
         activity.assign.phases = [];

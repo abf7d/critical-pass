@@ -124,7 +124,7 @@ export class IndirectCostCalculatorService {
     }
 
     private getActivityPlannedEndMs(activity: Activity): number {
-        if(!activity.profile.planned_completion_date || activity.profile.duration === undefined || activity.profile.planned_completion_date_dt === null) {
+        if (!activity.profile.planned_completion_date || activity.profile.duration === undefined || activity.profile.planned_completion_date_dt === null) {
             return 0;
         }
         const pcdIsValid = parse(activity.profile.planned_completion_date, P_CONST.MAIN_DATE_FORMAT, new Date()); //isValid(activity.profile.planned_completion_date);
@@ -136,8 +136,12 @@ export class IndirectCostCalculatorService {
         return activity.profile.planned_completion_date_dt.getTime() + durationMs;
     }
 
-    private getPlannedStartDate(activity: Activity): Date | null{
-        if (activity.profile.duration === undefined || activity.profile.planned_completion_date === undefined || activity.profile.planned_completion_date_dt === null){
+    private getPlannedStartDate(activity: Activity): Date | null {
+        if (
+            activity.profile.duration === undefined ||
+            activity.profile.planned_completion_date === undefined ||
+            activity.profile.planned_completion_date_dt === null
+        ) {
             return null;
         }
         const pcdIsValid = parse(activity.profile.planned_completion_date, P_CONST.MAIN_DATE_FORMAT, new Date()); //isValid(activity.profile.planned_completion_date);
