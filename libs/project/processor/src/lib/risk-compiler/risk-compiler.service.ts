@@ -68,9 +68,9 @@ export class RiskCompilerService {
     private setMultipleCriticalPaths(project: Project) {
         project.activities.forEach(a => {
             if (a.chartInfo.tf === 0) {
-                a.chartInfo.risk = CONST.RiskCode.Critical;
-                if (a.chartInfo.source) a.chartInfo.source.risk = CONST.RiskCode.Critical;
-                if (a.chartInfo.target) a.chartInfo.target.risk = CONST.RiskCode.Critical;
+                a.chartInfo.risk = CONST.RISK_CODE.Critical;
+                if (a.chartInfo.source) a.chartInfo.source.risk = CONST.RISK_CODE.Critical;
+                if (a.chartInfo.target) a.chartInfo.target.risk = CONST.RISK_CODE.Critical;
             }
         });
     }
@@ -83,8 +83,8 @@ export class RiskCompilerService {
                 const edge = this.findEdge(pathEnd, pathEnd.previous);
                 const activity = project.activities.find((l: Activity) => l.profile.id === edge?.id);
                 if (activity && endNode && activity.chartInfo.tf === 0) {
-                    activity.chartInfo.risk = CONST.RiskCode.Critical;
-                    endNode.risk = CONST.RiskCode.Critical;
+                    activity.chartInfo.risk = CONST.RISK_CODE.Critical;
+                    endNode.risk = CONST.RISK_CODE.Critical;
                 }
                 pathEnd = pathEnd.previous;
             }
@@ -92,7 +92,7 @@ export class RiskCompilerService {
                 const node = project.integrations.find(n => n.id === pathEnd?.id);
                 const activity = project.activities.find(a => a.chartInfo.source_id === node?.id);
                 if (node != undefined && activity != null && activity.chartInfo.tf === 0) {
-                    node.risk = CONST.RiskCode.Critical;
+                    node.risk = CONST.RISK_CODE.Critical;
                 }
             }
         }
@@ -120,15 +120,15 @@ export class RiskCompilerService {
             let x;
             const totalfloat = float.TF + +project.profile.risk.decompressAmount;
             if (totalfloat === 0) {
-                risk = CONST.RiskCode.High;
+                risk = CONST.RISK_CODE.High;
             } else if (totalfloat <= redLimit && totalfloat > 0) {
-                risk = CONST.RiskCode.High;
+                risk = CONST.RISK_CODE.High;
             } else if (totalfloat <= yellowLimit && totalfloat > redLimit) {
-                risk = CONST.RiskCode.Medium;
+                risk = CONST.RISK_CODE.Medium;
             } else if (totalfloat > yellowLimit) {
-                risk = CONST.RiskCode.Low;
+                risk = CONST.RISK_CODE.Low;
             } else {
-                risk = CONST.RiskCode.New;
+                risk = CONST.RISK_CODE.New;
             }
 
             const link = activityDict.get(float.id);

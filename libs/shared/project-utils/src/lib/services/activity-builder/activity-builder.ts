@@ -1,10 +1,7 @@
-import { Project } from '../../../models/project/project';
-import { Activity } from '../../../models/project/activity/activity';
-import { IntegrationSerializerService } from '../../serializers/project/integration/integration-serializer/integration-serializer.service';
-import { ActivitySerializerService } from '../../serializers/project/activity/activity-serializer.service';
+import { ActivitySerializerService, IntegrationSerializerService } from '@critical-pass/shared/serializers';
 import { Injectable } from '@angular/core';
-import * as CONST from '../../../constants/keys';
-import { Integration } from '../../../models/project/integration/integration';
+import * as CONST from '../../constants';
+import { Activity, Integration, Project } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
@@ -16,11 +13,11 @@ export class ActivityBuilder {
     }
     public addActivity(
         project: Project,
-        activity: Activity = null,
+        // activity: Activity | null= null,
         name: string = '',
         duration: number = 0,
         mode: string = CONST.multiArrowCreationMode,
-        lastSelectedNode: Integration = null,
+        lastSelectedNode: Integration | null = null,
     ) {
         let maxLinkId = 0;
         if (project.activities.length > 0) {
@@ -35,7 +32,7 @@ export class ActivityBuilder {
         }
 
         if (lastSelectedNode && project.integrations.indexOf(lastSelectedNode) !== -1) {
-            return this.addToExistingActivity(lastSelectedNode, newActivityId, maxNodeId + 1, project, activity, name, duration, mode);
+            return this.addToExistingActivity(lastSelectedNode, newActivityId, maxNodeId + 1, project, name, duration, mode);
         }
 
         const sourceId = maxNodeId + 1;
@@ -52,8 +49,8 @@ export class ActivityBuilder {
         const targetX = 120 + 120 * div;
         const targetY = 20 * (rem + 1) + firstOffset;
 
-        const source = this.nodeSerializer.new(sourceId, sourceId + '', null, sourceX, sourceY);
-        const target = this.nodeSerializer.new(targetId, targetId + '', null, targetX, targetY);
+        const source = this.nodeSerializer.new(sourceId, sourceId + '', Infinity, sourceX, sourceY);
+        const target = this.nodeSerializer.new(targetId, targetId + '', Infinity, targetX, targetY);
 
         project.integrations.push(source);
         project.integrations.push(target);
@@ -72,15 +69,15 @@ export class ActivityBuilder {
         newActivityId: number,
         newNodeId: number,
         project: Project,
-        activity: Activity,
+        // activity: Activity,
         name: string,
         duration: number,
         mode: string,
     ) {
-        const targetX = selectedNode.x + 120;
-        const targetY = selectedNode.y;
+        const targetX = (selectedNode.x ?? 0) + 120;
+        const targetY = selectedNode.y ?? 0;
         const newActivity = new ActivitySerializerService().new(newActivityId, name, selectedNode.id, newNodeId, 0, duration);
-        const target = this.nodeSerializer.new(newNodeId, newNodeId + '', null, targetX, targetY);
+        const target = this.nodeSerializer.new(newNodeId, newNodeId + '', Infinity, targetX, targetY);
 
         project.integrations.push(target);
 
@@ -93,8 +90,8 @@ export class ActivityBuilder {
         const children = project.activities.filter(x => x.chartInfo.source === selectedNode);
         const dangling = children.filter(x => project.activities.find(y => y.chartInfo.source === x.chartInfo.target) === undefined);
         const internal = children.filter(x => !dangling.includes(x));
-        const originX = selectedNode.x;
-        const originY = selectedNode.y;
+        const originX = selectedNode.x ?? 0;
+        const originY = selectedNode.y ?? 0;
         let currentAct = 0;
         dangling.forEach((x, i) => {
             currentAct = this.calculatePos(x, project.activities, originX, originY, currentAct);
@@ -104,6 +101,7 @@ export class ActivityBuilder {
     }
 
     private calculatePos(x: Activity, internal: Activity[], originX: number, originY: number, index: number): number {
+        if (x.chartInfo.target) {
         x.chartInfo.target.x = originX + 120;
         const neg = index % 2 === 0 ? -1 : 1;
         const targetY = neg * 30 * Math.ceil(index / 2);
@@ -112,12 +110,13 @@ export class ActivityBuilder {
             y =>
                 !!y.chartInfo.target &&
                 y.profile.id !== x.profile.id &&
-                y.chartInfo.target.y === x.chartInfo.target.y &&
-                y.chartInfo.target.x === x.chartInfo.target.x,
+                y.chartInfo.target.y === x.chartInfo.target?.y &&
+                y.chartInfo.target.x === x.chartInfo.target?.x,
         );
         if (samePos) {
             index = this.calculatePos(x, internal, originX, originY, index + 1);
         }
+    }
         return index;
     }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '../../../models/project/project';
+import { Project } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
@@ -13,12 +13,12 @@ export class IdGeneratorService {
         }
 
         project.activities.forEach(a => {
-            a.profile.id = null;
+            a.profile.id = Infinity;
         });
         const currentId = 0;
         let idIndex = this.setIds(project, project.profile.start, currentId);
         project.activities
-            .filter(x => x.profile.id === null)
+            .filter(x => x.profile.id === Infinity)
             .forEach(a => {
                 idIndex++;
                 a.profile.id = idIndex;

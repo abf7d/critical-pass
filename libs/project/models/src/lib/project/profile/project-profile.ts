@@ -9,8 +9,8 @@ export interface ProjectProfile {
     name: string;
     id: number;
     description: string;
-    start: number;
-    end: number;
+    start: number | undefined;
+    end: number | undefined;
     redLimit: number;
     yellowLimit: number;
     startDate: string;

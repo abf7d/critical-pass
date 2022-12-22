@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '../../../models/project/project';
+import { Integration, Project } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
@@ -15,8 +15,8 @@ export class EndNodesLocatorService {
             return;
         }
         if (proj.activities.length === 1) {
-            proj.profile.start = proj.activities[0].chartInfo.source.id;
-            proj.profile.end = proj.activities[0].chartInfo.target.id;
+            proj.profile.start = proj.activities[0].chartInfo.source?.id;
+            proj.profile.end = proj.activities[0].chartInfo.target?.id;
             return;
         }
         const connected = proj.activities.filter(l => {
@@ -29,21 +29,23 @@ export class EndNodesLocatorService {
             const inEdges = this.getInEdges(l.chartInfo.source_id, proj);
             return inEdges.length === 0;
         });
-        proj.profile.start = connectedStarts[0].chartInfo.source.id;
-        const longestPath = this.calcLongestPath(proj, proj.profile.start, null);
-        if (longestPath != null && longestPath.length > 0) {
-            proj.profile.end = longestPath[longestPath.length - 1].id;
+        proj.profile.start = connectedStarts[0].chartInfo.source?.id;
+        if (proj.profile.start) {
+            const longestPath = this.calcLongestPath(proj, proj.profile.start, null);
+            if (longestPath != null && longestPath.length > 0) {
+                proj.profile.end = longestPath[longestPath.length - 1].id;
+            }
         }
         return proj;
     }
 
-    private getOutEdges(proj: Project, nodeId) {
+    private getOutEdges(proj: Project, nodeId: number) {
         return proj.activities.filter(l => l.chartInfo.source_id === nodeId);
     }
-    private calcLongestPath(proj: Project, start: number, end: number) {
+    private calcLongestPath(proj: Project, start: number, end: number | null) {
         const startNode = proj.integrations.find(n => n.id === start);
         const endNode = proj.integrations.find(n => n.id === end);
-        const path = [];
+        const path: Integration[] = [];
         if (startNode == null) {
             return path;
         }
@@ -52,8 +54,11 @@ export class EndNodesLocatorService {
 
         return [];
     }
-    private walkTree(proj, node, path, endNode) {
+    private walkTree(proj: Project, node: Integration | undefined, path: Integration[], endNode: Integration | undefined) {
         const curPath = path.slice(0);
+        if(node === undefined) {
+            return curPath;
+        }
         curPath.push(node);
         const outEdges = this.getOutEdges(proj, node.id);
         if (node === endNode || outEdges.length === 0) {

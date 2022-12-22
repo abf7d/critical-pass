@@ -1,1 +1,1 @@
-export * from './lib/shared-serializers.module';
+export * from './lib';

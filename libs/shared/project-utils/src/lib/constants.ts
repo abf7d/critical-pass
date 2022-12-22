@@ -1,4 +1,3 @@
-// import { TreeNode } from '../models/assign/tree-node';
 // import * as d3 from 'd3';
 // export const activityDrawnKey = 'arrow.activity.drawn';
 // export const activityTypedKey = 'arrow.activity.typed';
@@ -79,12 +78,3 @@
 // export const nodeColName = 'nodeId';
 // export const subArrowCreationMode = 'sub';
 // export const multiArrowCreationMode = 'multi';
-
-export const MAIN_DATE_FORMAT = 'M/d/yyyy';
-export enum RISK_CODE {
-    New = -1,
-    Low,
-    Medium,
-    High,
-    Critical,
-}

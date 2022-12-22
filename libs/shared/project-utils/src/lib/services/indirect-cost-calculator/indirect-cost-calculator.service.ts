@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { TreeNode } from '../../../models/assign/tree-node';
-import { Activity } from '../../../models/project/activity/activity';
-import { Project } from '../../../models/project/project';
+import { Activity, Project, TreeNode } from '@critical-pass/project/models';
+// import { TreeNode } from '../../../models/assign/tree-node';
+// import { Activity } from '../../../models/project/activity/activity';
+// import { Project } from '../../../models/project/project';
 import { parse } from 'date-fns';
-import * as Keys from '../../../constants/keys';
+// import * as Keys from '../../../constants/keys';
+// import * as CONST from '../../constants';
+import {P_CONST} from '@critical-pass/project/processor'
 
 @Injectable({
     providedIn: 'root',
@@ -11,7 +14,7 @@ import * as Keys from '../../../constants/keys';
 export class IndirectCostCalculatorService {
     constructor() {}
 
-    public calculateIndirectCosts(project: Project): number {
+    public calculateIndirectCosts(project: Project): number | null {
         const isValid = this.validateNodeCost(project);
         if (isValid) {
             return this.calculateResourcesCost(project);
@@ -60,6 +63,8 @@ export class IndirectCostCalculatorService {
         return 0;
     }
 
+    // Commented out because TreeNode should be in Chart and not here? This is for time const chart in AssignResources so we can plot cost...
+    // Maybe it should be here, tree node is apart of planning
     private validateNodesCost(nodes: TreeNode[], project: Project): boolean {
         let isCompleted = true;
         let hasProjDurations = true;
@@ -70,7 +75,7 @@ export class IndirectCostCalculatorService {
 
         return isCompleted;
     }
-    private calculateCostFromSpan(resourceId, timeSpan: number, project: Project): number {
+    private calculateCostFromSpan(resourceId: number, timeSpan: number, project: Project): number {
         const resource = project.resources.find(r => r.id === resourceId);
         if (resource !== undefined) {
             return Math.round(resource.profile.skillMultiplier * timeSpan);
@@ -86,7 +91,7 @@ export class IndirectCostCalculatorService {
 
         return Math.round(span);
     }
-    private getDiscreteActivitiesTimeSpan(resourcesActivities): number {
+    private getDiscreteActivitiesTimeSpan(resourcesActivities: Activity[]): number {
         let totalSpan = 0;
         for (const act of resourcesActivities) {
             totalSpan = totalSpan + this.getActivitySpan(act);
@@ -107,7 +112,7 @@ export class IndirectCostCalculatorService {
         if (!activity) {
             let x = 5;
         }
-        const pcdIsValid = parse(activity.profile.planned_completion_date, Keys.mainDateFormat, new Date()); //isValid(activity.profile.planned_completion_date); //moment(activity.profile.planned_completion_date, 'M/D/YYYY');
+        const pcdIsValid = parse(activity.profile.planned_completion_date ?? '', P_CONST.MAIN_DATE_FORMAT, new Date()); //isValid(activity.profile.planned_completion_date); //moment(activity.profile.planned_completion_date, 'M/D/YYYY');
 
         if (!isNaN(pcdIsValid.getTime())) {
             activity.profile.planned_completion_date_dt = pcdIsValid; //pcd.toDate();
