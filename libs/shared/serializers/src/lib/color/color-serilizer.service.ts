@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ColorView } from '../../../../models/project/resource/resource';
-import { Serializer } from '../../serializer';
+import { ColorView } from '@critical-pass/project/models';
+import { Serializer } from '../serializer';
 
 @Injectable({
     providedIn: 'root',

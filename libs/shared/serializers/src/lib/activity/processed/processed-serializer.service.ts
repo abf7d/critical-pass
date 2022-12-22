@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Processed } from '../../../../../models/project/activity/processed';
-import { Serializer } from '../../../serializer';
+import { Processed } from '@critical-pass/project/models';
+import { Serializer } from '../../serializer';
 
 @Injectable({
     providedIn: 'root',

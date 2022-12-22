@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SubProject } from '../../../../../models/project/profile/subproject';
-import { Serializer } from '../../../serializer';
+import { SubProject } from '@critical-pass/project/models';
+import { Serializer } from '../../serializer';
 
 @Injectable({
     providedIn: 'root',

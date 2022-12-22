@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { View } from '../../../../../models/project/profile/view';
-import { Serializer } from '../../../serializer';
+import { View } from '@critical-pass/project/models';
+import { Serializer } from '../../serializer';
 
 @Injectable({
     providedIn: 'root',
@@ -16,8 +16,8 @@ export class ProjectViewSerializerService implements Serializer<View> {
             createAsDummy: json.createAsDummy ?? false,
             drawActivityCurves: json.drawActivityCurves ?? false,
             markCompleted: json.markCompleted ?? false,
-            selectedActivity: null,
-            selectedIntegration: null,
+            selectedActivity: undefined,
+            selectedIntegration: undefined,
             showActions: json.showActions ?? true,
             showOrphaned: json.showOrphaned ?? false,
             showStepChart: json.showStepChart ?? false,
@@ -30,9 +30,9 @@ export class ProjectViewSerializerService implements Serializer<View> {
             lassoedLinks: [],
             lassoedNodes: [],
             isSubProjSelected: false,
-            lassoStart: null,
-            lassoEnd: null,
-            selectedTagGroup: null,
+            lassoStart: undefined,
+            lassoEnd: undefined,
+            selectedTagGroup: undefined,
         };
         return obj;
     }

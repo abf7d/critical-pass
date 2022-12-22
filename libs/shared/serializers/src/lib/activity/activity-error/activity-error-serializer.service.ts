@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Errors } from '../../../../../models/project/activity/errors';
-import { Serializer } from '../../../serializer';
+import { Errors } from '@critical-pass/project/models';
+import { Serializer } from '../../serializer';
 
 @Injectable({
     providedIn: 'root',

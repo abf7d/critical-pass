@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Chart } from '../../../../../models/project/activity/chart';
-import { Serializer } from '../../../serializer';
+import { Chart } from '@critical-pass/project/models';
+import { Serializer } from '../../serializer';
 
 @Injectable({
     providedIn: 'root',
@@ -11,8 +11,8 @@ export class ChartSerializerService implements Serializer<Chart> {
         const obj: Chart = {
             source_id: json.source_id ?? null,
             target_id: json.target_id ?? null,
-            source: null,
-            target: null,
+            source: undefined,
+            target: undefined,
             tf: json.tf ?? json.TF ?? null, // delete this
             ff: json.ff ?? json.FF ?? null, // delete this
             risk: json.risk ?? 0,

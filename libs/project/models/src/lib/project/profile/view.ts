@@ -10,15 +10,15 @@ export interface View {
     createAsDummy: boolean; // When drawing arrows this sets if they are created as dummies
     drawActivityCurves: boolean;
     markCompleted: boolean; // For toggling the activities with Finish dates dim
-    selectedActivity: Activity; // Allow changing selected activity on arrow diagram view
-    selectedIntegration: Integration;
+    selectedActivity?: Activity; // Allow changing selected activity on arrow diagram view
+    selectedIntegration?: Integration;
     lassoOn: boolean;
     lassoedLinks: number[];
     lassoedNodes: number[];
     isSubProjSelected: boolean;
-    lassoStart: number;
-    lassoEnd: number;
-    selectedTagGroup: string;
+    lassoStart?: number;
+    lassoEnd?: number;
+    selectedTagGroup?: string;
     showActions: boolean; // For toggling right hand corner between seleted arrow stats and other actions
     showOrphaned: boolean; // For showing nodes that have no in arrows or out arrows. Start or end nodes.
     showStepChart: boolean;

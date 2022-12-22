@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Risk } from '../../../../../models/project/activity/risk';
-import { Serializer } from '../../../serializer';
+import { ActivityRisk } from '@critical-pass/project/models';
+import { Serializer } from '../../serializer';
 
 @Injectable({
     providedIn: 'root',
 })
-export class RiskSerializerService implements Serializer<Risk> {
-    fromJson(json: any): Risk {
+export class RiskSerializerService implements Serializer<ActivityRisk> {
+    fromJson(json: any): ActivityRisk {
         json = json || {};
-        const obj: Risk = {
+        const obj: ActivityRisk = {
             criticalWeight: json.criticalWeight ?? 4,
             redWeight: json.redWeight ?? 3,
             yellowWeight: json.yellowWeight ?? 2,
@@ -22,5 +22,5 @@ export class RiskSerializerService implements Serializer<Risk> {
         };
         return obj;
     }
-    toJson(obj: Risk): any {}
+    toJson(obj: ActivityRisk): any {}
 }

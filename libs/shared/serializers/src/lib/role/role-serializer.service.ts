@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Role, RoleView, RoleSummary } from '../../../../models/project/role/role';
-import { Serializer } from '../../serializer';
+import { Role, RoleSummary, RoleView } from '@critical-pass/project/models';
+import { Serializer } from '../serializer';
 
 @Injectable({
     providedIn: 'root',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { StaffingInfo } from '../../../../../models/project/profile/staffinginfo';
-import { Serializer } from '../../../serializer';
+import { StaffingInfo } from '@critical-pass/project/models';
+import { Serializer } from '../../serializer';
 
 @Injectable({
     providedIn: 'root',

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Resource, ResourceAssign, ResourceView, ResourceProfile, ResourceSummary, ColorView } from '../../../../../models/project/resource/resource';
+import { Resource, ResourceAssign, ResourceView, ResourceProfile, ResourceSummary, ColorView } from '@critical-pass/project/models';
 import { RoleSummarySerializerService } from '../../role/role-serializer.service';
 import { PhaseSummarySerializerService } from '../../phase/phase-serializer/phase-serializer.service';
-import { Serializer } from '../../../serializer';
+import { Serializer } from '../../serializer';
 import { ColorViewSerializerService } from '../../color/color-serilizer.service';
 
 @Injectable({

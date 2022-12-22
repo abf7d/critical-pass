@@ -9,7 +9,7 @@ export interface Integration {
     isDummy: boolean;
     isMilestone: boolean;
     milestoneActivityId: number;
-    milestoneActivity: Activity;
+    milestoneActivity: Activity | null;
     milestoneNumber: number;
     milestoneName: string;
     type: string;

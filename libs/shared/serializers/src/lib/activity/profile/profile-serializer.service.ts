@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Profile } from '../../../../../models/project/activity/profile';
-import { Serializer } from '../../../serializer';
+import { ActivityProfile } from '@critical-pass/project/models';
+import { Serializer } from '../../serializer';
 
 @Injectable({
     providedIn: 'root',
 })
-export class ActivityProfileSerializerService implements Serializer<Profile> {
-    fromJson(json?: any): Profile {
+export class ActivityProfileSerializerService implements Serializer<ActivityProfile> {
+    fromJson(json?: any): ActivityProfile {
         json = json || {};
-        const obj: Profile = {
+        const obj: ActivityProfile = {
             id: json?.id ?? null,
             sortOrder: json?.sortOrder ?? null,
             name: json?.name ?? '',
@@ -26,5 +26,5 @@ export class ActivityProfileSerializerService implements Serializer<Profile> {
         };
         return obj;
     }
-    toJson(obj: Profile): any {}
+    toJson(obj: ActivityProfile): any {}
 }

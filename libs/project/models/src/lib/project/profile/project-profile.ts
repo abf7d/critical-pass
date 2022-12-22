@@ -1,6 +1,6 @@
 import { View } from './view';
 import { StaffingInfo } from './staffinginfo';
-import { Risk } from './risk';
+import { ProjectRisk } from './project-risk';
 import { SubProject } from './subproject';
 import { Permissions } from './permissions';
 import { Project } from '../project';
@@ -20,7 +20,7 @@ export interface ProjectProfile {
 
     view: View;
     staffing: StaffingInfo;
-    risk: Risk;
+    risk: ProjectRisk;
     subProject: SubProject;
     permissions: Permissions;
     parentProject: Project | null;
