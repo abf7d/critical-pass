@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Project } from '@critical-pass/project/models';
 import * as d3dag from 'd3-dag';
 import { tr } from 'date-fns/locale';
-import { Activity } from '../../../models/project/activity/activity';
-import { Integration } from '../../../models/project/integration/integration';
-import { Project } from '../../../models/project/project';
 
 @Injectable({
     providedIn: 'root',
@@ -16,19 +14,19 @@ export class NodeArrangerService {
 
     constructor() {}
 
-    public setXYLocations(node, project: Project, offset: number, scaleFactor: number) {
+    public setXYLocations(node: any, project: Project, offset: number, scaleFactor: number) {
         const inode = project.integrations.find(i => i.id === +node.id);
         if (inode) {
             inode.x = node.y * (offset + project.activities.length * scaleFactor);
             inode.y = node.x * (offset + project.activities.length * scaleFactor);
         }
-        node.children.forEach(c => {
+        node.children.forEach((c: any) => {
             this.setXYLocations(c, project, offset, scaleFactor);
         });
     }
 
     public arrangeNodes(project: Project): void {
-        const dagNodes = [];
+        const dagNodes: any[] = [];
 
         project.integrations.forEach(i => {
             const incomming = project.activities.filter(a => a.chartInfo.target_id === i.id).map(a => a.chartInfo.source_id);

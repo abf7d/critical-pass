@@ -1,6 +1,6 @@
 import { ActivitySerializerService, IntegrationSerializerService } from '@critical-pass/shared/serializers';
 import { Injectable } from '@angular/core';
-import * as CONST from '../../constants';
+import { P_CONST} from '@critical-pass/project/processor';
 import { Activity, Integration, Project } from '@critical-pass/project/models';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class ActivityBuilder {
         // activity: Activity | null= null,
         name: string = '',
         duration: number = 0,
-        mode: string = CONST.multiArrowCreationMode,
+        mode: string = P_CONST.MULTI_ARROW_CREATION_MODE,
         lastSelectedNode: Integration | null = null,
     ) {
         let maxLinkId = 0;

@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Integration } from '../../../models/project/integration/integration';
-import { Project } from '../../../models/project/project';
-import { Activity } from '../../../models/project/activity/activity';
-import { ActivitySerializerService } from '../../serializers/project/activity/activity-serializer.service';
+import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { ActivitySerializerService } from '@critical-pass/shared/serializers';
 import { DependencyCrawlerService } from '../dependency-crawler/dependency-crawler.service';
 
 @Injectable({
@@ -12,7 +10,7 @@ export class MilestoneFactoryService {
     constructor(private depCrawler: DependencyCrawlerService) {}
 
     private createMilestoneActivity(node: Integration, project: Project): Activity {
-        let maxId = null;
+        let maxId: number = -Infinity;
         project.activities.forEach(a => {
             if (a.profile.id > maxId) {
                 maxId = a.profile.id;
@@ -21,27 +19,27 @@ export class MilestoneFactoryService {
         let id = -1;
         if (isNaN(maxId)) {
             id = 0;
-        } else {
-            id = maxId + 1;
-
-            const activity = new ActivitySerializerService().new(id, id.toString(), null, null, 0, 0);
-            activity.chartInfo.isDummy = true;
-            activity.chartInfo.milestoneNodeId = node.id;
-            activity.subProject.subGraphId = -1;
-
-            const milestoneNum = project.integrations.filter(m => m.isMilestone).length;
-            node.milestoneNumber = milestoneNum;
-            node.milestoneName = 'M' + milestoneNum;
-            activity.profile.name = node.milestoneName;
-
-            project.activities.push(activity);
-            node.milestoneActivityId = activity.profile.id;
-            node.milestoneActivity = activity;
-
-            const deps = this.depCrawler.getActivityDependencies(project, activity);
-            activity.profile.depends_on = deps.join();
-            return activity;
         }
+        id = maxId + 1;
+
+        // TODO: inject serializer
+        const activity = new ActivitySerializerService().new(id, id.toString(), null, null, 0, 0);
+        activity.chartInfo.isDummy = true;
+        activity.chartInfo.milestoneNodeId = node.id;
+        activity.subProject.subGraphId = -1;
+
+        const milestoneNum = project.integrations.filter(m => m.isMilestone).length;
+        node.milestoneNumber = milestoneNum;
+        node.milestoneName = 'M' + milestoneNum;
+        activity.profile.name = node.milestoneName;
+
+        project.activities.push(activity);
+        node.milestoneActivityId = activity.profile.id;
+        node.milestoneActivity = activity;
+
+        const deps = this.depCrawler.getActivityDependencies(project, activity);
+        activity.profile.depends_on = deps.join();
+        return activity;
     }
 
     public createMilestone(proj: Project, selectedNode: Integration): void {
@@ -88,7 +86,7 @@ export class MilestoneFactoryService {
         const owned = project.integrations.findIndex(x => x.id === node.id);
         project.integrations.splice(owned, 1);
         const toSplice = project.activities.filter(l => {
-            if (l.chartInfo.source === null || l.chartInfo.target === null) {
+            if (l.chartInfo.source === undefined || l.chartInfo.target === undefined) {
                 return false;
             }
             return l.chartInfo.source.id === node.id || l.chartInfo.target.id === node.id;
@@ -103,10 +101,12 @@ export class MilestoneFactoryService {
         const actOwned = project.activities.findIndex(a => a.profile.id === activity.profile.id);
         project.activities.splice(actOwned, 1);
         const owned = project.integrations.find(x => x.id === activity.chartInfo.milestoneNodeId);
-        owned.milestoneName = '';
-        owned.milestoneNumber = 0;
-        owned.milestoneActivity = null;
-        owned.milestoneActivityId = null;
-        owned.isMilestone = false;
+        if (owned) {
+            owned.milestoneName = '';
+            owned.milestoneNumber = 0;
+            owned.milestoneActivity = null;
+            owned.milestoneActivityId = null;
+            owned.isMilestone = false;
+        }
     }
 }

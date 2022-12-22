@@ -108,9 +108,9 @@ export class IndirectCostCalculatorService {
 
     // TODO: planned completion date is null here because the project coming from the backend doesn't have pcd on it. Need to transfer
     // pcd from the nodeProject to the new calculated one and make sure the values are not null. Step through the backend
-    private getPlannedStart(activity: Activity) {
-        if (!activity) {
-            let x = 5;
+    private getPlannedStart(activity: Activity): number {
+        if (!activity || activity.profile.duration === undefined || activity.profile.planned_completion_date_dt === null) {
+            return 0;
         }
         const pcdIsValid = parse(activity.profile.planned_completion_date ?? '', P_CONST.MAIN_DATE_FORMAT, new Date()); //isValid(activity.profile.planned_completion_date); //moment(activity.profile.planned_completion_date, 'M/D/YYYY');
 
@@ -123,8 +123,11 @@ export class IndirectCostCalculatorService {
         return start;
     }
 
-    private getActivityPlannedEndMs(activity: Activity) {
-        const pcdIsValid = parse(activity.profile.planned_completion_date, Keys.mainDateFormat, new Date()); //isValid(activity.profile.planned_completion_date);
+    private getActivityPlannedEndMs(activity: Activity): number {
+        if(!activity.profile.planned_completion_date || activity.profile.duration === undefined || activity.profile.planned_completion_date_dt === null) {
+            return 0;
+        }
+        const pcdIsValid = parse(activity.profile.planned_completion_date, P_CONST.MAIN_DATE_FORMAT, new Date()); //isValid(activity.profile.planned_completion_date);
 
         if (!isNaN(pcdIsValid.getTime())) {
             activity.profile.planned_completion_date_dt = pcdIsValid; //pcd.toDate();
@@ -133,8 +136,11 @@ export class IndirectCostCalculatorService {
         return activity.profile.planned_completion_date_dt.getTime() + durationMs;
     }
 
-    private getPlannedStartDate(activity: Activity) {
-        const pcdIsValid = parse(activity.profile.planned_completion_date, Keys.mainDateFormat, new Date()); //isValid(activity.profile.planned_completion_date);
+    private getPlannedStartDate(activity: Activity): Date | null{
+        if (activity.profile.duration === undefined || activity.profile.planned_completion_date === undefined || activity.profile.planned_completion_date_dt === null){
+            return null;
+        }
+        const pcdIsValid = parse(activity.profile.planned_completion_date, P_CONST.MAIN_DATE_FORMAT, new Date()); //isValid(activity.profile.planned_completion_date);
 
         if (!isNaN(pcdIsValid.getTime())) {
             activity.profile.planned_completion_date_dt = pcdIsValid; //pcd.toDate();

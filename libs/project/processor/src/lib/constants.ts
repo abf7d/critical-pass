@@ -78,7 +78,7 @@
 // export const parentNodeColName = 'parentNodeId';
 // export const nodeColName = 'nodeId';
 // export const subArrowCreationMode = 'sub';
-// export const multiArrowCreationMode = 'multi';
+export const MULTI_ARROW_CREATION_MODE = 'multi';
 
 export const MAIN_DATE_FORMAT = 'M/d/yyyy';
 export enum RISK_CODE {

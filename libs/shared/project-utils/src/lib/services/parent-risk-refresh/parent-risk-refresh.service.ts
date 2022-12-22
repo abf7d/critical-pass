@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '../../../models/project/project';
+import { Project } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
@@ -26,7 +26,7 @@ export class ParentRiskRefreshService {
             // project needs to be updated before the lft reflects accurately
             const endId = project.profile.end;
             const endnode = project.integrations.find(n => n.id === endId);
-            return endnode.lft;
+            return endnode?.lft;
         }
         return 0;
     }

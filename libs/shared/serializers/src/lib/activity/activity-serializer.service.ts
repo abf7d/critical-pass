@@ -26,12 +26,12 @@ export class ActivitySerializerService implements Serializer<Activity> {
         };
         return obj;
     }
-    new(id: number, name: string, sourceId: number, targetId: number, risk: number, duration: number): Activity {
+    new(id: number, name: string, sourceId: number | null, targetId: number | null, risk: number, duration: number): Activity {
         const activity = this.fromJson();
         activity.profile.id = id;
         activity.profile.name = name;
-        activity.chartInfo.source_id = sourceId;
-        activity.chartInfo.target_id = targetId;
+        activity.chartInfo.source_id = sourceId ?? Infinity; // Infinity is a placeholder for milestone... milestone has no traget or source
+        activity.chartInfo.target_id = targetId  ?? Infinity; // Infinity is a placeholder for milestone... milestone has no traget or source
         activity.chartInfo.risk - risk;
         activity.profile.duration = duration;
         activity.assign.phases = [];
