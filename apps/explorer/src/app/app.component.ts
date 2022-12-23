@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Project } from '@critical-pass/project/models';
 import { ProjectApiService } from '@critical-pass/shared/data-access';
 
 @Component({
@@ -8,5 +9,8 @@ import { ProjectApiService } from '@critical-pass/shared/data-access';
 })
 export class AppComponent {
     title = 'explorer';
-    constructor(projectApi: ProjectApiService) {}
+    project!: Project;
+    constructor(private projectApi: ProjectApiService) {
+        this.projectApi.get(-1);
+    }
 }

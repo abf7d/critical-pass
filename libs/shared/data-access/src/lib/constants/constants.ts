@@ -5,4 +5,3 @@ export const LOCAL_STORAGE = 'localStorage';
 export const SESSION_STORAGE = 'sessionStorage';
 export const PROJECT_ENDPOINT: string = 'project';
 export const LIBRARY_ENDPOINT: string = 'project/library';
-

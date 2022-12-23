@@ -9,10 +9,9 @@ export const environment = {
     redirectUri: 'https://criticalpass.azurewebsites.net/welcome',
     cacheLocation: 'sessionStorage',
     loginScopes: ['openid', 'offline_access'],
-    exposedApiScope:'https://criticalplayground.onmicrosoft.com/api/read',
+    exposedApiScope: 'https://criticalplayground.onmicrosoft.com/api/read',
     postLogoutUrl: 'https://criticalpass.azurewebsites.net/home/',
-    clientID: '7515b8bc-44ba-4f60-9740-62b9ac197bf3', 
+    clientID: '7515b8bc-44ba-4f60-9740-62b9ac197bf3',
     payPalClientId: 'AUyE2UNCsa6sgAKS3Ccj4WUzXw-PisRoJL2zn9pzxbN5sje0xalPOx9ioUCug9sK6HQF9Vybu2Bh_4LB',
-    criticalPathApi: 'https://criticalpathapifunctions.azurewebsites.net/api/' 
-
+    criticalPathApi: 'https://criticalpathapifunctions.azurewebsites.net/api/',
 };
