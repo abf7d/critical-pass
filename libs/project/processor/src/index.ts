@@ -1,2 +1,2 @@
-export * from './lib/project-processor.module';
+export * from './lib';
 export * as P_CONST from './lib/constants';

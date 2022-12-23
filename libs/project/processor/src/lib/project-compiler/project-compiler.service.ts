@@ -36,7 +36,7 @@ export class ProjectCompilerService {
         // private activitySorter: ActivitySorterService,
         private activityValidator: ActivityValidatorService,
     ) {}
-    public processProject(project: Project): void {
+    public compile(project: Project): void {
         this.nodeConstructor.connectArrowsToNodes(project);
         this.riskCompiler.compileRiskProperties(project);
         this.completionCalc.calculateCompleted(project);
