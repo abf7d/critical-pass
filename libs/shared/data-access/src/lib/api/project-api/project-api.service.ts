@@ -1,10 +1,25 @@
 import { Injectable } from '@angular/core';
+import { environment } from '@critical-pass/shared/environments';
+import { map, Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import urlJoin from 'url-join';
+import { Project } from '@critical-pass/project/models';
+import * as CONST from '../../constants/constants';
+import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ProjectApiService {
-    constructor() {}
+    private baseUrl!: string;
+    constructor(private httpClient: HttpClient, private serializer: ProjectSerializerService) {
+        console.log('criticalPathApi', environment.criticalPathApi);
+        this.baseUrl = environment.criticalPathApi;
+    }
+
+    public get(id: number): Observable<Project> {
+        return this.httpClient.get(urlJoin(this.baseUrl, CONST.PROJECT_ENDPOINT, id.toString())).pipe(map((data: any) => this.serializer.fromJson(data)));
+    }
 }
 
 // import { Inject, Injectable } from '@angular/core';

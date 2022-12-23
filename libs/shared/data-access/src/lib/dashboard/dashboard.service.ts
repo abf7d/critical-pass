@@ -36,3 +36,41 @@ export class DashboardService {
         this._activeProject.next(project);
     }
 }
+/*
+ private history = {
+    past: [] as State[],
+    future: [] as State[],
+        node.settings = p.settings;
+      }
+    });
+    this.emit();
+  }
+
+  private emit() {
+    // very simple implementation of state diff check
+    // TODO: implement a more sophisticated state diff check
+    const oldState = this.state$$.getValue();
+    if (JSON.stringify(oldState) !== JSON.stringify(this.inState)) {
+      this.state$$.next(this.inState);
+      this.history.past.push(oldState);
+      this.history.future = [];
+    }
+  }
+    public undo() {
+    const oldState = this.history.past.pop();
+    if (oldState) {
+      this.inState = oldState;
+      this.state$$.next(this.inState);
+      this.history.future.push(this.state$$.getValue());
+    }
+  }
+
+  public redo() {
+    const newState = this.history.future.pop();
+    if (newState) {
+      this.inState = newState;
+      this.state$$.next(this.inState);
+      this.history.past.push(this.state$$.getValue());
+    }
+  }
+  */
