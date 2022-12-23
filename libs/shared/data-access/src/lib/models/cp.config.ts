@@ -12,8 +12,8 @@ export interface CpConfig {
     loginScopes: string[];
     exposedApiScope: string;
     postLogoutUrl: string;
-    clientID: string; 
+    clientID: string;
     payPalClientId: string;
-    criticalPathApi:string;
+    criticalPathApi: string;
     webApi: string;
-};
+}

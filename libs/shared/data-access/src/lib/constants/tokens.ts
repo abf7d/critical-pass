@@ -1,4 +1,4 @@
-import { InjectionToken } from "@angular/core";
+import { InjectionToken } from '@angular/core';
 
 export const CP_CONFIG = new InjectionToken<string>('CpConfig');
 // const injector =

@@ -5,14 +5,12 @@ import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
 import { environment } from '../environments/environment';
 
-import {CP_CONFIG} from '@critical-pass/shared/data-access';
+import { CP_CONFIG } from '@critical-pass/shared/data-access';
 
 @NgModule({
     declarations: [AppComponent, NxWelcomeComponent],
     imports: [BrowserModule],
-    providers: [
-        {provide: CP_CONFIG, useValue: environment}
-    ],
+    providers: [{ provide: CP_CONFIG, useValue: environment }],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
