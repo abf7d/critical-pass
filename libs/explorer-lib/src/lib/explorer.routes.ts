@@ -1,7 +1,7 @@
 // import { HomeComponent } from './home.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent} from '@critical-pass/features/landing';
+import { HomeComponent } from '@critical-pass/features/landing';
 import { WelcomeComponent } from '@critical-pass/features/landing';
 
 const routes: Routes = [
@@ -12,8 +12,8 @@ const routes: Routes = [
     },
     {
         path: 'welcome',
-        component: WelcomeComponent
-    }
+        component: WelcomeComponent,
+    },
 ];
 
 @NgModule({

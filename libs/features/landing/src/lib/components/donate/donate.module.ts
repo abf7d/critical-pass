@@ -6,14 +6,8 @@ import { DonateComponent } from './donate.component';
 import { SharedModule } from '../../shared/shared.module';
 import { NgxPayPalModule } from 'ngx-paypal';
 
-
 @NgModule({
-  declarations: [DonateComponent],
-  imports: [
-    CommonModule,
-    SharedModule,
-    DonateRoutingModule,
-    NgxPayPalModule,
-  ]
+    declarations: [DonateComponent],
+    imports: [CommonModule, SharedModule, DonateRoutingModule, NgxPayPalModule],
 })
-export class DonateModule { }
+export class DonateModule {}

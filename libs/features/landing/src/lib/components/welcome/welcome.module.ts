@@ -8,12 +8,10 @@ import { RouterModule } from '@angular/router';
 import { WelcomeComponent } from './welcome.component';
 // import { MsalConfigFactoryService } from '../../core/services/auth/msal-config-factory/msal-config-factory.service';
 
-
-
 @NgModule({
-  declarations: [WelcomeComponent],
- 
-  imports: [CommonModule, /*WelcomeRoutingModule,*/ RouterModule],
+    declarations: [WelcomeComponent],
+
+    imports: [CommonModule, /*WelcomeRoutingModule,*/ RouterModule],
     // providers: [AuthService, AccountDataService, AuthStoreService, MsalConfigFactoryService],
 })
-export class WelcomeModule { }
+export class WelcomeModule {}

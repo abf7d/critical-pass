@@ -58,9 +58,6 @@
 
 // export const APP_CONFIG = 'project.design.config';
 
-
-
-
 export const LIBRARY_ROUTE = 'library/(grid/0//sidebar:libar/0)';
 export const COOKIES_BLOCKED_ID: string = 'MM:3PCunsupported';
 export const COOKIES_AVAIL_ID: string = 'MM:3PCsupported';
