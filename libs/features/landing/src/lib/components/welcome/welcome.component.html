@@ -1,0 +1,48 @@
+<ng-container *ngIf="!showLoading; else loadingMsg">
+    <div class="cookie-banner">
+        <i class="fa fa-info-circle fa-2x"></i>
+        Having problems logging in? To use this site you must explicitly enable third party cookies. Please check for browser specific settings.
+    </div>
+    <div class="background-container">
+        <div class="content">
+            <div class="title">
+                <img width="100" class="cpimage" src="assets/img/cp3.png" />
+                <h1 class="app-name">Critical Pass</h1>
+                <p>design • calculate • manage</p>
+            </div>
+            <div class="loading" [hidden]="!loading">
+                <div class="loader-txt">Loading...</div>
+                <div class="loader"></div>
+            </div>
+            <div class="cookie-problems" [hidden]="!thirdPartyCookiesBlocked">
+                Your browser is blocking third party cookies. Please see your browser settings to allow and enable login.
+            </div>
+            <div class="cookie-problems" [hidden]="!loginError" >
+                We encountered difficulties logging on.
+                <div class="contact">Contact <span class="address"> info@criticalpath.design </span> for assistance</div>
+                <button class="logout-btn" (click)="logout()">Logout</button>
+            </div>
+            <div class="not-authorized" [hidden]="isAuthorized || loginError">
+                <h4 class="alert-text">Not Authorized</h4>
+                <div class="contact">Contact <span class="address"> info@criticalpath.design </span> to request access</div>
+                <button class="logout-btn" (click)="logout()">Logout</button>
+            </div>
+            <div class="logged-in" [hidden]="loading || isAuthorized === false">
+                <h4 class="alert-text">{{ name }}</h4>
+                <button class="lib-btn" [ngClass]="{ disabled: !isAuthorized }" (click)="loadLibrary()">View Library</button>
+                <button class="logout-btn" (click)="logout()">Logout</button>
+            </div>
+            <div class="donate">
+                <a class="donate-btn" [routerLink]="['/donate']">Donate</a> 
+            </div>
+        </div>
+        <span id="result">
+            <iframe src="https://mindmup.github.io/3rdpartycookiecheck/start.html" style="display: none"></iframe>
+        </span>
+    </div>
+</ng-container>
+<ng-template #loadingMsg>
+    <div class="loading-container">
+        <div class="loading-msg">Loading...</div>
+    </div>
+</ng-template>

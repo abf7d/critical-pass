@@ -1,0 +1,31 @@
+<div class="cookie-banner">
+    <i class="fa fa-info-circle fa-2x"></i>
+    Having problems logging in? To use this site you must explicitly enable third party cookies. Please check for browser specific settings.
+</div>
+<div class="background-container">
+    <div class="content">
+        <div class="title">
+            <img width="100" class="cpimage" src="assets/img/cp3.png" />
+            <h1 class="app-name">Critical Pass</h1>
+            <p>design • calculate • manage</p>
+        </div>
+        <div class="signin-up" [hidden]="isLoggedIn || thirdPartyCookiesBlocked">
+            <button class="login-btn" (click)="login()">Sign in / Sign up</button>
+        </div>
+        <div class="cookie-problems" [hidden]="!thirdPartyCookiesBlocked">
+            Your browser is blocking third party cookies. Please see your browser settings to allow and enable login.
+        </div>
+        <div class="cookie-problems" [hidden]="online$ | async">You are offline. Check your connection.</div>
+        <div class="logged-in" [hidden]="!isLoggedIn">
+            <h4 class="alert-text">{{ name }}</h4>
+            <button class="lib-btn" [routerLink]="['/welcome']">Get Started</button>
+            <button class="logout-btn" (click)="logout()">Logout</button>
+        </div>
+        <div class="donate">
+            <a class="donate-btn" [routerLink]="['/donate']">Donate</a>
+        </div>
+    </div>
+    <span id="result">
+        <iframe src="https://mindmup.github.io/3rdpartycookiecheck/start.html" style="display: none"></iframe>
+    </span>
+</div>

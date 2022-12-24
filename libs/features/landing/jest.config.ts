@@ -1,7 +1,7 @@
 /* eslint-disable */
 export default {
-    displayName: 'app-core',
-    preset: '../../jest.preset.js',
+    displayName: 'features-landing',
+    preset: '../../../jest.preset.js',
     setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
     globals: {
         'ts-jest': {
@@ -9,7 +9,7 @@ export default {
             stringifyContentPathRegex: '\\.(html|svg)$',
         },
     },
-    coverageDirectory: '../../coverage/libs/app-core',
+    coverageDirectory: '../../../coverage/libs/features/landing',
     transform: {
         '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
     },

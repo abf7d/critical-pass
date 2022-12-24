@@ -1,0 +1,30 @@
+.paypal {
+    top: 43%;
+    left: 50%;
+    height: 310px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    .amount {
+      padding-top: 40px;
+      padding-bottom: 20px;
+      input {width: 137px;     margin-left: 5px;}
+    }
+  }
+  .returnlinks {
+    top: 17%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    .description {
+      font-size: 16px;
+      padding-top: 13px;
+    }
+  }
+  .msgs {
+    width: 200px;
+    text-align: center;
+  }
+  .cancel-p  {color: blue;}
+  .error-p { color: red;}
+  .success { color: green}
+  

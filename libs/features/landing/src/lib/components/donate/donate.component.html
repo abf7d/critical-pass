@@ -1,0 +1,18 @@
+<div class="returnlinks">
+    <div class="description">
+        Thank you for clicking on the Donate button. Your contribution helps fund the development and maintenance of this application, including covering the
+        cost of servers. Any amount that you can contribute will be put directly back into the application. Any help is appreciated. Thank you for supporting
+        Crtical Pass.
+    </div>
+</div>
+<div class="paypal" [hidden]="!showSuccess">
+    <div class="success">The transaction was successful. Thank you for donating!</div>
+</div>
+<div class="paypal" [hidden]="showSuccess">
+    <div class="amount"><span>Amount: $</span> <input type="number" [(ngModel)]="dollarAmount" (change)="setDollarAmount($event)" /></div>
+    <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+    <div class="msgs">
+        <div class="error-p" [hidden]="!showError">We encountered a problem. Please try again.</div>
+        <div class="cancel-p" [hidden]="!showCancel">Your transaction has been canceled.</div>
+    </div>
+</div>
