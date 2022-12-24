@@ -16,7 +16,9 @@
         "baseUrl": ".",
         "paths": {
             "@critical-pass/app-core": ["libs/app-core/src/index.ts"],
+            "@critical-pass/auth": ["libs/auth/src/index.ts"],
             "@critical-pass/charts": ["libs/charts/src/index.ts"],
+            "@critical-pass/core": ["libs/core/src/index.ts"],
             "@critical-pass/features/history": ["libs/features/history/src/index.ts"],
             "@critical-pass/features/network": ["libs/features/network/src/index.ts"],
             "@critical-pass/features/profile": ["libs/features/profile/src/index.ts"],

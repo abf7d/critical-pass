@@ -39,7 +39,7 @@
                             "replace": "libs/shared/environments/src/lib/environment.ts",
                             "with": "libs/shared/environments/src/lib/environment.prod.ts"
                         }
-                      ]
+                    ]
                 },
                 "development": {
                     "buildOptimizer": false,
