@@ -12,7 +12,7 @@ export class AppComponent {
     project!: Project;
     constructor(private projectApi: ProjectApiService) {
         this.projectApi.get(720).subscribe(project => {
-            console.log(project)
-        })
+            console.log(project);
+        });
     }
 }
