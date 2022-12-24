@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import * as Keys from '../constants/keys'
+import * as Keys from '../constants/keys';
 import { PdConfig } from '../models/pd-app.config';
-import { ClaimsApiService } from '@critical-pass/shared/data-access'
+import { ClaimsApiService } from '@critical-pass/shared/data-access';
 
 declare let require: any;
 const urljoin = require('url-join');
@@ -23,14 +23,15 @@ export class /*AccountDataService*/ ClaimsService {
     // }
 
     public initializeClaims(): Promise<any> {
-        return this.claimsApi.getClaims()
+        return this.claimsApi
+            .getClaims()
             .toPromise()
             .then(token => {
                 const auth_token = this.jwtHelper.decodeToken(token.Result.Token);
                 const expDate = this.jwtHelper.getTokenExpirationDate(token.Result.Token);
                 const tokenString = JSON.stringify({
                     username: auth_token.sub,
-                    token: {auth_token: token.Result.Token},
+                    token: { auth_token: token.Result.Token },
                 });
                 sessionStorage.setItem(Keys.claimsTokenCacheKey, tokenString);
                 const isAuthorized = this.isAuthorized();
@@ -42,7 +43,6 @@ export class /*AccountDataService*/ ClaimsService {
         sessionStorage.removeItem(Keys.claimsTokenCacheKey);
     }
 
-  
     public hasClaims(): boolean {
         return !!sessionStorage.getItem(Keys.claimsTokenCacheKey);
     }

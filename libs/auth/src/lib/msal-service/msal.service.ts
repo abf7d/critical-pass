@@ -11,14 +11,18 @@ import { PdConfig } from '../../models/pd-app.config';
     providedIn: 'root',
 })
 export class /*AuthService*/ MsalService {
-
     private loginRequest: Msal.RedirectRequest;
     private accessTokenRequest: Msal.SilentRequest;
     private logoutRequest: Msal.EndSessionRequest;
     public isLoggedIn$: BehaviorSubject<boolean>;
     private msalInstance: Msal.PublicClientApplication;
 
-    constructor(private accountDataService: AccountDataService, private authStore: AuthStoreService, configFactory: MsalConfigFactoryService, @Inject(Keys.APP_CONFIG) config: PdConfig) {
+    constructor(
+        private accountDataService: AccountDataService,
+        private authStore: AuthStoreService,
+        configFactory: MsalConfigFactoryService,
+        @Inject(Keys.APP_CONFIG) config: PdConfig,
+    ) {
         this.loginRequest = {
             scopes: config.loginScopes,
             extraScopesToConsent: [config.exposedApiScope],

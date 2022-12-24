@@ -1,11 +1,11 @@
 import * as Msal from '@azure/msal-browser';
 import { Inject, Injectable } from '@angular/core';
 import { PdConfig } from '../../../models/pd-app.config';
-import * as Keys from '../../../../core/constants/keys'
+import * as Keys from '../../../../core/constants/keys';
 @Injectable({
     providedIn: 'root',
 })
-export class MsalConfigFactoryService{
+export class MsalConfigFactoryService {
     constructor(@Inject(Keys.APP_CONFIG) private config: PdConfig) {}
     get(): Msal.Configuration {
         return {
@@ -13,7 +13,7 @@ export class MsalConfigFactoryService{
                 clientId: this.config.clientID,
                 authority: this.config.authority,
                 knownAuthorities: this.config.knownAuthorities,
-                
+
                 redirectUri: this.config.redirectUri,
                 navigateToLoginRequestUrl: false,
             },
