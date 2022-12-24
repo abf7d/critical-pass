@@ -2,14 +2,14 @@ import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class AuthStoreService {
-    public isLoggedIn$: BehaviorSubject<boolean>;
-    public loginError$: BehaviorSubject<boolean>;
-    public isAuthorized$: BehaviorSubject<boolean>;
+export class AuthStateService {
+    public isLoggedIn$: BehaviorSubject<boolean | null>;
+    public loginError$: BehaviorSubject<boolean | null>;
+    public isAuthorized$: BehaviorSubject<boolean | null>;
 
     constructor() {
-        this.isLoggedIn$ = new BehaviorSubject<boolean>(null);
-        this.loginError$ = new BehaviorSubject<boolean>(null);
-        this.isAuthorized$ = new BehaviorSubject<boolean>(null);
+        this.isLoggedIn$ = new BehaviorSubject<boolean | null>(null);
+        this.loginError$ = new BehaviorSubject<boolean | null>(null);
+        this.isAuthorized$ = new BehaviorSubject<boolean | null>(null);
     }
 }

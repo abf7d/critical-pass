@@ -5,11 +5,6 @@
 // export const cookiesAvailId: string = 'MM:3PCsupported';
 // export const ForgotPasswordTokenCode: string = 'AADB2C90118';
 
-// export const AuthorizedUserClaim = 'Authorized User';
-// export const SiteAdminClaim = 'Site Admin';
-// export const ErrorLoadingCache = 'error-loading';
-
-// export const claimsTokenCacheKey: string = 'cp-claims';
 // export const libraryPageSize: number = 12;
 
 // export const projectEndpoint: string = 'project';
@@ -64,3 +59,8 @@
 // export const importSchema = 'import.headers.schema.key';
 
 // export const APP_CONFIG = 'project.design.config';
+
+export const CLAIMS_TOKEN_CACHE_KEY: string = 'cp-claims';
+export const AUTHORIZED_USER_CLAIM = 'Authorized User';
+export const SITE_ADMIN_CLAIM = 'Site Admin';
+export const ERROR_LOADING_CACHE = 'error-loading';

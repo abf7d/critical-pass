@@ -1,24 +1,23 @@
 import * as Msal from '@azure/msal-browser';
-import { Inject, Injectable } from '@angular/core';
-import { PdConfig } from '../../../models/pd-app.config';
-import * as Keys from '../../../../core/constants/keys';
+import { Injectable } from '@angular/core';
+import { environment } from '@critical-pass/shared/environments';
 @Injectable({
     providedIn: 'root',
 })
 export class MsalConfigFactoryService {
-    constructor(@Inject(Keys.APP_CONFIG) private config: PdConfig) {}
+    constructor() {}
     get(): Msal.Configuration {
         return {
             auth: {
-                clientId: this.config.clientID,
-                authority: this.config.authority,
-                knownAuthorities: this.config.knownAuthorities,
+                clientId: environment.clientID,
+                authority: environment.authority,
+                knownAuthorities: environment.knownAuthorities,
 
-                redirectUri: this.config.redirectUri,
+                redirectUri: environment.redirectUri,
                 navigateToLoginRequestUrl: false,
             },
             cache: {
-                cacheLocation: this.config.cacheLocation,
+                cacheLocation: environment.cacheLocation,
                 storeAuthStateInCookie: false, // Set this to "true" to save cache in cookies to address trusted zones limitations in IE (see: https://github.com/AzureAD/microsoft-authentication-library-for-js/wiki/Known-issues-on-IE-and-Edge-Browser)
             },
             system: {

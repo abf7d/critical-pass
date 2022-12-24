@@ -2,25 +2,20 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import * as Keys from '../constants/keys';
-import { PdConfig } from '../models/pd-app.config';
+import { environment } from '@critical-pass/shared/environments';
 import { ClaimsApiService } from '@critical-pass/shared/data-access';
-
+import * as CONST from '../constants';
 declare let require: any;
 const urljoin = require('url-join');
 @Injectable({
     providedIn: 'root',
 })
-export class /*AccountDataService*/ ClaimsService {
+export class ClaimsService {
     jwtHelper: JwtHelperService;
 
-    constructor(/*private http: HttpClient,*/ private claimsApi: ClaimsApiService, @Inject(Keys.APP_CONFIG) private config: PdConfig) {
+    constructor(private claimsApi: ClaimsApiService) {
         this.jwtHelper = new JwtHelperService();
     }
-
-    // public getClaims(): Observable<any> {
-    //     return this.http.get(urljoin(this.config.criticalPathApi, '/account/getToken?token_type=claims'));
-    // }
 
     public initializeClaims(): Promise<any> {
         return this.claimsApi
@@ -33,22 +28,22 @@ export class /*AccountDataService*/ ClaimsService {
                     username: auth_token.sub,
                     token: { auth_token: token.Result.Token },
                 });
-                sessionStorage.setItem(Keys.claimsTokenCacheKey, tokenString);
+                sessionStorage.setItem(CONST.CLAIMS_TOKEN_CACHE_KEY, tokenString);
                 const isAuthorized = this.isAuthorized();
                 return isAuthorized;
             });
     }
 
     public clearClaims(): void {
-        sessionStorage.removeItem(Keys.claimsTokenCacheKey);
+        sessionStorage.removeItem(CONST.CLAIMS_TOKEN_CACHE_KEY);
     }
 
     public hasClaims(): boolean {
-        return !!sessionStorage.getItem(Keys.claimsTokenCacheKey);
+        return !!sessionStorage.getItem(CONST.CLAIMS_TOKEN_CACHE_KEY);
     }
 
     private decodeClaims(): string[] {
-        const token = sessionStorage.getItem(Keys.claimsTokenCacheKey);
+        const token = sessionStorage.getItem(CONST.CLAIMS_TOKEN_CACHE_KEY);
         if (token === null) {
             return [];
         }
@@ -66,22 +61,22 @@ export class /*AccountDataService*/ ClaimsService {
 
     public isAuthorized(): boolean {
         const claims = this.decodeClaims();
-        return claims.indexOf(Keys.AuthorizedUserClaim) > -1 || claims.indexOf(Keys.SiteAdminClaim) > -1;
+        return claims.indexOf(CONST.AUTHORIZED_USER_CLAIM) > -1 || claims.indexOf(CONST.SITE_ADMIN_CLAIM) > -1;
     }
     public isAdmin(): boolean {
         const claims = this.decodeClaims();
-        return claims.indexOf(Keys.SiteAdminClaim) > -1;
+        return claims.indexOf(CONST.SITE_ADMIN_CLAIM) > -1;
     }
     public setError(create: boolean): void {
         if (create) {
-            sessionStorage.setItem(Keys.ErrorLoadingCache, 'true');
+            sessionStorage.setItem(CONST.ERROR_LOADING_CACHE, 'true');
         }
     }
     public clearError(): void {
-        sessionStorage.removeItem(Keys.ErrorLoadingCache);
+        sessionStorage.removeItem(CONST.ERROR_LOADING_CACHE);
     }
 
     public hasError(): boolean {
-        return !!sessionStorage.getItem(Keys.ErrorLoadingCache);
+        return !!sessionStorage.getItem(CONST.ERROR_LOADING_CACHE);
     }
 }

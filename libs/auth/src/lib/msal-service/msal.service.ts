@@ -1,74 +1,72 @@
 import { Inject, Injectable } from '@angular/core';
-import { AuthStoreService } from '../auth-state/auth-state';
-import { AccountDataService } from '../account-data/account-data-sevice';
+import { AuthStateService } from '../auth-state/auth-state';
 import { BehaviorSubject } from 'rxjs';
-import * as Keys from '../../constants/keys';
 import * as Msal from '@azure/msal-browser';
 import { MsalConfigFactoryService } from '../msal-config-factory/msal-config-factory.service';
-import { PdConfig } from '../../models/pd-app.config';
-
+import { ClaimsService } from '../claims-service/claims.service';
+import { environment } from '@critical-pass/shared/environments';
+import * as CONST from '../constants';
 @Injectable({
     providedIn: 'root',
 })
-export class /*AuthService*/ MsalService {
+export class MsalService {
     private loginRequest: Msal.RedirectRequest;
     private accessTokenRequest: Msal.SilentRequest;
     private logoutRequest: Msal.EndSessionRequest;
-    public isLoggedIn$: BehaviorSubject<boolean>;
+    public isLoggedIn$: BehaviorSubject<boolean | null>;
     private msalInstance: Msal.PublicClientApplication;
 
-    constructor(
-        private accountDataService: AccountDataService,
-        private authStore: AuthStoreService,
-        configFactory: MsalConfigFactoryService,
-        @Inject(Keys.APP_CONFIG) config: PdConfig,
-    ) {
+    constructor(private claimsService: ClaimsService, private authState: AuthStateService, configFactory: MsalConfigFactoryService) {
         this.loginRequest = {
-            scopes: config.loginScopes,
-            extraScopesToConsent: [config.exposedApiScope],
+            scopes: environment.loginScopes,
+            extraScopesToConsent: [environment.exposedApiScope],
         };
         this.accessTokenRequest = {
-            scopes: [config.exposedApiScope],
-            account: null,
+            scopes: [environment.exposedApiScope],
+            account: undefined,
         };
         this.logoutRequest = {
-            postLogoutRedirectUri: config.postLogoutUrl,
+            postLogoutRedirectUri: environment.postLogoutUrl,
         };
-        this.isLoggedIn$ = authStore.isLoggedIn$;
+        this.isLoggedIn$ = authState.isLoggedIn$;
         const msalConfig = configFactory.get();
         this.msalInstance = new Msal.PublicClientApplication(msalConfig);
         this.msalInstance
             .handleRedirectPromise()
-            .then((tokenResponse: Msal.AuthenticationResult) => {
+            .then((tokenResponse: Msal.AuthenticationResult | null) => {
                 if (tokenResponse !== null) {
                     const accountObj = tokenResponse.account;
-                    this.accessTokenRequest.account = accountObj;
+                    if (accountObj !== null) {
+                        this.accessTokenRequest.account = accountObj;
+                    }
                     this.acquireSilent(this.accessTokenRequest);
                 }
             })
             .catch(error => {
-                authStore.loginError$.next(true);
+                authState.loginError$.next(true);
                 console.error(error);
-                accountDataService.setError(true);
+                claimsService.setError(true);
             });
     }
 
-    private acquireSilent(request: Msal.SilentRequest): Promise<Msal.AuthenticationResult> {
+    private acquireSilent(request: Msal.SilentRequest): Promise<Msal.AuthenticationResult | null> {
+        const authState = this.authState;
+        const claimService = this.claimsService;
         return this.msalInstance.acquireTokenSilent(request).then(
             access_token => {
                 if (!access_token.accessToken) {
                     this.msalInstance.acquireTokenRedirect(request);
-                    this.authStore.loginError$.next(true);
-                    this.accountDataService.setError(true);
+                    this.authState.loginError$.next(true);
+                    this.claimsService.setError(true);
                 } else {
-                    sessionStorage.removeItem(Keys.claimsTokenCacheKey);
-                    this.accountDataService.initializeClaims().then(
+                    sessionStorage.removeItem(CONST.CLAIMS_TOKEN_CACHE_KEY);
+                    this.claimsService.initializeClaims().then(
                         isAuthorized => {
-                            this.authStore.isAuthorized$.next(isAuthorized);
+                            this.authState.isAuthorized$.next(isAuthorized);
                         },
                         reason => {
                             console.error(reason);
-                            this.authStore.loginError$.next(true);
+                            this.authState.loginError$.next(true);
                         },
                     );
                     this.isLoggedIn$.next(true);
@@ -77,8 +75,8 @@ export class /*AuthService*/ MsalService {
             },
             function (reason) {
                 console.error(reason);
-                this.authStore.loginError$.next(true);
-                this.accountDataService.setError(true);
+                authState.loginError$.next(true);
+                claimService.setError(true);
                 return null;
             },
         );
@@ -99,33 +97,33 @@ export class /*AuthService*/ MsalService {
     }
 
     public logout(): void {
-        this.authStore.loginError$.next(false);
-        this.accountDataService.clearError();
-        this.accountDataService.clearClaims();
+        this.authState.loginError$.next(false);
+        this.claimsService.clearError();
+        this.claimsService.clearClaims();
         this.msalInstance.logout(this.logoutRequest);
     }
 
     public loadUserGroups(): Promise<any> {
-        return this.accountDataService.initializeClaims();
+        return this.claimsService.initializeClaims();
     }
 
     public getUserName(): string {
         const account = this.msalInstance.getAllAccounts()[0];
-        if (account) {
+        if (account && account.name !== undefined) {
             return account.name;
         }
         return '';
     }
 
     public hasClaims(): boolean {
-        return this.accountDataService.hasClaims();
+        return this.claimsService.hasClaims();
     }
 
     public isAuthorized(): boolean {
-        return this.accountDataService.isAuthorized();
+        return this.claimsService.isAuthorized();
     }
 
     public hasError(): boolean {
-        return this.accountDataService.hasError();
+        return this.claimsService.hasError();
     }
 }
