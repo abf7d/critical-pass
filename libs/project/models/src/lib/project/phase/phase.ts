@@ -17,5 +17,5 @@ export interface PhaseSummary {
     name: string;
     shortName: string;
     color: ColorView;
-    id;
+    id: string;
 }

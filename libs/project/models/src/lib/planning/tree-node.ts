@@ -1,4 +1,4 @@
-import { Serializer } from '../../services/serializers/serializer';
+// import { Serializer } from '../../services/serializers/serializer';
 import { Project } from '../project/project';
 
 export interface TreeNode /*<T, U>*/ {
@@ -35,37 +35,37 @@ export interface ProjectMetadata {
     //   this.time = 0;
 }
 
-export class ProjectTreeNodeSerializerService implements Serializer<TreeNode> /*<T, U>>*/ {
-    fromJson(json?: any): TreeNode {
-        json = json ?? {};
-        const obj: TreeNode = {
-            // parentNodeId: json?.parentNodeId ?? null,
-            // nodeId: json?.nodeId ?? null,
-            name: json?.name ?? null,
-            group: json?.group ?? null,
-            subgroup: json?.subgroup ?? null,
-            metadata: json?.metadata ?? null,
-            data: json?.data ?? null,
-            children: json?.children ?? [],
-            id: json?.id ?? null,
-            parent: json.parent ?? null,
-            parentNodeId: json?.parentNodeId ?? null,
-        };
-        return obj;
-    }
-    toJson(obj: TreeNode): any {}
+// export class ProjectTreeNodeSerializerService implements Serializer<TreeNode> /*<T, U>>*/ {
+//     fromJson(json?: any): TreeNode {
+//         json = json ?? {};
+//         const obj: TreeNode = {
+//             // parentNodeId: json?.parentNodeId ?? null,
+//             // nodeId: json?.nodeId ?? null,
+//             name: json?.name ?? null,
+//             group: json?.group ?? null,
+//             subgroup: json?.subgroup ?? null,
+//             metadata: json?.metadata ?? null,
+//             data: json?.data ?? null,
+//             children: json?.children ?? [],
+//             id: json?.id ?? null,
+//             parent: json.parent ?? null,
+//             parentNodeId: json?.parentNodeId ?? null,
+//         };
+//         return obj;
+//     }
+//     toJson(obj: TreeNode): any {}
 
-    head(): TreeNode {
-        return {
-            id: 0,
-            group: 0,
-            subgroup: 0,
-            name: 'head',
-            data: null,
-            children: [],
-            parent: null,
-            metadata: null,
-            parentNodeId: null,
-        };
-    }
-}
+//     head(): TreeNode {
+//         return {
+//             id: 0,
+//             group: 0,
+//             subgroup: 0,
+//             name: 'head',
+//             data: null,
+//             children: [],
+//             parent: null,
+//             metadata: null,
+//             parentNodeId: null,
+//         };
+//     }
+// }

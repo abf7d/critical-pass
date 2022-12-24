@@ -3,7 +3,7 @@ import { ColorView } from '../resource/resource';
 export interface Role {
     view: RoleView;
     name: string;
-    id;
+    id: number;
 }
 export interface RoleView {
     color: ColorView;

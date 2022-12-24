@@ -10,7 +10,7 @@ export interface Resource {
     assign: ResourceAssign;
 }
 export interface ResourceAssign {
-    isSelected;
+    isSelected: boolean;
     roles: RoleSummary[];
     phases: PhaseSummary[];
 }
@@ -24,10 +24,10 @@ export interface ResourceSummary {
     initials: string;
     color: ColorView;
     role: string;
-    id;
+    id: string;
 }
 
-export class ColorView {
+export interface ColorView {
     color: string;
     backgroundcolor: string;
 }
@@ -39,7 +39,7 @@ export interface ResourceProfile {
     skillMultiplier: number; // Maybe we should have a multiplier for each skill
     dataOrigin: string;
     organization: string;
-    role;
+    role: string;
     profeciencyRank: number;
     salaryPerYear: number; // In dollars
     hourlyWage: number; // In dollars
