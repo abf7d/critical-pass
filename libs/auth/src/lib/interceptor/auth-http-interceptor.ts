@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { switchMap } from 'rxjs/operators';
-import { AuthService } from '../services/auth/auth.service';
+import { MsalService } from '@critical-pass/auth';
+// import { AuthService } from '../services/auth/auth.service';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
     jwtHelper: JwtHelperService;
-    constructor(private authenticationService: AuthService) {
+    constructor(private authenticationService: MsalService) {
         this.jwtHelper = new JwtHelperService();
     }
 

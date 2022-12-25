@@ -11,8 +11,8 @@ export class AppComponent {
     title = 'explorer';
     project!: Project;
     constructor(private projectApi: ProjectApiService) {
-        this.projectApi.get(720).subscribe(project => {
-            console.log(project);
-        });
+        // this.projectApi.get(720).subscribe(project => {
+        //     console.log(project);
+        // });
     }
 }
