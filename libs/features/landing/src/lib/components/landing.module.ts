@@ -8,8 +8,8 @@ import { AboutComponent } from './about/about.component';
 import { AboutModule } from './about/about.module';
 // import { SharedModule } from '@critical-pass/shared/components';
 @NgModule({
-    imports: [CommonModule, HomeModule, WelcomeModule, TutorialsModule, DonateModule, AboutModule, /*SharedModule*/],
+    imports: [CommonModule, HomeModule, WelcomeModule, TutorialsModule, DonateModule, AboutModule /*SharedModule*/],
     declarations: [AboutComponent],
-    exports:[HomeModule]
+    exports: [HomeModule],
 })
 export class LandingsModule {}
