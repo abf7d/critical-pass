@@ -1,0 +1,20 @@
+<!-- https://localhost:4200/test/(profile/18//sidebar:arrow) -->
+
+<div class="profile-container">
+    <div class="nav-header">
+        <cp-top-nav></cp-top-nav>
+    </div>
+    <div class="logo-block">
+        <span class="cp-logo">
+            <img src="assets/img/cp3.png" />
+        </span>
+        <a class="cp-brand" href="/home">Critical Pass</a>
+    </div>
+    <div class="left-menu">
+        <div class="window">
+            <router-outlet name="sidebar"></router-outlet>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+   <div class="footer"></div>
+</div>

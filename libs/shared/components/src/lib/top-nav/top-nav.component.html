@@ -1,0 +1,13 @@
+<div class="nav">
+    <div>
+        <div  (click)="navigate('library/(grid/0//sidebar:libar/0)')">Project Library</div>
+        <div (click)="navigate('import/(0//sidebar:filebar/8)')">Import Data</div>
+    </div>
+    <div class="nav-buttons">
+        <div [routerLink]="['/tutorials']">Tutorials</div>
+        <div><a href="https://forms.gle/j6RavsnuE3bkytBS8">Feedback</a></div>
+        <div [routerLink]="['/about']">About</div>
+        <div [routerLink]="['/donate']">Donate</div>
+    </div>
+    <div><div (click)="logout()">Log out</div> </div>
+</div>

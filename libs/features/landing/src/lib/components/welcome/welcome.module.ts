@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WelcomeRoutingModule } from './welcome.routing';
+// import { WelcomeRoutingModule } from './welcome.routing';
 // import { AuthService } from '../../core/services/auth/auth.service';
 // import { AccountDataService } from '../../core/services/account-data-sevice';
 // import { AuthStoreService } from '../../core/services/auth-store';

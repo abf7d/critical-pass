@@ -1,1 +1,1 @@
-export * from './lib/app-core.module';
+export * from './lib/explorer-lib.module';
