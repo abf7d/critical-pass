@@ -1,0 +1,19 @@
+<div class="page-content" *ngIf="loadResult !== ''; else charts">
+    <div class="loading-txt">Loading</div>
+</div>
+<ng-template #charts>
+    <div class="page-content">
+        <div *ngFor="let project of projects" class="user-proj">
+            <a (click)="navigate(project.profile.id)">
+                <!-- <cp-arrow-snapshot [project]="project" width="300" height="200"></cp-arrow-snapshot> -->
+            </a>
+            <div class="simple-label">{{ project.profile.name }} <span class="is-writable"> (w)</span></div>
+            <div class="project-description">
+                <i class="fa fa-object-group network-icon" (click)="navigateSketch(project.profile.id)"></i>
+                <i class="fas fa-male assign-icon" (click)="navigateAssign(project.profile.id)"></i>
+                <i class="fa fa-object-group" (click)="navigateMetaGraph(project.profile.id)"></i>
+                {{ project.profile.description }}
+            </div>
+        </div>
+    </div>
+</ng-template>

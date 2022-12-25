@@ -1,0 +1,28 @@
+<div class="sidebar">
+    <div class="libar-container">
+        <i [hidden]="+currentPage < 1" (click)="pageLeft()" class="fa fa-arrow-circle-left fa-2x pointer enabled-a" name="arrow-circle-left" inverse="true"></i>
+        <i [hidden]="+currentPage > 0" class="fa fa-arrow-circle-left fa-2x pointer disabled-a" name="arrow-circle-left" inverse="true"></i>
+        <div class="page-label">
+            <div>Navigate Library</div>
+            <div>Page {{ currentPage }} / {{maxPage}}</div>
+        </div>
+        <i [hidden]="+currentPage >= maxPage" class="fa fa-arrow-circle-right fa-2x pointer enabled-a" (click)="pageRight()" inverse="true"></i>
+        <i [hidden]="+currentPage < maxPage" class="fa fa-arrow-circle-right fa-2x pointer disabled-a" inverse="true"></i>
+    </div>
+
+    <a class="btn btn-secondary" (click)="navigate('profile/(-1//sidebar:arrow/-1)')">New Project</a>
+    <a class="btn btn-secondary" (click)="navigate('sketchbook/(-1//sidebar:arrow/-1)')">Scenario Planning</a>
+    <a class="btn btn-secondary" (click)="navigate('network/(-1//sidebar:meta/-1)')">Network Analysis</a>
+    <a class="btn btn-secondary" [hidden]="!hasWork" (click)="navigate('profile/(-3//sidebar:grid/-3)')">Continue work</a>
+    <a class="btn btn-secondary" *ngIf="hasWork && showPeek" (click)="showPeek = false">
+        <i class="fas fa-chevron-up peek"></i>
+        <span>Hide Stashed</span>
+    </a>
+    <a class="btn btn-secondary" (click)="showPeek = true; peekStorage()" *ngIf="hasWork && !showPeek">
+        <i class="fas fa-chevron-down peek"></i>
+        <span>View Stashed</span>
+    </a>
+    <div class="peek" *ngIf="showPeek">
+        <!-- <cp-arrow-snapshot [project]="peekProj" width="390" height="250"></cp-arrow-snapshot> -->
+    </div>
+</div>

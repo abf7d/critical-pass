@@ -1,0 +1,23 @@
+.sidebar{
+    text-align: center;;
+    width: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .btn { width: 100%; margin: 1px;}
+
+}
+.libar-container {
+  display: flex;
+    * {padding: 3px}
+    
+}
+.disabled-a {
+    color: #999;
+}
+.peek { margin-right: 7px}
+cp-arrow-snapshot {
+    position: fixed;
+    border: 2px solid #666
+}

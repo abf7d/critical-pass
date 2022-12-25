@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanActivate, Router, CanLoad, Route } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { AccountDataService } from '../../services/account-data-sevice';
-import { AuthService } from '../../services/auth/auth.service';
+import { ClaimsService, MsalService } from '@critical-pass/auth';
+// import { AccountDataService } from '../../services/account-data-sevice';
+// import { AuthService } from '../../services/auth/auth.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthorizedUserGuard implements CanLoad {
     jwtHelper: JwtHelperService;
-    constructor(private authService: AuthService, private accountData: AccountDataService, private router: Router) {
+    constructor(private authService: MsalService, private accountData: ClaimsService, private router: Router) {
         this.jwtHelper = new JwtHelperService();
     }
 
