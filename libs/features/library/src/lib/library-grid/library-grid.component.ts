@@ -26,10 +26,8 @@ export class LibraryGridComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         // @Inject('ProjectStoreBase') private projectStore: ProjectStoreBase,
-        private libraryStore: LibraryStoreService,
-    ) // @Inject('ProjectManagerBase') private pManager: ProjectManagerBase,
-
-    {}
+        private libraryStore: LibraryStoreService, // @Inject('ProjectManagerBase') private pManager: ProjectManagerBase,
+    ) {}
 
     public ngOnInit(): void {
         // this.projSerializer = new ProjectSerializerService();

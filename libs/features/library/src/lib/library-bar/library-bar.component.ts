@@ -26,9 +26,8 @@ export class LibraryBarComponent implements OnInit, OnDestroy {
     constructor(
         private activatedRoute: ActivatedRoute,
         private libraryStore: LibraryStoreService,
-        private router: Router,
-    ) // @Inject('ProjectStoreBase') private projectStore: ProjectStoreBase,
-    {}
+        private router: Router, // @Inject('ProjectStoreBase') private projectStore: ProjectStoreBase,
+    ) {}
 
     public ngOnInit(): void {
         this.pageSize = CONST.LIBRARY_PAGE_SIZE;
