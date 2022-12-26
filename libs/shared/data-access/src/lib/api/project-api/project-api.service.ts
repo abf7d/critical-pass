@@ -23,7 +23,7 @@ export class ProjectApiService {
     public list(page: number, pageSize: number): Observable<ProjectLibrary> {
         return this.httpClient
             .get(urlJoin(this.baseUrl, CONST.LIBRARY_ENDPOINT, page.toString(), pageSize.toString()), {
-                observe: 'response' as 'body'
+                observe: 'response' as 'body',
             })
             .pipe(map((data: any) => this.convertData(data)));
     }
