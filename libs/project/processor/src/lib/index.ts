@@ -3,6 +3,7 @@ export * from './activity-sorter/activity-sorter.service';
 // export * from './milestone-factory/milestone-factory.service';
 // export * from './node-arranger/node-arranger.service';
 export * from './project-compiler/project-compiler.service';
+export * from './node-connector/node-connector.service';
 // export * from './file-managers/history-file-manager/history-file-manager.service';
 // export * from './file-managers/mapping-file-manager/mapping-file-manager.service';
 // export * from './file-managers/mapping-file-manager/import-mapper/import-mapper.service';

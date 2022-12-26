@@ -11,6 +11,8 @@ import { LibraryStoreService } from '../library-store/library-store.service';
 // import * as Keys from '../../../../core/constants/keys';
 // import { List } from '@critical-pass/critical-charts';
 import * as CONST from '../constants';
+import { ProjectApiService } from '@critical-pass/shared/data-access';
+import { NodeConnectorService } from '@critical-pass/project/processor';
 @Component({
     selector: 'cp-library-grid',
     templateUrl: './library-grid.component.html',
@@ -27,6 +29,8 @@ export class LibraryGridComponent implements OnInit, OnDestroy {
         private router: Router,
         // @Inject('ProjectStoreBase') private projectStore: ProjectStoreBase,
         private libraryStore: LibraryStoreService, // @Inject('ProjectManagerBase') private pManager: ProjectManagerBase,
+        private projectApi: ProjectApiService,
+        private nodeConnector: NodeConnectorService,
     ) {}
 
     public ngOnInit(): void {
@@ -54,26 +58,27 @@ export class LibraryGridComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl(`network/(${id}//sidebar:meta/${id})`);
     }
 
-    private loadProjects(currentPage: number /*, count: number*/) {
+    private loadProjects(currentPage: number) {
         this.loadResult = 'Loading';
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
-        // this.subscription = this.projectStore.getProjects(currentPage, this.pageSize).subscribe(projects => {
-        //     if (projects !== null) {
-        //         this.libraryStore.maxProjectCount$.next(projects.totalCount);
-        //         this.initProjects(projects.items);
-        //     }
-        //     this.loadResult = '';
-        // });
+        this.subscription = this.projectApi.list(currentPage, this.pageSize).subscribe(projects => {
+            if (projects !== null) {
+                this.libraryStore.maxProjectCount$.next(projects.totalCount);
+                this.initProjects(projects.items);
+            }
+            this.loadResult = '';
+        });
     }
 
     private initProjects(library: Project[]) {
         const projects: Project[] = [];
         for (const project of library) {
-            // this.pManager.connectArrowsToNodes(project);
+            this.nodeConnector.connectArrowsToNodes(project);
             projects.push(project);
         }
+        console.log('projects', projects);
         this.projects = projects;
     }
 

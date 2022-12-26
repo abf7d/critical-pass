@@ -16,18 +16,23 @@ export class VertexGraphBuilderService {
         return ends.length === 1 && starts.length === 1;
     }
 
-    public initializeRoute(project: Project): Route {
-        return this.graphModels.createRoute(project.profile.start, project.profile.end);
+    public initializeRoute(project: Project): Route | null {
+        if (project.profile.start !== undefined && project.profile.end !== undefined) {
+            return this.graphModels.createRoute(project.profile.start, project.profile.end);
+        }
+        return null;
     }
 
     public createRoute(project: Project): Route | null {
         const route = this.initializeRoute(project);
-        if (route.startId === null || route.endId === null) {
-            // this.logger.info('Invalid Start and End nodes');
-            return null;
+        if (route) {
+            if (route.startId === null || route.endId === null) {
+                // this.logger.info('Invalid Start and End nodes');
+                return null;
+            }
+            this.createVertices(project, route);
+            this.createEdges(project, route);
         }
-        this.createVertices(project, route);
-        this.createEdges(project, route);
         return route;
     }
 

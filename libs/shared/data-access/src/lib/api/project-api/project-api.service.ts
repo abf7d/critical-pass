@@ -20,6 +20,28 @@ export class ProjectApiService {
     public get(id: number): Observable<Project> {
         return this.httpClient.get(urlJoin(this.baseUrl, CONST.PROJECT_ENDPOINT, id.toString())).pipe(map((data: any) => this.serializer.fromJson(data)));
     }
+    public list(page: number, pageSize: number): Observable<ProjectLibrary> {
+        return this.httpClient
+            .get(urlJoin(this.baseUrl, CONST.LIBRARY_ENDPOINT, page.toString(), pageSize.toString()), {
+                observe: 'response' as 'body'
+            })
+            .pipe(map((data: any) => this.convertData(data)));
+    }
+
+    private convertData(data: any): ProjectLibrary {
+        const count = data.headers.get('x-total-count');
+        const items = data.body.map((item: any) => this.serializer.fromJson(item));
+        const list: ProjectLibrary = {
+            items: items,
+            totalCount: count,
+        };
+        return list;
+    }
+}
+
+export interface ProjectLibrary {
+    items: Project[];
+    totalCount: number;
 }
 
 // import { Inject, Injectable } from '@angular/core';
