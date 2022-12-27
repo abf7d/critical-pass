@@ -15,7 +15,7 @@ export class DashboardService {
     private _library: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>([]);
     private _history: Project[] = [];
     private _cache: Map<number, Project> = new Map<number, Project>();
-    get activeProject(): BehaviorSubject<Project> {
+    get activeProject$(): BehaviorSubject<Project> {
         return this._activeProject;
     }
     get library(): BehaviorSubject<Project[]> {

@@ -5,7 +5,7 @@
     <div class="page-content">
         <div *ngFor="let project of projects" class="user-proj">
             <a (click)="navigate(project.profile.id)">
-                <!-- <cp-arrow-snapshot [project]="project" width="300" height="200"></cp-arrow-snapshot> -->
+                <cp-arrow-snapshot [project]="project" [width]="300" [height]="200"></cp-arrow-snapshot>
             </a>
             <div class="simple-label">{{ project.profile.name }} <span class="is-writable"> (w)</span></div>
             <div class="project-description">

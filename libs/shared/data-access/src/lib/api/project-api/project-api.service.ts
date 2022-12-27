@@ -25,10 +25,10 @@ export class ProjectApiService {
             .get(urlJoin(this.baseUrl, CONST.LIBRARY_ENDPOINT, page.toString(), pageSize.toString()), {
                 observe: 'response' as 'body',
             })
-            .pipe(map((data: any) => this.convertData(data)));
+            .pipe(map((data: any) => this.serialize(data)));
     }
 
-    private convertData(data: any): ProjectLibrary {
+    private serialize(data: any): ProjectLibrary {
         const count = data.headers.get('x-total-count');
         const items = data.body.map((item: any) => this.serializer.fromJson(item));
         const list: ProjectLibrary = {

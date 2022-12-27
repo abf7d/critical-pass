@@ -1,0 +1,113 @@
+cp-arrow-snapshot {
+    svg {
+        background-color: white;
+    }
+     g.risk-0 circle.node {
+        fill: #1c1;
+    }
+
+    g.risk-1 circle.node {
+        fill: #ffd800;
+    }
+
+    g.risk-2 circle.node {
+        fill: #f00;
+    }
+
+    g.risk-3 circle.node {
+        fill: #000;
+    }
+    g.risk-undefined circle.node {
+        fill: #bbb;
+    }
+    g.completed circle.node{
+        fill: #ffddFF;
+    }
+    g.unprocessed circle.node {
+        fill: #bbb;
+    }
+    svg:not(.active):not(.ctrl) {
+        cursor: pointer;
+    }
+
+    .simple-label {
+        font-size: 15px;
+        font-weight: bold;
+    }
+     // Arrow Heads
+     marker.risk-0 {
+        fill: #1c1;
+        opacity: 1;
+    }
+
+    marker.risk-1 {
+        fill: #ffd800;
+        opacity: 1;
+    }
+
+    marker.risk-2 {
+        fill: #f00;
+        opacity: 1;
+    }
+
+    marker.risk-3 {
+        fill: #000;
+        opacity: 1;
+    }
+    marker.risk-undefined {
+        fill: #bbb;
+        opacity: 1;
+    }
+    marker.completed {
+        fill: #ffddFF;
+    }
+    
+    marker.unprocessed {
+        fill: #bbb;
+        opacity: 1;
+    }
+
+    // Arrows
+    .risk-0 path.link {
+        stroke: #1c1;
+        stroke-opacity: 0.4;
+    }
+
+    .risk-1 path.link {
+        stroke: #ffd800;
+        stroke-opacity: 0.6;
+    }
+
+    .risk-2 path.link {
+        stroke: #f00;
+        stroke-opacity: 0.6;
+    }
+
+    .risk-3 path.link {
+        stroke: #000;
+        stroke-opacity: 0.9;
+    }
+
+    .completed path.link {
+        stroke: #ffddFF;
+        stroke-opacity: .8;
+    }
+    .unprocessed path.link {
+        stroke: #bbb;
+        stroke-opacity: .9;
+    }
+    .risk-undefined path.link {
+        stroke: #bbb;
+        stroke-opacity: .9;
+    }
+    
+    
+    path {stroke-width: 4px; opacity: 1}
+    .missing-data {font-weight: bold;}
+
+
+
+
+
+
+}
