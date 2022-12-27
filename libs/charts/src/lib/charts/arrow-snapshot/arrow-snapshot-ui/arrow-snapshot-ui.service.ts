@@ -167,7 +167,7 @@ export class ArrowSnapshotUiService {
             sourceY = d.chartInfo.source.y + sourcePadding * normY,
             targetX = d.chartInfo.target.x - targetPadding * normX,
             targetY = d.chartInfo.target.y - targetPadding * normY;
-       
+
         return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
     }
 

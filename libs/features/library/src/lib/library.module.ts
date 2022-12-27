@@ -7,10 +7,6 @@ import { ArrowSnapshotModule } from '@critical-pass/charts';
 
 @NgModule({
     declarations: [LibraryGridComponent, LibraryBarComponent],
-    imports: [
-        CommonModule,
-        LibraryRoutingModule,
-        ArrowSnapshotModule
-    ],
+    imports: [CommonModule, LibraryRoutingModule, ArrowSnapshotModule],
 })
 export class LibraryModule {}

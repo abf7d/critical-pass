@@ -63,7 +63,7 @@
 // export const floatIncrements = 7;
 // export const mainDateFormat = 'M/d/yyyy';
 // export const shallowSFormat = 'M-d-yyyy';
-// export const europeanDateFormat = 'd-M-YYYY'; 
+// export const europeanDateFormat = 'd-M-YYYY';
 
 // export const activitiesWsName = 'Activities';
 // export const arrowWsName = 'Arrow Info';
