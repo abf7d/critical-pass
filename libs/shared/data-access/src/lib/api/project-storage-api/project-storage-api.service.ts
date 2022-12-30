@@ -23,7 +23,6 @@ export class ProjectStorageApiService {
         const project = this.serializer.fromJson(JSON.parse(stored));
         this.nodeConnector.connectArrowsToNodes(project);
         return project;
-
     }
     public set(storageType: string, project: Project): void {
         const json = this.serializer.toJson(project);
