@@ -89,7 +89,7 @@ export class ArrowSnapshotUiService {
 
             const nonMilestone = project.activities.filter(x => !x.chartInfo.milestoneNodeId);
             links = links
-                .data(nonMilestone, (d: Integration) => d.id)
+                .data(nonMilestone, (d: Activity) => d.profile.id)
                 .enter()
                 .append('g')
                 .attr('class', (d: Activity) => {

@@ -8,6 +8,9 @@ import { filter } from 'rxjs/operators';
 import { LibraryStoreService } from '../library-store/library-store.service';
 // import * as Keys from '../../../../core/constants/keys';
 import * as CONST from '../constants';
+import { API_CONST } from '@critical-pass/shared/data-access';
+import { ProjectStorageApiService } from '@critical-pass/shared/data-access';
+
 @Component({
     selector: 'cp-library-bar',
     templateUrl: './library-bar.component.html',
@@ -21,13 +24,14 @@ export class LibraryBarComponent implements OnInit, OnDestroy {
     public hasWork!: boolean;
 
     public showPeek!: boolean;
-    public peekProj!: Project;
+    public peekProj!: Project | null;
 
     constructor(
         private activatedRoute: ActivatedRoute,
         private libraryStore: LibraryStoreService,
-        private router: Router, // @Inject('ProjectStoreBase') private projectStore: ProjectStoreBase,
-    ) {}
+        private router: Router, 
+        private projectStore: ProjectStorageApiService
+        ) {}
 
     public ngOnInit(): void {
         this.pageSize = CONST.LIBRARY_PAGE_SIZE;
@@ -54,9 +58,8 @@ export class LibraryBarComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl(`/library/(grid/${this.currentPage - 1}//sidebar:libar/${this.currentPage - 1})`);
     }
     public hasSavedWork(): boolean {
-        // const proj = this.projectStore.unstash();
-        // return proj !== null;
-        return true;
+        const proj = this.projectStore.get(API_CONST.LOCAL_STORAGE);
+        return proj !== null;
     }
     public ngOnDestroy() {
         if (this.sub) {
@@ -64,7 +67,7 @@ export class LibraryBarComponent implements OnInit, OnDestroy {
         }
     }
     public peekStorage(): void {
-        // this.peekProj = this.projectStore.unstash();
+        this.peekProj = this.peekProj ?? this.projectStore.get(API_CONST.LOCAL_STORAGE);
     }
     public navigate(url: string): void {
         this.router.navigateByUrl(url);

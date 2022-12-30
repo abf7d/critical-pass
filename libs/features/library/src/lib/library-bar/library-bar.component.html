@@ -22,7 +22,7 @@
         <i class="fas fa-chevron-down peek"></i>
         <span>View Stashed</span>
     </a>
-    <div class="peek" *ngIf="showPeek">
-        <!-- <cp-arrow-snapshot [project]="peekProj" width="390" height="250"></cp-arrow-snapshot> -->
+    <div class="peek" *ngIf="showPeek && peekProj !== null">
+        <cp-arrow-snapshot [project]="peekProj" [width]="390" [height]="250"></cp-arrow-snapshot>
     </div>
 </div>
