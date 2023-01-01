@@ -16,7 +16,7 @@ import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectStorageApiService } from '@critical-pass/shared/data-access';
-import {CORE_CONST} from '@critical-pass/core';
+import { CORE_CONST } from '@critical-pass/core';
 
 @Component({
     selector: 'cp-action-buttons',
@@ -43,7 +43,7 @@ export class ActionButtonsComponent implements OnInit, OnDestroy {
         private sanitizer: ProjectSanatizerService,
         public toastr: ToastrService,
         private storageApi: ProjectStorageApiService,
-        private projectApi: ProjectApiService
+        private projectApi: ProjectApiService,
     ) {
         this.showHelp = false;
         this.actionText = '';
@@ -78,7 +78,7 @@ export class ActionButtonsComponent implements OnInit, OnDestroy {
     public unstash() {
         this.showPeek = false;
         try {
-            const project =  this.storageApi.get(API_CONST.LOCAL_STORAGE);
+            const project = this.storageApi.get(API_CONST.LOCAL_STORAGE);
             if (project) {
                 this.dashboard.activeProject$.next(project);
             }

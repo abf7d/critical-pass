@@ -42,7 +42,7 @@ import { MatInputModule } from '@angular/material/input';
         ParentProjectComponent,
         GridButtonsComponent,
         ProjectMetadataComponent,
-        IsNotNaNPipe
+        IsNotNaNPipe,
     ],
     imports: [
         RouterModule,
@@ -59,11 +59,7 @@ import { MatInputModule } from '@angular/material/input';
         MatInputModule,
         MatFormFieldModule,
         MatTooltipModule,
-       
     ],
-    exports: [
-        ActionButtonsComponent,
-        SelectedActivityComponent
-    ]
+    exports: [ActionButtonsComponent, SelectedActivityComponent],
 })
 export class ProfileModule {}
