@@ -1,1 +1,1 @@
-export * from './lib/shared-file-management.module';
+export * from './lib/project-file-manager/project-file-manager.service';

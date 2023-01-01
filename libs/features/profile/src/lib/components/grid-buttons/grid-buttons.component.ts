@@ -1,48 +1,54 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LoggerBase } from '@critical-pass/critical-charts';
-import { ProjectManagerBase } from '@critical-pass/critical-charts';
-import { Project } from '@critical-pass/critical-charts';
-import { ActivitySorterService } from '@critical-pass/critical-charts';
+// import { LoggerBase } from '@critical-pass/critical-charts';
+// import { ProjectManagerBase } from '@critical-pass/critical-charts';
+// import { Project } from '@critical-pass/critical-charts';
+// import { ActivitySorterService } from '@critical-pass/critical-charts';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ProjectFileManagerService } from '@critical-pass/critical-charts';
+// import { ProjectFileManagerService } from '@critical-pass/critical-charts';
 import { ButtonEventsService } from './button-events/button-events.service';
-import { ChartKeys } from '@critical-pass/critical-charts';
+// import { ChartKeys } from '@critical-pass/critical-charts';
 import { ToastrService } from 'ngx-toastr';
+import { Project } from '@critical-pass/project/models';
+import { ActivitySorterService, ProjectCompilerService } from '@critical-pass/project/processor';
+import { ProjectFileManagerService } from '@critical-pass/shared/file-management';
+import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
+import { ActivityBuilder, DependencyCrawlerService, IdGeneratorService, PcdAutogenService } from '@critical-pass/shared/project-utils';
+import * as CONST from '../../constants/constants'
 @Component({
     selector: 'cp-grid-buttons',
     templateUrl: './grid-buttons.component.html',
     styleUrls: ['./grid-buttons.component.scss'],
 })
 export class GridButtonsComponent implements OnInit {
-    private subscription: Subscription;
-    public isProcessing: boolean;
-    public fileToUpload: File = null;
-    public project: Project;
-    public id: number;
-    public showDummies: boolean;
-    @ViewChild('fileUpload', { static: true }) fileUpload: ElementRef;
+    private subscription!: Subscription;
+    public isProcessing: boolean = false;
+    public fileToUpload: File | null = null;
+    public project: Project | null = null;
+    public id!: number;
+    public showDummies: boolean = false;
+    @ViewChild('fileUpload', { static: true }) fileUpload!: ElementRef;
 
     constructor(
-        @Inject('ProjectManagerBase') private pManager: ProjectManagerBase,
         private fileManager: ProjectFileManagerService,
         private buttonEvents: ButtonEventsService,
-        @Inject('LoggerBase') private logger: LoggerBase,
+        @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
+        @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
         private route: ActivatedRoute,
         private sorter: ActivitySorterService,
+        private activityBuilder: ActivityBuilder,
+        private pcdGenerator: PcdAutogenService,
+        private idGenerator: IdGeneratorService,
         private toastr: ToastrService,
+        private depCrawler: DependencyCrawlerService,
     ) {}
 
     public ngOnInit(): void {
-        this.id = this.route.snapshot.params.id;
-        this.showDummies = false;
-        this.subscription = this.pManager
-            .getProject(this.id)
-            .pipe(filter(x => !!x))
-            .subscribe(p => {
-                this.project = p;
-            });
+        this.id = this.route.snapshot.params['id'] as number;
+        this.subscription = this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(p => {
+            this.project = p;
+        });
     }
 
     public ngOnDestroy() {
@@ -52,18 +58,21 @@ export class GridButtonsComponent implements OnInit {
         // there should be an addActivity method on buttonEvents / controller, that should use project utils /manager/activity builder
         // right now there is an addactivity on project manager that calls project compiler that calls activity builder
         // the buttonEvents should bring in activityBuilder itself or one level removed projectUtils
-        this.pManager.addActivity(this.id, this.project);
+        if (this.project) {
+            this.activityBuilder.addActivity(this.project);
+            this.dashboard.updateProject(this.project, false);
+        }
     }
     public buildArrowChart() {
         this.isProcessing = true;
         this.buttonEvents.compileArrowGraph(this.project).subscribe(
             p => {
-                this.pManager.updateProject(this.id, p, false);
+                this.dashboard.updateProject(p, false);
                 this.isProcessing = false;
                 this.toastr.success('Build Arrow Chart', 'Success!');
             },
             error => {
-                this.logger.error(error);
+                console.error(error);
                 this.isProcessing = false;
                 this.toastr.error('Build Arrow Chart', 'Error occured.');
             },
@@ -72,50 +81,69 @@ export class GridButtonsComponent implements OnInit {
     public processMsProjectFile(files: FileList) {
         if (files.length > 0) {
             this.isProcessing = true;
-            this.buttonEvents.compileMsProject(files.item(0)).subscribe(
-                p => {
-                    this.pManager.updateProject(this.id, p, false);
-                    this.isProcessing = false;
-                    this.toastr.success('Processing MS Project', 'Success!');
-                },
-                error => {
-                    this.logger.error(error);
-                    this.isProcessing = false;
-                    this.toastr.error('Processing MS Project', 'Error occured.');
-                },
-            );
+            const firstFile = files.item(0);
+            if (firstFile !== null) {
+                this.buttonEvents.compileMsProject(firstFile).subscribe(
+                    p => {
+                        this.dashboard.updateProject(p, false);
+                        this.isProcessing = false;
+                        this.toastr.success('Processing MS Project', 'Success!');
+                    },
+                    error => {
+                        console.error(error);
+                        this.isProcessing = false;
+                        this.toastr.error('Processing MS Project', 'Error occured.');
+                    },
+                );
+            } else {
+                console.error('First file selected is null');
+                this.isProcessing = false;
+                this.toastr.error('First file selected is null', 'Error occured.');
+            }
         }
     }
     public setDependencyDataFromGraph() {
-        this.pManager.updateDependencyData(this.project);
-        this.toastr.success('Dependency Update', 'Success!');
+        if (this.project !== null) {
+            this.depCrawler.setDependencyDataFromGraph(this.project);
+            this.toastr.success('Dependency Update', 'Success!');
+        }
     }
     public autogeneratePcds() {
-        this.pManager.autogeneratePcds(this.project);
-        this.toastr.success('Generating Planned Completion Dates', 'Success!');
+        if (this.project !== null) {
+            this.pcdGenerator.autogeneratePcds(this.project);
+            this.toastr.success('Generating Planned Completion Dates', 'Success!');
+        }
     }
     public resetIds() {
-        this.pManager.resetIds(this.project);
-        this.pManager.updateDependencyData(this.project);
-        this.sorter.reorderIds(this.project);
-        this.pManager.updateProject(this.id, this.project, false);
+        if (this.project !== null) {
+            this.idGenerator.resetIds(this.project);
+            this.depCrawler.setDependencyDataFromGraph(this.project);
+            this.sorter.reorderIds(this.project);
+            this.dashboard.updateProject( this.project, false);
+        }
     }
     public processCritPathFile(files: FileList) {
-        if (files.length > 0) {
+        const firstFile = files.item(0);
+
+        if (firstFile !== null && files.length > 0) {
             this.fileManager
-                .import(files.item(0))
+                .import(firstFile)
                 .then(project => {
-                    this.pManager.updateProject(this.id, project, true);
+                    this.dashboard.updateProject(project, true);
                     this.toastr.success('Processing File', 'Success!');
                 })
                 .catch(error => this.toastr.success('Processing File', 'Error occured'));
+        } else {
+            this.toastr.error('No file selected', 'Error occured');
         }
     }
     public downloadCritPathFile() {
         this.fileManager.export(this.project);
     }
     public toggleDummies() {
-        this.showDummies = !this.showDummies;
-        this.pManager.getChannel(ChartKeys.viewDummiesInGridKey).next(this.showDummies);
+        if (this.project !== null) {
+            this.showDummies = !this.showDummies;
+            this.eventService.get(CONST.VIEW_DUMMIES_IN_GRID_KEY).next(this.showDummies);
+        }
     }
 }

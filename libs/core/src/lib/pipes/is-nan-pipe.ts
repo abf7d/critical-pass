@@ -19,7 +19,10 @@ export class IsNaNPipe implements PipeTransform {
     name: 'isNotNaN',
 })
 export class IsNotNaNPipe implements PipeTransform {
-    transform(item: number): boolean {
+    transform(item: number | Date): boolean {
+        if (item instanceof Date) {
+            return false;
+        }
         return !isNaN(item);
     }
 }

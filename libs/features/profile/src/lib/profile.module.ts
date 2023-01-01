@@ -26,7 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
+import { CommonModule } from '@angular/common'
 @NgModule({
     declarations: [
         ProfileLayoutComponent,
@@ -46,6 +46,7 @@ import { MatInputModule } from '@angular/material/input';
     ],
     imports: [
         RouterModule,
+        CommonModule,
         ProfileRoutingModule,
         ArrowBarModule,
         ArrowSnapshotModule,

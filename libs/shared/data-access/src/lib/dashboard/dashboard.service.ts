@@ -10,13 +10,18 @@ export class DashboardService {
     constructor(public projSerializer: ProjectSerializerService, public compiler: ProjectCompilerService) {
         const emptyProj = projSerializer.fromJson();
         this._activeProject = new BehaviorSubject<Project>(emptyProj);
+        this._secondaryProject = new BehaviorSubject<Project | null>(null);
     }
     private _activeProject: BehaviorSubject<Project>;
+    private _secondaryProject: BehaviorSubject<Project | null>;
     private _library: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>([]);
     private _history: Project[] = [];
     private _cache: Map<number, Project> = new Map<number, Project>();
     get activeProject$(): BehaviorSubject<Project> {
         return this._activeProject;
+    }
+    get secondaryProject$(): BehaviorSubject<Project | null> {
+        return this._secondaryProject;
     }
     get library(): BehaviorSubject<Project[]> {
         return this._library;
@@ -31,7 +36,7 @@ export class DashboardService {
     //     this._cache.set(project.profile.id, project);
     // }
     public updateProject(project: Project, compile: boolean = true) {
-        this.compiler.compile(project);
+        if (compile) this.compiler.compile(project);
         this._cache.set(project.profile.id, project);
         this._activeProject.next(project);
     }
