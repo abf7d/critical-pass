@@ -12,7 +12,7 @@
                 <i class="fas fa-chevron-down" *ngIf="!showPeek" (click)="showPeek = true; peekStorage()"></i>
             </a>
             <div class="peek" *ngIf="showPeek">
-                <cp-arrow-snapshot [project]="peekProj" width="390" height="250"></cp-arrow-snapshot>
+                <cp-arrow-snapshot [project]="peekProj" [width]="390" [height]="250"></cp-arrow-snapshot>
             </div>
         </div>
         <button class="btn btn-secondary" [class.disabled]="disableButtons" (click)="!disableButtons && delete()">Delete Project</button>

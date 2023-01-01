@@ -9,7 +9,7 @@ import { ProjectStoreService } from '../../../../services/api/project-store/proj
 import { ProjectSerializerService } from '@critical-pass/critical-charts';
 import { lightFormat, sub } from 'date-fns';
 import { Integration } from '@critical-pass/critical-charts';
-import { MilestoneFactoryService } from '@critical-pass/critical-charts'; 
+import { MilestoneFactoryService } from '@critical-pass/critical-charts';
 import { ProjectManagerBase } from '@critical-pass/critical-charts';
 
 @Injectable({
@@ -22,7 +22,11 @@ export class SelectedActivityControllerService {
     data$: Observable<Project>;
     prntUpdate$: BehaviorSubject<any>;
 
-    constructor(@Inject('ProjectManagerBase') private pManager: ProjectManagerBase, private projectStore: ProjectStoreService, private milestoneFactory: MilestoneFactoryService) {}
+    constructor(
+        @Inject('ProjectManagerBase') private pManager: ProjectManagerBase,
+        private projectStore: ProjectStoreService,
+        private milestoneFactory: MilestoneFactoryService,
+    ) {}
 
     ngOnInit(id: number) {
         if (id == null) {
@@ -103,11 +107,11 @@ export class SelectedActivityControllerService {
 
     public updateSelectedActivity(activity: Activity, project: Project) {
         project.profile.view.selectedActivity = activity;
-      }
+    }
 
     public loadSubProject(activity: Activity, curProj: Project, projectPool?: Project[]): Subject<Project> {
         let project = null;
-        if (projectPool && projectPool.length > 0){
+        if (projectPool && projectPool.length > 0) {
             project = projectPool.find(x => x.profile.id === activity.subProject.subGraphId);
             if (project) {
                 this.swapProjWithSubProj(project, activity, curProj);
@@ -134,7 +138,7 @@ export class SelectedActivityControllerService {
         // Set the sub project of the activity so when we comeback to the parent and load the subgraph
         // again, the already loaded sub graph with previous changes will load
         activity.subProject.subGraphLoaded = subProj;
-        
+
         // Change uninitialized project id (-1) to new project id (0) for reloading project on revisit
         if (activity.subProject.subGraphId === -1) {
             activity.subProject.subGraphId = 0;
@@ -153,19 +157,19 @@ export class SelectedActivityControllerService {
     public createSubProject(activity: Activity, project: Project, projectPool?: Project[]) {
         // when new network analysis file is loaded, it can have projs with id < -1
         // since each network is different this needs to be loaded here to determine
-        // the count so the next project id can be determined 
+        // the count so the next project id can be determined
         const subProjCount$ = this.pManager.getChannel(AppKeys.networkSubProjTracker);
         const subProj = new ProjectSerializerService().fromJson(null);
         let subProjCount = subProjCount$.getValue();
         // -1 is expected for uninitialized project, < -1 is a new subproject > -1 has been saved to databse
         if (subProjCount === undefined) {
             subProjCount = -2;
-        } 
+        }
         subProj.profile.id = subProjCount;
         subProj.profile.name = activity.profile.name;
         --subProjCount;
         subProjCount$.next(subProjCount);
-        this.pManager.getChannel(AppKeys.createdProject).next(subProj)
+        this.pManager.getChannel(AppKeys.createdProject).next(subProj);
         this.swapProjWithSubProj(subProj, activity, project);
     }
 
@@ -193,7 +197,7 @@ export class SelectedActivityControllerService {
         this.updateProject(project);
     }
 
-    public setLabel(label: string, selectedNode: Integration, project: Project){
+    public setLabel(label: string, selectedNode: Integration, project: Project) {
         selectedNode.label = label;
         this.updateProject(project);
     }

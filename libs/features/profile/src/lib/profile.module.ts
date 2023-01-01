@@ -11,12 +11,21 @@ import { RiskBarComponent } from './sidebars/risk-bar/risk-bar.component';
 import { StackedResourcesBarComponent } from './sidebars/stacked-resources-bar/stacked-resources-bar.component';
 import { ActivityListBarComponent } from './sidebars/activity-list-bar/activity-list-bar.component';
 import { ParentProjectComponent } from './components/parent-project/parent-project.component';
-import { SharedModule } from '../../../shared/shared.module';
+// import { SharedModule } from '../../../shared/shared.module';
 import { ProfileRoutingModule } from './profile.routes';
 import { GridButtonsComponent } from './components/grid-buttons/grid-buttons.component';
 import { ProjectMetadataComponent } from './components/project-metadata/project-metadata.component';
-import { IsNotNaNPipe } from '@critical-pass/critical-charts';
+import { IsNotNaNPipe } from '@critical-pass/core';
 import { ArrowBarModule } from './sidebars/arrow-bar/arrow-bar.module';
+import { SharedModule } from '@critical-pass/shared/components';
+import { ArrowSnapshotModule } from '@critical-pass/charts';
+import { ToastrModule } from 'ngx-toastr';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
     declarations: [
@@ -39,7 +48,18 @@ import { ArrowBarModule } from './sidebars/arrow-bar/arrow-bar.module';
         RouterModule,
         ProfileRoutingModule,
         ArrowBarModule,
+        ArrowSnapshotModule,
         SharedModule,
+        ToastrModule.forRoot(),
+
+        // Check if this is needed
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatIconModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatTooltipModule,
+       
     ],
     exports: [
         ActionButtonsComponent,

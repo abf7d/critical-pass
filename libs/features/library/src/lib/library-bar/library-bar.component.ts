@@ -30,7 +30,7 @@ export class LibraryBarComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private libraryStore: LibraryStoreService,
         private router: Router,
-        private projectStore: ProjectStorageApiService,
+        private storageApi: ProjectStorageApiService,
     ) {}
 
     public ngOnInit(): void {
@@ -58,7 +58,7 @@ export class LibraryBarComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl(`/library/(grid/${this.currentPage - 1}//sidebar:libar/${this.currentPage - 1})`);
     }
     public hasSavedWork(): boolean {
-        const proj = this.projectStore.get(API_CONST.LOCAL_STORAGE);
+        const proj = this.storageApi.get(API_CONST.LOCAL_STORAGE);
         return proj !== null;
     }
     public ngOnDestroy() {
@@ -67,7 +67,7 @@ export class LibraryBarComponent implements OnInit, OnDestroy {
         }
     }
     public peekStorage(): void {
-        this.peekProj = this.peekProj ?? this.projectStore.get(API_CONST.LOCAL_STORAGE);
+        this.peekProj = this.peekProj ?? this.storageApi.get(API_CONST.LOCAL_STORAGE);
     }
     public navigate(url: string): void {
         this.router.navigateByUrl(url);

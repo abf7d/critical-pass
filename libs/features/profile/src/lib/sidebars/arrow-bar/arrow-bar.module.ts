@@ -8,16 +8,9 @@ import { SelectedActivityComponent } from '../../components/selected-activity/se
 import { GraphOptionsComponent } from '../../components/graph-options/graph-options.component';
 import { RiskDecompressComponent } from '../../components/risk-decompress/risk-decompress.component';
 
-
-
 @NgModule({
-  declarations: [ ArrowBarComponent, SelectedActivityComponent, GraphOptionsComponent, RiskDecompressComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatDatepickerModule,
-    MatIconModule
-  ],
-  exports: [ArrowBarComponent, SelectedActivityComponent, GraphOptionsComponent, RiskDecompressComponent]
+    declarations: [ArrowBarComponent, SelectedActivityComponent, GraphOptionsComponent, RiskDecompressComponent],
+    imports: [CommonModule, FormsModule, MatDatepickerModule, MatIconModule],
+    exports: [ArrowBarComponent, SelectedActivityComponent, GraphOptionsComponent, RiskDecompressComponent],
 })
-export class ArrowBarModule { }
+export class ArrowBarModule {}

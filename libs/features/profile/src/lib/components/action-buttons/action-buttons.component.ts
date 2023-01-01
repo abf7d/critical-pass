@@ -3,18 +3,20 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 // import { ToastrService } from 'ngx-toastr';
 // import { ProjectManagerBase} from '@critical-pass/critical-charts';
-// import { ProjectStoreBase } from '@critical-pass/critical-charts'; 
+// import { ProjectStoreBase } from '@critical-pass/critical-charts';
 // import { Project } from '@critical-pass/critical-charts';
 // import { ProjectSerializerService } from '@critical-pass/critical-charts';
 import { Subscription } from 'rxjs';
 // import * as Keys from '../../../../../core/constants/keys';
 // import { ProjectSanatizerService } from '../../../services/utils/project-sanitizer/project-sanatizer.service';
-
+import { API_CONST, ProjectApiService } from '@critical-pass/shared/data-access';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import { Project } from '@critical-pass/project/models';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
 import { ToastrService } from 'ngx-toastr';
+import { ProjectStorageApiService } from '@critical-pass/shared/data-access';
+import {CORE_CONST} from '@critical-pass/core';
 
 @Component({
     selector: 'cp-action-buttons',
@@ -31,18 +33,17 @@ export class ActionButtonsComponent implements OnInit, OnDestroy {
     public actionText: string;
     public disableButtons!: boolean;
     public showHelp: boolean;
-    public timestamp!: Date;
+    public timestamp!: Date | null;
 
-    // import dashboardService and eventService
     constructor(
         private router: Router,
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
         @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
-        // @Inject('ProjectManagerBase') public pManager: ProjectManagerBase,
-        // @Inject('ProjectStoreBase') private store: ProjectStoreBase,
         private serializer: ProjectSerializerService,
         private sanitizer: ProjectSanatizerService,
-        public toastr: ToastrService
+        public toastr: ToastrService,
+        private storageApi: ProjectStorageApiService,
+        private projectApi: ProjectApiService
     ) {
         this.showHelp = false;
         this.actionText = '';
@@ -50,7 +51,7 @@ export class ActionButtonsComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
-        this.subscription = this.pManager.getProject(this.id).subscribe(project => {
+        this.subscription = this.dashboard.activeProject$.subscribe(project => {
             this.project = project;
             this.timestamp = project.profile.timestamp ? new Date(project.profile.timestamp) : null;
             this.disableButtons = !project.profile.permissions.writable || !!project.profile.parentProject;
@@ -59,13 +60,13 @@ export class ActionButtonsComponent implements OnInit, OnDestroy {
     }
 
     public peekStorage(): void {
-        this.peekProj = this.pManager.unstash();
+        this.peekProj = this.peekProj ?? this.storageApi.get(API_CONST.LOCAL_STORAGE);
     }
 
     public stash() {
         this.showPeek = false;
         try {
-            this.pManager.stash(this.project);
+            this.storageApi.set(API_CONST.LOCAL_STORAGE, this.project);
         } catch (ex) {
             this.toastr.error('Stash Chart', 'Error occured.');
             console.error(ex);
@@ -77,8 +78,10 @@ export class ActionButtonsComponent implements OnInit, OnDestroy {
     public unstash() {
         this.showPeek = false;
         try {
-            const project = this.pManager.unstash();
-            this.pManager.updateProject(this.id, project, false);
+            const project =  this.storageApi.get(API_CONST.LOCAL_STORAGE);
+            if (project) {
+                this.dashboard.activeProject$.next(project);
+            }
         } catch (ex) {
             this.toastr.error('Unstash Chart', 'Error occured.');
             console.error(ex);
@@ -92,18 +95,17 @@ export class ActionButtonsComponent implements OnInit, OnDestroy {
         this.sanitizer.sanatizeForSave(copy);
 
         if (!copy.profile.id) {
-            copy.profile.id = Keys.newProjectId;
+            copy.profile.id = CORE_CONST.NEW_PROJECT_ID;
         }
 
         this.setSaveState('Saving', '', true);
-        this.store.post(copy).subscribe(
+        this.projectApi.post(copy).subscribe(
             result => {
-                this.pManager.getChannel(Keys.clearChangeTracker).next(true);
-
+                this.eventService.get(CORE_CONST.CLEAR_CHANGE_TRACKER).next(true);
                 if (result !== null) {
                     this.project.profile.timestamp = result.profile.timestamp;
                     this.sanitizer.updateIds(this.project, result);
-                    this.pManager.updateProject(this.id, this.project, false);
+                    this.dashboard.updateProject(this.project, false);
                 }
                 this.setSaveState('', '', false, true);
                 this.toastr.success('Save Project', 'Success!');
@@ -119,23 +121,24 @@ export class ActionButtonsComponent implements OnInit, OnDestroy {
     public saveAsNew() {
         const copy = this.serializer.fromJson(this.project);
         this.sanitizer.sanatizeForSave(copy);
-        copy.profile.id = Keys.newProjectId;
+        copy.profile.id = CORE_CONST.NEW_PROJECT_ID;
 
         this.setSaveState('Saving', '', true);
-        this.store.post(copy).subscribe(
+        this.projectApi.post(copy).subscribe(
             result => {
-                this.pManager.getChannel(Keys.clearChangeTracker).next(true);
-                this.router.navigateByUrl(Keys.libraryRoute);
+                this.eventService.get(CORE_CONST.CLEAR_CHANGE_TRACKER).next(true);
+
+                this.router.navigateByUrl(CORE_CONST.LIBRARY_ROUTE);
                 if (result !== null) {
                     this.sanitizer.updateIds(this.project, result);
-                    this.pManager.updateProject(this.id, this.project, false);
+                    this.dashboard.updateProject(this.project, false);
                 }
                 this.setSaveState('', '', false, true);
                 this.toastr.success('Save Copy', 'Success!');
-             },
+            },
             error => {
                 this.setSaveState('', '', false, true);
-                this.toastr.error('Save Copy', 'Error')
+                this.toastr.error('Save Copy', 'Error');
                 console.error(error);
             },
         );
@@ -143,15 +146,15 @@ export class ActionButtonsComponent implements OnInit, OnDestroy {
     public delete() {
         this.disableButtons = true;
         this.actionText = 'Deleting Project';
-        this.pManager.getChannel(Keys.clearChangeTracker).next(true);
+        this.eventService.get(CORE_CONST.CLEAR_CHANGE_TRACKER).next(true);
 
-        this.store.delete(this.id).subscribe(
+        this.projectApi.delete(this.id).subscribe(
             _ => {
                 this.toastr.success('Delete Project', 'Success!');
-                this.router.navigateByUrl(Keys.libraryRoute);
+                this.router.navigateByUrl(CORE_CONST.LIBRARY_ROUTE);
             },
             error => {
-                this.toastr.error('Delete Project', 'Error')
+                this.toastr.error('Delete Project', 'Error');
                 console.error(error);
             },
         );

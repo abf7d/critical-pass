@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LoggerBase } from'@critical-pass/critical-charts'; 
-import { ProjectManagerBase} from '@critical-pass/critical-charts';
+import { LoggerBase } from '@critical-pass/critical-charts';
+import { ProjectManagerBase } from '@critical-pass/critical-charts';
 import { Project } from '@critical-pass/critical-charts';
 import { ActivitySorterService } from '@critical-pass/critical-charts';
 import { Subscription } from 'rxjs';
@@ -31,19 +31,22 @@ export class GridButtonsComponent implements OnInit {
         @Inject('LoggerBase') private logger: LoggerBase,
         private route: ActivatedRoute,
         private sorter: ActivitySorterService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
     ) {}
 
     public ngOnInit(): void {
-      this.id = this.route.snapshot.params.id;
-      this.showDummies = false;
-      this.subscription = this.pManager.getProject(this.id).pipe(filter(x => !!x)).subscribe( p => {
-        this.project = p;
-      });
+        this.id = this.route.snapshot.params.id;
+        this.showDummies = false;
+        this.subscription = this.pManager
+            .getProject(this.id)
+            .pipe(filter(x => !!x))
+            .subscribe(p => {
+                this.project = p;
+            });
     }
 
-    public ngOnDestroy(){
-      this.subscription && this.subscription.unsubscribe();
+    public ngOnDestroy() {
+        this.subscription && this.subscription.unsubscribe();
     }
     public addActivity() {
         // there should be an addActivity method on buttonEvents / controller, that should use project utils /manager/activity builder
@@ -98,12 +101,15 @@ export class GridButtonsComponent implements OnInit {
         this.pManager.updateProject(this.id, this.project, false);
     }
     public processCritPathFile(files: FileList) {
-      if (files.length > 0) {
-        this.fileManager.import(files.item(0)).then(project => {
-            this.pManager.updateProject(this.id, project, true)
-            this.toastr.success('Processing File', 'Success!');
-        }).catch(error =>  this.toastr.success('Processing File', 'Error occured'));
-      }
+        if (files.length > 0) {
+            this.fileManager
+                .import(files.item(0))
+                .then(project => {
+                    this.pManager.updateProject(this.id, project, true);
+                    this.toastr.success('Processing File', 'Success!');
+                })
+                .catch(error => this.toastr.success('Processing File', 'Error occured'));
+        }
     }
     public downloadCritPathFile() {
         this.fileManager.export(this.project);
@@ -113,4 +119,3 @@ export class GridButtonsComponent implements OnInit {
         this.pManager.getChannel(ChartKeys.viewDummiesInGridKey).next(this.showDummies);
     }
 }
-

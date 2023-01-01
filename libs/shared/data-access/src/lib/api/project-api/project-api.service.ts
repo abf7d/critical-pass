@@ -28,6 +28,18 @@ export class ProjectApiService {
             .pipe(map((data: any) => this.serialize(data)));
     }
 
+    public post(project: Project) {
+        const body = JSON.stringify(project);
+        const headers = new HttpHeaders().set('Content-Type', 'application/json');
+        return this.httpClient
+            .post<Project>(urlJoin(this.baseUrl, CONST.PROJECT_ENDPOINT), body, { headers })
+            .pipe(map(data => this.serializer.fromJson(data)));
+    }
+
+    public delete(id: number) {
+        return this.httpClient.delete(urlJoin(this.baseUrl, CONST.PROJECT_ENDPOINT, id.toString()));
+    }
+
     private serialize(data: any): ProjectLibrary {
         const count = data.headers.get('x-total-count');
         const items = data.body.map((item: any) => this.serializer.fromJson(item));

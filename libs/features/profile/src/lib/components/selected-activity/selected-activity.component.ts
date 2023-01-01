@@ -85,8 +85,8 @@ export class SelectedActivityComponent implements OnInit, OnDestroy {
         this.subgraphId = activity.subProject.subGraphId;
         this.isDummy = activity.chartInfo.isDummy;
 
-        // subGrpahId -1 is unitialized, 0 is initialized but not saved, 1 and greater 
-        // are projects that have been saved, -2 and less denote muliple created like 
+        // subGrpahId -1 is unitialized, 0 is initialized but not saved, 1 and greater
+        // are projects that have been saved, -2 and less denote muliple created like
         // in network analysis, but not saved
         this.subGraphButtonType = activity.subProject.subGraphId !== -1 ? 'load' : 'create';
     }

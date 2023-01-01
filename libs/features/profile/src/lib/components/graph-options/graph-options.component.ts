@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Project } from '@critical-pass/critical-charts';
-import { ProjectManagerBase } from '@critical-pass/critical-charts';
+import { Project } from '@critical-pass/project/models';
+import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -11,46 +11,62 @@ import { filter } from 'rxjs/operators';
     styleUrls: ['./graph-options.component.scss'],
 })
 export class GraphOptionsComponent implements OnInit, OnDestroy {
-    private data: Observable<any>;
-    public project: Project;
-    private id: number;
-    private subscription: Subscription;
-    test: string;
-    constructor(private route: ActivatedRoute, @Inject('ProjectManagerBase') private pManager: ProjectManagerBase) {}
+    private data!: Observable<any>;
+    public project!: Project | null;
+    private id!: number;
+    private subscription!: Subscription;
+    constructor(private route: ActivatedRoute, @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService) {}
 
     public ngOnInit() {
         this.project = null;
-        this.id = this.route.snapshot.params.id;
-        this.data = this.pManager.getProject(this.id);
+        this.id = this.route.snapshot.params['id'] as number;
+        this.data = this.dashboard.activeProject$;
         this.subscription = this.data.pipe(filter(x => !!x)).subscribe(project => {
             this.project = project;
         });
     }
     public updateProject() {
-        this.pManager.updateProject(this.id, this.project, true);
+        if (this.project !== null) {
+            this.dashboard.updateProject(this.project, true);
+        }
     }
     public ngOnDestroy() {
         this.subscription.unsubscribe();
     }
     public setArrowUperText(type: string) {
-        this.project.profile.view.displayText = type;
-        this.updateProject();
+        if (this.project !== null) {
+            this.project.profile.view.displayText = type;
+            this.updateProject();
+        }
     }
     public setNodeDisplayText(type: string) {
-        this.project.profile.view.showEftLft = type;
-        this.updateProject();
+        if (this.project !== null) {
+            this.project.profile.view.showEftLft = type;
+            this.updateProject();
+        }
     }
     public setArrowLowerText(type: string) {
-        this.project.profile.view.lowerArrowText = type;
-        this.updateProject();
+        if (this.project !== null) {
+            this.project.profile.view.lowerArrowText = type;
+            this.updateProject();
+        }
     }
     public isArrowUpperText(val: string): boolean {
-        return this.project.profile.view.displayText === val;
+        if (this.project !== null) {
+            return this.project.profile.view.displayText === val;
+        }
+        return false;
     }
     public istNodeDisplayText(type: string): boolean {
-        return this.project.profile.view.showEftLft === type;
+        if (this.project !== null) {
+            return this.project.profile.view.showEftLft === type;
+        }
+        return false;
     }
     public istNodeLowerText(type: string): boolean {
-        return this.project.profile.view.lowerArrowText === type;
+        if (this.project !== null) {
+            return this.project.profile.view.lowerArrowText === type;
+        }
+        return false;
     }
 }

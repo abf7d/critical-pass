@@ -66,3 +66,5 @@
 // export const ERROR_LOADING_CACHE = 'error-loading';
 
 export const CLEAR_CHANGE_TRACKER = 'project.changetracker.clear';
+export const NEW_PROJECT_ID = -1;
+export const LIBRARY_ROUTE = 'library/(grid/0//sidebar:libar/0)';

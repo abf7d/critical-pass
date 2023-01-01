@@ -18,10 +18,9 @@ export class RiskBarComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         this.decompressAmount = 0;
         this.eventService.get(CHART_KEYS.RISK_CURVE_TYPE).next(CHART_KEYS.ACTIVITY_RISK_KEY);
-        this.sub =
-            this.eventService.get<number>(CHART_KEYS.DECOMPRESS_AMOUNT).subscribe(amount => {
-                this.decompressAmount = amount;
-            });
+        this.sub = this.eventService.get<number>(CHART_KEYS.DECOMPRESS_AMOUNT).subscribe(amount => {
+            this.decompressAmount = amount;
+        });
     }
 
     public secondDervative() {

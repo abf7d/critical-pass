@@ -16,12 +16,10 @@ import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } 
             multi: true,
         },
         { provide: DASHBOARD_TOKEN, useClass: DashboardService },
-        { provide: EVENT_SERVICE_TOKEN, useClass: EventService}
+        { provide: EVENT_SERVICE_TOKEN, useClass: EventService },
         // { provide: 'LoggerBase', useClass: LoggerService },
         // { provide: 'HistoryFileManagerService', useClass: HistoryFileManagerService},
         // { provide: ProjectCompilerApiBase, useClass: ProjectCompilerApiService}
     ],
 })
 export class ExplorerLibModule {}
-
-
