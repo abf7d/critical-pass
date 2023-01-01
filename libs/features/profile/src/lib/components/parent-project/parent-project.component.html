@@ -1,0 +1,50 @@
+<div class="parent">
+    <div (click)="loadParent()">
+        <cp-arrow-snapshot [id]="'parent'" width="390" height="250"></cp-arrow-snapshot>
+    </div>
+
+    <div class="stats" *ngIf="parentProject != null">
+        <div class="main-stats">
+            <div class="arrowParent arrow-parent breadcrumb">
+                <span [hidden]="parentProject.profile.name === ''">
+                    <span class="arrowParentName">{{ parentProject.profile.name }}</span>
+                </span>
+                <span [hidden]="parentProject.profile.name !== ''">
+                    <span class="arrowParentName">[No Name]</span>
+                </span>
+                >
+                <span [hidden]="project.profile.name !== ''">
+                    <span class="arrowParentName">[No Name]</span>
+                </span>
+                <span [hidden]="project.profile.name === ''">
+                    <span class="arrowParentName">{{ project.profile.name }}</span>
+                </span>
+            </div>
+    
+            <div>
+                <div class="parent-risk-container">
+                    <!-- <div class="parent-risk"> <span>Criticality Risk:</span> <span>{{vm.reducedGraph.criticalityRisk}}</span></div>
+                <div class="parent-risk"> <span>Fibonacci Risk:</span><span>{{vm.reducedGraph.fibonacciRisk}}</span></div>
+                <div class="parent-risk"> <span>Activity Risk:</span><span>{{vm.reducedGraph.activityRisk}}</span></div>
+                <div class="parent-risk"> <span>LFT:</span><span>{{vm.reducedGraph.LFT}}</span></div> -->
+                </div>
+                <div class="arrow-parent-details">
+                    <div class="parent-count low">
+                        <div class="count-label ">Low Risk:</div> <div>{{ parentProject.profile.risk.greenCount }}</div>
+                    </div>
+                    <div class="parent-count medium">
+                        <div class="count-label  ">Medium Risk :</div><div>{{ parentProject.profile.risk.yellowCount }}</div>
+                    </div>
+                    <div class="parent-count high">
+                        <div class="count-label ">High Risk :</div><div>{{ parentProject.profile.risk.redCount }}</div>
+                    </div>
+                    <div class="parent-count critical">
+                        <div class="count-label ">Critical Risk:</div><div>{{ parentProject.profile.risk.criticalCount }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+

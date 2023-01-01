@@ -13,7 +13,7 @@
 // export const fibonacciRiskKey = 'fibonacci';
 // export const actualClass = 'actual';
 // export const plannedClass = 'planned';
-// export const shallowSregressionTypeKey = 'shallow.s.regression.type';
+
 // export const linearRegType = 'linear';
 // export const polynomialRegType = 'polynomial';
 // export const branchKey = 'project.tree.branch';
@@ -88,3 +88,11 @@
 // export const multiArrowCreationMode = 'multi';
 
 export const PARENT_KEY = 'parent';
+export const SHALLOW_S_REGRESSION_TYPE_KEY = 'shallow.s.regression.type';
+
+export const RISK_CURVE_TYPE = 'risk.curve.risk.type';
+export const ACTIVITY_RISK_KEY = 'activity';
+export const CRITICALITY_RISK_KEY = 'criticality';
+export const FIBONACCI_RISK_KEY = 'fibonacci';
+export const DECOMPRESS_AMOUNT = 'risk.curve.decompress.amount';
+export const TRIGGER_SECOND_DERIVATIVE = 'risk.curve.trigger.derivative';

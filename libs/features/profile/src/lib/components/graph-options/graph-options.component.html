@@ -1,0 +1,99 @@
+<div class="options" *ngIf="project !== null">
+    <div class="title">Arrow Text</div>
+    <div class="btn-group-toggle" data-toggle="buttons">
+        <div class="btn-group">
+            <label class="btn btn-secondary" [ngClass]="{'active': isArrowUpperText('name')}">
+                <input class="form-check-input"  (click)="setArrowUperText('name')" type="radio" id="name" value="name" name="top-text" />
+                Name
+            </label>
+            <label class="btn btn-secondary" [ngClass]="{'active': isArrowUpperText('id')}">
+                <input class="form-check-input" (click)="setArrowUperText('id')" type="radio" id="id" value="id" name="top-text" />
+                ID
+            </label>
+            <label class="btn btn-secondary" [ngClass]="{'active': isArrowUpperText('duration')}">
+                <input class="form-check-input" (click)="setArrowUperText('duration')" type="radio" id="duration" value="duration" name="top-text" />
+                Duration
+            </label>
+        </div>
+        <div class="btn-group">
+            <label class="btn btn-secondary" [ngClass]="{'active': isArrowUpperText('abbreviated')}">
+                <input class="form-check-input" (click)="setArrowUperText('abbreviated')" type="radio" id="abbrv" value="abbreviated" name="top-text" />
+                Abbrev.
+            </label>
+            <label class="btn btn-secondary" [ngClass]="{'active': isArrowUpperText('abbreviated')}">
+                <input class="form-check-input" (click)="setArrowUperText('resource')" type="radio" id="abbrv" value="abbreviated" name="top-text" />
+                Resource
+            </label>
+        </div>
+    </div>
+    <div class="title">Node Text</div>
+    <div class="btn-group-toggle" data-toggle="buttons">
+        <div class="btn-group">
+            <label class="btn btn-secondary active" [ngClass]="{'active': project.profile.view.showEftLft === 'none'}">
+                <input class="form-check-input"  (click)="setNodeDisplayText('none')" type="radio" id="none" value="none" name="top-text" />
+                None
+            </label>
+            <label class="btn btn-secondary" [ngClass]="{'active':  project.profile.view.showEftLft === 'eft'}" >
+                <input class="form-check-input" (click)="setNodeDisplayText('eft')" type="radio" id="eft" value="eft" name="top-text" />
+                EFT/LFT
+            </label>
+            <label class="btn btn-secondary" [ngClass]="{'active':  project.profile.view.showEftLft === 'pcd'}">
+                <input class="form-check-input" (click)="setNodeDisplayText('pcd')" type="radio" id="pcd" value="pcd" name="top-text" />
+                PCD
+            </label>
+        </div>
+        <div class="btn-group">
+            <label class="btn btn-secondary" [ngClass]="{'active':  project.profile.view.showEftLft === 'milestone'}">
+                <input class="form-check-input"  (click)="setNodeDisplayText('milestone')" type="radio" id="ms" value="ms" name="top-text" />
+                Milestone
+            </label>
+            <label class="btn btn-secondary" [ngClass]="{'active':  project.profile.view.showEftLft === 'label'}">
+                <input class="form-check-input"  (click)="setNodeDisplayText('label')" type="radio" id="lable" value="label" name="top-text" />
+                Label
+            </label>
+        </div>
+    </div>
+    <div class="title">Under Arrow Text</div>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary active" [ngClass]="{'active': istNodeLowerText('float')}" >
+            <input class="form-check-input" (click)="setArrowLowerText('float')" type="radio" id="float" value="float" name="bottom-text" />
+            Float
+        </label>
+        <label class="btn btn-secondary" [ngClass]="{'active': istNodeLowerText('none')}" >
+            <input class="form-check-input" (click)="setArrowLowerText('none')" type="radio" id="under-none" value="under-none" name="bottom-text" />
+            None
+        </label>
+    </div>
+    <div class="behaviors">
+        <div class="btn-group-toggle">
+            <label class="btn btn-secondary" [ngClass]="{'active': project.profile.view.showDummies}">
+                <input type="checkbox"  autocomplete="off" (click)="project.profile.view.showDummies = !project.profile.view.showDummies; updateProject()" />
+                {{ project.profile.view.showDummies ? "Hide Dummy Text": "Show Dummy Text" }} 
+            </label>
+        </div>
+        <div>
+            <div class="btn-group-toggle">
+                <label class="btn btn-secondary" [ngClass]="{'active': project.profile.view.showOrphaned}" >
+                    <input
+                        type="checkbox"
+                        autocomplete="off"
+                        (click)="project.profile.view.showOrphaned = !project.profile.view.showOrphaned; updateProject()"
+                    />
+                    {{project.profile.view.showOrphaned ? "Hide" : "Show"}} Orphaned Nodes
+                </label>
+            </div>
+        </div>
+        <div class="btn-group-toggle">
+            <label class="btn btn-secondary"  [ngClass]="{'active': project.profile.view.markCompleted}">
+                <input type="checkbox" autocomplete="off" (click)="project.profile.view.markCompleted = !project.profile.view.markCompleted; updateProject()" />
+                {{project.profile.view.markCompleted ? "Hide" : "Fade"}}  Completed
+            </label>
+        </div>
+        <div class="btn-group-toggle">
+            <label class="btn btn-secondary"  [ngClass]="{'active': project.profile.view.createAsDummy}">
+                <input type="checkbox" autocomplete="off" (click)="project.profile.view.createAsDummy = !project.profile.view.createAsDummy; updateProject()" />
+                Turn {{project.profile.view.createAsDummy ? "off" : "on"}} Dummy Mode
+            </label>
+        </div>
+    </div>
+</div>

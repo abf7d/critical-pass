@@ -1,0 +1,80 @@
+<div class="stats-container">
+    <div class="left">
+        <div class="inner-left">
+            <div class="text-form">
+                <div>Project Name</div>
+                <input class="form-control" type="text" [(ngModel)]="project.profile.name" />
+            </div>
+            <div class="text-form">
+                <div>Description</div>
+                <textarea class="form-control" id="projDescription" rows="3" [(ngModel)]="project.profile.description"></textarea>
+            </div>
+            <div class="risk-range">
+                <div>
+                    <div>
+                        <div class="range-title">Risk Range (Float)</div>
+                    </div>
+                    <div>
+                        <div>Red: <span class="start-range">1 -</span></div>
+                        <div><input [(ngModel)]="project.profile.redLimit" (ngModelChange)="updateProject()" class="form-control" type="number" /></div>
+                    </div>
+                    <div>
+                        <div>
+                            Yellow:<span class="start-range">{{ project.profile.redLimit + 1 }} -</span>
+                        </div>
+                        <div><input [(ngModel)]="project.profile.yellowLimit" (ngModelChange)="updateProject()" class="form-control" type="number" /></div>
+                    </div>
+                    <div>
+                        <div>Green:</div>
+                        <div>
+                            <span class="">+{{ project.profile.yellowLimit + 1 }} </span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div>
+                            <div class="range-title">Risk Weight</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Red:</div>
+                        <div><input [(ngModel)]="project.profile.risk.redWeight" (ngModelChange)="updateProject()" class="form-control" type="number" /></div>
+                    </div>
+                    <div>
+                        <div>Yellow:</div>
+                        <div>
+                            <input [(ngModel)]="project.profile.risk.yellowWeight" (ngModelChange)="updateProject()" class="form-control" type="number" />
+                        </div>
+                    </div>
+                    <div>
+                        <div>Green:</div>
+                        <div><input [(ngModel)]="project.profile.risk.greenWeight" (ngModelChange)="updateProject()" class="form-control" type="number" /></div>
+                    </div>
+                    <div>
+                        <div>Critical:</div>
+                        <div>
+                            <input [(ngModel)]="project.profile.risk.criticalWeight" (ngModelChange)="updateProject()" class="form-control" type="number" />
+                        </div>
+                    </div>
+                    <div>
+                        <div><span class="standard-dev">Abnormal Standard Deviation: </span></div>
+                        <div><input [(ngModel)]="project.profile.numStDev" (ngModelChange)="updateProject()" class="form-control" type="number" /></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+       
+    </div>
+</div>

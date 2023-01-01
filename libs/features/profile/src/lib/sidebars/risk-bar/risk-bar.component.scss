@@ -1,0 +1,32 @@
+* {
+    color: #bbb;
+}
+.risk-bar {
+    padding-left: 27px;
+    padding-right: 16px;
+    .title {
+        font-weight: bold;
+        font-size: 1rem;
+    }
+    & > div {
+        padding-bottom: 10px
+    }
+    input {color: #444;}
+    .behaviors {
+        .btn {
+            width: 100%;
+            text-align: left;
+            margin-top: 2px;
+            padding-left: 27px;
+            
+        }
+        margin-left: -28px;
+        width: 226px;
+        padding-bottom: 0px;
+    }
+    .type-title {
+        padding-top: 20px;
+        padding-bottom: 5px;
+    }
+    .btn {color: white;}
+}

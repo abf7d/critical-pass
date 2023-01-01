@@ -2,7 +2,7 @@
  * Public API Surface of critical-charts
  */
 
-export * as ChartKeys from './lib/constants/keys';
+export * as CHART_KEYS from './lib/constants/keys';
 // export * from './lib/services';
 // export * from './lib/models';
 // export * from './lib/pipes/is-nan-pipe';

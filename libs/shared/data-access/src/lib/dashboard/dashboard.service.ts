@@ -30,7 +30,7 @@ export class DashboardService {
     // public cacheProject(project: Project) {
     //     this._cache.set(project.profile.id, project);
     // }
-    public updateProject(project: Project) {
+    public updateProject(project: Project, compile: boolean = true) {
         this.compiler.compile(project);
         this._cache.set(project.profile.id, project);
         this._activeProject.next(project);

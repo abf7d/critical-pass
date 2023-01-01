@@ -1,1 +1,1 @@
-export * from './lib/shared-project-utils.module';
+export * from './lib/services/index';

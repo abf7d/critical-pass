@@ -1,0 +1,40 @@
+.options {
+    & > div {
+        padding-bottom: 1.1rem;
+        &.title {
+            padding-bottom: 0.3rem;
+        }
+    }
+    .title {
+        font-weight: bold;
+    }
+    .behaviors {
+        line-height: 1.6rem;
+    }
+
+    .btn-group {
+        margin-top: 1px;
+        margin-bottom: 1px;
+    }
+    .behaviors {
+        .btn {
+            width: 100%;
+            text-align: left;
+            margin-top: 2px;
+            padding-left: 27px;
+        }
+        margin-left: -28px;
+        width: 226px;
+        padding-bottom: 0px;
+    }
+}
+.btn-secondary:not(:disabled):not(.disabled):active.btn-secondary:focus, .btn-secondary.focus {
+    color: #fff;
+    background-color: #545b62;
+    border-color: #4e555b;
+}
+.btn-secondary.active:not(:disabled):not(.disabled):active.btn-secondary.active:focus, .btn-secondary.focus {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}

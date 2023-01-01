@@ -1,0 +1,23 @@
+<div class="sidebar-inner" ng-show="vm.projectDataVisible">
+    <a class="btn btn-secondary" (click)="addActivity()">Add Activity</a>
+    <span class="btn-group-toggle">
+        <label class="btn btn-secondary" [ngClass]="{'active': showDummies}">
+            <input type="checkbox"  autocomplete="off" (click)="toggleDummies()" />
+            {{ showDummies? 'Hide Dummies' : 'Show Dummies' }} 
+        </label>
+    </span>
+    <div class="title">Graph Building</div>
+    <a class="btn btn-secondary" (click)="buildArrowChart()">Generate Arrow Chart </a>
+    <a class="btn btn-secondary" (click)="msFileUpload.value=''; msFileUpload.click()">Upload MS Project File </a>
+    <a class="btn btn-secondary" (click)="crPaFileUpload.value=''; crPaFileUpload.click()">Load Critical Path File</a>
+    <input class="file-input" type="file" #crPaFileUpload (change)="processCritPathFile($event.target.files)" accept=".xlsx" />
+    <input class="file-input" type="file" #msFileUpload (change)="processMsProjectFile($event.target.files)" accept=".mpp"/>
+    <a class="btn btn-secondary" (click)="downloadCritPathFile()">Download Csv File </a>
+    <div class="title">Data Population</div>
+    <a class="btn btn-secondary" (click)="setDependencyDataFromGraph()">Update Dependencies</a>
+    <a class="btn btn-secondary" (click)="resetIds()">Reset Ids</a>
+    <a class="btn btn-secondary" (click)="autogeneratePcds()">Gen PCD</a>
+    <div class="overlay" [hidden]="!isProcessing">
+        <div class="overlay-txt">Processing</div>
+    </div>
+</div>

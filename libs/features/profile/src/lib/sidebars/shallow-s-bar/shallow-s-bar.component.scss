@@ -1,0 +1,45 @@
+.shallow-s-bar {
+    padding-left: 27px;
+    padding-right: 16px;
+    .title-top {
+        font-weight: bold;
+        font-size: 1rem;
+    }
+    .title {
+        font-weight: bold;
+    }
+    & > div {
+        margin-bottom: 20px;
+    }
+    *:not(label) {
+        color: #bbb;
+    }
+
+    .behaviors {
+        .btn {
+            width: 100%;
+            text-align: left;
+            margin-top: 2px;
+            padding-left: 27px;
+            color: #fff;
+        }
+        .full {
+            width: 100%;
+        }
+        margin-left: -28px;
+        width: 226px;
+        padding-bottom: 0px;
+    }
+    .exprapolate {
+       
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+    .exprapolate.active {
+        background-color: #414549;
+        border-color: #50585f;
+    }
+    .t-container {
+        margin-bottom: 5px;
+    }
+}

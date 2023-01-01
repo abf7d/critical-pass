@@ -1,0 +1,62 @@
+<div class="shallow-s-bar" *ngIf="!!project">
+    <div class="title-top">Shallow S</div>
+
+    <div class="btn-group-toggle btn-group" data-toggle="buttons">
+        <label class="btn btn-secondary active" [ngClass]="{ active: !project.profile.view.showStepChart }">
+            <input class="form-check-input" (click)="setChartType('line')" type="radio" value="line" name="type" />
+            Line
+        </label>
+        <label class="btn btn-secondary" [ngClass]="{ active: project.profile.view.showStepChart }">
+            <input class="form-check-input" (click)="setChartType('step')" type="radio" value="step" name="type" />
+            Step
+        </label>
+    </div>
+
+    <div class="t-container">
+        <div class="title">Trendlines</div>
+    </div>
+
+    <div class="btn-group-toggle" data-toggle="buttons">
+        <div class="btn-group active">
+            <label class="btn btn-secondary" [ngClass]="{ active: (regType$ | async) === 'linear' || !(regType$ | async) }">
+                <input class="form-check-input" (click)="setRegressionType('linear')" type="radio" id="name" value="name" name="reg" />
+                Linear
+            </label>
+            <label class="btn btn-secondary" [ngClass]="{ active: (regType$ | async) === 'polynomial' }">
+                <input class="form-check-input" (click)="setRegressionType('polynomial')" type="radio" id="id" value="id" name="reg" />
+                Polynomial
+            </label>
+        </div>
+        <div class="btn-group">
+            <label class="btn btn-secondary" disabled>
+                <input class="form-check-input" disabled type="radio" id="duration" value="duration" name="reg" />
+                Best Fit
+            </label>
+        </div>
+    </div>
+    <div class="btn-group-toggle behaviors">
+        <label class="btn btn-secondary exprapolate" [ngClass]="{ active: this.project.profile.view.showOverrun }">
+            <input type="checkbox" (click)="setExtrapolate(!this.project.profile.view.showOverrun)" />
+            Extrapolate
+        </label>
+    </div>
+
+    <div class="t-container">
+        <div class="title">First Point</div>
+    </div>
+
+    <div class="btn-group-toggle behaviors" data-toggle="buttons">
+        <div class="btn-group full">
+            <label class="btn btn-secondary active" [ngClass]="{ active: !this.project.profile.view.useStartDates }">
+                <input class="form-check-input" (click)="setStartType('completion')" type="radio" value="completion" name="start" />
+                First Completion
+            </label>
+        </div>
+        <div class="btn-group full">
+            <label class="btn btn-secondary" [ngClass]="{ active: this.project.profile.view.useStartDates }">
+                <input class="form-check-input" (click)="setStartType('start')" type="radio" value="start" name="start" />
+                Earilest Start
+            </label>
+        </div>
+    </div>
+</div>

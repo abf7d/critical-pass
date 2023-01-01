@@ -4,7 +4,7 @@ import { Resolve } from '@angular/router';
 
 import { ActivatedRouteSnapshot } from '@angular/router';
 // import { ProjectStoreService } from '../../features/projects/services/api/project-store/project-store.service';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 // import * as Keys from '../constants/keys';
 import { of } from 'rxjs';
 import { ProjectApiService } from '../..';
@@ -20,14 +20,17 @@ export class ProjectResolver implements Resolve<any> {
 
     resolve(route: ActivatedRouteSnapshot) {
         if (+route.params['id'] === CONST.IMPORT_ROUTE_PARAM_ID) {
-            const imported = this.projStore.tempUnstore();
-            const bs = this.projStore.get(CONST.IMPORT_ROUTE_PARAM_ID);
-            bs.next(imported);
+            const imported = this.storageApi.get(CONST.SESSION_STORAGE); //this.projStore.tempUnstore();
+            const bs = this.dashboard.activeProject$; //this.projStore.get(CONST.IMPORT_ROUTE_PARAM_ID);
+            if (imported !== null) bs.next(imported);
             return bs.pipe(first());
             // returnbs.pipe(first());
             // return of(imported);
         } else {
-            return this.projStore.load(route.params.id).pipe(first());
+            return this.projectApi.get(route.params['id']).pipe(
+                tap(x => this.dashboard.activeProject$.next(x)),
+                first(),
+            ); //this.projStore.load(route.params.id).pipe(first());
         }
     }
 }

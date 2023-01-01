@@ -1,0 +1,29 @@
+.parent {
+    display: flex;
+    flex-direction: column;
+}
+.low,
+.medium,
+.high,
+.critical {
+    font-weight: bold;
+}
+.low {
+    color: #7c7;
+}
+.medium {
+    color: rgb(192, 192, 15);
+}
+.high {
+    color: #f44;
+}
+.critical {
+    color: #555;
+}
+.parent-count {
+    display: flex;
+    flex-direction: row;
+    & > div {
+        width: 94px;
+    }
+}

@@ -1,0 +1,157 @@
+.proj-form {
+    padding-left: 45px;
+}
+.risk-settings {
+    padding-left: 53px;
+    margin-top: 30px;
+}
+.red-range {
+    margin-left: -19px;
+}
+
+.inner-left {
+    grid-column: 1/2;
+    grid-row: 1/2;
+    display: grid;
+    grid-template-rows: 80px 120px 2fr;
+}
+
+.stats-container {
+    width: 1180px;
+    // height: 639px;
+    // background-color: #aaa;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    background-color: white;
+    /*[sidebar-start] 8rem [sidebar-end full-start]
+         minmax(6rem, 1fr) [center-start]
+         repeat(8, [col-start] minmax(min-content, 14rem) [col-end])
+         [center-end] minmax(6rem, 1fr) [full-end]; */
+}
+.left {
+    margin: 30px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+.left > div {
+    // border: 1px solid red;
+    padding: 17px;
+}
+.right > div {
+    // border: 1px solid red;
+    margin: 33px;
+    margin-left: 27px;
+}
+
+.right {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    // border: 1px solid red;
+}
+
+.text-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.risk-range {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+.risk-range > div {
+    // border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+}
+.risk-range > div > div {
+    // border: 1px solid red;
+    flex: 1;
+    display: flex;
+    padding: 13px;
+    align-items: center;
+}
+.risk-range > div > div > div {
+    /* border: 1px solid red; */
+    /* height: 100%; */
+    /* flex: 1; */
+}
+
+.risk-range > div > div > div:first-child {
+    /* border: 1px solid red; */
+    /* height: 100%; */
+    width: 75px;
+    align-self: right;
+}
+.risk-range > div > div > div:nth-child(2) {
+    /* border: 1px solid red; */
+    /* height: 100%; */
+    width: 100px;
+    align-self: right;
+}
+.standard-dev {
+    padding-right: 10px;
+}
+.right {
+    display: grid;
+    grid-template-rows: 300px 1fr 240px;
+    // border: 1px solid red;
+    border-left: none;
+}
+.right > div {
+    flex: 1;
+}
+
+.sub-projects {
+    margin: 10px;
+    margin-left: 0px;
+}
+.sub-projects td,
+.sub-projects th {
+    padding: 7px;
+    padding-left: 0px;
+}
+.sub-projects .subproj-name {
+    width: 290px;
+}
+.subproj-risk,
+.subproj-eft {
+    text-align: right;
+}
+
+.config-stats {
+    display: flex;
+    flex-direction: row;
+}
+.config-stats-col {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+}
+.config-stats-col > div {
+    display: flex;
+    height: 35px;
+}
+.other-risk-title {
+    height: 35px;
+    font-weight: bold;
+}
+.other-risk {
+    background-color: #f5f5f5;
+    padding: 20px;
+    margin-top: 0px;
+}
+.start-range {
+    float: right;
+    padding-right: 10px;
+}
+.risk-range > div > div > div.range-title {
+    width: 100%;
+    align-self: right;
+}
+.right {
+    background-color: #fcfcfc;
+    border: 1px solid #ddd;
+}
