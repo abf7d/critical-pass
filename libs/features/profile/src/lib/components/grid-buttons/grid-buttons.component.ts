@@ -15,7 +15,7 @@ import { ActivitySorterService, ProjectCompilerService } from '@critical-pass/pr
 import { ProjectFileManagerService } from '@critical-pass/shared/file-management';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import { ActivityBuilder, DependencyCrawlerService, IdGeneratorService, PcdAutogenService } from '@critical-pass/shared/project-utils';
-import * as CONST from '../../constants/constants'
+import * as CONST from '../../constants/constants';
 @Component({
     selector: 'cp-grid-buttons',
     templateUrl: './grid-buttons.component.html',
@@ -119,7 +119,7 @@ export class GridButtonsComponent implements OnInit {
             this.idGenerator.resetIds(this.project);
             this.depCrawler.setDependencyDataFromGraph(this.project);
             this.sorter.reorderIds(this.project);
-            this.dashboard.updateProject( this.project, false);
+            this.dashboard.updateProject(this.project, false);
         }
     }
     public processCritPathFile(files: FileList) {
