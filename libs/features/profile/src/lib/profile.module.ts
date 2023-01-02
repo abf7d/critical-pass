@@ -28,7 +28,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -64,7 +64,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
         MatTooltipModule,
 
         ArrowSnapshotModule,
-
     ],
     exports: [ActionButtonsComponent, SelectedActivityComponent],
 })

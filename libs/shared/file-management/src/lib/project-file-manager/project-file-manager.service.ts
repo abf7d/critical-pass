@@ -6,7 +6,7 @@ import * as XLSX from 'xlsx';
 import { FileManagerBaseService } from '../file-manager-base.service';
 import { ProjectMapperService } from './project-mapper/project-mapper.service';
 import { Project } from '@critical-pass/project/models';
-import * as CONST from '../constants'
+import * as CONST from '../constants';
 
 @Injectable({
     providedIn: 'root',
