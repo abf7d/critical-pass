@@ -10,15 +10,15 @@ export class ParentCompilerService {
     constructor(private dateUtils: DateUtilsService, private riskCompiler: RiskCompilerService /*, private parentRiskRefresh: ParentRiskRefreshService*/) {}
 
     public compile(project: Project): void {
-      if(project.profile.parentProject !== null) {
-        this.riskCompiler.compileRiskProperties(project);
-        this.dateUtils.calculateEarliestFinishDate(project);
-        this.updateParentRisk(project);
-        this.riskCompiler.compileRiskProperties(project.profile.parentProject);
-        this.dateUtils.calculateEarliestFinishDate(project.profile.parentProject);
-      } else {
-        console.error('No parent project found for project: ' + project.profile.id);
-      }
+        if (project.profile.parentProject !== null) {
+            this.riskCompiler.compileRiskProperties(project);
+            this.dateUtils.calculateEarliestFinishDate(project);
+            this.updateParentRisk(project);
+            this.riskCompiler.compileRiskProperties(project.profile.parentProject);
+            this.dateUtils.calculateEarliestFinishDate(project.profile.parentProject);
+        } else {
+            console.error('No parent project found for project: ' + project.profile.id);
+        }
     }
 
     public updateParentRisk(project: Project) {

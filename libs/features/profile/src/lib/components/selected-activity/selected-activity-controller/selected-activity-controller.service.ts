@@ -135,11 +135,10 @@ export class SelectedActivityControllerService {
             if (childProject) {
                 this.loadChildAndParentProjects(activity, curProj, childProject, projectPool);
             } else {
-            // this.projectStore
-            //     .load(activity.subProject.subGraphId)
-            //     .pipe(filter(x => !!x))
-            this.projectApi.get(activity.subProject.subGraphId)
-                .subscribe(childProject => {
+                // this.projectStore
+                //     .load(activity.subProject.subGraphId)
+                //     .pipe(filter(x => !!x))
+                this.projectApi.get(activity.subProject.subGraphId).subscribe(childProject => {
                     this.loadChildAndParentProjects(activity, curProj, childProject, projectPool);
                     // childProject.profile.parentProject = curProj;
                     // activity.subProject.subGraphLoaded = childProject;
@@ -196,7 +195,7 @@ export class SelectedActivityControllerService {
         // the count so the next project id can be determined
         // const subProjCount$ = this.pManager.getChannel(AppKeys.networkSubProjTracker);
         const subProjCount$ = this.eventService.get<number>(UTIL_CONST.NETWORK_SUB_PROJECT_TRACKER);
-        
+
         // const subProj = new ProjectSerializerService().fromJson(null);
         const subProj = this.projectSerializer.fromJson(null);
         let subProjCount = subProjCount$.getValue();
