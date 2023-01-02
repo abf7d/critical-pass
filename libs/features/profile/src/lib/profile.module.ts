@@ -27,6 +27,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+
 @NgModule({
     declarations: [
         ProfileLayoutComponent,
@@ -49,9 +52,8 @@ import { CommonModule } from '@angular/common';
         CommonModule,
         ProfileRoutingModule,
         ArrowBarModule,
-        ArrowSnapshotModule,
         SharedModule,
-        ToastrModule.forRoot(),
+        FormsModule,
 
         // Check if this is needed
         MatDatepickerModule,
@@ -60,6 +62,9 @@ import { CommonModule } from '@angular/common';
         MatInputModule,
         MatFormFieldModule,
         MatTooltipModule,
+
+        ArrowSnapshotModule,
+
     ],
     exports: [ActionButtonsComponent, SelectedActivityComponent],
 })

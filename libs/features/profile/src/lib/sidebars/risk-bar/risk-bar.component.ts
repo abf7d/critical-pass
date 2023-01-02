@@ -27,9 +27,9 @@ export class RiskBarComponent implements OnInit, OnDestroy {
         this.eventService.get(CHART_KEYS.TRIGGER_SECOND_DERIVATIVE).next(true);
     }
 
-    public changeRisk(amount: string) {
-        this.decompressAmount = +amount;
-        this.eventService.get(CHART_KEYS.DECOMPRESS_AMOUNT).next(+amount);
+    public changeRisk(event: any) {
+        this.decompressAmount = +event.value;
+        this.eventService.get(CHART_KEYS.DECOMPRESS_AMOUNT).next(+event.value);
     }
 
     public changeRiskType(type: string) {

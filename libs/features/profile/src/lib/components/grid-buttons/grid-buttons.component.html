@@ -10,8 +10,8 @@
     <a class="btn btn-secondary" (click)="buildArrowChart()">Generate Arrow Chart </a>
     <a class="btn btn-secondary" (click)="msFileUpload.value=''; msFileUpload.click()">Upload MS Project File </a>
     <a class="btn btn-secondary" (click)="crPaFileUpload.value=''; crPaFileUpload.click()">Load Critical Path File</a>
-    <input class="file-input" type="file" #crPaFileUpload (change)="processCritPathFile($event.target.files)" accept=".xlsx" />
-    <input class="file-input" type="file" #msFileUpload (change)="processMsProjectFile($event.target.files)" accept=".mpp"/>
+    <input class="file-input" type="file" #crPaFileUpload (change)="processCritPathFile($event.target)" accept=".xlsx" />
+    <input class="file-input" type="file" #msFileUpload (change)="processMsProjectFile($event.target)" accept=".mpp"/>
     <a class="btn btn-secondary" (click)="downloadCritPathFile()">Download Csv File </a>
     <div class="title">Data Population</div>
     <a class="btn btn-secondary" (click)="setDependencyDataFromGraph()">Update Dependencies</a>

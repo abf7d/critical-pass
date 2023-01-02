@@ -36,12 +36,12 @@ export class RiskDecompressComponent implements OnInit {
         this.dashboard.updateProject(this.project, true);
     }
 
-    public setStart(start: string): void {
-        this.project.profile.start = +start;
+    public setStart(event: any): void {
+        this.project.profile.start = +event.value;
         this.dashboard.updateProject(this.project, true);
     }
-    public setEnd(end: string): void {
-        this.project.profile.end = +end;
+    public setEnd(event: any): void {
+        this.project.profile.end = +event.value;
         this.dashboard.updateProject(this.project, true);
     }
 

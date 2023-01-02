@@ -77,7 +77,8 @@ export class GridButtonsComponent implements OnInit {
             },
         );
     }
-    public processMsProjectFile(files: FileList) {
+    public processMsProjectFile(event: any) {
+        const files = event.files as FileList;
         if (files.length > 0) {
             this.isProcessing = true;
             const firstFile = files.item(0);
@@ -121,7 +122,8 @@ export class GridButtonsComponent implements OnInit {
             this.dashboard.updateProject(this.project, false);
         }
     }
-    public processCritPathFile(files: FileList) {
+    public processCritPathFile(event: any) {
+        const files = event.files as FileList;
         const firstFile = files.item(0);
 
         if (firstFile !== null && files.length > 0) {

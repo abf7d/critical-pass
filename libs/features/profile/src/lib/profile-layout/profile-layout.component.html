@@ -6,43 +6,49 @@
       </div>
       <div class="small-chart">
         <a [routerLink]="['/profile', { outlets: {sidebar: ['arrow', id]} }]">
-          <cp-arrow-snapshot [id]="id" width="390" height="250"></cp-arrow-snapshot>
+          <cp-arrow-snapshot [id]="id" [width]="390" [height]="250"></cp-arrow-snapshot>
         </a>
       </div>
       <div class="small-chart">
         <a [routerLink]="['/profile', { outlets: {sidebar: ['shallows', id]} }]">
-          <cp-shallow-s-snapshot [id]="id" width="390" height="250"></cp-shallow-s-snapshot>
+          <!-- <cp-shallow-s-snapshot [id]="id" [width]="390" [height]="250"></cp-shallow-s-snapshot> -->
+          Test Shallow S
         </a>
       </div>
       <div class="small-chart">
         <a [routerLink]="['/profile', { outlets: {sidebar: ['metadata', id]} }]">
-          <cp-score-board [id]="id"></cp-score-board>
+          <!-- <cp-score-board [id]="id"></cp-score-board> -->
+          Test Scoreboard
         </a>
       </div>
       <div class="current-view">
-        <cp-arrow-chart [hidden]="subRoute !== 'arrow'" [id]="id" width="1214" height="700" [rebuild]="true"></cp-arrow-chart>
+        <!-- <cp-arrow-chart [hidden]="subRoute !== 'arrow'" [id]="id" width="1214" height="700" [rebuild]="true"></cp-arrow-chart>
         <ng-container [ngSwitch]="subRoute">
           <cp-shallow-s *ngSwitchCase="'shallows'" [id]="id" width="1214" height="700" ></cp-shallow-s>
           <cp-risk-curve *ngSwitchCase="'risk'" [id]="id" width="1214" height="700"></cp-risk-curve>
           <cp-activity-grid *ngSwitchCase="'grid'" [id]="id"></cp-activity-grid>
           <cp-stacked-resources *ngSwitchCase="'stacked'"[id]="id" width="1214" height="700" barWidth="60" [showAxes]="true" [margin]="{top:20, right: 50, left: 20, bottom: 130}"></cp-stacked-resources>
           <cp-project-metadata *ngSwitchCase="'metadata'" [id]="id"></cp-project-metadata>
-        </ng-container>
+        </ng-container> -->
+        Test Current View
       </div>
       <div class="right-content">
         <div class="right-chart">
           <a [routerLink]="['/profile', { outlets: {sidebar: ['risk', id]} }]">
-            <cp-risk-donut width="390" height="320" [id]="id"></cp-risk-donut> 
+            <!-- <cp-risk-donut width="390" height="320" [id]="id"></cp-risk-donut>  -->
+            Test Risk Donut
           </a>
         </div>
         <div class="right-chart">
           <a [routerLink]="['/profile', { outlets: {sidebar: ['stacked', id]} }]">
-            <cp-stacked-resources [id]="id" width="390" height="250" barWidth="10" [showAxes]="false" [margin]="{top:15, right: 15, left: 15, bottom: 15}"></cp-stacked-resources>
+            <!-- <cp-stacked-resources [id]="id" width="390" height="250" barWidth="10" [showAxes]="false" [margin]="{top:15, right: 15, left: 15, bottom: 15}"></cp-stacked-resources> -->
+            Test Stacked Resources
           </a>
         </div>
         <div class="right-chart">
           <a [routerLink]="['/profile', { outlets: {  sidebar: ['arrow', id] } }]">
-              <cp-parent-project [width]="390" [height]="250" [id]="id"></cp-parent-project>
+              <!-- <cp-parent-project [width]="390" [height]="250" [id]="id"></cp-parent-project> -->
+              Test Parent Project
           </a>
         </div>
       </div>
