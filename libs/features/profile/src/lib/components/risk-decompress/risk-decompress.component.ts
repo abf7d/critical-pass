@@ -27,7 +27,7 @@ export class RiskDecompressComponent implements OnInit {
             this.project = project;
             if (project.profile.start !== undefined) this.start = project.profile.start;
             if (project.profile.end !== undefined) this.end = project.profile.end;
-            this.enableArranging = true; 
+            this.enableArranging = true;
         });
     }
 

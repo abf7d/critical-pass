@@ -29,6 +29,5 @@ export class ZametekApiService {
                 headers: headers,
             })
             .pipe(map(x => (!!x ? this.projectSerializer.fromJson(x) : null)));
-
     }
 }

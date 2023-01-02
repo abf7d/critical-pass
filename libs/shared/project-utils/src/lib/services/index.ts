@@ -5,3 +5,5 @@ export * from './pcd-autogen/pcd-autogen.service';
 export * from './id-generator/id-generator.service';
 export * from './file-compiler/file-compiler.service';
 export * from './end-nodes-locator/end-nodes-locator.service';
+export * from './milestone-factory/milestone-factory.service';
+export * from './parent-compiler/parent-compiler.service';

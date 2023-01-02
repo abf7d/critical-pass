@@ -11,3 +11,4 @@ export * from './risk-compiler/risk-compiler.service';
 // export * from './file-managers/network-file-manager/network-file-manager.service';
 // export * from './file-managers/project-file-manager/project-file-manager.service';
 // export * from './project-extractor/project-extractor.service';
+export * from './date-utils/date-utils.service';

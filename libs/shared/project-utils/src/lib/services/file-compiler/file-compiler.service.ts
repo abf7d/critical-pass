@@ -5,22 +5,21 @@ import { EndNodesLocatorService } from '../end-nodes-locator/end-nodes-locator.s
 import { NodeArrangerService } from '../node-arranger/node-arranger.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class FileCompilerService {
-
-  constructor(
-    private nodeConstructor: NodeConnectorService,
-    private riskCompiler: RiskCompilerService,
-    private endNodesLocator: EndNodesLocatorService,
-    private nodeArranger: NodeArrangerService,
-    private activitySorter: ActivitySorterService,
-  ) { }
-  compileProjectFromFile(project: Project) {
-      this.nodeConstructor.connectArrowsToNodes(project);
-      this.endNodesLocator.setStartEndNodesFromLongestPath(project);
-      this.riskCompiler.compileRiskProperties(project);
-      this.nodeArranger.arrangeNodes(project);
-      this.activitySorter.sortDummiesLast(project);
-  }
+    constructor(
+        private nodeConstructor: NodeConnectorService,
+        private riskCompiler: RiskCompilerService,
+        private endNodesLocator: EndNodesLocatorService,
+        private nodeArranger: NodeArrangerService,
+        private activitySorter: ActivitySorterService,
+    ) {}
+    compileProjectFromFile(project: Project) {
+        this.nodeConstructor.connectArrowsToNodes(project);
+        this.endNodesLocator.setStartEndNodesFromLongestPath(project);
+        this.riskCompiler.compileRiskProperties(project);
+        this.nodeArranger.arrangeNodes(project);
+        this.activitySorter.sortDummiesLast(project);
+    }
 }

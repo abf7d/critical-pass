@@ -5,11 +5,11 @@
     </div>
     <div>
         <div>Label</div>
-        <div><input (input)="setLabel($event.target.value)" [ngModel]="label" type="text" /></div>
+        <div><input (input)="setLabel($event.target)" [ngModel]="label" type="text" /></div>
     </div>
     <div>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="isNDummy" id="isNDummy" [(ngModel)]="isNDummy" (change)="setIsNDummy($event.target.checked)" />
+            <input class="form-check-input" type="checkbox" name="isNDummy" id="isNDummy" [(ngModel)]="isNDummy" (change)="setIsNDummy($event.target)" />
             <label class="form-check-label" for="isNDummy"> Is Dummy </label>
         </div>
     </div>
@@ -26,11 +26,11 @@
 <div class="form keep-selected-item" [hidden]="!showPanel">
     <div>
         <div>Name</div>
-        <div><input #activityName (input)="setName($event.target.value)" [ngModel]="name" type="text" /></div>
+        <div><input #activityName (input)="setName($event.target)" [ngModel]="name" type="text" /></div>
     </div>
     <div>
         <div>Duration</div>
-        <div><input (input)="setDuration($event.target.value)" type="number" [ngModel]="duration" /></div>
+        <div><input (input)="setDuration($event.target)" type="number" [ngModel]="duration" /></div>
     </div>
     <div>
         <div>Planned Completion Date</div>
@@ -54,11 +54,11 @@
     </div>
     <div>
         <div>Sub Project</div>
-        <div><input [(ngModel)]="subgraphId" (change)="setSubGraphId($event.target.value)" type="number" /></div>
+        <div><input [(ngModel)]="subgraphId" (change)="setSubGraphId($event.target)" type="number" /></div>
     </div>
     <div>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="isDummy" id="isDummy" [(ngModel)]="isDummy" (change)="setIsDummy($event.target.checked)" />
+            <input class="form-check-input" type="checkbox" name="isDummy" id="isDummy" [(ngModel)]="isDummy" (change)="setIsDummy($event.target)" />
             <label class="form-check-label" for="isDummy"> Is Dummy </label>
         </div>
     </div>

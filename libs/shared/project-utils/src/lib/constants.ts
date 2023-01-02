@@ -78,3 +78,9 @@
 // export const nodeColName = 'nodeId';
 // export const subArrowCreationMode = 'sub';
 // export const multiArrowCreationMode = 'multi';
+
+export const ACTIVITY_CREATED_KEY = 'arrow.create.focus';
+// export const networkSubProjTracker = 'network.sub.proj.tracker';
+export const NETWORK_SUB_PROJECT_TRACKER = 'network.sub.proj.tracker';
+// export const createdProject = 'created.project';
+export const CREATED_PROJECT = 'created.project';

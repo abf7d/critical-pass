@@ -7,3 +7,4 @@ export const PROJECT_ENDPOINT: string = 'project';
 export const LIBRARY_ENDPOINT: string = 'project/library';
 export const MS_PROJECT_COMPILE_ENDPOINT: string = 'MsProject/Import';
 export const BUILD_ARROW_GRAPH_ENDPOINT: string = 'MsProject/ArrowGraph';
+export const UPDATE_PARENT_PROJECT_KEY = 'project.parent.update';

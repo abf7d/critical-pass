@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Input } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, Input } from '@angular/core';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Activity } from '@critical-pass/critical-charts';
-import { Integration } from '@critical-pass/critical-charts';
-import { Project } from '@critical-pass/critical-charts';
+import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { SelectedActivityControllerService } from './selected-activity-controller/selected-activity-controller.service';
@@ -11,54 +10,51 @@ import { SelectedActivityControllerService } from './selected-activity-controlle
 @Component({
     selector: 'cp-selected-activity',
     templateUrl: './selected-activity.component.html',
+    providers: [ProjectSerializerService],
     styleUrls: ['./selected-activity.component.scss'],
 })
 export class SelectedActivityComponent implements OnInit, OnDestroy {
-    private id: number;
-    private sub: Subscription;
-    private cActSub: Subscription;
+    private sub!: Subscription;
+    private cActSub!: Subscription;
 
-    public project: Project;
-    public activity: Activity;
-    public duration: number;
-    public name: string;
-    public pcd: Date;
-    public finish: Date;
-    public subgraphId: number;
-    public isDummy: boolean;
+    public project!: Project;
+    public activity: Activity | null = null;
+    public duration!: number;
+    public name!: string;
+    public pcd!: Date;
+    public finish!: Date;
+    public subgraphId!: number;
+    public isDummy!: boolean;
     public subGraphButtonType: any;
-    public showPanel: boolean;
-    public selectedNode: Integration;
-    public label: string;
-    public isNDummy: boolean;
-    public isMilestone: boolean;
+    public showPanel!: boolean;
+    public selectedNode: Integration | null = null;
+    public label!: string;
+    public isNDummy!: boolean;
+    public isMilestone!: boolean;
 
-    @Input() projectPool: Project[] = null;
-    @ViewChild('activityName', { static: true }) activityName;
+    @Input() projectPool!: Project[];
+    @ViewChild('activityName', { static: true }) activityName!: ElementRef;
     constructor(private controller: SelectedActivityControllerService, private route: ActivatedRoute, private cd: ChangeDetectorRef) {}
 
     ngOnInit() {
-        this.id = this.route.snapshot.params.id;
-        if (this.id == null) {
-            return;
-        }
-        this.controller.ngOnInit(this.id);
+        this.controller.ngOnInit();
         this.cActSub = this.controller.drawChannel$.pipe(filter(x => !!x)).subscribe(trigger => {
             this.activityName.nativeElement.focus();
             this.activityName.nativeElement.select();
         });
-        this.sub = this.controller.data$.pipe(filter(x => !!x)).subscribe(project => {
+        this.sub = this.controller.activeProject$.pipe(filter(x => !!x)).subscribe(project => {
             this.project = project;
-            this.activity = project.profile.view.selectedActivity;
-            this.selectedNode = project.profile.view.selectedIntegration;
-            this.loadSelectedActivity(this.activity);
+            this.activity = project.profile.view.selectedActivity ?? null;
+            this.selectedNode = project.profile.view.selectedIntegration ?? null;
+            if (this.activity) this.loadSelectedActivity(this.activity);
             this.loadSelectedNode(this.selectedNode);
             this.cd.detectChanges();
         });
 
+        // TODO: Do we need this? It is not used in the controller.
         this.controller.prntUpdate$.pipe(filter(x => !!x)).subscribe(val => {
             if (val !== 0) {
-                this.controller.updateSelectedActivity(this.activity, this.project);
+                if (this.activity) this.controller.updateSelectedActivity(this.activity, this.project);
             }
         });
     }
@@ -78,10 +74,10 @@ export class SelectedActivityComponent implements OnInit, OnDestroy {
             return;
         }
         this.showPanel = true;
-        this.duration = activity.profile.duration;
-        this.name = activity.profile.name;
-        this.pcd = activity.profile.planned_completion_date_dt;
-        this.finish = activity.profile.finish_dt;
+        if (activity.profile.duration !== undefined) this.duration = activity.profile.duration;
+        if (activity.profile.name !== undefined) this.name = activity.profile.name;
+        if (activity.profile.planned_completion_date_dt !== null) this.pcd = activity.profile.planned_completion_date_dt;
+        if (activity.profile.finish_dt !== null) this.finish = activity.profile.finish_dt;
         this.subgraphId = activity.subProject.subGraphId;
         this.isDummy = activity.chartInfo.isDummy;
 
@@ -91,59 +87,85 @@ export class SelectedActivityComponent implements OnInit, OnDestroy {
         this.subGraphButtonType = activity.subProject.subGraphId !== -1 ? 'load' : 'create';
     }
 
-    public loadSelectedNode(node: Integration) {
-        this.label = node?.label;
-        this.isMilestone = node?.isMilestone;
+    public loadSelectedNode(node: Integration | null) {
+        this.label = node?.label ?? '';
+        this.isMilestone = node?.isMilestone ?? false;
     }
 
-    public setDuration(duration: string) {
-        this.controller.setDuration(duration, this.activity, this.project);
+    public setDuration(event: any) {
+        if (this.activity) {
+            this.controller.setDuration(event.value, this.activity, this.project);
+        }
     }
 
-    public setName(name: string) {
-        this.controller.setName(name, this.activity, this.project);
+    public setName(event: any) {
+        if (this.activity) {
+            this.controller.setName(event.value, this.activity, this.project);
+        }
     }
 
     public setPcd(pcd: string) {
-        this.controller.setPcd(pcd, this.activity, this.project);
+        if (this.activity) {
+            this.controller.setPcd(pcd, this.activity, this.project);
+        }
     }
 
     public setFinish(finish: string) {
-        this.controller.setFinish(finish, this.activity, this.project);
+        if (this.activity) {
+            this.controller.setFinish(finish, this.activity, this.project);
+        }
     }
 
-    public setSubGraphId(id: string) {
-        this.controller.setSubGraphId(id, this.activity, this.project);
+    public setSubGraphId(event: any) {
+        if (this.activity) {
+            this.controller.setSubGraphId(event.value, this.activity, this.project);
+        }
     }
 
-    public setIsDummy(isDummy: boolean) {
-        this.controller.setIsDummy(isDummy, this.activity, this.project);
+    public setIsDummy(event: any) {
+        if (this.activity) {
+            this.controller.setIsDummy(event.checked, this.activity, this.project);
+        }
     }
-    public setIsNDummy(isDummy: boolean) {
-        this.controller.setIsNDummy(isDummy, this.selectedNode, this.project);
+    public setIsNDummy(event: any) {
+        if (this.selectedNode) {
+            this.controller.setIsNDummy(event.checked, this.selectedNode, this.project);
+        }
     }
     public generateMilestone() {
-        this.controller.generateMilestone(this.selectedNode, this.project);
+        if (this.selectedNode) {
+            this.controller.generateMilestone(this.selectedNode, this.project);
+        }
     }
     public revertMilestone() {
-        this.controller.revertMilestone(this.selectedNode, this.project);
+        if (this.selectedNode) {
+            this.controller.revertMilestone(this.selectedNode, this.project);
+        }
     }
 
     public loadSubProject() {
-        this.controller.loadSubProject(this.activity, this.project, this.projectPool);
+        if (this.activity) {
+            this.controller.loadSubProject(this.activity, this.project, this.projectPool);
+        }
         this.activity = null;
     }
 
     public createSubProject() {
-        this.controller.createSubProject(this.activity, this.project, this.projectPool);
+        if (this.activity) {
+            this.controller.createSubProject(this.activity, this.project, this.projectPool);
+        }
         this.activity = null;
     }
 
-    public updateDate(date, field) {
-        this.controller.updateDate(date, field, this.activity, this.project);
+    public updateDate(date: Date, field: string) {
+        if (this.activity) {
+            this.controller.updateDate(date, field, this.activity, this.project);
+        }
     }
 
-    public setLabel(label: string) {
-        this.controller.setLabel(label, this.selectedNode, this.project);
+    public setLabel(event: any) {
+        if (this.selectedNode) {
+            this.controller.setLabel(event.value, this.selectedNode, this.project);
+        }
     }
 }

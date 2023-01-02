@@ -36,7 +36,7 @@ export class RiskEventsService {
         const outEdges = project.activities.filter(l => l.chartInfo.source_id === nodeId);
         const inEdges = project.activities.filter(l => l.chartInfo.target_id === nodeId);
         const outNodes = outEdges.map(a => a.chartInfo.target).filter(a => a !== undefined) as Integration[];
-        const inNodes = inEdges.map(a => a.chartInfo.source).filter(a => a !== undefined) as Integration[];;
+        const inNodes = inEdges.map(a => a.chartInfo.source).filter(a => a !== undefined) as Integration[];
         return [...outNodes, ...inNodes];
     }
 }
