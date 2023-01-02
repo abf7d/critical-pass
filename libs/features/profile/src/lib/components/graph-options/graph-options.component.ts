@@ -13,13 +13,11 @@ import { filter } from 'rxjs/operators';
 export class GraphOptionsComponent implements OnInit, OnDestroy {
     private data!: Observable<any>;
     public project!: Project | null;
-    private id!: number;
     private subscription!: Subscription;
     constructor(private route: ActivatedRoute, @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService) {}
 
     public ngOnInit() {
         this.project = null;
-        this.id = this.route.snapshot.params['id'] as number;
         this.data = this.dashboard.activeProject$;
         this.subscription = this.data.pipe(filter(x => !!x)).subscribe(project => {
             this.project = project;

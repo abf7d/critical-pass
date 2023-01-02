@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Integration } from '@critical-pass/critical-charts';
-import { Project } from '@critical-pass/critical-charts';
-import { NodeArrangerService } from '@critical-pass/critical-charts';
+import { Integration, Project } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
@@ -9,10 +7,8 @@ import { NodeArrangerService } from '@critical-pass/critical-charts';
 export class RiskEventsService {
     constructor() {}
 
-    // TODO: move this to a controller decompress-events
-    // ! FINISH OUT GRIDBUTTONS!
     public isGraphConnected(project: Project): boolean {
-        const visited = [];
+        const visited: number[] = [];
         if (project.integrations.length === 0) {
             return false;
         }
@@ -39,8 +35,8 @@ export class RiskEventsService {
     private getOutNodes(project: Project, nodeId: number): Integration[] {
         const outEdges = project.activities.filter(l => l.chartInfo.source_id === nodeId);
         const inEdges = project.activities.filter(l => l.chartInfo.target_id === nodeId);
-        const outNodes = outEdges.map(a => a.chartInfo.target);
-        const inNodes = inEdges.map(a => a.chartInfo.source);
+        const outNodes = outEdges.map(a => a.chartInfo.target).filter(a => a !== undefined) as Integration[];
+        const inNodes = inEdges.map(a => a.chartInfo.source).filter(a => a !== undefined) as Integration[];;
         return [...outNodes, ...inNodes];
     }
 }

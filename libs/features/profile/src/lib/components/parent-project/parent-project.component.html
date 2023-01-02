@@ -1,6 +1,7 @@
 <div class="parent">
     <div (click)="loadParent()">
-        <cp-arrow-snapshot [id]="'parent'" width="390" height="250"></cp-arrow-snapshot>
+        <!-- <cp-arrow-snapshot [id]="'parent'" [width]="390" [height]="250"></cp-arrow-snapshot> -->
+        <cp-arrow-snapshot [slot]="'secondary'" [width]="390" [height]="250"></cp-arrow-snapshot>
     </div>
 
     <div class="stats" *ngIf="parentProject != null">

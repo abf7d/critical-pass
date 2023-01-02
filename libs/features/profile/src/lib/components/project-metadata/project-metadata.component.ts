@@ -1,7 +1,7 @@
 import { Inject, Input, OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { ProjectManagerBase } from '@critical-pass/critical-charts';
-import { Project } from '@critical-pass/critical-charts';
+import { Project } from '@critical-pass/project/models';
+import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -11,22 +11,15 @@ import { filter } from 'rxjs/operators';
     styleUrls: ['./project-metadata.component.scss'],
 })
 export class ProjectMetadataComponent implements OnInit, OnDestroy {
-    @Input() id: number;
-    private subscription: Subscription;
-    public project: Project;
+    private subscription!: Subscription;
+    public project!: Project;
 
-    constructor(@Inject('ProjectManagerBase') private pManager: ProjectManagerBase) {}
+    constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService) {}
 
     ngOnInit() {
-        if (this.id == null) {
-            return;
-        }
-        this.pManager
-            .getProject(this.id)
-            .pipe(filter(x => !!x))
-            .subscribe(project => {
-                this.project = project;
-            });
+        this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(project => {
+            this.project = project;
+        });
     }
 
     ngOnDestroy() {
@@ -34,6 +27,6 @@ export class ProjectMetadataComponent implements OnInit, OnDestroy {
     }
 
     updateProject() {
-        this.pManager.updateProject(this.id, this.project, true);
+        this.dashboard.updateProject(this.project, true);
     }
 }

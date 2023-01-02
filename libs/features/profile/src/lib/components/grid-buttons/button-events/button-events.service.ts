@@ -1,31 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Project } from '@critical-pass/critical-charts';
-import { ProjectCompilerService } from '@critical-pass/critical-charts';
+import { Project } from '@critical-pass/project/models';
+import { ZametekApiService } from '@critical-pass/shared/data-access';
+import { FileCompilerService, ProjectSanatizerService } from '@critical-pass/shared/project-utils';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ProjectCompilerApiService } from '../../../../services/api/project-compiler/project-compiler-api.service';
-import { ProjectSanatizerService } from '../../../../services/utils/project-sanitizer/project-sanatizer.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ButtonEventsService {
-    constructor(private compilerApi: ProjectCompilerApiService, private projectSanitizer: ProjectSanatizerService, private pCompiler: ProjectCompilerService) {}
+    constructor(private zametekApi: ZametekApiService, private projectSanitizer: ProjectSanatizerService, private fCompiler: FileCompilerService) {}
 
     public compileMsProject(file: File): Observable<Project> {
-        return this.compilerApi.compileMsProject(file).pipe(
+        return this.zametekApi.compileMsProject(file).pipe(
             tap(project => {
-                project && this.pCompiler.compileProjectFromFile(project);
+                project && this.fCompiler.compileProjectFromFile(project);
                 return project;
             }),
         );
     }
 
-    public compileArrowGraph(project: Project): Observable<Project> {
+    public compileArrowGraph(project: Project): Observable<Project | null> {
         this.projectSanitizer.sanitizeNumbers(project);
-        return this.compilerApi.compileArrowGraph(project).pipe(
+        return this.zametekApi.compileArrowGraph(project).pipe(
             tap(project => {
-                project && this.pCompiler.compileProjectFromFile(project);
+                project && this.fCompiler.compileProjectFromFile(project);
                 return project;
             }),
         );

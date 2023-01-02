@@ -2,8 +2,6 @@ import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { Project } from '@critical-pass/project/models';
 import { ProjectCompilerService } from '@critical-pass/project/processor';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
-// import { Project } from '@critical-pass/critical-charts';
-// import { ProjectManagerBase } from '@critical-pass/critical-charts';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -44,7 +42,6 @@ export class ParentProjectComponent implements OnInit, OnDestroy {
             const parentProj = mainProj.profile.parentProject;
             if (parentProj !== null) this.compiler.compile(parentProj);
             this.dashboard.secondaryProject$.next(parentProj);
-            // this.pManager.updateProject('parent', parentProj.profile.parentProject, true);
         }
     }
 }

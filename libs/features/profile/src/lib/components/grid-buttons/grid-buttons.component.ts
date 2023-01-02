@@ -1,17 +1,11 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-// import { LoggerBase } from '@critical-pass/critical-charts';
-// import { ProjectManagerBase } from '@critical-pass/critical-charts';
-// import { Project } from '@critical-pass/critical-charts';
-// import { ActivitySorterService } from '@critical-pass/critical-charts';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-// import { ProjectFileManagerService } from '@critical-pass/critical-charts';
 import { ButtonEventsService } from './button-events/button-events.service';
-// import { ChartKeys } from '@critical-pass/critical-charts';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from '@critical-pass/project/models';
-import { ActivitySorterService, ProjectCompilerService } from '@critical-pass/project/processor';
+import { ActivitySorterService } from '@critical-pass/project/processor';
 import { ProjectFileManagerService } from '@critical-pass/shared/file-management';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import { ActivityBuilder, DependencyCrawlerService, IdGeneratorService, PcdAutogenService } from '@critical-pass/shared/project-utils';
@@ -25,7 +19,7 @@ export class GridButtonsComponent implements OnInit {
     private subscription!: Subscription;
     public isProcessing: boolean = false;
     public fileToUpload: File | null = null;
-    public project: Project | null = null;
+    public project!: Project;
     public id!: number;
     public showDummies: boolean = false;
     @ViewChild('fileUpload', { static: true }) fileUpload!: ElementRef;
@@ -67,9 +61,14 @@ export class GridButtonsComponent implements OnInit {
         this.isProcessing = true;
         this.buttonEvents.compileArrowGraph(this.project).subscribe(
             p => {
-                this.dashboard.updateProject(p, false);
-                this.isProcessing = false;
-                this.toastr.success('Build Arrow Chart', 'Success!');
+                if (p) {
+                    this.dashboard.updateProject(p, false);
+                    this.isProcessing = false;
+                    this.toastr.success('Build Arrow Chart', 'Success!');
+                } else {
+                    this.isProcessing = false;
+                    this.toastr.error('Build Arrow Chart', 'Project Missing.');
+                }
             },
             error => {
                 console.error(error);
