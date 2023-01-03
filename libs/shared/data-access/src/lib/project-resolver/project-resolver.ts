@@ -11,12 +11,18 @@ import { ProjectApiService } from '../..';
 import * as CONST from '../constants/constants';
 import { ProjectStorageApiService } from '../api/project-storage-api/project-storage-api.service';
 import { DashboardService } from '../dashboard/dashboard.service';
+import { NodeConnectorService } from '@critical-pass/project/processor';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ProjectResolver implements Resolve<any> {
-    constructor(private dashboard: DashboardService, private projectApi: ProjectApiService, private storageApi: ProjectStorageApiService) {}
+    constructor(
+        private dashboard: DashboardService,
+        private projectApi: ProjectApiService,
+        private storageApi: ProjectStorageApiService,
+        private nodeConnector: NodeConnectorService,
+    ) {}
 
     resolve(route: ActivatedRouteSnapshot) {
         if (+route.params['id'] === CONST.IMPORT_ROUTE_PARAM_ID) {
@@ -28,7 +34,10 @@ export class ProjectResolver implements Resolve<any> {
             // return of(imported);
         } else {
             return this.projectApi.get(route.params['id']).pipe(
-                tap(x => this.dashboard.activeProject$.next(x)),
+                tap(project => {
+                    this.nodeConnector.connectArrowsToNodes(project);
+                    this.dashboard.activeProject$.next(project);
+                }),
                 first(),
             ); //this.projStore.load(route.params.id).pipe(first());
         }
