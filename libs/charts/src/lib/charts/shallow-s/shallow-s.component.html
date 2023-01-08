@@ -1,0 +1,4 @@
+<div class="shallow-s-component-wrapper">
+    <div class="shallow-s-empty-message" [hidden]="!(isEmpty | async)">Shallow-S diagram: Add at least one activity with a Duration and Planned Completion Date</div>
+    <div #chart [hidden]="(isEmpty | async)"  class="shallow-s-container"></div>
+</div>
