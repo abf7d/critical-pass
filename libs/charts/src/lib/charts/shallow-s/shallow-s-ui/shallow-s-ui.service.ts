@@ -70,15 +70,10 @@ export class ShallowSUiService {
         const svgclass = 'shallow-s-' + this.id;
         d3.select(el).select('svg').remove();
         const svg = d3.select(el).append('svg').attr('class', svgclass);
-        this.st.svg = svg
-            .style('width', '100%')
-            .style('height', null)
-            .attr('preserveAspectRatio', 'xMinYMin meet')
-            .attr('viewBox', `0 0 ${width} ${height}`);
+        this.st.svg = svg.style('width', '100%').style('height', null).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', `0 0 ${width} ${height}`);
         st.mainG = st.svg.append('g').attr('transform', 'translate(' + this.st.margin.left + ',' + this.st.margin.top + ')');
-    
-        st.svg.append("defs").append("clipPath").attr("id","clip")
-		.append("rect").attr("width",this.st.innerWidth).attr("height",this.st.innerHeight);
+
+        st.svg.append('defs').append('clipPath').attr('id', 'clip').append('rect').attr('width', this.st.innerWidth).attr('height', this.st.innerHeight);
     }
 
     public createChart(proj: Project): void {
@@ -545,12 +540,11 @@ export class ShallowSUiService {
             .y((d: ShallowSPoint) => d.planned)
             .order(3)
             .domain(domain);
-            
+
         if (actual.length > 2) {
             const actualRegData = actualRegDef(actual);
             const aYVals = Array.from({ length: 21 }, (_, i) => 5 * i);
-        
-            
+
             const aPoints = aYVals.map(a => {
                 return { percentActualFinished: a, actual: actualRegData.predict(a) };
             });

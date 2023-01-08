@@ -17,7 +17,7 @@ export class ShallowSSnapshotUiService {
     private height!: number;
     private width!: number;
 
-    constructor(/*private pManager: ProjectManagerBase,*/ private dashboard: DashboardService, private ngZone: NgZone,  private calc: ShallowSCalcService ) {}
+    constructor(/*private pManager: ProjectManagerBase,*/ private dashboard: DashboardService, private ngZone: NgZone, private calc: ShallowSCalcService) {}
 
     public init(width: number, height: number, id: number, el: any) {
         this.height = height;
@@ -58,12 +58,8 @@ export class ShallowSSnapshotUiService {
         const svgclass = 'shallow-s-snapshot' + this.id;
         d3.select(el).select('svg').remove();
 
-        st.svg = d3.select(el).append('svg').attr('class', svgclass); 
-        st.svg
-            .style('width', '100%')
-            .style('height', null)
-            .attr('preserveAspectRatio', 'xMinYMin meet')
-            .attr('viewBox', `0 0 ${width} ${height}`);
+        st.svg = d3.select(el).append('svg').attr('class', svgclass);
+        st.svg.style('width', '100%').style('height', null).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', `0 0 ${width} ${height}`);
         st.mainG = st.svg.append('g').attr('transform', 'translate(' + this.st.margin.left + ',' + this.st.margin.top + ')');
     }
 
@@ -121,7 +117,10 @@ export class ShallowSSnapshotUiService {
         const formatDate = d3.timeFormat('%-m/%-d/%-Y');
 
         // formatDate is cast as any is it working here?
-        const xAxis = d3.axisBottom(xScale).tickFormat(formatDate as any).ticks(4);
+        const xAxis = d3
+            .axisBottom(xScale)
+            .tickFormat(formatDate as any)
+            .ticks(4);
         const yAxis = d3.axisLeft(yScale).ticks(5);
         this.st.mainG
             .append('g')
@@ -159,7 +158,7 @@ export class ShallowSSnapshotUiService {
             .curve(d3.curveLinear);
 
         const plannedSorted = props.data.filter(x => !!x.planned).sort((a, b) => this.getSortComparator(a.planned, b.planned));
-        const actualSorted = props.data.filter(x => !!x.actual).sort((a, b) => this. getSortComparator(a.actual, b.actual));
+        const actualSorted = props.data.filter(x => !!x.actual).sort((a, b) => this.getSortComparator(a.actual, b.actual));
         this.st.mainG.append('path').datum(plannedSorted).attr('clip-path', 'url(#clip)').attr('class', 'line planned').attr('d', plannedLine);
         this.st.mainG.append('path').datum(actualSorted).attr('clip-path', 'url(#clip)').attr('class', 'line actual').attr('d', actualLine);
     }

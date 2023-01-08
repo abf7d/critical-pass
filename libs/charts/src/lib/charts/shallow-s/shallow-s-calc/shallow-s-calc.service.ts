@@ -23,8 +23,11 @@ export class ShallowSCalcService {
 
     private calculateCompletionPercent(dataset: ShallowSPoint[]): void {
         const actual = dataset.filter(d => !!d.actual).sort((a, b) => this.getSortComparator(a.actual, b.actual));
-        const pcd = dataset.filter(d => !!d.planned).sort((a, b) =>  this.getSortComparator(a.planned, b.planned));
-        let total = dataset.reduce((a, c) => {if (c.duration) return a + c.duration; else return a}, 0);
+        const pcd = dataset.filter(d => !!d.planned).sort((a, b) => this.getSortComparator(a.planned, b.planned));
+        let total = dataset.reduce((a, c) => {
+            if (c.duration) return a + c.duration;
+            else return a;
+        }, 0);
         pcd.reduce((accumulator, currentValue) => {
             const sum = accumulator + (currentValue.duration ?? 0);
             currentValue.percentPlannedFinished = Math.round((sum / total) * 100);
@@ -49,8 +52,8 @@ export class ShallowSCalcService {
         return props;
     }
     // https://github.com/harrystevens/d3-regression/blob/master/src/linear.js
-    public calculateShallowSProps(dataset: ShallowSPoint[], proj: Project, isSnapshot: boolean = false): Stats | null{
-        if(!dataset.find( d => !!d.duration)) {
+    public calculateShallowSProps(dataset: ShallowSPoint[], proj: Project, isSnapshot: boolean = false): Stats | null {
+        if (!dataset.find(d => !!d.duration)) {
             return null;
         }
         this.calculateCompletionPercent(dataset);
@@ -110,16 +113,16 @@ export class ShallowSCalcService {
 
         if (!proj.profile.view.showOverrun || isSnapshot) {
             const actualReg = !isNaN(x100A)
-                ? [
+                ? ([
                       { x: startActual, y: 0 },
                       { x: x100A, y: 100 },
-                  ] as [Point, Point]
+                  ] as [Point, Point])
                 : null;
             const plannedReg = !isNaN(x100P)
-                ? [
+                ? ([
                       { x: startPlanned, y: 0 }, // TODO: use logistic regression with extreme numbers should the regression start at the planned date
                       { x: x100P, y: 100 },
-                  ] as [Point, Point]
+                  ] as [Point, Point])
                 : null;
             return {
                 regression: {
@@ -177,7 +180,7 @@ export class ShallowSCalcService {
             },
             extents: {
                 x: xExtent,
-                y: [0, (!isNaN(yOverRunA)&&!!yOverRunA) || (!isNaN(yOverRunP)&&!!yOverRunP) ? Math.max(yOverRunA, yOverRunP): 100],
+                y: [0, (!isNaN(yOverRunA) && !!yOverRunA) || (!isNaN(yOverRunP) && !!yOverRunP) ? Math.max(yOverRunA, yOverRunP) : 100],
             },
             showOverRun: proj.profile.view.showOverrun,
             overRunPoints,

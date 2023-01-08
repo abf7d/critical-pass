@@ -7,7 +7,7 @@ import { ShallowSUiService } from './shallow-s-ui/shallow-s-ui.service';
     selector: 'cp-shallow-s',
     templateUrl: './shallow-s.component.html',
     styleUrls: ['./shallow-s.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class ShallowSComponent implements OnInit, OnDestroy {
     @Input() id: number;
@@ -15,7 +15,7 @@ export class ShallowSComponent implements OnInit, OnDestroy {
     @Input() height: number;
     @ViewChild('chart', { static: true }) chart: ElementRef;
     public isEmpty: BehaviorSubject<boolean>;
-    private ui: ShallowSUiService
+    private ui: ShallowSUiService;
 
     constructor(factory: ShallowSFactoryService) {
         this.isEmpty = new BehaviorSubject<boolean>(true);
@@ -28,6 +28,6 @@ export class ShallowSComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-      this.ui.destroy();
-  }
+        this.ui.destroy();
+    }
 }
