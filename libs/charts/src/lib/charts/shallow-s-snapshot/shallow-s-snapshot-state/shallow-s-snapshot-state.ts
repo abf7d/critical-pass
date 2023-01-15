@@ -1,11 +1,11 @@
 export interface ShallowSSnapshotState {
     svg: any;
     mainG: any;
-    innerWidth: number;
-    innerHeight: number;
+    innerWidth: number | null;
+    innerHeight: number | null;
     focusLine: any;
     margin: { top: number; bottom: number; left: number; right: number };
-    scales: { x: any; y: any };
+    scales: { x: any; y: any } | null;
 }
 
 export class ShallowSSnapshotStateFactory {

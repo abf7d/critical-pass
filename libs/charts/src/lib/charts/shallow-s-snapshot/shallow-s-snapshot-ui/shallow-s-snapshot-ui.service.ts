@@ -90,8 +90,8 @@ export class ShallowSSnapshotUiService {
     }
 
     private drawChart(props: Stats): void {
-        const xScale = d3.scaleTime().range([0, this.st.innerWidth]).domain(props.extents.x);
-        const yScale = d3.scaleLinear().range([this.st.innerHeight, 0]).domain(props.extents.y);
+        const xScale = d3.scaleTime().range([0, this.st.innerWidth!]).domain(props.extents.x);
+        const yScale = d3.scaleLinear().range([this.st.innerHeight!, 0]).domain(props.extents.y);
         this.drawAxes(xScale, yScale);
         this.drawLines(props, xScale, yScale);
     }
@@ -157,8 +157,8 @@ export class ShallowSSnapshotUiService {
             .y(d => yScale(d.percentActualFinished))
             .curve(d3.curveLinear);
 
-        const plannedSorted = props.data.filter(x => !!x.planned).sort((a, b) => this.getSortComparator(a.planned, b.planned));
-        const actualSorted = props.data.filter(x => !!x.actual).sort((a, b) => this.getSortComparator(a.actual, b.actual));
+        const plannedSorted = props.data.filter(x => !!x.planned).sort((a, b) => this.getSortComparator(a.planned!, b.planned!));
+        const actualSorted = props.data.filter(x => !!x.actual).sort((a, b) => this.getSortComparator(a.actual!, b.actual!));
         this.st.mainG.append('path').datum(plannedSorted).attr('clip-path', 'url(#clip)').attr('class', 'line planned').attr('d', plannedLine);
         this.st.mainG.append('path').datum(actualSorted).attr('clip-path', 'url(#clip)').attr('class', 'line actual').attr('d', actualLine);
     }

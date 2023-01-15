@@ -24,8 +24,8 @@ export interface Point {
     y: number;
 }
 export interface ShallowSPoint {
-    actual?: Date;
-    planned?: Date;
+    actual?: Date | null;
+    planned?: Date | null;
     duration?: number;
     name?: string;
     percentActualFinished: number | null;

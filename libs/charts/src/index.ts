@@ -9,6 +9,7 @@ export * as CHART_KEYS from './lib/constants/keys';
 // export * from './lib/charts/arrow-chart/arrow-chart.module';
 // export * from './lib/charts/activity-grid/activity-grid.module';
 export * from './lib/charts/arrow-snapshot/arrow-snapshot.module';
+export * from './lib/charts/shallow-s-snapshot/shallow-s-snapshot.module';
 // export * from './lib/charts/project-tree/project-tree.module';
 // export * from './lib/charts/risk-curve/risk-curve.module';
 // export * from './lib/charts/risk-donut/risk-donut.module';

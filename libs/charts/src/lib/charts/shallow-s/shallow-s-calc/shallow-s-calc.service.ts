@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Project } from '@critical-pass/project/models';
 import { subBusinessDays } from 'date-fns';
-import { Point, ShallowSPoint, Stats } from '../../../models/shallow-s';
+import { LinearRegressions, OverrRunPoints, Point, ShallowSPoint, Stats } from '../../../models/shallow-s';
 @Injectable({
     providedIn: 'root',
 })
 export class ShallowSCalcService {
     constructor() {}
 
-    private getSortComparator(a?: Date, b?: Date): number {
+    private getSortComparator(a?: Date | null, b?: Date | null): number {
         if (!a && !b) {
             return 0;
         }
@@ -57,14 +57,15 @@ export class ShallowSCalcService {
             return null;
         }
         this.calculateCompletionPercent(dataset);
+        // TODO: Refactor this to use types more effectively
         const allActual = dataset.filter(d => !!d.actual);
         const allPlanned = dataset.filter(d => !!d.planned);
-        let startActual = Math.min(...allActual.map(d => d.actual.getTime()));
-        let startPlanned = Math.min(...allPlanned.map(d => d.planned.getTime()));
+        let startActual = Math.min(...allActual.map(d => (d.actual as Date).getTime()));
+        let startPlanned = Math.min(...allPlanned.map(d => (d.planned as Date).getTime()));
 
         if (proj.profile.view.useStartDates) {
-            startActual = Math.min(...allActual.map(d => subBusinessDays(d.actual, /*d.duration > 30 ? 30 :*/ d.duration).getTime()));
-            startPlanned = Math.min(...allPlanned.map(d => subBusinessDays(d.planned, /*d.duration > 30 ? 30 :*/ d.duration).getTime()));
+            startActual = Math.min(...allActual.map(d => subBusinessDays(d.actual!, /*d.duration > 30 ? 30 :*/ d.duration ?? 0).getTime()));
+            startPlanned = Math.min(...allPlanned.map(d => subBusinessDays(d.planned!, /*d.duration > 30 ? 30 :*/ d.duration ?? 0).getTime()));
         }
         if (startActual === Infinity && startPlanned === Infinity) {
             return null;
@@ -99,26 +100,26 @@ export class ShallowSCalcService {
         const reg = this.lineRegSlope(dataset, startActual, startPlanned);
         const x100A = reg.slopeA !== 0 ? Math.round(100 / reg.slopeA) + startActual : null;
         const x100P = reg.slopeP !== 0 ? Math.round(100 / reg.slopeP) + startPlanned : null;
-        const max100s = Math.max(x100A, x100P);
+        const max100s = Math.max(x100A!, x100P!);
 
-        const actualMax = Math.max(...adjustedData.filter(d => !!d.actual).map(d => d.actual.getTime()));
-        const plannedMax = Math.max(...adjustedData.filter(d => !!d.planned).map(d => d.planned.getTime()));
+        const actualMax = Math.max(...adjustedData.filter(d => !!d.actual).map(d => d.actual!.getTime()));
+        const plannedMax = Math.max(...adjustedData.filter(d => !!d.planned).map(d => d.planned!.getTime()));
 
-        const xEnd = Math.max(...[x100A, x100P, actualMax, plannedMax].filter(x => !isNaN(x)));
+        const xEnd = Math.max(...[x100A!, x100P!, actualMax, plannedMax].filter(x => !isNaN(x)));
         const minStart = Math.min(startActual, startPlanned);
         const xExtent = [minStart, xEnd] as [number, number];
         const yOverRunA = reg.slopeA ? Math.round(reg.slopeA * (max100s - startActual)) : null;
         const yOverRunP = reg.slopeP ? Math.round(reg.slopeP * (max100s - startPlanned)) : null;
-        const maxOverrun = Math.max(yOverRunA, yOverRunP);
+        const maxOverrun = Math.max(yOverRunA!, yOverRunP!);
 
         if (!proj.profile.view.showOverrun || isSnapshot) {
-            const actualReg = !isNaN(x100A)
+            const actualReg = !isNaN(x100A!)
                 ? ([
                       { x: startActual, y: 0 },
                       { x: x100A, y: 100 },
                   ] as [Point, Point])
                 : null;
-            const plannedReg = !isNaN(x100P)
+            const plannedReg = !isNaN(x100P!)
                 ? ([
                       { x: startPlanned, y: 0 }, // TODO: use logistic regression with extreme numbers should the regression start at the planned date
                       { x: x100P, y: 100 },
@@ -142,22 +143,22 @@ export class ShallowSCalcService {
         const overRunPoints: OverrRunPoints = {
             x: [
                 [
-                    { x: x100A, y: 0 },
-                    { x: x100A, y: maxOverrun },
+                    { x: x100A!, y: 0 },
+                    { x: x100A!, y: maxOverrun },
                 ],
                 [
-                    { x: x100P, y: 0 },
-                    { x: x100P, y: maxOverrun },
+                    { x: x100P!, y: 0 },
+                    { x: x100P!, y: maxOverrun },
                 ],
             ],
             y: [
                 [
-                    { x: minStart, y: yOverRunA },
-                    { x: xEnd, y: yOverRunA },
+                    { x: minStart, y: yOverRunA! },
+                    { x: xEnd, y: yOverRunA! },
                 ],
                 [
-                    { x: minStart, y: yOverRunP },
-                    { x: xEnd, y: yOverRunP },
+                    { x: minStart, y: yOverRunP! },
+                    { x: xEnd, y: yOverRunP! },
                 ],
             ],
         };
@@ -180,7 +181,7 @@ export class ShallowSCalcService {
             },
             extents: {
                 x: xExtent,
-                y: [0, (!isNaN(yOverRunA) && !!yOverRunA) || (!isNaN(yOverRunP) && !!yOverRunP) ? Math.max(yOverRunA, yOverRunP) : 100],
+                y: [0, (!isNaN(yOverRunA!) && !!yOverRunA) || (!isNaN(yOverRunP!) && !!yOverRunP) ? Math.max(yOverRunA!, yOverRunP!) : 100],
             },
             showOverRun: proj.profile.view.showOverrun,
             overRunPoints,
@@ -192,18 +193,18 @@ export class ShallowSCalcService {
         const actualData = dataset.filter(x => !!x.actual);
         const plannedData = dataset.filter(x => !!x.planned);
         const numA = actualData.reduce((a, c) => {
-            return a + c.percentActualFinished * (c.actual.getTime() - startActual);
+            return a + c.percentActualFinished! * (c.actual!.getTime() - startActual);
         }, 0);
         const denomA = actualData.reduce((a, c) => {
-            const offset = c.actual.getTime() - startActual;
+            const offset = c.actual!.getTime() - startActual;
             return a + offset * offset;
         }, 0);
 
         const numP = plannedData.reduce((a, c) => {
-            return a + c.percentPlannedFinished * (c.planned.getTime() - startPlanned);
+            return a + c.percentPlannedFinished! * (c.planned!.getTime() - startPlanned);
         }, 0);
         const denomP = plannedData.reduce((a, c) => {
-            const offset = c.planned.getTime() - startPlanned;
+            const offset = c.planned!.getTime() - startPlanned;
             return a + offset * offset;
         }, 0);
         const slopeA = numA / denomA;
