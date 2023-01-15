@@ -9,7 +9,7 @@ import * as CONST from '../../constants/keys';
     selector: 'cp-arrow-chart',
     templateUrl: './arrow-chart.component.html',
     styleUrls: ['./arrow-chart.component.scss'],
-    providers: [ArrowChartUIService], 
+    providers: [ArrowChartUIService],
     encapsulation: ViewEncapsulation.None,
 })
 export class ArrowChartComponent implements OnInit, OnDestroy {

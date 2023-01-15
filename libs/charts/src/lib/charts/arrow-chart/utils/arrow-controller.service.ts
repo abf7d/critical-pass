@@ -13,8 +13,13 @@ import { Dictionary } from '../../../services/pub-sub/event/dictionary';
     providedIn: 'root',
 })
 export class ArrowControllerService {
-    constructor(private events: ArrowEventsService, private props: ArrowPropertyService, private factory: ElFactoryService, private positioner: ElPositionerService) {}
-    set st(st:  ArrowState) {
+    constructor(
+        private events: ArrowEventsService,
+        private props: ArrowPropertyService,
+        private factory: ElFactoryService,
+        private positioner: ElPositionerService,
+    ) {}
+    set st(st: ArrowState) {
         this.events.st = st;
         this.props.st = st;
         this.factory.st = st;
@@ -101,7 +106,7 @@ export class ArrowControllerService {
     public onNodeMouseOver(d: Integration, el: any): string {
         return this.events.setMouseOverNodeStates(d, el);
     }
-    public onNodeMouseOut (d: Integration, el: any): string {
+    public onNodeMouseOut(d: Integration, el: any): string {
         return this.events.clearMouseOverNodeStates(d, el);
     }
     public clearClassesAndHideLine(): void {

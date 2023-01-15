@@ -3,26 +3,26 @@ import { Activity } from '../../../models/project/activity/activity';
 import { Integration } from '../../../models/project/integration/integration';
 
 export interface ArrowState {
-    mainG: any,
-    lassoG: any,
-    svg: any,
-    nodes: any,
-    drag_line: any,
-    blockDelete: boolean
-    selected_node: Integration,
-    last_selected_node: Integration,
-    activity_created: Subject<boolean>
-    selected_link: Activity,
+    mainG: any;
+    lassoG: any;
+    svg: any;
+    nodes: any;
+    drag_line: any;
+    blockDelete: boolean;
+    selected_node: Integration;
+    last_selected_node: Integration;
+    activity_created: Subject<boolean>;
+    selected_link: Activity;
     links: any;
-    mousedown_node: Integration
+    mousedown_node: Integration;
     drag_node: any;
-    mouseover_node: {d: Integration, el: any}
-    mouseup_node: Integration,
-    mousedown_link: Activity,
-    ctrl_down: boolean,
-    lastKeyDown: number,
-    macMetaDown: boolean,
-    allowDeletes: boolean
+    mouseover_node: { d: Integration; el: any };
+    mouseup_node: Integration;
+    mousedown_link: Activity;
+    ctrl_down: boolean;
+    lastKeyDown: number;
+    macMetaDown: boolean;
+    allowDeletes: boolean;
 }
 
 export class ArrowStateFactory {
@@ -47,7 +47,7 @@ export class ArrowStateFactory {
             lastKeyDown: null,
             macMetaDown: false,
             last_selected_node: null,
-            allowDeletes: true
-        }
+            allowDeletes: true,
+        };
     }
 }

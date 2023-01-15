@@ -52,14 +52,14 @@ export class ArrowChartUIService {
         this.st = new ArrowStateFactory().create();
         this.initSvg(width, height, el);
         this.bindGlobalEvents();
-        this.data = this.dashboard.activeProject$; 
+        this.data = this.dashboard.activeProject$;
 
         this.sub = this.data.pipe(filter(x => !!x)).subscribe(project => {
             this.ngZone.runOutsideAngular(() => {
                 this.createChart(project);
             });
         });
-        this.st.activity_created = this.eventService.get(CONST.ACTIVITY_CREATED_KEY); 
+        this.st.activity_created = this.eventService.get(CONST.ACTIVITY_CREATED_KEY);
     }
 
     public destroy() {
@@ -149,9 +149,9 @@ export class ArrowChartUIService {
     }
     private buildDict(project: Project): void {
         this.arrowRisk = new Map<number, number>();
-        project.activities.forEach((a, i) => (this.arrowRisk.set(a.profile.id, a.chartInfo.risk)));
+        project.activities.forEach((a, i) => this.arrowRisk.set(a.profile.id, a.chartInfo.risk));
         this.nodeRisk = new Map<number, number>();
-        project.integrations.forEach((n, i) => (this.nodeRisk.set(n.id, n.risk)));
+        project.integrations.forEach((n, i) => this.nodeRisk.set(n.id, n.risk));
     }
     private clearElements(): void {
         this.st.mainG.selectAll('g.link').remove();
@@ -184,7 +184,7 @@ export class ArrowChartUIService {
             .append('circle')
             .attr('r', (m: Integration) => (m.isMilestone ? 14 : 12))
             .classed('node', true)
-            .classed('dummy', (d: Integration)=> d.isDummy)
+            .classed('dummy', (d: Integration) => d.isDummy)
             .classed('active', (d: Integration) => d === this.st.selected_node)
             .classed('last-selected', (d: Integration) => d === this.st.last_selected_node);
         // Inner text
@@ -214,7 +214,7 @@ export class ArrowChartUIService {
             })
             .on('end', (event: any, d: unknown) => {
                 this.controller.onNodeGroupMouseUp(d, project);
-                this.dashboard.updateProject(project, true)
+                this.dashboard.updateProject(project, true);
             });
         enterNodes
             .on('mousedown', (event, d) => {

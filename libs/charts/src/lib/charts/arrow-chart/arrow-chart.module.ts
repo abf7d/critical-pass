@@ -4,15 +4,9 @@ import { ArrowChartComponent } from './arrow-chart.component';
 import { FormsModule } from '@angular/forms';
 import { OutsideClickModule } from '../../directives/outside-click/outside-click.module';
 
-
-
 @NgModule({
-  declarations: [ArrowChartComponent],
-  imports: [
-    CommonModule, FormsModule, OutsideClickModule
-  ],
-  exports: [
-    ArrowChartComponent
-  ]
+    declarations: [ArrowChartComponent],
+    imports: [CommonModule, FormsModule, OutsideClickModule],
+    exports: [ArrowChartComponent],
 })
-export class ArrowChartModule { }
+export class ArrowChartModule {}

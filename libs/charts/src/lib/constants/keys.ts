@@ -101,21 +101,8 @@ export const FIBONACCI_RISK_KEY = 'fibonacci';
 export const DECOMPRESS_AMOUNT = 'risk.curve.decompress.amount';
 export const TRIGGER_SECOND_DERIVATIVE = 'risk.curve.trigger.derivative';
 
-
 export const ACTIVITY_CREATED_KEY = 'arrow.create.focus';
 export const SUB_ARROW_CREATION_MODE = 'sub';
 
-
 export const TRANSITION_TIME = 1200;
 export const ARROW_EASE_TYPE = d3.easeExpInOut;
-
-
-
-
-
-
-
-
-
-
-

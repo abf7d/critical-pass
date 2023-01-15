@@ -17,7 +17,7 @@ export class ShallowSSnapshotUiService {
     private height!: number;
     private width!: number;
 
-    constructor( @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, private ngZone: NgZone, private calc: ShallowSCalcService) {}
+    constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, private ngZone: NgZone, private calc: ShallowSCalcService) {}
 
     public init(width: number, height: number, id: number, el: any) {
         this.height = height;
