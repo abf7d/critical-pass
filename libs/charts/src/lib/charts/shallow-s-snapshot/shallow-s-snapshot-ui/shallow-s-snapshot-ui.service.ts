@@ -1,9 +1,9 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Inject, Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import * as d3 from 'd3';
 import { ShallowSSnapshotState, ShallowSSnapshotStateFactory } from '../shallow-s-snapshot-state/shallow-s-snapshot-state';
-import { DashboardService } from '@critical-pass/shared/data-access';
+import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import { Project } from '@critical-pass/project/models';
 import { ShallowSCalcService } from '../../shallow-s/shallow-s-calc/shallow-s-calc.service';
 import { ShallowSPoint, Stats } from '../../../models/shallow-s';
@@ -17,7 +17,7 @@ export class ShallowSSnapshotUiService {
     private height!: number;
     private width!: number;
 
-    constructor(/*private pManager: ProjectManagerBase,*/ private dashboard: DashboardService, private ngZone: NgZone, private calc: ShallowSCalcService) {}
+    constructor( @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, private ngZone: NgZone, private calc: ShallowSCalcService) {}
 
     public init(width: number, height: number, id: number, el: any) {
         this.height = height;

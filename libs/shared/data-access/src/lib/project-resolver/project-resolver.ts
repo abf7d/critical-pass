@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 import { Resolve } from '@angular/router';
 
@@ -7,7 +7,7 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { first, tap } from 'rxjs/operators';
 // import * as Keys from '../constants/keys';
 import { of } from 'rxjs';
-import { ProjectApiService } from '../..';
+import { DASHBOARD_TOKEN, ProjectApiService } from '../..';
 import * as CONST from '../constants/constants';
 import { ProjectStorageApiService } from '../api/project-storage-api/project-storage-api.service';
 import { DashboardService } from '../dashboard/dashboard.service';
@@ -18,7 +18,7 @@ import { NodeConnectorService } from '@critical-pass/project/processor';
 })
 export class ProjectResolver implements Resolve<any> {
     constructor(
-        private dashboard: DashboardService,
+        @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
         private projectApi: ProjectApiService,
         private storageApi: ProjectStorageApiService,
         private nodeConnector: NodeConnectorService,

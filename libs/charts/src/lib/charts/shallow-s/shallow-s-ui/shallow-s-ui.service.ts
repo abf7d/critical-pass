@@ -1,33 +1,37 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Inject, Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { Project } from '../../../models/project/project';
 import { ShallowSState, ShallowSStateFactory } from '../shallow-s-state/shallow-s-state';
 import { filter } from 'rxjs/operators';
 import * as d3 from 'd3';
 import { ShallowSCalcService } from '../shallow-s-calc/shallow-s-calc.service';
 import { lightFormat } from 'date-fns';
-import { ShallowSPoint, Stats } from '../../../models/charts/shallow-s';
+// @ts-ignore
 import * as d3reg from 'd3-regression';
-import * as Keys from '../../../constants/keys';
-import { ProjectManagerBase } from '../../../models';
+import * as CONST from '../../../constants/keys';
+import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
+import { Project } from '@critical-pass/project/models';
+import { ShallowSPoint, Stats } from '../../../models/shallow-s';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class ShallowSUiService {
-    private id: number;
-    public st: ShallowSState;
-    private data: Observable<Project>;
-    private sub: Subscription;
-    private projIsEmpty: BehaviorSubject<boolean>;
-    private isDateSelected: boolean;
-    private regType: string;
-    private project: Project;
+    private id!: number;
+    public st!: ShallowSState;
+    private data!: Observable<Project>;
+    private sub!: Subscription;
+    private projIsEmpty!: BehaviorSubject<boolean>;
+    private isDateSelected!: boolean;
+    private regType!: string;
+    private project!: Project;
     private subRegType: Subscription;
 
-    constructor(private pManager: ProjectManagerBase, private ngZone: NgZone, private calc: ShallowSCalcService) {
-        this.subRegType = this.pManager
-            .getChannel(Keys.shallowSregressionTypeKey)
+    constructor(
+        @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
+        @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
+        private ngZone: NgZone,
+        private calc: ShallowSCalcService,
+    ) {
+        this.subRegType = this.eventService
+            .get<string>(CONST.SHALLOW_S_REGRESSION_TYPE_KEY)
             .pipe(filter(x => !!x))
             .subscribe(regType => {
                 this.regType = regType;
@@ -43,7 +47,7 @@ export class ShallowSUiService {
         this.st.innerHeight = height - this.st.margin.top - this.st.margin.bottom;
         this.st.innerWidth = width - this.st.margin.left - this.st.margin.right;
         this.initSvg(width, height, el);
-        this.data = this.pManager.getProject(id);
+        this.data = this.dashboard.activeProject$;
         this.sub = this.data.pipe(filter(x => !!x)).subscribe(project => {
             this.ngZone.runOutsideAngular(() => {
                 this.project = project;
@@ -92,8 +96,8 @@ export class ShallowSUiService {
     }
 
     private drawChart(props: Stats): void {
-        const xScale = d3.scaleTime().range([0, this.st.innerWidth]).domain(props.extents.x);
-        const yScale = d3.scaleLinear().range([this.st.innerHeight, 0]).domain(props.extents.y);
+        const xScale = d3.scaleTime().range([0, this.st.innerWidth!]).domain(props.extents.x);
+        const yScale = d3.scaleLinear().range([this.st.innerHeight!, 0]).domain(props.extents.y);
         this.drawAxes(xScale, yScale);
         this.drawLines(props, xScale, yScale);
         this.drawPoints(props, xScale, yScale);
@@ -149,8 +153,8 @@ export class ShallowSUiService {
             .attr('height', this.st.innerHeight)
             .on('mouseover', () => focus.style('display', null))
             .on('mouseout', () => (!this.isDateSelected ? focus.style('display', 'none') : null))
-            .on('mousemove', event => this.mouseMove(event, props, xScale, yScale))
-            .on('click', event => this.mouseClick());
+            .on('mousemove', (event: any) => this.mouseMove(event, props, xScale, yScale))
+            .on('click', (event: any) => this.mouseClick());
 
         focus
             .append('circle')
@@ -159,8 +163,8 @@ export class ShallowSUiService {
             .style('stroke', 'black')
             .style('cursor', 'pointer')
             .attr('r', 6)
-            .on('mouseover', event => this.focusMouseOver(event))
-            .on('mouseout', event => this.focusMouseOut(event));
+            .on('mouseover', (event: any) => this.focusMouseOver(event))
+            .on('mouseout', (event: any) => this.focusMouseOut(event));
     }
 
     private initFocusLineAndText(props: Stats, xScale: any, yScale: any) {
@@ -176,15 +180,15 @@ export class ShallowSUiService {
         focusLine
             .append('line')
             .attr('class', 'x0')
-            .attr('y1', this.st.innerHeight * 2 - 6)
-            .attr('y2', this.st.innerHeight + 6);
+            .attr('y1', this.st.innerHeight! * 2 - 6)
+            .attr('y2', this.st.innerHeight! + 6);
 
         focusLine.append('text').attr('class', 'x0');
         this.st.focusLine = focusLine;
     }
 
-    private drawAxes(xScale: any, yScale) {
-        const formatDate = d3.timeFormat('%-m/%-d/%-Y');
+    private drawAxes(xScale: any, yScale: any) {
+        const formatDate = d3.timeFormat('%-m/%-d/%-Y') as any;
 
         const xAxis = d3.axisBottom(xScale).tickFormat(formatDate);
         const yAxis = d3.axisLeft(yScale);
@@ -243,15 +247,17 @@ export class ShallowSUiService {
                 .attr('class', 'actual coord');
         }
     }
-    private drawLinearRegressions(props: Stats, plannedLine: any, actualLine): void {
+    private drawLinearRegressions(props: Stats, plannedLine: any, actualLine: any): void {
         if (props.regression.actual) {
             const actual1: ShallowSPoint = {
                 actual: new Date(props.regression.actual[0].x),
                 percentActualFinished: props.regression.actual[0].y,
+                percentPlannedFinished: null,
             };
             const actual2: ShallowSPoint = {
                 actual: new Date(props.regression.actual[1].x),
                 percentActualFinished: props.regression.actual[1].y,
+                percentPlannedFinished: null,
             };
             const actualData = [actual1, actual2];
             this.st.mainG
@@ -265,10 +271,12 @@ export class ShallowSUiService {
             const planned1: ShallowSPoint = {
                 planned: new Date(props.regression.planned[0].x),
                 percentPlannedFinished: props.regression.planned[0].y,
+                percentActualFinished: null,
             };
             const planned2: ShallowSPoint = {
                 planned: new Date(props.regression.planned[1].x),
                 percentPlannedFinished: props.regression.planned[1].y,
+                percentActualFinished: null,
             };
 
             const plannedData = [planned1, planned2];
@@ -288,35 +296,43 @@ export class ShallowSUiService {
         const actualx1: ShallowSPoint = {
             actual: new Date(props.overRunPoints.x[0][0].x),
             percentActualFinished: props.overRunPoints.x[0][0].y,
+            percentPlannedFinished: null,
         };
         const actualx2: ShallowSPoint = {
             actual: new Date(props.overRunPoints.x[0][1].x),
             percentActualFinished: props.overRunPoints.x[0][1].y,
+            percentPlannedFinished: null,
         };
         const plannedx1: ShallowSPoint = {
             planned: new Date(props.overRunPoints.x[1][0].x),
             percentPlannedFinished: props.overRunPoints.x[1][0].y,
+            percentActualFinished: null,
         };
         const plannedx2: ShallowSPoint = {
             planned: new Date(props.overRunPoints.x[1][1].x),
             percentPlannedFinished: props.overRunPoints.x[1][1].y,
+            percentActualFinished: null,
         };
 
         const actualy1: ShallowSPoint = {
             actual: new Date(props.overRunPoints.y[0][0].x),
             percentActualFinished: props.overRunPoints.y[0][0].y,
+            percentPlannedFinished: null,
         };
         const actualy2: ShallowSPoint = {
             actual: new Date(props.overRunPoints.y[0][1].x),
             percentActualFinished: props.overRunPoints.y[0][1].y,
+            percentPlannedFinished: null,
         };
         const plannedy1: ShallowSPoint = {
             planned: new Date(props.overRunPoints.y[1][0].x),
             percentPlannedFinished: props.overRunPoints.y[1][0].y,
+            percentActualFinished: null,
         };
         const plannedy2: ShallowSPoint = {
             planned: new Date(props.overRunPoints.y[1][1].x),
             percentPlannedFinished: props.overRunPoints.y[1][1].y,
+            percentActualFinished: null,
         };
 
         const actualDatax = [actualx1, actualx2];
@@ -330,7 +346,7 @@ export class ShallowSUiService {
         this.st.mainG.append('path').datum(actualDatay).attr('clip-path', 'url(#clip)').attr('class', 'actual regression').attr('d', actualLine);
     }
 
-    private drawOverrunElements(props: Stats, xScale: any, yScale): void {
+    private drawOverrunElements(props: Stats, xScale: any, yScale: any): void {
         if (!props.overRunPoints || !props.regression.actual || !props.regression.planned) {
             return;
         }
@@ -342,10 +358,10 @@ export class ShallowSUiService {
         this.st.mainG
             .append('rect')
             .attr('clip-path', 'url(#clip)')
-            .attr('x', d => xScale(leftCoord) - 1)
-            .attr('y', d => yScale(maxY) - 1)
-            .attr('height', d => yScale(0))
-            .attr('width', d => {
+            .attr('x', (d: any) => xScale(leftCoord) - 1)
+            .attr('y', (d: any) => yScale(maxY) - 1)
+            .attr('height', (d: any) => yScale(0))
+            .attr('width', (d: any) => {
                 xScale();
                 const pixelwidth = xScale(actualx) - xScale(plannedx);
                 return Math.abs(pixelwidth);
@@ -363,12 +379,12 @@ export class ShallowSUiService {
             .append('rect')
 
             .attr('clip-path', 'url(#clip)')
-            .attr('x', d => xScale(minX))
-            .attr('y', d => yScale(maxY))
-            .attr('height', d => {
+            .attr('x', (d: any) => xScale(minX))
+            .attr('y', (d: any) => yScale(maxY))
+            .attr('height', (d: any) => {
                 return yScale(100) - yScale(maxY);
             })
-            .attr('width', d => {
+            .attr('width', (d: any) => {
                 const pixelwidth = xScale(maxX) - xScale(minX);
                 return Math.abs(pixelwidth);
             })
@@ -404,31 +420,31 @@ export class ShallowSUiService {
             .text('Schedule Overrun: ' + timeOverrun + ' Days');
     }
 
-    private drawLines(props: Stats, xScale: any, yScale): void {
+    private drawLines(props: Stats, xScale: any, yScale: any): void {
         const curve = props.step ? d3.curveStepAfter : d3.curveLinear;
         var plannedLine = d3
-            .line()
+            .line<ShallowSPoint>()
             .x(d => xScale(d.planned))
             .y(d => yScale(d.percentPlannedFinished))
             .curve(curve);
         var actualLine = d3
-            .line()
+            .line<ShallowSPoint>()
             .x(d => xScale(d.actual))
             .y(d => yScale(d.percentActualFinished))
             .curve(curve);
 
-        const plannedSorted = props.data.filter(x => !!x.planned).sort((a, b) => a.planned.getTime() - b.planned.getTime());
-        const actualSorted = props.data.filter(x => !!x.actual).sort((a, b) => a.actual.getTime() - b.actual.getTime());
+        const plannedSorted = props.data.filter(x => !!x.planned).sort((a, b) => a.planned!.getTime() - b.planned!.getTime());
+        const actualSorted = props.data.filter(x => !!x.actual).sort((a, b) => a.actual!.getTime() - b.actual!.getTime());
         if (plannedSorted?.length > 1) {
             this.st.mainG.append('path').datum(plannedSorted).attr('clip-path', 'url(#clip)').attr('class', 'line planned').attr('d', plannedLine);
         }
         if (actualSorted?.length > 1) {
             this.st.mainG.append('path').datum(actualSorted).attr('clip-path', 'url(#clip)').attr('class', 'line actual').attr('d', actualLine);
         }
-        if (!this.regType || this.regType === Keys.linearRegType) {
+        if (!this.regType || this.regType === CONST.LINEAR_REG_TYPE) {
             this.drawLinearRegressions(props, plannedLine, actualLine);
         }
-        if (this.regType == Keys.polynomialRegType) {
+        if (this.regType == CONST.POLYNOMIAL_REG_TYPE) {
             this.drawPolynomialRegressions(props, plannedLine, actualLine);
         }
         this.drawOverrunLines(props, plannedLine, actualLine);
@@ -439,12 +455,12 @@ export class ShallowSUiService {
         if (this.isDateSelected) {
             return;
         }
-        const planned = props.data.filter(d => !!d.planned).sort((a, b) => a.planned.getTime() - b.planned.getTime());
+        const planned = props.data.filter(d => !!d.planned).sort((a, b) => a.planned!.getTime() - b.planned!.getTime());
         const bisectDate = d3.bisector((d: ShallowSPoint) => {
-            return d.planned.getTime();
+            return d.planned!.getTime();
         }).right;
-        const formatPlanned = d => lightFormat(d.planned, Keys.shallowSFormat) + ' - ' + d.name;
-        const formatActual = d => lightFormat(d.planned, Keys.shallowSFormat) + ' - ' + d.name;
+        const formatPlanned = (d: ShallowSPoint) => lightFormat(d.planned!, CONST.SHALLOW_S_FORMAT) + ' - ' + d.name;
+        const formatActual = (d: ShallowSPoint) => lightFormat(d.planned!, CONST.SHALLOW_S_FORMAT) + ' - ' + d.name;
         if (this.isDateSelected) {
             return;
         }
@@ -471,30 +487,30 @@ export class ShallowSUiService {
         textPlanned
             .enter()
             .append('text')
-            .attr('transform', (a, i) => {
-                const textY = this.st.innerHeight - 30 * (i + 1);
+            .attr('transform', (a: any, i: number) => {
+                const textY = this.st.innerHeight! - 30 * (i + 1);
                 const textX = xScale(closestPt.planned);
                 return `translate(${textX},${textY})`;
             })
-            .text(a => formatPlanned(a))
+            .text((a: ShallowSPoint) => formatPlanned(a))
             .attr('class', 'planned-marker');
         const actuals = common.filter(p => !!p.actual);
 
         // Clear out all of the actual lines text and circles for a refresh before they are drawn again
-        const lines = this.st.focusLine.selectAll('line.actual-marker').data(actuals, d => d.id);
-        const textActual = this.st.focusLine.selectAll('text.actual-marker').data(actuals, d => d.id);
-        const circle = this.st.focusLine.selectAll('circle.actual-marker').data(actuals, d => d.id);
+        const lines = this.st.focusLine.selectAll('line.actual-marker').data(actuals, (d: ShallowSPoint) => d.id);
+        const textActual = this.st.focusLine.selectAll('text.actual-marker').data(actuals, (d: ShallowSPoint) => d.id);
+        const circle = this.st.focusLine.selectAll('circle.actual-marker').data(actuals, (d: ShallowSPoint) => d.id);
 
         textActual.exit().remove();
         textActual
             .enter()
             .append('text')
-            .attr('transform', (a, index) => {
-                const textY = this.st.innerHeight - 30 * (index + 1) - 15;
+            .attr('transform', (a: any, index: number) => {
+                const textY = this.st.innerHeight! - 30 * (index + 1) - 15;
                 const textX = xScale(closestPt.actual);
                 return `translate(${textX},${textY})`;
             })
-            .text(a => formatActual(a))
+            .text((a: ShallowSPoint) => formatActual(a))
             .attr('class', 'actual-marker');
 
         lines.exit().remove();
@@ -529,13 +545,13 @@ export class ShallowSUiService {
         const actual = props.data.filter(x => !!x.actual);
         const planned = props.data.filter(x => !!x.planned);
         const actualRegDef = d3reg
-            .regressionPoly<ShallowSPoint>()
+            .regressionPoly()
             .x((d: ShallowSPoint) => d.percentActualFinished)
             .y((d: ShallowSPoint) => d.actual)
             .order(3)
             .domain(domain);
         const plannedRegDef = d3reg
-            .regressionPoly<ShallowSPoint>()
+            .regressionPoly()
             .x((d: ShallowSPoint) => d.percentPlannedFinished)
             .y((d: ShallowSPoint) => d.planned)
             .order(3)
@@ -552,7 +568,7 @@ export class ShallowSUiService {
             this.st.mainG
                 .append('path')
                 .attr('class', 'line actual regression polynomial')
-                .attr('d', _ => actualLineGen(aPoints))
+                .attr('d', (_: any) => actualLineGen(aPoints))
                 .attr('clip-path', 'url(#clip)');
         }
         if (planned.length > 2) {
@@ -564,17 +580,8 @@ export class ShallowSUiService {
             this.st.mainG
                 .append('path')
                 .attr('class', 'line planned regression polynomial')
-                .attr('d', _ => plannedLineGen(pPoints))
+                .attr('d', (_: any) => plannedLineGen(pPoints))
                 .attr('clip-path', 'url(#clip)');
         }
-    }
-
-    renderRegLine(data, lineGen, regClass, dataMap) {
-        const reg = this.st.mainG.append('g').attr('class', 'regression ' + regClass);
-
-        reg.append('path')
-            .attr('class', 'line')
-            .attr('d', _ => lineGen(data))
-            .attr('clip-path', 'url(#clip)');
     }
 }

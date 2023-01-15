@@ -1,5 +1,5 @@
 // import { TreeNode } from '../models/assign/tree-node';
-// import * as d3 from 'd3';
+import * as d3 from 'd3';
 // export const activityDrawnKey = 'arrow.activity.drawn';
 // export const activityTypedKey = 'arrow.activity.typed';
 // export const projectKey = 'project.data.key';
@@ -89,6 +89,10 @@
 
 export const PARENT_KEY = 'parent';
 export const SHALLOW_S_REGRESSION_TYPE_KEY = 'shallow.s.regression.type';
+export const LINEAR_REG_TYPE = 'linear';
+export const POLYNOMIAL_REG_TYPE = 'polynomial';
+export const SHALLOW_S_FORMAT = 'M-d-yyyy';
+export const MULTI_ARROW_CREATION_MODE = 'multi';
 
 export const RISK_CURVE_TYPE = 'risk.curve.risk.type';
 export const ACTIVITY_RISK_KEY = 'activity';
@@ -96,3 +100,22 @@ export const CRITICALITY_RISK_KEY = 'criticality';
 export const FIBONACCI_RISK_KEY = 'fibonacci';
 export const DECOMPRESS_AMOUNT = 'risk.curve.decompress.amount';
 export const TRIGGER_SECOND_DERIVATIVE = 'risk.curve.trigger.derivative';
+
+
+export const ACTIVITY_CREATED_KEY = 'arrow.create.focus';
+export const SUB_ARROW_CREATION_MODE = 'sub';
+
+
+export const TRANSITION_TIME = 1200;
+export const ARROW_EASE_TYPE = d3.easeExpInOut;
+
+
+
+
+
+
+
+
+
+
+

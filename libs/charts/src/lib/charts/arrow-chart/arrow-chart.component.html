@@ -1,0 +1,35 @@
+<div class="arrow-empty-message" [hidden]="!(isEmpty | async)">Arrow diagram: click to add nodes and arrows</div>
+<div class="arrow-component-wrapper">
+    <div class="create-txt">
+        <div>
+            <div>Add Activity</div>
+            <input type="text" [(ngModel)]="activityTxt" (keydown)="processActivityTxt($event)" />
+        </div>
+        <div class="create-mode">
+            <div>Mode</div>
+            <div class="creation-config">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" id="sub" name="create" [(ngModel)]="creationMode" value="sub" />
+                    <label class="custom-control-label" for="sub">Subgroup</label>
+                </div>
+
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" id="multi" name="create" [(ngModel)]="creationMode" value="multi" />
+                    <label class="custom-control-label" for="multi">Multigroup</label>
+                </div>
+                <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="arrange" [checked]="autoArrange" (change)="autoArrange = !autoArrange" />
+                    <label class="custom-control-label" for="arrange">Auto Arrange</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        #chart
+        (outListSelect)="deselectItem($event)"
+        (inListSelect)="disableDeletes($event)"
+        [skipList]="['mat-calendar-body-cell-content', 'keep-selected-item']"
+        outsideClick
+        class="arrow-chart-container"
+    ></div>
+</div>

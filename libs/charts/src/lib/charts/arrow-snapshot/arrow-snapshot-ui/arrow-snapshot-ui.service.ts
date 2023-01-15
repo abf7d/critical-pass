@@ -1,7 +1,7 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Inject, Injectable, NgZone } from '@angular/core';
 import { Activity, Integration, Project } from '@critical-pass/project/models';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
-import { DashboardService } from '@critical-pass/shared/data-access';
+import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import * as CONST from '../../../constants/keys';
 // import { Project } from '../../../models/project/project';
 import * as d3 from 'd3';
@@ -20,7 +20,7 @@ export class ArrowSnapshotUiService {
     private sub!: Subscription;
     private parentId!: string;
 
-    constructor(/*private pManager: ProjectManagerBase, */ private dashboard: DashboardService, private ngZone: NgZone) {}
+    constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, private ngZone: NgZone) {}
 
     public init(width: number, height: number, id: number, parentId: string, el: any) {
         this.id = id;

@@ -170,7 +170,7 @@ export class ShallowSCalcService {
             : null;
         const plannedReg = !isNaN(max100s)
             ? [
-                  { x: startPlanned, y: 0 }, // TODO: use logistic regression with extreme numbers should the regression start at the planned date
+                  { x: startPlanned, y: 0 }, // TODO: use logistic regression with extreme numbers. should the regression start at the planned date
                   { x: max100s, y: yOverRunP },
               ]
             : null;

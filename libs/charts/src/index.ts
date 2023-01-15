@@ -14,7 +14,7 @@ export * from './lib/charts/shallow-s-snapshot/shallow-s-snapshot.module';
 // export * from './lib/charts/risk-curve/risk-curve.module';
 // export * from './lib/charts/risk-donut/risk-donut.module';
 // export * from './lib/charts/score-board/score-board.module';
-// export * from './lib/charts/shallow-s/shallow-s.module';
+export * from './lib/charts/shallow-s/shallow-s.module';
 // export * from './lib/charts/shallow-s-snapshot/shallow-s-snapshot.module';
 // export * from './lib/charts/stacked-resources/stacked-resources.module';
 // export * from './lib/charts/time-cost/time-cost.module';

@@ -1,0 +1,353 @@
+cp-arrow-chart {
+    .arrow-component-wrapper {
+        position: relative;
+        top: 0;
+        left: 0;
+        .create-txt {
+            position: absolute;
+            top: 10px;
+            left: 5px;
+            padding: 7px;
+            border-radius: 7px;
+            background-color: #f9f9f9;
+            z-index: 12;
+            display: flex;
+            .create-mode {
+                padding-left: 20px;
+            }
+        }
+        svg {
+            background-color: white;
+        }
+    }
+    path.dragline {
+        stroke: #000;
+    }
+    path.link {
+        stroke-width: 4px;
+        cursor: default;
+    }
+
+    svg:not(.active):not(.ctrl) path.link {
+        cursor: pointer;
+    }
+
+    path.link {
+        fill: none;
+        stroke-width: 4px;
+        cursor: default;
+    }
+
+    .link {
+        stroke-opacity: 0.6;
+    }
+
+    .node {
+        stroke-width: 1px;
+        fill: #fff;
+    }
+    g.selected * {
+        stroke-opacity: 1;
+    }
+    g.selected .node {
+        fill: #aaf;
+    }
+
+    // Nodes
+    .node{
+        .risk-0 {
+            stroke-opacity: 0.5;
+        }
+        .risk-1 {
+            stroke-opacity: 0.6;
+        }
+        .risk-2 {
+            stroke-opacity: 0.6;
+        }
+        .risk-3 {
+            stroke-opacity: 0.9;
+        }
+    }
+    .link {
+        .risk-0 text {
+            stroke-opacity: 0.5;
+        }
+        .risk-1 text {
+            stroke-opacity: 0.6;
+        }
+        .risk-2 text {
+            stroke-opacity: 0.6;
+        }
+        .risk-3 text {
+            stroke-opacity: 0.5;
+        }
+    }
+
+
+    .risk-undefined {
+        stroke: #bbb;
+        stroke-opacity: 0.9;
+    }
+    g.completed {
+        fill: #ffddff;
+        stroke-opacity: 0.9;
+    }
+
+    // Arrow Heads
+    marker.risk-0 {
+        fill: #1c1;
+        opacity: 1;
+    }
+
+    marker.risk-1 {
+        fill: #ffd800;
+        opacity: 1;
+    }
+
+    marker.risk-2 {
+        fill: #f00;
+        opacity: 1;
+    }
+
+    marker.risk-3 {
+        fill: #000;
+        opacity: 1;
+    }
+
+    marker.risk-undefined {
+        fill: #bbb;
+        opacity: 1;
+    }
+
+    marker.unprocessed {
+        fill: #bbb;
+        opacity: 1;
+    }
+    marker.completed {
+        fill: #ffddff;
+        opacity: 1;
+    }
+
+    // Arrows
+    .risk-0 path.link {
+        stroke-opacity: 0.4;
+    }
+
+    .risk-1 path.link {
+        stroke-opacity: 0.6;
+    }
+
+    .risk-2 path.link {
+        stroke-opacity: 0.6;
+    }
+
+    .risk-3 path.link {
+        stroke-opacity: 0.9;
+    }
+    .risk-undefined path.link {
+        opacity: 1;
+    }
+    .completed path.link {
+        stroke: #ffddff;
+        stroke-opacity: 0.8;
+    }
+    .unprocessed path.link {
+        // stroke: #bbb;
+        stroke-opacity: 0.9;
+    }
+
+    .glow {
+        text-anchor: middle;
+        font-size: 13px;
+        stroke: white;
+        stroke-width: 6;
+        stroke-opacity: 0.7;
+        fill: white;
+    }
+
+    g path.dummy {
+        stroke-dasharray: 10, 2;
+    }
+
+    .dummy text {
+        stroke-dasharray: 10, 0;
+    }
+
+    g circle.dummy {
+        stroke-dasharray: 7, 3;
+        stroke-width: 2.5px;
+    }
+
+    g.milestone circle {
+        stroke-width: 4px;
+    }
+
+    g.milestone {
+        stroke-opacity: 0.8;
+        fill: black;
+    }
+
+    g.sub-project path.link.main {
+        stroke: purple;
+        opacity: 0.9;
+    }
+
+    g.selected path.link.main {
+        stroke: #00f;
+        opacity: 0.9;
+    }
+
+    circle.active {
+        stroke: #00f;
+        stroke-width: 2.5;
+    }
+    circle.last-selected {
+        stroke: purple;
+    }
+    g.selected text.label {
+        stroke: blue;
+    }
+
+    text.glow,
+    text.label {
+        pointer-events: all;
+        cursor: pointer;
+    }
+
+    path.link.dragline {
+        pointer-events: none;
+    }
+
+    path.link.hidden {
+        stroke-width: 0;
+    }
+
+    circle.node {
+        stroke-width: 1.5px;
+        cursor: pointer;
+    }
+
+    text {
+        font: 12px sans-serif;
+        pointer-events: none;
+    }
+
+    text.id {
+        text-anchor: middle;
+        font-weight: bold;
+    }
+
+    .activity-labels div {
+        float: left;
+        width: 158px;
+    }
+
+    .activity-labels div:first-child {
+        width: 23px;
+    }
+
+    .dim {
+        opacity: 0.8;
+    }
+
+    g.dummy path {
+        stroke-dasharray: 10, 2;
+    }
+
+    g circle.dummy {
+        stroke-dasharray: 7, 3;
+        stroke-width: 2.5px;
+    }
+
+    g.milestone circle {
+        stroke-width: 4px;
+    }
+
+    g.milestone {
+        stroke-opacity: 0.8;
+        fill: black;
+    }
+
+    g.selected path.link.main {
+        stroke: #00f;
+        opacity: 0.9;
+    }
+
+    circle.active {
+        stroke: #00f;
+        stroke-width: 2.5;
+    }
+    .hover path {
+        stroke-width: 5.5px;
+    }
+    text.risk-stats {
+        font-size: 8px;
+        stroke-opacity: 0.4;
+        fill: #000;
+        font-weight: 400;
+    }
+    .arrow-empty-message {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        z-index: 11;
+        transform: translate(-50%, -50%);
+    }
+
+    .risk-end {
+        stroke-opacity: 0.8;
+        stroke-width: 3px;
+    }
+
+    .risk-end circle.node,
+    .risk-start circle.node {
+        stroke-width: 3px;
+    }
+
+    .risk-start {
+        stroke-opacity: 0.8;
+        stroke-width: 3px;
+    }
+
+    display: block;
+    position: relative;
+
+    .arrow-empty-message {
+        font-weight: bold;
+    }
+
+    .creation-config {
+        display: flex;
+        align-items: baseline;
+    }
+
+    .lasso path {
+        stroke: rgb(80, 80, 80);
+        stroke-width: 2px;
+    }
+
+    .lasso .drawn {
+        fill-opacity: 0.05;
+    }
+
+    .lasso .loop_close {
+        fill: none;
+        stroke-dasharray: 4, 4;
+    }
+
+    .lasso .origin {
+        fill: #3399ff;
+        fill-opacity: 0.5;
+    }
+
+    .not_possible {
+        fill: rgb(200, 200, 200);
+    }
+
+    .possible circle,
+    .possible path,
+    .unprocessed.possible path.link {
+        fill: #ec888c;
+        stroke: #ec888c;
+    }
+}
