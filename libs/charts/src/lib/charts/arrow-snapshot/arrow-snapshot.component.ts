@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy, ViewEncapsulation, SimpleChanges, OnChanges, inject } from '@angular/core';
 import { ArrowSnapshotUiService } from './arrow-snapshot-ui/arrow-snapshot-ui.service';
-// import { Project } from '../../models/project/project';
-// import { ArrowSnapshotFactoryService } from './arrow-snapshot-factory/arrow-snapshot-factory.service';
 import { Project } from '@critical-pass/project/models';
 @Component({
     selector: 'cp-arrow-snapshot',
@@ -20,8 +18,7 @@ export class ArrowSnapshotComponent implements OnInit, OnDestroy, OnChanges {
     @Input() refresh!: number;
     @ViewChild('chart', { static: true }) chart!: ElementRef;
     private ui!: ArrowSnapshotUiService;
-    constructor(/*factory: ArrowSnapshotFactoryService, ui: ArrowSnapshotUiService*/) {
-        // this.ui = factory.ui;
+    constructor() {
         this.ui = inject(ArrowSnapshotUiService);
     }
 
