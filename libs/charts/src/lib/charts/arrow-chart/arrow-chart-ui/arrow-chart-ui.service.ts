@@ -27,8 +27,8 @@ export class ArrowChartUIService {
     private sub!: Subscription;
     public projIsEmpty: BehaviorSubject<boolean>;
     private proj!: Project;
-    private arrowRisk!: Map<number, number>;
-    private nodeRisk!: Map<number, number>;
+    private arrowRisk: Map<number, number> = new Map<number, number>();;
+    private nodeRisk: Map<number, number> = new Map<number, number>();;
     private rebuild!: boolean;
     private prevProjId!: number;
 
@@ -69,10 +69,10 @@ export class ArrowChartUIService {
     }
 
     public createFastActivity(event: any, mode: string, autoArrange: boolean = false) {
-        const newActivity = this.controller.addFastActivity(event, this.proj, mode, this.st.last_selected_node);
+        const newActivity = this.controller.addFastActivity(event, this.proj, mode, this.st.last_selected_node!);
         if (newActivity) {
             if (mode === CONST.SUB_ARROW_CREATION_MODE) {
-                this.st.last_selected_node = newActivity.chartInfo.target;
+                this.st.last_selected_node = newActivity.chartInfo.target ?? null;
             }
             if (autoArrange === true) {
                 this.nodeArranger.arrangeNodes(this.proj);
@@ -210,10 +210,10 @@ export class ArrowChartUIService {
             .filter(event => !event.button)
             .on('start', d => {})
             .on('drag', (event: any, d: unknown) => {
-                this.controller.onNodeGroupDrag([event.x, event.y], event.dx, event.dy, d, project);
+                this.controller.onNodeGroupDrag([event.x, event.y], event.dx, event.dy, d as Integration, project);
             })
             .on('end', (event: any, d: unknown) => {
-                this.controller.onNodeGroupMouseUp(d, project);
+                this.controller.onNodeGroupMouseUp(d as Integration, project);
                 this.dashboard.updateProject(project, true);
             });
         enterNodes
@@ -285,8 +285,8 @@ export class ArrowChartUIService {
             .append('text')
             .attr('class', 'label')
             .classed('selected', (d: Activity) => d === this.st.selected_link)
-            .attr('y', (l: Activity)  => this.controller.getLinkTextPosY(l, proj))
-            .attr('x', (l: Activity)  => this.controller.getLinkTextPosX(l, proj))
+            .attr('y', (l: Activity) => this.controller.getLinkTextPosY(l, proj))
+            .attr('x', (l: Activity) => this.controller.getLinkTextPosX(l, proj))
             .style('font-size', (l: Activity) => this.controller.getActivityFontSize(l, proj))
             .style('text-anchor', 'middle')
             .text((l: Activity) => this.controller.getLinkText(l, proj));
@@ -485,10 +485,7 @@ export class ArrowChartUIService {
         if (!event.ctrlKey) {
             event.stopPropagation();
         }
-        const proceed = this.controller.updateLinePos(d3.pointer(this.st.mainG.node()));
-        if (!proceed) {
-            return;
-        }
+        this.controller.updateLinePos(d3.pointer(this.st.mainG.node()));
     }
 
     private mouseup(): void {

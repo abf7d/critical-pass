@@ -6,7 +6,7 @@ export * as CHART_KEYS from './lib/constants/constants';
 // export * from './lib/services';
 // export * from './lib/models';
 // export * from './lib/pipes/is-nan-pipe';
-// export * from './lib/charts/arrow-chart/arrow-chart.module';
+export * from './lib/charts/arrow-chart/arrow-chart.module';
 // export * from './lib/charts/activity-grid/activity-grid.module';
 export * from './lib/charts/arrow-snapshot/arrow-snapshot.module';
 export * from './lib/charts/shallow-s-snapshot/shallow-s-snapshot.module';

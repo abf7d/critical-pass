@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
-// import { Integration } from '../../../models/project/integration/integration';
-// import { Project } from '../../../models/project/project';
-// import { Activity } from '../../../models/project/activity/activity';
 import { ArrowState } from '../arrow-state/arrow-state';
 import * as CONST from '../../../constants/constants';
 import { Activity, Integration, Project } from '@critical-pass/project/models';
-// import { Dictionary } from '../../../services/pub-sub/event/dictionary';
 
 @Injectable({
     providedIn: 'root',
@@ -99,7 +95,7 @@ export class ArrowPropertyService {
         }
         let risk = a.chartInfo.risk;
         const record = risks.get(a.profile.id);
-        if (!skipAnim && old && !!risks &&  record !== undefined) {
+        if (!skipAnim && old && !!risks && record !== undefined) {
             risk = record;
         }
         let color = this.getRiskColor(risk);
@@ -216,9 +212,9 @@ export class ArrowPropertyService {
         return '';
     }
     public getLowerLinkTextYPos(d: Activity, proj: Project): number {
-        if (d.chartInfo.source?.y === undefined || d.chartInfo.target?.y === undefined){
+        if (d.chartInfo.source?.y === undefined || d.chartInfo.target?.y === undefined) {
             // TODO: Implement Logger
-            console.error('getLowerLinkTextYPos link node is missing y position'); 
+            console.error('getLowerLinkTextYPos link node is missing y position');
             return 0;
         }
         if (proj.profile.view.lowerArrowText === 'subproj') {
@@ -227,9 +223,9 @@ export class ArrowPropertyService {
         return d.chartInfo.source.y + (d.chartInfo.target!.y! - d.chartInfo.source!.y!) / 2 + 14;
     }
     public getLowerLinkTextXPos(d: Activity, proj: Project): number {
-        if (d.chartInfo.source?.x === undefined || d.chartInfo.target?.x === undefined){
+        if (d.chartInfo.source?.x === undefined || d.chartInfo.target?.x === undefined) {
             // TODO: Implement Logger
-            console.error('getLowerLinkTextXPos link node is missing x position'); 
+            console.error('getLowerLinkTextXPos link node is missing x position');
             return 0;
         }
         if (proj.profile.view.lowerArrowText === 'subproj') {
@@ -244,9 +240,9 @@ export class ArrowPropertyService {
         return '8px';
     }
     public getLinkTextPosY(d: Activity, proj: Project): number {
-        if (d.chartInfo.source?.y === undefined || d.chartInfo.target?.y === undefined){
+        if (d.chartInfo.source?.y === undefined || d.chartInfo.target?.y === undefined) {
             // TODO: Implement Logger
-            console.error('getLinkTextPosY link node is missing y position'); 
+            console.error('getLinkTextPosY link node is missing y position');
             return 0;
         }
         if (proj.profile.view.displayText === 'name') {
@@ -255,9 +251,9 @@ export class ArrowPropertyService {
         return d.chartInfo.source.y + (d.chartInfo.target.y - d.chartInfo.source.y) / 2 - 6;
     }
     public getLinkTextPosX(d: Activity, proj: Project): number {
-        if (d.chartInfo.source?.x === undefined || d.chartInfo.target?.x === undefined){
+        if (d.chartInfo.source?.x === undefined || d.chartInfo.target?.x === undefined) {
             // TODO: Implement Logger
-            console.error('getLinkTextPosX link node is missing x position'); 
+            console.error('getLinkTextPosX link node is missing x position');
             return 0;
         }
         if (proj.profile.view.displayText === 'name') {
@@ -294,8 +290,8 @@ export class ArrowPropertyService {
             text =
                 d.profile.id +
                 ' ' +
-                d.profile.name!
-                    .split(' ')
+                d.profile
+                    .name!.split(' ')
                     .map(x => x.substring(0, 3))
                     .join(' ') +
                 ' ' +

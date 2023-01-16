@@ -9,7 +9,7 @@ export class OutsideClickDirective {
     @Output()
     inListSelect: EventEmitter<MouseEvent> = new EventEmitter();
 
-    @Input() skipList: string[];
+    @Input() skipList!: string[];
 
     @HostListener('document:mousedown', ['$event'])
     onClick(event: MouseEvent): void {
@@ -19,7 +19,7 @@ export class OutsideClickDirective {
             if (typeof (currentElement as any).className === 'string') {
                 const found = this.skipList.filter(s => (currentElement as any).className?.includes(s));
                 if (found.length) {
-                  allowTtrigger = false;
+                    allowTtrigger = false;
                     break;
                 }
             }

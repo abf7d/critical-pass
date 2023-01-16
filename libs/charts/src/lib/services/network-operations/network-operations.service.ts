@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Project } from '../../../models/project/project';
-import { Integration } from '../../../models/project/integration/integration';
-import { Activity } from '../../../models/project/activity/activity';
-import { IntegrationSerializerService } from '../../serializers/project/integration/integration-serializer/integration-serializer.service';
+import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { IntegrationSerializerService } from '@critical-pass/shared/serializers';
 
 @Injectable({
     providedIn: 'root',
@@ -10,7 +8,7 @@ import { IntegrationSerializerService } from '../../serializers/project/integrat
 export class NetworkOperationsService {
     constructor() {}
 
-    getNodeById(id: number, project: Project): Integration {
+    getNodeById(id: number, project: Project): Integration | undefined {
         return project.integrations.find(n => n.id === id);
     }
 
@@ -36,10 +34,10 @@ export class NetworkOperationsService {
         project.integrations.splice(project.integrations.indexOf(source), 1);
     }
 
-    public splitUpNode(node: Integration, proj: Project): { sources: any; targets: any } {
+    public splitUpNode(node: Integration, proj: Project): { sources: Map<number, Integration>; targets: Map<number, Integration> } | null {
         // mainNode = _.find(@nodes, (n) -> return n.id == nodeId)
         if (node == null) {
-            return;
+            return null;
         }
         const inEdges = this.getInEdges(node.id, proj);
         const outEdges = this.getOutEdges(node.id, proj);
@@ -48,17 +46,17 @@ export class NetworkOperationsService {
         const yPos = node.y;
         const xPos = node.x;
         const inEdgeNum = inEdges.length;
-        const sources = {};
-        const targets = {};
+        const sources = new Map<number, Integration>();
+        const targets = new Map<number, Integration>();
         let index = 0;
         inEdges.forEach(a => {
             maxId++;
-            const y = yPos - 6 * (inEdgeNum - index);
-            const splitNode = new IntegrationSerializerService().new(maxId, maxId.toString(), 0, xPos, y);
+            const y = yPos! - 6 * (inEdgeNum - index);
+            const splitNode = new IntegrationSerializerService().new(maxId, maxId.toString(), 0, xPos!, y);
             a.chartInfo.target_id = maxId;
             a.chartInfo.target = splitNode;
             proj.integrations.push(splitNode);
-            targets[maxId] = splitNode;
+            targets.set(maxId, splitNode);
             index++;
         });
 
@@ -66,12 +64,12 @@ export class NetworkOperationsService {
         index = 0;
         outEdges.forEach(a => {
             maxId++;
-            const y = yPos + 6 * (outEdgeNum - index);
-            const splitNode = new IntegrationSerializerService().new(maxId, maxId.toString(), 0, xPos, y);
+            const y = yPos! + 6 * (outEdgeNum - index);
+            const splitNode = new IntegrationSerializerService().new(maxId, maxId.toString(), 0, xPos!, y);
             a.chartInfo.source_id = maxId;
             a.chartInfo.source = splitNode;
             proj.integrations.push(splitNode);
-            sources[maxId] = splitNode;
+            sources.set(maxId, splitNode);
         });
         proj.integrations.splice(proj.integrations.indexOf(node), 1);
         return { sources, targets };

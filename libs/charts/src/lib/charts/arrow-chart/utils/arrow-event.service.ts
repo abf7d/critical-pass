@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-// import { Integration } from '../../../models/project/integration/integration';
-// import { Project } from '../../../models/project/project';
-// import { Activity } from '../../../models/project/activity/activity';
 import { ArrowState } from '../arrow-state/arrow-state';
-// import { NetworkOperationsService } from '../../../services/utils/network-operations/network-operations.service';
-// import { MilestoneFactoryService } from '../../../services/utils/milestone-factory/milestone-factory.service';
-// import { DependencyCrawlerService } from '../../../services/utils/dependency-crawler/dependency-crawler.service';
 import { ElPositionerService } from './el-positioner.service';
 import { ElFactoryService } from './el-factory.service';
 import { NetworkOperationsService } from '../../../services/network-operations/network-operations.service';
@@ -17,13 +11,14 @@ import { Activity, Integration, Project } from '@critical-pass/project/models';
 })
 export class ArrowEventsService {
     public st!: ArrowState;
-    // private msFactory: MilestoneFactoryService;
-    constructor(private networkOps: NetworkOperationsService, private msFactory: MilestoneFactoryService, private positioner: ElPositionerService, private elFactory: ElFactoryService) {
-        // const depCrawler = new DependencyCrawlerService();
-        // this.msFactory = new MilestoneFactoryService(depCrawler);
+    constructor(
+        private networkOps: NetworkOperationsService,
+        private msFactory: MilestoneFactoryService,
+        private positioner: ElPositionerService,
+        private elFactory: ElFactoryService,
+    ) {
     }
     public deselectActivity(project: Project): void {
-        // project.activities.forEach(a => (a.chartInfo.isSelected = null));
         project.activities.forEach(a => (a.chartInfo.isSelected = false));
         project.profile.view.selectedActivity = null;
         this.st.selected_link = null;
@@ -105,9 +100,7 @@ export class ArrowEventsService {
 
         // unenlarge target node when successfully creating an arrow
         this.st.nodes.selectAll('circle').attr('transform', (p: Integration) => {
-            if (p === d) {
                 return '';
-            }
         });
         let source = this.st.mousedown_node;
         let target = this.st.mouseup_node;
@@ -221,7 +214,7 @@ export class ArrowEventsService {
             el.select('circle').attr('transform', (p: Integration) => {
                 if (d === p) {
                     return 'scale(1.3)';
-                }
+                } else return '';
             });
         }
         // Enlarge the node when joining nodes mouse over (don't enlarge on drag to self)
@@ -231,6 +224,8 @@ export class ArrowEventsService {
         el.select('circle').attr('transform', (p: Integration) => {
             if (d === p) {
                 return 'scale(1.1)';
+            } else {
+                return '';
             }
         });
     }
@@ -240,9 +235,7 @@ export class ArrowEventsService {
         // Shrink node back to regular size when dragging arrow mouse out
         if (this.st.drag_node != null && d !== this.st.drag_node) {
             el.select('circle').attr('transform', (p: Integration) => {
-                if (d === p) {
-                    return '';
-                }
+                return '';
             });
         }
         // Shrink node back to regular size when ctrl + drag node mouse out
@@ -250,9 +243,7 @@ export class ArrowEventsService {
             return;
         }
         el.select('circle').attr('transform', (p: Integration) => {
-            if (d === p) {
-                return '';
-            }
+            return '';
         });
     }
     public setSelectedLinkState(d: Activity, ctrlKey: boolean, proj: Project): boolean {
@@ -299,9 +290,7 @@ export class ArrowEventsService {
 
             // (on join) return circle to normal size
             el.select('circle').attr('transform', (p: any) => {
-                if (p === dragTarget) {
-                    return '';
-                }
+                return '';
             });
             const target = this.st.drag_node;
             const source = dragTarget;

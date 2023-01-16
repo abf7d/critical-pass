@@ -3,12 +3,8 @@ import { ArrowEventsService } from './arrow-event.service';
 import { ArrowPropertyService } from './arrow-property.service';
 import { ElFactoryService } from './el-factory.service';
 import { ElPositionerService } from './el-positioner.service';
-// import { Integration } from '../../../models/project/integration/integration';
-// import { Project } from '../../../models/project/project';
-// import { Activity } from '../../../models/project/activity/activity';
 import { ArrowState } from '../arrow-state/arrow-state';
 import { Activity, Integration, Project } from '@critical-pass/project/models';
-// import { Dictionary } from '../../../services/pub-sub/event/dictionary';
 
 @Injectable({
     providedIn: 'root',
@@ -32,7 +28,7 @@ export class ArrowControllerService {
     public onNodeGroupDrag(point: [number, number], dx: number, dy: number, d: Integration, proj: Project): void {
         return this.positioner.setElPositions(point, dx, dy, d, proj);
     }
-    public updateLinePos(point: [number, number]): boolean {
+    public updateLinePos(point: [number, number]): void {
         return this.positioner.updateLinePos(point);
     }
     public handleNodeCreation(ctrl: any, point: any, proj: Project): boolean {
@@ -41,7 +37,7 @@ export class ArrowControllerService {
     public deleteSelectedNodeOrLink(proj: Project): void {
         return this.factory.deleteSelectedNodeOrLink(proj);
     }
-    public addFastActivity(event: any, proj: Project, mode: string, lastSelectedNode: Integration): Activity {
+    public addFastActivity(event: any, proj: Project, mode: string, lastSelectedNode: Integration): Activity | null {
         return this.factory.addFastActivity(event, proj, mode, lastSelectedNode);
     }
     public getNodeName(d: Integration): string {

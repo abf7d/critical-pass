@@ -28,10 +28,7 @@ export class LassoToolService {
     private lassoEnd: number | null = null;
     private id!: number;
 
-    constructor(
-        @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
-        @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
-    ) {}
+    constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService) {}
 
     public setTransform(transform: SvgTranform) {
         this.transform = transform;

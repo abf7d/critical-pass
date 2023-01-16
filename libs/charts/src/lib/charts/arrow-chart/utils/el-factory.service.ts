@@ -9,8 +9,7 @@ import { ArrowState } from '../arrow-state/arrow-state';
 })
 export class ElFactoryService {
     public st!: ArrowState;
-    constructor(private actBuilder: ActivityBuilder, private msFactory: MilestoneFactoryService) {
-    }
+    constructor(private actBuilder: ActivityBuilder, private msFactory: MilestoneFactoryService) {}
     public addProjectActivity(source: Integration, target: Integration, proj: Project): Activity {
         let maxId = Math.max(...proj.activities.map(a => a.profile.id), 0);
         const id = maxId + 1;
@@ -87,18 +86,18 @@ export class ElFactoryService {
             if (proj.profile.start === node.id) {
                 connectedLink = nonMilestoneAct.forEach((l: Activity) => {
                     if (l.chartInfo.source!.id === node.id) {
-                        return (proj.profile.start = l.chartInfo.target!.id);
+                        proj.profile.start = l.chartInfo.target!.id;
                     }
                 });
             }
         }
         if (nodeType !== 'start') {
             if (proj.profile.end === node.id) {
-                return (connectedLink = nonMilestoneAct.forEach((l: Activity) => {
+                connectedLink = nonMilestoneAct.forEach((l: Activity) => {
                     if (l.chartInfo.target!.id === node.id) {
-                        return (proj.profile.end = l.chartInfo.source!.id);
+                        proj.profile.end = l.chartInfo.source!.id;
                     }
-                }));
+                })
             }
         }
     }

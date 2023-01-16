@@ -117,7 +117,7 @@ export const RISK_COLOR = {
     COMPLETED: '#ffddff',
     START: '#f00',
     END: '#00f',
-    UNASSIGNED: '#555'
+    UNASSIGNED: '#555',
 };
 
 export enum RISK_CODE {
