@@ -1,24 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Integration } from '../../../models/project/integration/integration';
-import { Project } from '../../../models/project/project';
-import { Activity } from '../../../models/project/activity/activity';
+import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { ActivityBuilder, MilestoneFactoryService } from '@critical-pass/shared/project-utils';
+import { ActivitySerializerService, IntegrationSerializerService } from '@critical-pass/shared/serializers';
 import { ArrowState } from '../arrow-state/arrow-state';
-import { ActivitySerializerService } from '../../../services/serializers/project/activity/activity-serializer.service';
-import { IntegrationSerializerService } from '../../../services/serializers/project/integration/integration-serializer/integration-serializer.service';
-import { MilestoneFactoryService } from '../../../services/utils/milestone-factory/milestone-factory.service';
-import { ActivityBuilder } from '../../../services/utils/activity-builder/activity-builder';
-import { DependencyCrawlerService } from '../../../services/utils/dependency-crawler/dependency-crawler.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ElFactoryService {
-    public st: ArrowState;
-    private actBuilder: ActivityBuilder = new ActivityBuilder();
-    private msFactory: MilestoneFactoryService;
-    constructor() {
-        const depCrawler = new DependencyCrawlerService();
-        this.msFactory = new MilestoneFactoryService(depCrawler);
+    public st!: ArrowState;
+    constructor(private actBuilder: ActivityBuilder, private msFactory: MilestoneFactoryService) {
     }
     public addProjectActivity(source: Integration, target: Integration, proj: Project): Activity {
         let maxId = Math.max(...proj.activities.map(a => a.profile.id), 0);
@@ -35,14 +26,14 @@ export class ElFactoryService {
         proj.profile.view.selectedActivity = newActivity;
         return newActivity;
     }
-    public handleNodeCreation(ctrl, point: any, proj: Project): boolean {
+    public handleNodeCreation(ctrl: any, point: any, proj: Project): boolean {
         this.st.blockDelete = false;
 
         if (ctrl || this.st.mousedown_node || this.st.mousedown_link) {
             return false;
         }
-        this.setLinkIsSelected(this.st.selected_link, proj, false);
-        this.setNodeIsSelected(this.st.selected_node, proj, false);
+        this.setLinkIsSelected(this.st.selected_link!, proj, false);
+        this.setNodeIsSelected(this.st.selected_node!, proj, false);
         this.st.selected_link = null;
         this.st.selected_node = null;
         proj.profile.view.selectedIntegration = null;
@@ -55,10 +46,11 @@ export class ElFactoryService {
         proj.integrations.push(node);
         return true;
     }
-    public addFastActivity(event: any, proj: Project, mode: string, lastSelectedNode: Integration): Activity {
+    public addFastActivity(event: any, proj: Project, mode: string, lastSelectedNode: Integration): Activity | null {
         const keyPressed = event.key;
         const text = event.target.value;
         const trim = text.trim();
+        // TODO: move to parent function
         if (keyPressed === 'Enter' && trim !== '') {
             const parts = trim.split(',');
             const name = parts[0].trim();
@@ -70,7 +62,7 @@ export class ElFactoryService {
                 }
             }
             proj.profile.view.autoZoom = true;
-            return this.actBuilder.addActivity(proj, null, name, duration, mode, lastSelectedNode);
+            return this.actBuilder.addActivity(proj, name, duration, mode, lastSelectedNode);
         }
         return null;
     }
@@ -88,14 +80,14 @@ export class ElFactoryService {
             node.selected = isSelected;
         }
     }
-    private updateStartEndNodes(node: Integration, proj: Project, nodeType = null) {
+    private updateStartEndNodes(node: Integration, proj: Project, nodeType: string | null = null) {
         let connectedLink;
         const nonMilestoneAct = this.filterOutMilestones(proj);
         if (nodeType !== 'end') {
             if (proj.profile.start === node.id) {
                 connectedLink = nonMilestoneAct.forEach((l: Activity) => {
-                    if (l.chartInfo.source.id === node.id) {
-                        return (proj.profile.start = l.chartInfo.target.id);
+                    if (l.chartInfo.source!.id === node.id) {
+                        return (proj.profile.start = l.chartInfo.target!.id);
                     }
                 });
             }
@@ -103,8 +95,8 @@ export class ElFactoryService {
         if (nodeType !== 'start') {
             if (proj.profile.end === node.id) {
                 return (connectedLink = nonMilestoneAct.forEach((l: Activity) => {
-                    if (l.chartInfo.target.id === node.id) {
-                        return (proj.profile.end = l.chartInfo.source.id);
+                    if (l.chartInfo.target!.id === node.id) {
+                        return (proj.profile.end = l.chartInfo.source!.id);
                     }
                 }));
             }
@@ -124,7 +116,13 @@ export class ElFactoryService {
             } else if (this.st.selected_link) {
                 const selectedLink = this.st.selected_link;
                 const arrow = proj.activities.find(a => a.profile.id === selectedLink.profile.id);
+                if (arrow === undefined) {
+                    return;
+                }
                 const { source, target } = arrow.chartInfo;
+                if (source === undefined || target === undefined) {
+                    return;
+                }
                 this.updateStartEndNodes(source, proj, 'start');
                 this.updateStartEndNodes(target, proj, 'end');
                 index = proj.activities.indexOf(arrow);
@@ -141,10 +139,10 @@ export class ElFactoryService {
                     proj.integrations.splice(indexT, 1);
                 }
             }
-            this.setLinkIsSelected(this.st.selected_link, proj, false);
+            this.setLinkIsSelected(this.st.selected_link!, proj, false);
             this.st.selected_link = null;
             this.st.selected_node = null;
-            return (proj.profile.view.selectedActivity = null);
+            proj.profile.view.selectedActivity = null;
         }
     }
 }

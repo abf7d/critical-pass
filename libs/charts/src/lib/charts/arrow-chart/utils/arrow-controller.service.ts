@@ -3,11 +3,12 @@ import { ArrowEventsService } from './arrow-event.service';
 import { ArrowPropertyService } from './arrow-property.service';
 import { ElFactoryService } from './el-factory.service';
 import { ElPositionerService } from './el-positioner.service';
-import { Integration } from '../../../models/project/integration/integration';
-import { Project } from '../../../models/project/project';
-import { Activity } from '../../../models/project/activity/activity';
+// import { Integration } from '../../../models/project/integration/integration';
+// import { Project } from '../../../models/project/project';
+// import { Activity } from '../../../models/project/activity/activity';
 import { ArrowState } from '../arrow-state/arrow-state';
-import { Dictionary } from '../../../services/pub-sub/event/dictionary';
+import { Activity, Integration, Project } from '@critical-pass/project/models';
+// import { Dictionary } from '../../../services/pub-sub/event/dictionary';
 
 @Injectable({
     providedIn: 'root',
@@ -34,7 +35,7 @@ export class ArrowControllerService {
     public updateLinePos(point: [number, number]): boolean {
         return this.positioner.updateLinePos(point);
     }
-    public handleNodeCreation(ctrl, point: any, proj: Project): boolean {
+    public handleNodeCreation(ctrl: any, point: any, proj: Project): boolean {
         return this.factory.handleNodeCreation(ctrl, point, proj);
     }
     public deleteSelectedNodeOrLink(proj: Project): void {
@@ -49,7 +50,7 @@ export class ArrowControllerService {
     public getTextAboveNode(d: Integration, project: Project): string {
         return this.props.getTextAboveNode(d, project);
     }
-    public getNodeColor(old: boolean, a: Integration, proj: Project, risks: Dictionary<number>, skipAnim: boolean): string {
+    public getNodeColor(old: boolean, a: Integration, proj: Project, risks: Map<number, number>, skipAnim: boolean): string {
         return this.props.getNodeColor(old, a, proj, risks, skipAnim);
     }
     public isCompleted(d: Activity, proj: Project): boolean {
@@ -61,7 +62,7 @@ export class ArrowControllerService {
     public isHighlighted(d: Activity, proj: Project): boolean {
         return this.props.isHighlighted(d, proj);
     }
-    public getArrowColor(old: boolean, a: Activity, proj: Project, risks: Dictionary<number>, skipAnim: boolean): string {
+    public getArrowColor(old: boolean, a: Activity, proj: Project, risks: Map<number, number>, skipAnim: boolean): string {
         return this.props.getArrowColor(old, a, proj, risks, skipAnim);
     }
     public getLinkTextPosY(d: Activity, proj: Project): number {
@@ -103,11 +104,11 @@ export class ArrowControllerService {
     public onNodeGroupMouseDown(d: Integration, ctrlDown: boolean, el: any, proj: Project) {
         return this.events.setNodeDownStates(d, ctrlDown, el, proj);
     }
-    public onNodeMouseOver(d: Integration, el: any): string {
-        return this.events.setMouseOverNodeStates(d, el);
+    public onNodeMouseOver(d: Integration, el: any): void {
+        this.events.setMouseOverNodeStates(d, el);
     }
-    public onNodeMouseOut(d: Integration, el: any): string {
-        return this.events.clearMouseOverNodeStates(d, el);
+    public onNodeMouseOut(d: Integration, el: any): void {
+        this.events.clearMouseOverNodeStates(d, el);
     }
     public clearClassesAndHideLine(): void {
         return this.events.clearSelectionAndHideLine();

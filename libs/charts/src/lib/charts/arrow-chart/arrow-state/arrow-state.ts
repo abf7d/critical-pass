@@ -1,6 +1,5 @@
+import { Activity, Integration } from '@critical-pass/project/models';
 import { Subject } from 'rxjs';
-import { Activity } from '../../../models/project/activity/activity';
-import { Integration } from '../../../models/project/integration/integration';
 
 export interface ArrowState {
     mainG: any;
@@ -9,18 +8,18 @@ export interface ArrowState {
     nodes: any;
     drag_line: any;
     blockDelete: boolean;
-    selected_node: Integration;
-    last_selected_node: Integration;
-    activity_created: Subject<boolean>;
-    selected_link: Activity;
+    selected_node: Integration | null;
+    last_selected_node: Integration | null;
+    activity_created: Subject<boolean> | null;
+    selected_link: Activity | null;
     links: any;
-    mousedown_node: Integration;
+    mousedown_node: Integration | null;
     drag_node: any;
-    mouseover_node: { d: Integration; el: any };
-    mouseup_node: Integration;
-    mousedown_link: Activity;
+    mouseover_node: { d: Integration; el: any } | null;
+    mouseup_node: Integration | null;
+    mousedown_link: Activity | null;
     ctrl_down: boolean;
-    lastKeyDown: number;
+    lastKeyDown: number | null;
     macMetaDown: boolean;
     allowDeletes: boolean;
 }

@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Integration } from '../../../models/project/integration/integration';
-import { Project } from '../../../models/project/project';
-import { Activity } from '../../../models/project/activity/activity';
+// import { Integration } from '../../../models/project/integration/integration';
+// import { Project } from '../../../models/project/project';
+// import { Activity } from '../../../models/project/activity/activity';
 import { ArrowState } from '../arrow-state/arrow-state';
-import * as Keys from '../../../constants/keys';
-import { Dictionary } from '../../../services/pub-sub/event/dictionary';
+import * as CONST from '../../../constants/constants';
+import { Activity, Integration, Project } from '@critical-pass/project/models';
+// import { Dictionary } from '../../../services/pub-sub/event/dictionary';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ArrowPropertyService {
-    public st: ArrowState;
+    public st!: ArrowState;
     public getNodeCss(d: Integration, proj: Project): string {
         const nonMilestoneAct = this.filterOutMilestones(proj);
         if (proj.profile.view.showOrphaned) {
@@ -47,7 +48,7 @@ export class ArrowPropertyService {
             return d.maxPCD;
         }
         if (project.profile.view.showEftLft === 'milestone' && d.milestoneActivity) {
-            return d.milestoneActivity.profile.name;
+            return d.milestoneActivity.profile.name!;
         }
 
         return '';
@@ -60,106 +61,93 @@ export class ArrowPropertyService {
                 if (firstTag) {
                     return firstTag.backgroundcolor;
                 } else {
-                    return Keys.RiskColor.Unprocessed;
+                    return CONST.RISK_COLOR.UNPROCESSED;
                 }
             } else {
-                return Keys.RiskColor.Unprocessed;
+                return CONST.RISK_COLOR.UNPROCESSED;
             }
         }
-        return Keys.RiskColor.Unprocessed;
+        return CONST.RISK_COLOR.UNPROCESSED;
     }
-    public getArrowColor(old: boolean, a: Activity, proj: Project, risks: Dictionary<number>, skipAnim: boolean): string {
+    public getRiskColor(risk: number): string {
+        let color;
+        switch (risk) {
+            case CONST.RISK_CODE.NEW:
+                color = CONST.RISK_COLOR.NEW;
+                break;
+            case CONST.RISK_CODE.LOW:
+                color = CONST.RISK_COLOR.LOW;
+                break;
+            case CONST.RISK_CODE.MEDIUM:
+                color = CONST.RISK_COLOR.MEDIUM;
+                break;
+            case CONST.RISK_CODE.HIGH:
+                color = CONST.RISK_COLOR.HIGH;
+                break;
+            case CONST.RISK_CODE.CRITICAL:
+                color = CONST.RISK_COLOR.CRITICAL;
+                break;
+            default:
+                color = CONST.RISK_COLOR.UNPROCESSED;
+        }
+        return color;
+    }
+    public getArrowColor(old: boolean, a: Activity, proj: Project, risks: Map<number, number>, skipAnim: boolean): string {
         const groupName = proj.profile.view.selectedTagGroup;
         if (groupName) {
             return this.getTagColor(a, groupName);
         }
         let risk = a.chartInfo.risk;
-        if (!skipAnim && old && !!risks && risks[a.profile.id] !== undefined) {
-            risk = risks[a.profile.id];
+        const record = risks.get(a.profile.id);
+        if (!skipAnim && old && !!risks &&  record !== undefined) {
+            risk = record;
         }
-        let color;
-        switch (risk) {
-            case Keys.RiskCode.New:
-                color = Keys.RiskColor.New;
-                break;
-            case Keys.RiskCode.Low:
-                color = Keys.RiskColor.Low;
-                break;
-            case Keys.RiskCode.Medium:
-                color = Keys.RiskColor.Medium;
-                break;
-            case Keys.RiskCode.High:
-                color = Keys.RiskColor.High;
-                break;
-            case Keys.RiskCode.Critical:
-                color = Keys.RiskColor.Critical;
-                break;
-            default:
-                color = Keys.RiskColor.Unprocessed;
-        }
+        let color = this.getRiskColor(risk);
 
         if (a.chartInfo.tf === null) {
-            color = Keys.RiskColor.Unprocessed;
+            color = CONST.RISK_COLOR.UNPROCESSED;
         }
         if (a.chartInfo.tf === Infinity) {
-            color = Keys.RiskColor.Unprocessed;
+            color = CONST.RISK_COLOR.UNPROCESSED;
         }
         if (proj.profile.view.showOrphaned) {
-            color = Keys.RiskColor.Unprocessed;
+            color = CONST.RISK_COLOR.UNPROCESSED;
         }
         if (proj.profile.view.markCompleted && a.processInfo.completed) {
-            color = Keys.RiskColor.Completed;
+            color = CONST.RISK_COLOR.COMPLETED;
         }
         return color;
     }
-    public getNodeColor(old: boolean, a: Integration, proj: Project, risks: Dictionary<number>, skipAnim: boolean): string {
+    public getNodeColor(old: boolean, a: Integration, proj: Project, risks: Map<number, number>, skipAnim: boolean): string {
         const groupName = proj.profile.view.selectedTagGroup;
         if (groupName) {
-            return Keys.RiskColor.Unassigned;
+            return CONST.RISK_COLOR.UNASSIGNED;
         }
 
         let risk = a.risk;
-        if (!skipAnim && old && risks && risks[a.id]) {
-            risk = risks[a.id];
+        const record = risks.get(a.id);
+        if (!skipAnim && old && risks && record !== undefined) {
+            risk = record;
         }
-        let color;
-        switch (risk) {
-            case Keys.RiskCode.New:
-                color = Keys.RiskColor.New;
-                break;
-            case Keys.RiskCode.Low:
-                color = Keys.RiskColor.Low;
-                break;
-            case Keys.RiskCode.Medium:
-                color = Keys.RiskColor.Medium;
-                break;
-            case Keys.RiskCode.High:
-                color = Keys.RiskColor.High;
-                break;
-            case Keys.RiskCode.Critical:
-                color = Keys.RiskColor.Critical;
-                break;
-            default:
-                color = Keys.RiskColor.Unprocessed;
-        }
+        let color = this.getRiskColor(risk);
 
         if (a.lft === null || a.lft === Infinity) {
-            color = Keys.RiskColor.Unprocessed;
+            color = CONST.RISK_COLOR.UNPROCESSED;
         }
         if (proj.profile.view.markCompleted && a.completed) {
-            color = Keys.RiskColor.Completed;
+            color = CONST.RISK_COLOR.COMPLETED;
         }
         if (proj.profile.view.showOrphaned) {
             const outEdges = proj.activities.filter((ac: Activity) => ac.chartInfo.source_id === a.id);
             const inEdges = proj.activities.filter((ac: Activity) => ac.chartInfo.target_id === a.id);
 
-            color = Keys.RiskColor.Unprocessed;
+            color = CONST.RISK_COLOR.UNPROCESSED;
 
             if (outEdges.length === 0) {
-                color = Keys.RiskColor.End;
+                color = CONST.RISK_COLOR.END;
             }
             if (inEdges.length === 0) {
-                color = Keys.RiskColor.Start;
+                color = CONST.RISK_COLOR.START;
             }
         }
 
@@ -228,12 +216,22 @@ export class ArrowPropertyService {
         return '';
     }
     public getLowerLinkTextYPos(d: Activity, proj: Project): number {
-        if (proj.profile.view.lowerArrowText === 'subproj') {
-            return d.chartInfo.source.y + (d.chartInfo.target.y - d.chartInfo.source.y) / 2 + 14;
+        if (d.chartInfo.source?.y === undefined || d.chartInfo.target?.y === undefined){
+            // TODO: Implement Logger
+            console.error('getLowerLinkTextYPos link node is missing y position'); 
+            return 0;
         }
-        return d.chartInfo.source.y + (d.chartInfo.target.y - d.chartInfo.source.y) / 2 + 14;
+        if (proj.profile.view.lowerArrowText === 'subproj') {
+            return d.chartInfo.source.y + (d.chartInfo.target!.y! - d.chartInfo.source!.y!) / 2 + 14;
+        }
+        return d.chartInfo.source.y + (d.chartInfo.target!.y! - d.chartInfo.source!.y!) / 2 + 14;
     }
     public getLowerLinkTextXPos(d: Activity, proj: Project): number {
+        if (d.chartInfo.source?.x === undefined || d.chartInfo.target?.x === undefined){
+            // TODO: Implement Logger
+            console.error('getLowerLinkTextXPos link node is missing x position'); 
+            return 0;
+        }
         if (proj.profile.view.lowerArrowText === 'subproj') {
             return d.chartInfo.source.x + (d.chartInfo.target.x - d.chartInfo.source.x) / 2;
         }
@@ -246,12 +244,22 @@ export class ArrowPropertyService {
         return '8px';
     }
     public getLinkTextPosY(d: Activity, proj: Project): number {
+        if (d.chartInfo.source?.y === undefined || d.chartInfo.target?.y === undefined){
+            // TODO: Implement Logger
+            console.error('getLinkTextPosY link node is missing y position'); 
+            return 0;
+        }
         if (proj.profile.view.displayText === 'name') {
             return d.chartInfo.source.y + (d.chartInfo.target.y - d.chartInfo.source.y) / 2 - 14;
         }
         return d.chartInfo.source.y + (d.chartInfo.target.y - d.chartInfo.source.y) / 2 - 6;
     }
     public getLinkTextPosX(d: Activity, proj: Project): number {
+        if (d.chartInfo.source?.x === undefined || d.chartInfo.target?.x === undefined){
+            // TODO: Implement Logger
+            console.error('getLinkTextPosX link node is missing x position'); 
+            return 0;
+        }
         if (proj.profile.view.displayText === 'name') {
             return d.chartInfo.source.x + (d.chartInfo.target.x - d.chartInfo.source.x) / 2 - 10;
         }
@@ -280,13 +288,13 @@ export class ArrowPropertyService {
             if (d.chartInfo.isDummy && !proj.profile.view.showDummies) {
                 return '';
             }
-            if (+d.profile.name === +d.profile.id) {
+            if (+d.profile.name! === +d.profile.id) {
                 return d.profile.id.toString();
             }
             text =
                 d.profile.id +
                 ' ' +
-                d.profile.name
+                d.profile.name!
                     .split(' ')
                     .map(x => x.substring(0, 3))
                     .join(' ') +
@@ -295,7 +303,7 @@ export class ArrowPropertyService {
                 'd';
         }
 
-        text = this.getSubProjMarkerText(d, text);
+        text = this.getSubProjMarkerText(d, text?.toString() ?? '');
         return text;
     }
     private getSubProjMarkerText(d: Activity, text: string): string {

@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
-import { Project, ProjectManagerBase } from '@critical-pass/critical-charts';
+import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import * as d3 from 'd3';
-import { SvgTranform } from '../../../models/charts/svg-transform';
+import { SvgTranform } from '../../../models/svg-transform';
 import { ArrowState } from '../arrow-state/arrow-state';
 
 @Injectable({
@@ -11,23 +12,26 @@ export class LassoToolService {
     private lassoG: any;
     private mainG: any;
     private targetArea: any;
-    private drawnCoords: [number, number][];
+    private drawnCoords!: [number, number][];
     private dynPath: any;
     private closePath: any;
-    private tpath: string;
-    private origin: [number, number];
-    private torigin: [number, number];
+    private tpath!: string;
+    private origin!: [number, number];
+    private torigin!: [number, number];
     private originNode: any;
-    private project: Project;
+    private project!: Project;
     private transform: SvgTranform = { k: 1, x: 0, y: 0 };
-    private st: ArrowState;
-    private selectedNodes: number[];
-    private selectedActivities: number[];
-    private lassoStart: number;
-    private lassoEnd: number;
-    private id: number;
+    private st!: ArrowState;
+    private selectedNodes!: number[];
+    private selectedActivities!: number[];
+    private lassoStart: number | null = null;
+    private lassoEnd: number | null = null;
+    private id!: number;
 
-    constructor(@Inject('ProjectManagerBase') private pManager: ProjectManagerBase) {}
+    constructor(
+        @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
+        @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
+    ) {}
 
     public setTransform(transform: SvgTranform) {
         this.transform = transform;
@@ -57,8 +61,8 @@ export class LassoToolService {
             .on('end', () => this.dragend());
         this.targetArea.call(dragEvent);
 
-        this.st.nodes.classed('possible', d => this.selectedNodes.indexOf(d.id) > -1);
-        this.st.links.classed('possible', d => this.selectedActivities.indexOf(d.profile.id) > -1);
+        this.st.nodes.classed('possible', (d: Integration) => this.selectedNodes.indexOf(d.id) > -1);
+        this.st.links.classed('possible', (d: Activity) => this.selectedActivities.indexOf(d.profile.id) > -1);
     }
 
     public remove(st: ArrowState, id: number) {
@@ -104,14 +108,14 @@ export class LassoToolService {
 
         this.selectedNodes = [];
         this.project.integrations.forEach(integration => {
-            const pInt = [integration.x, integration.y];
+            const pInt = [integration.x!, integration.y!];
             const point = this.transformPt(pInt);
             const selected = this.pointInPolygon(point, this.drawnCoords);
             if (selected) {
                 this.selectedNodes.push(integration.id);
             }
         });
-        this.st.nodes.classed('possible', d => this.selectedNodes.indexOf(d.id) > -1);
+        this.st.nodes.classed('possible', (d: Integration) => this.selectedNodes.indexOf(d.id) > -1);
         // If within the closed path distance parameter, show the closed path. otherwise, hide it
         if (isPathClosed && closePathSelect) {
             this.closePath.attr('display', null);
@@ -139,21 +143,21 @@ export class LassoToolService {
         this.lassoEnd = null;
         this.lassoStart = null;
         this.selectedNodes = [];
-        this.pManager.updateProject(this.id, this.project, false);
+        this.dashboard.updateProject(this.project, false);
     }
 
     private isSubProject() {
         if (this.selectedNodes.length < 3) {
             return false;
         }
-        const inFromExternal = [];
-        const outToExternal = [];
+        const inFromExternal: Activity[] = [];
+        const outToExternal: Activity[] = [];
         this.project.activities.forEach(a => {
             if (this.selectedNodes.indexOf(a.chartInfo.target_id) > -1 && this.selectedNodes.indexOf(a.chartInfo.source_id) === -1) inFromExternal.push(a);
             if (this.selectedNodes.indexOf(a.chartInfo.source_id) > -1 && this.selectedNodes.indexOf(a.chartInfo.target_id) === -1) outToExternal.push(a);
         });
-        const selectedStarts = [];
-        const selectedEnds = [];
+        const selectedStarts: number[] = [];
+        const selectedEnds: number[] = [];
         this.selectedNodes.forEach(n => {
             const outEdges = this.project.activities.filter(a => a.chartInfo.source_id === n);
             const hasSelectedTarget = outEdges.find(a => this.selectedNodes.indexOf(a.chartInfo.target_id) > -1);
@@ -190,7 +194,7 @@ export class LassoToolService {
                 this.selectedActivities.push(a.profile.id);
             }
         });
-        this.st.links.classed('possible', d => this.selectedActivities.indexOf(d.profile.id) > -1);
+        this.st.links.classed('possible', (d: Activity) => this.selectedActivities.indexOf(d.profile.id) > -1);
     }
     private pointInPolygon(point: number[], polygon: number[][]): boolean {
         // ray-casting algorithm based on

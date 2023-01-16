@@ -106,3 +106,24 @@ export const SUB_ARROW_CREATION_MODE = 'sub';
 
 export const TRANSITION_TIME = 1200;
 export const ARROW_EASE_TYPE = d3.easeExpInOut;
+
+export const RISK_COLOR = {
+    NEW: '#fff',
+    LOW: '#1c1',
+    MEDIUM: '#ffd800',
+    HIGH: '#f00',
+    CRITICAL: '#000',
+    UNPROCESSED: '#bbb',
+    COMPLETED: '#ffddff',
+    START: '#f00',
+    END: '#00f',
+    UNASSIGNED: '#555'
+};
+
+export enum RISK_CODE {
+    NEW = -1,
+    LOW,
+    MEDIUM,
+    HIGH,
+    CRITICAL,
+}

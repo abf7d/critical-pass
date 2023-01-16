@@ -1,6 +1,6 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
 import * as d3 from 'd3';
-import * as CONST from '../../../constants/keys';
+import * as CONST from '../../../constants/constants';
 import { Key } from 'ts-keycode-enum';
 import { ArrowState, ArrowStateFactory } from '../arrow-state/arrow-state';
 import { Subscription, Observable, BehaviorSubject, Subject } from 'rxjs';
@@ -14,7 +14,7 @@ import { LassoToolService } from '../lasso-tool/lasso-tool.service';
 import { ArrowControllerService } from '../utils/arrow-controller.service';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import { NodeArrangerService } from '@critical-pass/shared/project-utils';
-import { Integration, Project } from '@critical-pass/project/models';
+import { Activity, Integration, Project } from '@critical-pass/project/models';
 @Injectable({
     providedIn: 'root',
 })
@@ -217,22 +217,22 @@ export class ArrowChartUIService {
                 this.dashboard.updateProject(project, true);
             });
         enterNodes
-            .on('mousedown', (event, d) => {
+            .on('mousedown', (event: any, d: Integration) => {
                 this.st.allowDeletes = true;
                 const ctrlDown = event.ctrlKey || event.metaKey;
                 this.controller.onNodeGroupMouseDown(d, ctrlDown, d3.select(event.currentTarget), project);
             })
-            .on('mouseover', (event: MouseEvent, d: Integration) => this.controller.onNodeMouseOver(d, d3.select(event.currentTarget)))
-            .on('mouseout', (event: MouseEvent, d: Integration) => this.controller.onNodeMouseOut(d, d3.select(event.currentTarget)))
+            .on('mouseover', (event: any, d: Integration) => this.controller.onNodeMouseOver(d, d3.select(event.currentTarget)))
+            .on('mouseout', (event: any, d: Integration) => this.controller.onNodeMouseOut(d, d3.select(event.currentTarget)))
             .call(dragNodeEvent);
 
         const allNodes = enterNodes.merge(withData);
 
         const skipAnimation = this.prevProjId !== project.profile.id;
         allNodes
-            .style('stroke', d => this.controller.getNodeColor(true, d, project, this.nodeRisk, skipAnimation))
+            .style('stroke', (d: Integration) => this.controller.getNodeColor(true, d, project, this.nodeRisk, skipAnimation))
             .transition(transition)
-            .style('stroke', d => this.controller.getNodeColor(false, d, project, this.nodeRisk, skipAnimation));
+            .style('stroke', (d: Integration) => this.controller.getNodeColor(false, d, project, this.nodeRisk, skipAnimation));
 
         this.st.nodes = allNodes;
     }
@@ -252,12 +252,12 @@ export class ArrowChartUIService {
             .enter()
             .append('g')
             .attr('class', 'activity')
-            .on('mouseover', event => d3.select(event.currentTarget).classed('hover', true))
-            .on('mouseout', event => d3.select(event.currentTarget).classed('hover', false))
-            .on('mousedown', (event, d: Activity) => {
+            .on('mouseover', (event: any) => d3.select(event.currentTarget).classed('hover', true))
+            .on('mouseout', (event: any) => d3.select(event.currentTarget).classed('hover', false))
+            .on('mousedown', (event: any, d: Activity) => {
                 this.st.allowDeletes = true;
                 this.controller.setMouseDownLink(d, event.ctrlKey, proj);
-                this.pManager.updateProject(this.id, proj, true);
+                this.dashboard.updateProject(proj, true);
                 event.stopPropagation();
             });
 
@@ -267,58 +267,58 @@ export class ArrowChartUIService {
         this.createLowerText(proj, enterLinks);
 
         const allLinks = enterLinks.merge(withData);
-        const transition = d3.transition().duration(Keys.transitionTime).ease(Keys.arrowEaseType);
+        const transition = d3.transition().duration(CONST.TRANSITION_TIME).ease(CONST.ARROW_EASE_TYPE);
         const skipAnimation = this.prevProjId !== proj.profile.id;
         allLinks
-            .attr('class', a => this.controller.getLinkCss(a, proj))
-            .classed('completed', a => this.controller.isCompleted(a, proj))
-            .classed('selected', a => this.controller.isSelected(a, proj))
-            .classed('sub-project', a => this.controller.isHighlighted(a, proj))
-            .style('stroke', d => this.controller.getArrowColor(true, d, proj, this.arrowRisk, skipAnimation))
+            .attr('class', (a: Activity) => this.controller.getLinkCss(a, proj))
+            .classed('completed', (a: Activity) => this.controller.isCompleted(a, proj))
+            .classed('selected', (a: Activity) => this.controller.isSelected(a, proj))
+            .classed('sub-project', (a: Activity) => this.controller.isHighlighted(a, proj))
+            .style('stroke', (d: Activity) => this.controller.getArrowColor(true, d, proj, this.arrowRisk, skipAnimation))
             .transition(transition)
-            .style('stroke', d => this.controller.getArrowColor(false, d, proj, this.arrowRisk, skipAnimation));
+            .style('stroke', (d: Activity) => this.controller.getArrowColor(false, d, proj, this.arrowRisk, skipAnimation));
         this.st.links = allLinks;
-        proj.profile.view.activeSubProjectId = null;
+        proj.profile.view.activeSubProjectId = undefined;
     }
     private createMainArrowText(proj: Project, enterLinks: any): void {
         enterLinks
             .append('text')
             .attr('class', 'label')
-            .classed('selected', d => d === this.st.selected_link)
-            .attr('y', l => this.controller.getLinkTextPosY(l, proj))
-            .attr('x', l => this.controller.getLinkTextPosX(l, proj))
-            .style('font-size', l => this.controller.getActivityFontSize(l, proj))
+            .classed('selected', (d: Activity) => d === this.st.selected_link)
+            .attr('y', (l: Activity)  => this.controller.getLinkTextPosY(l, proj))
+            .attr('x', (l: Activity)  => this.controller.getLinkTextPosX(l, proj))
+            .style('font-size', (l: Activity) => this.controller.getActivityFontSize(l, proj))
             .style('text-anchor', 'middle')
-            .text(l => this.controller.getLinkText(l, proj));
+            .text((l: Activity) => this.controller.getLinkText(l, proj));
     }
     private createArrowBody(proj: Project, enterLinks: any): void {
         enterLinks
             .append('svg:path')
             .attr('class', 'link main')
-            .classed('dummy', d => d.isDummy)
-            .classed('selected', d => d === this.st.selected_link)
-            .attr('d', d => this.controller.getPath(d))
-            .style('marker-end', a => this.controller.getLinkEndMarker(a, proj));
+            .classed('dummy', (d: Activity) => d.chartInfo.isDummy)
+            .classed('selected', (d: Activity) => d === this.st.selected_link)
+            .attr('d', (d: Activity) => this.controller.getPath(d))
+            .style('marker-end', (a: Activity) => this.controller.getLinkEndMarker(a, proj));
     }
 
     private createTextGlow(proj: Project, enterLinks: any): void {
         enterLinks
             .insert('text', 'text')
             .attr('class', 'glow')
-            .style('font-size', l => this.controller.getActivityFontSize(l, proj))
-            .attr('y', l => this.controller.getLinkTextPosY(l, proj))
-            .attr('x', l => this.controller.getLinkTextPosX(l, proj))
-            .text(l => this.controller.getLinkText(l, proj));
+            .style('font-size', (l: Activity) => this.controller.getActivityFontSize(l, proj))
+            .attr('y', (l: Activity) => this.controller.getLinkTextPosY(l, proj))
+            .attr('x', (l: Activity) => this.controller.getLinkTextPosX(l, proj))
+            .text((l: Activity) => this.controller.getLinkText(l, proj));
     }
     private createLowerText(proj: Project, enterLinks: any): void {
         enterLinks
             .append('text')
             .attr('class', 'label float')
-            .attr('y', l => this.controller.getLowerLinkTextYPos(l, proj))
-            .attr('x', l => this.controller.getLowerLinkTextXPos(l, proj))
+            .attr('y', (l: Activity) => this.controller.getLowerLinkTextYPos(l, proj))
+            .attr('x', (l: Activity) => this.controller.getLowerLinkTextXPos(l, proj))
             .style('text-anchor', 'middle')
-            .text(l => this.controller.getLowerLinkText(l, proj))
-            .style('font-size', l => this.controller.getActivityFontSize(l, proj));
+            .text((l: Activity) => this.controller.getLowerLinkText(l, proj))
+            .style('font-size', (l: Activity) => this.controller.getActivityFontSize(l, proj));
     }
 
     private createArrowHeads(): void {
@@ -394,7 +394,7 @@ export class ArrowChartUIService {
             this.lassoTool.setTransform({ k: groupZoom.scale, x: groupZoom.translate[0], y: groupZoom.translate[1] });
         }
     }
-    private getSvgZoom(project: Project): ZoomTransform {
+    private getSvgZoom(project: Project): ZoomTransform | null {
         // These values help offset the initial zoom/pan when the page loads
         // The drawn position isn't the same as the point at which the zoom/pan begins
         // and there is a jump. These offsets for the translations help fix this.
@@ -405,12 +405,12 @@ export class ArrowChartUIService {
         }
 
         if (!project.profile.view.autoZoom) {
-            return;
+            return null;
         }
         project.profile.view.autoZoom = false;
 
-        const xPos = project.integrations.map(i => i.x);
-        const yPos = project.integrations.map(i => i.y);
+        const xPos = project.integrations.map(i => i.x) as number[];
+        const yPos = project.integrations.map(i => i.y) as number[];
         const maxX = Math.max(...xPos);
         const minX = Math.min(...xPos);
         const maxY = Math.max(...yPos);
@@ -431,8 +431,8 @@ export class ArrowChartUIService {
         return { translate, scale };
     }
     private getZoomOrigin(project: Project): ZoomTransform {
-        const xPos = project.integrations.map(i => i.x);
-        const yPos = project.integrations.map(i => i.y);
+        const xPos = project.integrations.map(i => i.x) as number[];
+        const yPos = project.integrations.map(i => i.y) as number[];
         const maxX = Math.max(...xPos);
         const minX = Math.min(...xPos);
         const maxY = Math.max(...yPos);
@@ -452,15 +452,15 @@ export class ArrowChartUIService {
 
     private bindGlobalEvents(): void {
         this.st.svg
-            .on('dblclick', event => {
+            .on('dblclick', (event: any) => {
                 event.preventDefault();
                 this.mousedown(event);
             })
-            .on('click', event => {
+            .on('click', (event: any) => {
                 this.st.allowDeletes = true;
                 this.st.last_selected_node = null;
             })
-            .on('mousemove', event => this.mousemove(event))
+            .on('mousemove', (event: any) => this.mousemove(event))
             .on('mouseup', () => this.mouseup());
 
         d3.select(window)
@@ -468,7 +468,7 @@ export class ArrowChartUIService {
             .on('keyup', event => this.keyup(event));
     }
 
-    private mousedown(event): void {
+    private mousedown(event: any): void {
         // prevent I-bar on drag
         if (!event.ctrlKey || this.st.drag_node != null) {
             event.stopPropagation();
@@ -478,10 +478,10 @@ export class ArrowChartUIService {
         if (!proceed) {
             return;
         }
-        this.pManager.updateProject(this.id, this.proj, true);
+        this.dashboard.updateProject(this.proj, true);
     }
 
-    private mousemove(event): void {
+    private mousemove(event: any): void {
         if (!event.ctrlKey) {
             event.stopPropagation();
         }
@@ -502,19 +502,19 @@ export class ArrowChartUIService {
             if (this.st.selected_node != null) {
                 this.controller.splitUpNode(this.st.selected_node, this.proj);
             }
-            this.pManager.updateProject(this.id, this.proj, true);
+            this.dashboard.updateProject(this.proj, true);
         }
         // Make node a dummy
         if ((this.st.lastKeyDown === Key.Ctrl || this.st.macMetaDown) && event.keyCode === Key.D) {
             event.preventDefault();
             this.controller.makeDummy();
-            this.pManager.updateProject(this.id, this.proj, true);
+            this.dashboard.updateProject(this.proj, true);
         }
         // Make node a milestone
         if ((this.st.lastKeyDown === Key.Ctrl || this.st.macMetaDown) && event.keyCode === Key.M) {
             event.preventDefault();
             this.controller.makeMilestone(this.proj);
-            this.pManager.updateProject(this.id, this.proj, true);
+            this.dashboard.updateProject(this.proj, true);
         }
 
         // On a mac you don't check lastKeyDown, you check if metaKey is true for cmd key.
@@ -522,7 +522,7 @@ export class ArrowChartUIService {
         if (event.keyCode === Key.Backspace && event.metaKey) {
             if (this.st.allowDeletes) {
                 this.controller.deleteSelectedNodeOrLink(this.proj);
-                this.pManager.updateProject(this.id, this.proj, true);
+                this.dashboard.updateProject(this.proj, true);
             }
         }
 
@@ -545,7 +545,7 @@ export class ArrowChartUIService {
             case Key.Delete:
                 if (this.st.allowDeletes) {
                     this.controller.deleteSelectedNodeOrLink(this.proj);
-                    this.pManager.updateProject(this.id, this.proj, true);
+                    this.dashboard.updateProject(this.proj, true);
                 }
                 break;
         }

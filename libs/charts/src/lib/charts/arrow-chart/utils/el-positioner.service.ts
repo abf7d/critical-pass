@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Integration } from '../../../models/project/integration/integration';
-import { Project } from '../../../models/project/project';
-import { Activity } from '../../../models/project/activity/activity';
+import { Activity, Integration, Project } from '@critical-pass/project/models';
 import { ArrowState } from '../arrow-state/arrow-state';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ElPositionerService {
-    public st: ArrowState;
+    public st!: ArrowState;
     public nudgeGroup(dx: number, dy: number, dpt: Integration, proj: Project): void {
         this.moveNode(dx, dy);
         this.repositionConnectedArrows();
@@ -19,24 +17,24 @@ export class ElPositionerService {
     private moveNode(dx: number, dy: number): void {
         this.st.nodes
             .filter((d: Integration) => d === this.st.drag_node)
-            .attr('transform', d => {
-                d.x += dx;
-                d.y += dy;
+            .attr('transform', (d: Integration) => {
+                d.x! += dx;
+                d.y! += dy;
                 return `translate(${d.x},${d.y})`;
             });
     }
     private repositionConnectedArrows(): void {
         this.st.links
             .filter((d: Activity) => {
-                return d.chartInfo.source.selected;
+                return d.chartInfo.source!.selected;
             })
             .select('path')
-            .attr('d', d => this.getPath(d));
+            .attr('d', (d: Activity) => this.getPath(d));
 
         this.st.links
-            .filter(d => d.chartInfo.target.selected)
+            .filter((d: Activity) => d.chartInfo.target!.selected)
             .select('path')
-            .attr('d', d => this.getPath(d));
+            .attr('d', (d: Activity) => this.getPath(d));
     }
     private repositionArrowText(selector: string, proj: Project): void {
         this.st.links

@@ -2,7 +2,7 @@ import { Inject, Injectable, NgZone } from '@angular/core';
 import { Activity, Integration, Project } from '@critical-pass/project/models';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
-import * as CONST from '../../../constants/keys';
+import * as CONST from '../../../constants/constants';
 // import { Project } from '../../../models/project/project';
 import * as d3 from 'd3';
 // import { Activity } from '../../../models/project/activity/activity';

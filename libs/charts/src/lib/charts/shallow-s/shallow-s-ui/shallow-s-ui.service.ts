@@ -7,7 +7,7 @@ import { ShallowSCalcService } from '../shallow-s-calc/shallow-s-calc.service';
 import { lightFormat } from 'date-fns';
 // @ts-ignore
 import * as d3reg from 'd3-regression';
-import * as CONST from '../../../constants/keys';
+import * as CONST from '../../../constants/constants';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import { Project } from '@critical-pass/project/models';
 import { ShallowSPoint, Stats } from '../../../models/shallow-s';

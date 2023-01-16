@@ -1,26 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Integration } from '../../../models/project/integration/integration';
-import { Project } from '../../../models/project/project';
-import { Activity } from '../../../models/project/activity/activity';
+// import { Integration } from '../../../models/project/integration/integration';
+// import { Project } from '../../../models/project/project';
+// import { Activity } from '../../../models/project/activity/activity';
 import { ArrowState } from '../arrow-state/arrow-state';
-import { NetworkOperationsService } from '../../../services/utils/network-operations/network-operations.service';
-import { MilestoneFactoryService } from '../../../services/utils/milestone-factory/milestone-factory.service';
-import { DependencyCrawlerService } from '../../../services/utils/dependency-crawler/dependency-crawler.service';
+// import { NetworkOperationsService } from '../../../services/utils/network-operations/network-operations.service';
+// import { MilestoneFactoryService } from '../../../services/utils/milestone-factory/milestone-factory.service';
+// import { DependencyCrawlerService } from '../../../services/utils/dependency-crawler/dependency-crawler.service';
 import { ElPositionerService } from './el-positioner.service';
 import { ElFactoryService } from './el-factory.service';
+import { NetworkOperationsService } from '../../../services/network-operations/network-operations.service';
+import { MilestoneFactoryService } from '@critical-pass/shared/project-utils';
+import { Activity, Integration, Project } from '@critical-pass/project/models';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ArrowEventsService {
-    public st: ArrowState;
-    private msFactory: MilestoneFactoryService;
-    constructor(private networkOps: NetworkOperationsService, private positioner: ElPositionerService, private elFactory: ElFactoryService) {
-        const depCrawler = new DependencyCrawlerService();
-        this.msFactory = new MilestoneFactoryService(depCrawler);
+    public st!: ArrowState;
+    // private msFactory: MilestoneFactoryService;
+    constructor(private networkOps: NetworkOperationsService, private msFactory: MilestoneFactoryService, private positioner: ElPositionerService, private elFactory: ElFactoryService) {
+        // const depCrawler = new DependencyCrawlerService();
+        // this.msFactory = new MilestoneFactoryService(depCrawler);
     }
     public deselectActivity(project: Project): void {
-        project.activities.forEach(a => (a.chartInfo.isSelected = null));
+        // project.activities.forEach(a => (a.chartInfo.isSelected = null));
+        project.activities.forEach(a => (a.chartInfo.isSelected = false));
         project.profile.view.selectedActivity = null;
         this.st.selected_link = null;
         this.st.links?.classed('selected', false);
@@ -40,7 +44,7 @@ export class ArrowEventsService {
         project.profile.view.selectedIntegration = node;
     }
     private sortNodes(d: Integration, nodes: any): void {
-        nodes.sort(function (a, b) {
+        nodes.sort((a: Integration, b: Integration) => {
             if (a.id !== d.id) {
                 return 1;
             } else {
@@ -49,7 +53,7 @@ export class ArrowEventsService {
         });
     }
     private initNodeDragState(d: Integration, el: any, proj: Project): void {
-        this.st.nodes.classed('selected', p => d == p);
+        this.st.nodes.classed('selected', (p: Integration) => d == p);
         this.deselectNode(proj);
 
         if (!d.selected) {
@@ -73,7 +77,7 @@ export class ArrowEventsService {
         el.classed('selected', (d.selected = true));
         this.st.selected_node = this.st.mousedown_node;
         this.st.last_selected_node = this.st.mousedown_node;
-        this.selectNode(this.st.selected_node, proj);
+        this.selectNode(this.st.selected_node!, proj);
         el.select('circle').classed('active', true);
     }
     private hideDragLine(): void {
@@ -86,7 +90,7 @@ export class ArrowEventsService {
         // Create a new arrow / activity from regular click drag arrow
         // No arrow being drawn
         if (!this.st.mousedown_node) {
-            return null;
+            return false;
         }
 
         // hide drag line
@@ -100,7 +104,7 @@ export class ArrowEventsService {
         }
 
         // unenlarge target node when successfully creating an arrow
-        this.st.nodes.selectAll('circle').attr('transform', p => {
+        this.st.nodes.selectAll('circle').attr('transform', (p: Integration) => {
             if (p === d) {
                 return '';
             }
@@ -128,12 +132,12 @@ export class ArrowEventsService {
         // select new link, selected_link is what is used when the diagram is redrawn to class the g element so it shows as selected
         this.st.selected_link = targetActivity;
         this.setLinkIsSelected(targetActivity, proj, true);
-        this.setNodeIsSelected(this.st.selected_node, proj, false);
+        this.setNodeIsSelected(this.st.selected_node!, proj, false);
         proj.profile.view.selectedIntegration = null;
         this.st.selected_node = null;
         return true;
     }
-    private setLinkIsSelected(activity: Activity, proj: Project, isSelected: boolean): void {
+    private setLinkIsSelected(activity: Activity | null, proj: Project, isSelected: boolean): void {
         if (activity?.chartInfo) {
             activity.chartInfo.isSelected = isSelected;
             proj.profile.view.selectedActivity = activity;
@@ -142,6 +146,7 @@ export class ArrowEventsService {
             proj.profile.view.selectedActivity = null;
         }
     }
+    // TODO: Remove this function
     private setNodeIsSelected(node: Integration, proj: Project, isSelected: boolean): void {
         if (node) {
             node.selected = isSelected;
@@ -181,12 +186,12 @@ export class ArrowEventsService {
     }
 
     public joinNodesOrCreateArrow(target: Integration, proj: Project): boolean {
-        const el = this.st.nodes.filter(d => d == target);
+        const el = this.st.nodes.filter((d: Integration) => d == target);
         const msupnd = this.st.mouseover_node;
         let updated = false;
         // Round x and y on mouseup for saving
-        target.x = Math.round(target.x);
-        target.y = Math.round(target.y);
+        target.x = Math.round(target.x!);
+        target.y = Math.round(target.y!);
         // these were moved from global mouseup event because this drag/start/end event is blocking the mouseup. It worked when I moved
         if (msupnd != null) {
             const circle = msupnd.el.select('circle');
@@ -208,12 +213,12 @@ export class ArrowEventsService {
         this.st.mainG.classed('active', false);
         return this.resetState();
     }
-    public setMouseOverNodeStates(d: Integration, el: any): string {
+    public setMouseOverNodeStates(d: Integration, el: any): void {
         this.st.mouseover_node = { d, el };
 
         // Enlarge the node when dragging arrow mouse over
         if (this.st.drag_node != null && d !== this.st.drag_node) {
-            el.select('circle').attr('transform', p => {
+            el.select('circle').attr('transform', (p: Integration) => {
                 if (d === p) {
                     return 'scale(1.3)';
                 }
@@ -223,18 +228,18 @@ export class ArrowEventsService {
         if (!this.st.mousedown_node || d === this.st.mousedown_node) {
             return;
         }
-        return el.select('circle').attr('transform', p => {
+        el.select('circle').attr('transform', (p: Integration) => {
             if (d === p) {
                 return 'scale(1.1)';
             }
         });
     }
-    public clearMouseOverNodeStates(d: Integration, el: any): string {
+    public clearMouseOverNodeStates(d: Integration, el: any): void {
         this.st.mouseover_node = null;
 
         // Shrink node back to regular size when dragging arrow mouse out
         if (this.st.drag_node != null && d !== this.st.drag_node) {
-            el.select('circle').attr('transform', p => {
+            el.select('circle').attr('transform', (p: Integration) => {
                 if (d === p) {
                     return '';
                 }
@@ -244,7 +249,7 @@ export class ArrowEventsService {
         if (!this.st.mousedown_node || d === this.st.mousedown_node) {
             return;
         }
-        return el.select('circle').attr('transform', p => {
+        el.select('circle').attr('transform', (p: Integration) => {
             if (d === p) {
                 return '';
             }
@@ -268,9 +273,9 @@ export class ArrowEventsService {
             this.setLinkIsSelected(this.st.selected_link, proj, true);
 
             // Highlight link with css class
-            this.st.links.classed('selected', a => a === d);
+            this.st.links.classed('selected', (a: any) => a === d);
         }
-        this.setNodeIsSelected(this.st.selected_node, proj, false);
+        this.setNodeIsSelected(this.st.selected_node!, proj, false);
 
         // Maybe make a function that sets the selected_node and one that sets the selected_link and also sets the css
         this.st.selected_node = null;
@@ -293,7 +298,7 @@ export class ArrowEventsService {
             }
 
             // (on join) return circle to normal size
-            el.select('circle').attr('transform', p => {
+            el.select('circle').attr('transform', (p: any) => {
                 if (p === dragTarget) {
                     return '';
                 }
@@ -316,7 +321,9 @@ export class ArrowEventsService {
         }
     }
     public makeMilestone(proj: Project): void {
-        this.msFactory.createMilestone(proj, this.st.selected_node);
+        if (this.st.selected_node) {
+            this.msFactory.createMilestone(proj, this.st.selected_node);
+        }
     }
     public splitUpNode(integration: Integration, proj: Project) {
         const newNodes = this.networkOps.splitUpNode(integration, proj);
