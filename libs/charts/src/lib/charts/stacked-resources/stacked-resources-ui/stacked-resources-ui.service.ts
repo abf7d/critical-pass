@@ -62,13 +62,14 @@ export class StackedResourcesUiService {
     private initSvg(width: number, height: number, el: any): void {
         const svgclass = 'stacked-resources-' + this.id;
         d3.select(el).select('svg').remove();
-        const svg = d3.select(el).append('svg').attr('class', svgclass); 
+        const svg = d3.select(el).append('svg').attr('class', svgclass);
         this.st.svg = svg
             .style('width', '100%')
             .style('height', null)
             .attr('preserveAspectRatio', 'xMinYMin meet')
-            .attr('viewBox', `0 0 ${width} ${height}`).append('g');
-        
+            .attr('viewBox', `0 0 ${width} ${height}`)
+            .append('g');
+
         this.st.mainG = this.st.svg.append('g').attr('transform', `translate(${this.st.margin.left},${this.st.margin.top})`);
     }
 
@@ -81,21 +82,21 @@ export class StackedResourcesUiService {
         }
         this.st.mainG.remove();
         this.st.mainG = this.st.svg.append('g').attr('transform', `translate(${this.st.margin.left},${this.st.margin.top})`);
-    
+
         const stackedData = this.scheduler.getStackedResourceData(project, this.st);
         this.drawChart(stackedData);
     }
 
     private drawChart(stackedData: any): void {
         if (stackedData === null) {
-           this.st.mainG
+            this.st.mainG
                 .append('g')
                 .attr('width', this.st.innerWidth! + this.st.margin.left + this.st.margin.right)
                 .attr('height', this.st.innerHeight! + this.st.margin.top + this.st.margin.bottom)
                 .append('g')
                 .append('text')
                 .attr('class', 'missing-data')
-                .attr('y', (this.st.innerHeight!+ this.st.margin.top + this.st.margin.bottom) / 3 + 10)
+                .attr('y', (this.st.innerHeight! + this.st.margin.top + this.st.margin.bottom) / 3 + 10)
                 .attr('x', (this.st.innerWidth! + this.st.margin.left + this.st.margin.right) / 2 + 100)
                 .style('text-anchor', 'end')
                 .text('No data exists for Stacked Resources');
@@ -119,7 +120,7 @@ export class StackedResourcesUiService {
         const yAxis = d3.axisRight(y).scale(y);
         const layers = d3.stack().keys(keys)(stackedData);
 
-        x.domain((layers[0].map(d => d.data['midDate']) as unknown) as string[]);
+        x.domain(layers[0].map(d => d.data['midDate']) as unknown as string[]);
         y.domain([0, d3.max(layers[layers.length - 1], (d: any) => d[1])]).nice();
 
         let indices = [];

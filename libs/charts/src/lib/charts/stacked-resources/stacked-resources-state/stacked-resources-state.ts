@@ -1,11 +1,11 @@
 export interface StackedResourcesState {
-    svg: any,
-    mainG: any,
-    innerWidth: number | null,
-    innerHeight: number | null,
-    focusLine: any,
-    margin: Margin,
-    scales: {x: any, y: any} | null;
+    svg: any;
+    mainG: any;
+    innerWidth: number | null;
+    innerHeight: number | null;
+    focusLine: any;
+    margin: Margin;
+    scales: { x: any; y: any } | null;
     barWidth: number | null;
     showAxes: boolean | null;
     el: any;
@@ -23,14 +23,14 @@ export class StackedResourcesStateFactory {
             focusLine: null,
             barWidth: null,
             showAxes: null,
-            el: null
-        }
+            el: null,
+        };
     }
 }
 
 export interface Margin {
-    top:number;
-    bottom:number; 
-    left:number; 
-    right:number;
+    top: number;
+    bottom: number;
+    left: number;
+    right: number;
 }
