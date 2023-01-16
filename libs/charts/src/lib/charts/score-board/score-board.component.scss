@@ -1,0 +1,37 @@
+.scoreboard-container {
+    background-color: white;
+    height: 100%;
+    width: 390px;
+}
+* {
+    color: #666;
+    font-size: 0.8rem;
+}
+.half {
+    width: 50%;
+    padding-bottom:5px;
+}
+.title {
+    font-size: 1rem;
+    font-weight: 700;
+}
+.scoreboard-container {
+    padding: 26px 39px 26px 40px;
+}
+.list {
+    padding-left: 30px;
+    font-weight: 400;
+    & > div {
+        display: flex;
+    }
+}
+.fas {
+    font-size: 0.95rem;
+    color: #333;
+    padding: 5px;
+    width: 2rem;
+    text-align: center;
+}
+.value {
+    padding-left: 5px;
+}

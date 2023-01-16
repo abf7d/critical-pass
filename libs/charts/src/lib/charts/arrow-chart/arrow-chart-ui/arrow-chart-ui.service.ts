@@ -4,12 +4,7 @@ import * as CONST from '../../../constants/constants';
 import { Key } from 'ts-keycode-enum';
 import { ArrowState, ArrowStateFactory } from '../arrow-state/arrow-state';
 import { Subscription, Observable, BehaviorSubject, Subject } from 'rxjs';
-// import { Project } from '../../../models/project/project';
 import { filter } from 'rxjs/operators';
-// import { Integration } from '../../../models/project/integration/integration';
-// import { Activity } from '../../../models/project/activity/activity';
-// import { Dictionary } from '../../../services/pub-sub/event/dictionary';
-// import { ProjectManagerBase } from '../../../models/base/project-manager-base';
 import { LassoToolService } from '../lasso-tool/lasso-tool.service';
 import { ArrowControllerService } from '../utils/arrow-controller.service';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
@@ -33,7 +28,6 @@ export class ArrowChartUIService {
     private prevProjId!: number;
 
     constructor(
-        // private pManager: ProjectManagerBase,
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
         @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
         private ngZone: NgZone,

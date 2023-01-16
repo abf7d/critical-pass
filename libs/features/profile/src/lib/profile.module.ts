@@ -18,7 +18,7 @@ import { ProjectMetadataComponent } from './components/project-metadata/project-
 import { IsNotNaNPipe } from '@critical-pass/core';
 import { ArrowBarModule } from './sidebars/arrow-bar/arrow-bar.module';
 import { SharedModule } from '@critical-pass/shared/components';
-import { ArrowChartModule, ArrowSnapshotModule, ShallowSModule, ShallowSSnapshotModule } from '@critical-pass/charts';
+import { ArrowChartModule, ArrowSnapshotModule, ScoreBoardModule, ShallowSModule, ShallowSSnapshotModule } from '@critical-pass/charts';
 import { ToastrModule } from 'ngx-toastr';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -67,6 +67,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         ArrowSnapshotModule,
         ShallowSSnapshotModule,
         ShallowSModule,
+        ScoreBoardModule
     ],
     exports: [ActionButtonsComponent, SelectedActivityComponent],
 })
