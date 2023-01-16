@@ -25,9 +25,9 @@ export class ArrowSnapshotUiService {
         this.slot = slot;
         this.initSvg(width, height, el);
         if (!slot || slot !== CONST.SECONDARY_SLOT) {
-            this.data = this.dashboard.activeProject$; 
+            this.data = this.dashboard.activeProject$;
         } else {
-            this.data = this.dashboard.secondaryProject$; 
+            this.data = this.dashboard.secondaryProject$;
         }
         this.sub = this.data.subscribe(project => {
             this.ngZone.runOutsideAngular(() => {

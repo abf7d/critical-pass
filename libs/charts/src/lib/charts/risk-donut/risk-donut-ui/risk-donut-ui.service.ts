@@ -52,12 +52,8 @@ export class RiskDonutUiService {
     public initSvg(width: number, height: number, el: any): void {
         const svgclass = 'risk-donut-' + this.id;
         d3.select(el).select('svg').remove();
-        const svg = d3.select(el).append('svg').attr('class', svgclass); 
-        svg
-            .style('width', '100%')
-            .style('height', null)
-            .attr('preserveAspectRatio', 'xMinYMin meet')
-            .attr('viewBox', `0 0 ${width} ${height}`);
+        const svg = d3.select(el).append('svg').attr('class', svgclass);
+        svg.style('width', '100%').style('height', null).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', `0 0 ${width} ${height}`);
         this.svg = svg.append('g');
         this.arcG = this.svg
             .append('g')
@@ -76,7 +72,11 @@ export class RiskDonutUiService {
     }
 
     private percentRisk(risk: number, total: number, proj: Project): number {
-        return (proj.activities.filter(a => a.chartInfo.risk === risk && a.chartInfo.tf !== Infinity  && a.chartInfo.tf !== null && !a.chartInfo.isDummy).length * 100) / total;
+        return (
+            (proj.activities.filter(a => a.chartInfo.risk === risk && a.chartInfo.tf !== Infinity && a.chartInfo.tf !== null && !a.chartInfo.isDummy).length *
+                100) /
+            total
+        );
     }
 
     private percentUnprocessed(risk: number, total: number, proj: Project): number {
@@ -200,11 +200,17 @@ export class RiskDonutUiService {
     private drawCenterText(proj: Project, isEmpty: boolean): void {
         this.labelG.select('g.center').remove('*');
         if (!isEmpty) {
-            const group  = this.labelG.append('g').attr('class', 'center');
+            const group = this.labelG.append('g').attr('class', 'center');
             this.svg.select('g.missing-data').remove();
             if (proj.profile.risk.criticalityRisk) {
                 group.append('text').attr('class', 'center').text('Criticality').attr('x', -30).attr('y', -12).attr('class', 'crit-label');
-                group.append('text').attr('class', 'center').text(proj.profile.risk.criticalityRisk.toFixed(2)).attr('x', -23).attr('y', 8).attr('class', 'criticality');
+                group
+                    .append('text')
+                    .attr('class', 'center')
+                    .text(proj.profile.risk.criticalityRisk.toFixed(2))
+                    .attr('x', -23)
+                    .attr('y', 8)
+                    .attr('class', 'criticality');
             }
         } else {
             let message = 'No data exists for Risk Donut';
@@ -318,7 +324,7 @@ export class RiskDonutUiService {
                     ')'
                 );
             })
-            .attr('dy',  (d: any) => {
+            .attr('dy', (d: any) => {
                 if ((d.startAngle + d.endAngle) / 2 > Math.PI / 2 && (d.startAngle + d.endAngle) / 2 < Math.PI * 1.5) {
                     return 17;
                 } else {
@@ -340,7 +346,7 @@ export class RiskDonutUiService {
     private key(d: any) {
         return d.data.name;
     }
-   
+
     private findNeighborArc(i: any, data0: any, data1: any, key: any) {
         let d;
         return (d = this.findPreceding(i, data0, data1, key))

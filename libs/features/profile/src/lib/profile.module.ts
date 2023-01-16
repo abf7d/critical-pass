@@ -68,7 +68,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         ShallowSSnapshotModule,
         ShallowSModule,
         ScoreBoardModule,
-        RiskDonutModule
+        RiskDonutModule,
     ],
     exports: [ActionButtonsComponent, SelectedActivityComponent],
 })

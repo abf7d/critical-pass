@@ -133,5 +133,5 @@ export const DONUT_COLOR = {
     MEDIUM: '#ff7',
     HIGH: '#f44',
     CRITICAL: '#555',
-    UNPROCESSED: '#bbb'
-}
+    UNPROCESSED: '#bbb',
+};
