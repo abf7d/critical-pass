@@ -16,6 +16,7 @@ export class ArrowSnapshotComponent implements OnInit, OnDestroy, OnChanges {
     @Input() height!: number;
     @Input() parentId!: string;
     @Input() project!: Project;
+    @Input() slot!: string;
     @Input() refresh!: number;
     @ViewChild('chart', { static: true }) chart!: ElementRef;
     private ui!: ArrowSnapshotUiService;
@@ -26,7 +27,7 @@ export class ArrowSnapshotComponent implements OnInit, OnDestroy, OnChanges {
 
     public ngOnInit(): void {
         if (!this.project) {
-            this.ui.init(this.width, this.height, this.id, this.parentId, this.chart.nativeElement);
+            this.ui.init(this.width, this.height, this.id, this.parentId, this.chart.nativeElement, this.slot);
         } else {
             this.ui.renderStatic(this.project, this.width, this.height, this.chart.nativeElement);
         }

@@ -16,18 +16,24 @@ export class ArrowSnapshotUiService {
     private svg: any;
     private width!: number;
     private height!: number;
-    private data!: Observable<Project>;
+    private data!: Observable<Project> | Observable<Project | null>;
     private sub!: Subscription;
+    private slot!: string | undefined;
     private parentId!: string;
 
     constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, private ngZone: NgZone) {}
 
-    public init(width: number, height: number, id: number, parentId: string, el: any) {
+    public init(width: number, height: number, id: number, parentId: string, el: any, slot: string | undefined) {
         this.id = id;
         this.width = width;
         this.height = height;
+        this.slot = slot;
         this.initSvg(width, height, el);
-        this.data = this.dashboard.activeProject$; //this.pManager.getProject(id);
+        if (!slot || slot !== CONST.SECONDARY_SLOT) {
+            this.data = this.dashboard.activeProject$; //this.pManager.getProject(id);
+        } else {
+            this.data = this.dashboard.secondaryProject$; //this.pManager.getParentProject(id);
+        }
         this.sub = this.data.subscribe(project => {
             this.ngZone.runOutsideAngular(() => {
                 this.createChart(project);
@@ -60,14 +66,14 @@ export class ArrowSnapshotUiService {
         this.svg = baseSvg.append('g');
     }
 
-    private createChart(project: Project): void {
+    private createChart(project: Project | null): void {
         this.svg.selectAll('g.link').remove();
         this.svg.selectAll('g.node').remove();
         this.svg.selectAll('text.missing-data').remove();
 
         if (project == null || (project.activities.length === 0 && project.integrations.length === 0)) {
             let message = 'No data exists for Arrow Diagram';
-            if (this.id === CONST.PARENT_KEY) {
+            if (this.slot === CONST.SECONDARY_SLOT) {
                 message = 'No parent exists for this project';
             }
             this.svg.attr('transform', null);

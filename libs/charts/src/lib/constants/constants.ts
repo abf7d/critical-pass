@@ -88,6 +88,7 @@ import * as d3 from 'd3';
 // export const multiArrowCreationMode = 'multi';
 
 export const PARENT_KEY = 'parent';
+export const SECONDARY_SLOT = 'secondary';
 export const SHALLOW_S_REGRESSION_TYPE_KEY = 'shallow.s.regression.type';
 export const LINEAR_REG_TYPE = 'linear';
 export const POLYNOMIAL_REG_TYPE = 'polynomial';

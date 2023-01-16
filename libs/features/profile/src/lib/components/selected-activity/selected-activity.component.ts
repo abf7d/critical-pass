@@ -52,11 +52,11 @@ export class SelectedActivityComponent implements OnInit, OnDestroy {
         });
 
         // TODO: Do we need this? It is not used in the controller.
-        this.controller.prntUpdate$.pipe(filter(x => !!x)).subscribe(val => {
+        /*this.controller.prntUpdate$.pipe(filter(x => !!x)).subscribe(val => {
             if (val !== 0) {
                 if (this.activity) this.controller.updateSelectedActivity(this.activity, this.project);
             }
-        });
+        });*/
     }
 
     public ngOnDestroy() {

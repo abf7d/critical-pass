@@ -46,15 +46,16 @@ export class SelectedActivityControllerService {
         this.drawChannel$ = this.eventService.get(UTIL_CONST.ACTIVITY_CREATED_KEY);
         this.activeProject$ = this.dashboard.activeProject$;
         // this.prntUpdate$ = this.pManager.getChannel(AppKeys.updateParentProject);
-        this.prntUpdate$ = this.eventService.get(API_CONST.UPDATE_PARENT_PROJECT_KEY);
+        // this.prntUpdate$ = this.eventService.get(API_CONST.UPDATE_PARENT_PROJECT_KEY);
     }
 
     public setDuration(duration: string, activity: Activity, project: Project) {
         if (activity !== null) {
             activity.profile.duration = +duration;
             if (project.profile.parentProject != null) {
-                // this.pManager.calculateParentProjRisk(this.id, project);
                 this.parentCompiler.compile(project);
+                this.updateProject(project);
+                this.dashboard.secondaryProject$.next(project.profile.parentProject);
             } else {
                 this.updateProject(project);
             }
