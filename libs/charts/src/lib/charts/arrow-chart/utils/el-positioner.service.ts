@@ -63,7 +63,7 @@ export class ElPositionerService {
             .attr('x', (a: Activity) => {
                 const cInfo = a.subProject;
                 const risk = a.risk;
-                const chart =  a.chartInfo;
+                const chart = a.chartInfo;
                 if (cInfo.subGraphLoaded !== null || cInfo.isParent || risk.criticalCount > 0 || risk.greenCount > 0) {
                     return chart.source!.x! + (chart.target!.x! - chart.source!.x!) / 2 - 25;
                 }

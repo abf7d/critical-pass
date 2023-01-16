@@ -27,8 +27,8 @@ export class ArrowChartUIService {
     private sub!: Subscription;
     public projIsEmpty: BehaviorSubject<boolean>;
     private proj!: Project;
-    private arrowRisk: Map<number, number> = new Map<number, number>();;
-    private nodeRisk: Map<number, number> = new Map<number, number>();;
+    private arrowRisk: Map<number, number> = new Map<number, number>();
+    private nodeRisk: Map<number, number> = new Map<number, number>();
     private rebuild!: boolean;
     private prevProjId!: number;
 

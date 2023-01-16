@@ -97,7 +97,7 @@ export class ElFactoryService {
                     if (l.chartInfo.target!.id === node.id) {
                         proj.profile.end = l.chartInfo.source!.id;
                     }
-                })
+                });
             }
         }
     }

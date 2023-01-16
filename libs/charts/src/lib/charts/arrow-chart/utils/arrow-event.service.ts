@@ -16,8 +16,7 @@ export class ArrowEventsService {
         private msFactory: MilestoneFactoryService,
         private positioner: ElPositionerService,
         private elFactory: ElFactoryService,
-    ) {
-    }
+    ) {}
     public deselectActivity(project: Project): void {
         project.activities.forEach(a => (a.chartInfo.isSelected = false));
         project.profile.view.selectedActivity = null;
@@ -100,7 +99,7 @@ export class ArrowEventsService {
 
         // unenlarge target node when successfully creating an arrow
         this.st.nodes.selectAll('circle').attr('transform', (p: Integration) => {
-                return '';
+            return '';
         });
         let source = this.st.mousedown_node;
         let target = this.st.mouseup_node;
