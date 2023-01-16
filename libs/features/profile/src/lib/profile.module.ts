@@ -67,7 +67,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         ArrowSnapshotModule,
         ShallowSSnapshotModule,
         ShallowSModule,
-        ScoreBoardModule
+        ScoreBoardModule,
     ],
     exports: [ActionButtonsComponent, SelectedActivityComponent],
 })

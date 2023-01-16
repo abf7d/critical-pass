@@ -18,11 +18,9 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
     constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService) {}
 
     ngOnInit(): void {
-        this.sub = this.dashboard.activeProject$
-            .pipe(filter(x => !!x))
-            .subscribe(project => {
-                this.project = project;
-            });
+        this.sub = this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(project => {
+            this.project = project;
+        });
     }
 
     ngOnDestroy(): void {
