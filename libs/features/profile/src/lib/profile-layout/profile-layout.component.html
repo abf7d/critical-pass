@@ -43,8 +43,7 @@
         </div>
         <div class="right-chart">
           <a [routerLink]="['/profile', { outlets: {sidebar: ['stacked', id]} }]">
-            <!-- <cp-stacked-resources [id]="id" width="390" height="250" barWidth="10" [showAxes]="false" [margin]="{top:15, right: 15, left: 15, bottom: 15}"></cp-stacked-resources> -->
-            Test Stacked Resources
+            <cp-stacked-resources [id]="id" [width]="390" [height]="250" [barWidth]="10" [showAxes]="false" [margin]="{top:15, right: 15, left: 15, bottom: 15}"></cp-stacked-resources>
           </a>
         </div>
         <div class="right-chart">
