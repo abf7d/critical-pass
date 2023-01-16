@@ -1,0 +1,17 @@
+cp-risk-donut {
+    .value {
+        font-size: 18px;
+        font-weight: 700;
+    }
+    .crit-label {
+        font-size: 16px;
+    }
+    .criticality {
+        font-size: 20px;
+        font-weight: 700;
+    }
+    svg {background-color: white;}
+    .missing-data{
+        font-weight: bold;
+    }
+}

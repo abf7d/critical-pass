@@ -1,14 +1,9 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
 import { Activity, Integration, Project } from '@critical-pass/project/models';
-import { Observable, Subscription, BehaviorSubject } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import * as CONST from '../../../constants/constants';
-// import { Project } from '../../../models/project/project';
 import * as d3 from 'd3';
-// import { Activity } from '../../../models/project/activity/activity';
-// import { Integration } from '../../../models/project/integration/integration';
-// import * as Keys from '../../../constants/keys'
-// import { ProjectManagerBase } from '../../../models/base/project-manager-base';
 
 @Injectable()
 export class ArrowSnapshotUiService {
@@ -30,9 +25,9 @@ export class ArrowSnapshotUiService {
         this.slot = slot;
         this.initSvg(width, height, el);
         if (!slot || slot !== CONST.SECONDARY_SLOT) {
-            this.data = this.dashboard.activeProject$; //this.pManager.getProject(id);
+            this.data = this.dashboard.activeProject$; 
         } else {
-            this.data = this.dashboard.secondaryProject$; //this.pManager.getParentProject(id);
+            this.data = this.dashboard.secondaryProject$; 
         }
         this.sub = this.data.subscribe(project => {
             this.ngZone.runOutsideAngular(() => {

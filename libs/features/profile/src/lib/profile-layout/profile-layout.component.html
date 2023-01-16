@@ -38,8 +38,7 @@
       <div class="right-content">
         <div class="right-chart">
           <a [routerLink]="['/profile', { outlets: {sidebar: ['risk', id]} }]">
-            <!-- <cp-risk-donut width="390" height="320" [id]="id"></cp-risk-donut>  -->
-            Test Risk Donut
+            <cp-risk-donut [width]="390" [height]="320" [id]="id"></cp-risk-donut> 
           </a>
         </div>
         <div class="right-chart">

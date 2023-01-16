@@ -128,3 +128,10 @@ export enum RISK_CODE {
     HIGH,
     CRITICAL,
 }
+export const DONUT_COLOR = {
+    LOW: '#7c7',
+    MEDIUM: '#ff7',
+    HIGH: '#f44',
+    CRITICAL: '#555',
+    UNPROCESSED: '#bbb'
+}
