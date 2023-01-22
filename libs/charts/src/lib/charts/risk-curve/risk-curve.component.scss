@@ -1,0 +1,90 @@
+cp-risk-curve {
+    .shallow-s-container {
+        width: auto;
+        height: auto;
+        position: relative;
+    }
+    .shallow-s-empty {
+        position: absolute;
+        top: 25%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: bold;
+    }
+    svg {   
+        background-color: white;
+    }
+    .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px;
+    }
+
+    .planned {
+        stroke: steelblue;
+    }
+    .actual {
+        stroke: indianred;
+    }
+    .regression {
+        opacity: 0.6;
+        stroke-dasharray: 3 3;
+    }
+    .overrun {
+        opacity: 0.2;
+    }
+    .over {
+        fill: #cd5c5c;
+    }
+    .planned.coord {
+        stroke: steelblue;
+        fill: steelblue;
+    }
+
+    .actual.coord {
+        stroke: indianred;
+        fill: indianred;
+    }
+    .overlay {
+        fill: none;
+        pointer-events: all;
+    }
+    line.actual-marker {
+        stroke: #cd5c5c;
+        stroke-dasharray: 3 3;
+    }
+    line.x0 {
+        stroke: steelblue;
+        stroke-dasharray: 3 3;
+    }
+    text.actual-marker {
+        stroke: #cd5c5c;
+    }
+    text.planned-marker {
+        stroke: #4682b4;
+    }
+    circle.click-circle {
+        fill: none;
+    }
+    circle.actual-marker {
+        fill: none;
+        stroke: #cd5c5c;
+    }
+
+    .risk-curve-component-wrapper {
+        position: relative;
+        top: 0;
+        left: 0;
+        background-color: white;
+        .risk-curve-empty-message {
+            position: absolute;
+            top: 33%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+        }
+        svg {
+            background-color: white;
+        }
+    }
+}

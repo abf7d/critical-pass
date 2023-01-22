@@ -1,0 +1,4 @@
+<div class="risk-curve-component-wrapper">
+    <div class="risk-curve-empty-message" [hidden]="!(isEmpty | async)">Risk curve diagram: Add at least one activity with a Duration and Planned Completion Date</div>
+    <div #chart [hidden]="(isEmpty | async)"  class="risk-curve-container"></div>
+</div>
