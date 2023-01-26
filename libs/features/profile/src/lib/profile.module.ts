@@ -79,7 +79,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         ScoreBoardModule,
         RiskDonutModule,
         StackedResourcesModule,
-        RiskCurveModule
+        RiskCurveModule,
     ],
     exports: [ActionButtonsComponent, SelectedActivityComponent],
 })
