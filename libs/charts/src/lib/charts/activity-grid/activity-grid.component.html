@@ -1,0 +1,170 @@
+<div class="table-container" *ngIf="!!project">
+    <div class="list-empty" [hidden]="project.activities.length !== 0">
+        This project has no activities. Either click 'Add Activity' in the side bar or go to the Arrow diagram to draw some.
+    </div>
+    
+    <table class="table-fixed" [hidden]="project.activities.length === 0">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="pointer" (click)="sortBy('id')">Id</th>
+                <th class="pointer activity-name" (click)="sortBy('name')">Activity</th>
+                <th>Dependencies</th>
+                <th class="duration">Duration</th>
+                <th class="pointer" (click)="sortBy('start')">Calculated Start Date</th>
+                <th class="pointer" (click)="sortBy('pcd')">Planned Compl Date</th>
+                <th>Finish Date</th>
+                <th class="subproj">SubProj</th>
+                <th class="min-est">Min EST</th>
+                <th class="float">Float</th>
+                <th>Error</th>
+            </tr>
+        </thead>
+        <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+            <tr cdkDrag *ngFor="let a of project.activities" [hidden]="a.chartInfo.isDummy && !showDummies && a.chartInfo.milestoneNodeId === null">
+                <td style="padding-right: 20px"> 
+                    <div class="example-handle" cdkDragHandle>
+                        <i class="fa fa-bars"></i>
+                    </div>
+                </td>
+                <td>
+                    <span
+                        [style.fontWeight]="a.assign.noGoto || a.assign.noDependencies || a.chartInfo.milestoneNodeId !== null ? 'bold' : ''"
+                        [style.color]="a.assign.noDependencies ? 'blue' : a.assign.noGoto ? 'red' : ''"
+                        >{{ a.profile.id }}</span
+                    >
+                    <span [hidden]="a.chartInfo.milestoneNodeId === null">*</span>
+                </td>
+                <td>
+                    <input
+                        class="name-txt"
+                        placeholder=""
+                        [value]="a.profile.name"
+                        [(ngModel)]="a.profile.name"
+                        (blur)="updatName()"
+                    />
+                 
+                    <div [hidden]="a.processInfo.editingDependencies || a.processInfo.showBucket" class="dependency-button click-to-edit"></div>
+                    <span [hidden]="a.processInfo.editingDependencies || a.processInfo.showBucket" class="dependency-button dep-edit"></span>
+                    <div class="confirm-btns">
+                        <i
+                            [hidden]="!a.processInfo.editingDependencies || a.processInfo.showBucket"
+                            class="dependency-button dep-edit cancel-edit fa fa-times"
+                            (click)="cancelEditDepsClicked(a)"
+                        >
+                        </i>
+                        <i
+                            [hidden]="!a.processInfo.editingDependencies || a.processInfo.showBucket"
+                            class="dependency-button dep-edit ok-edit fa fa-check"
+                            (click)="submitEditDepsClicked(a)"
+                        >
+                        </i>
+                    </div>
+
+                    <div [hidden]="!a.processInfo.showBucket" class="dependency-button full-button">
+                        <span>
+                            <input type="checkbox" [(ngModel)]="a.processInfo.inDependencyBucket" />
+                        </span>
+                    </div>
+                </td>
+                <td >
+                    <div class="d-flex">
+                        <i
+                            [hidden]="a.processInfo.editingDependencies || a.processInfo.showBucket"
+                            class="dependency-button click-to-edit-dep fas fa-pencil-alt"
+                            (click)="startEditDeps(a)"
+                        >
+                        </i>
+                        <div [hidden]="!(a.processInfo.editingDependencies || a.processInfo.showBucket)" class="dependency-button click-to-edit-dep"></div>
+
+                        <input class="depends-on-input" matInput placeholder="-" [value]="a.profile.depends_on" [(ngModel)]="a.profile.depends_on" />
+                    </div>
+                </td>
+                <td>
+                    <input
+                        matInput
+                        placeholder="-"
+                        type="number"
+                        #duration
+                        [value]="a.profile.duration"
+                        [disabled]="!(a.subProject.subGraphId === -1 || a.subProject.subGraphId === 0)"
+                        [(ngModel)]="a.profile.duration"
+                        (blur)="updateDuration(a, duration.value)"
+                    />
+                </td>
+                <td>
+
+                    <mat-datepicker-toggle class="icon picker-toggle" matSuffix [for]="picker">
+                        <mat-icon class="mat-icon-rtl-mirror"></mat-icon>
+                    </mat-datepicker-toggle>
+                    <input
+                        #input
+                        class="dateinput"
+                        [matDatepicker]="picker"
+                        placeholder="---"
+                        [(ngModel)]="a.profile.start_date_dt"
+                        (ngModelChange)="updateStartDate(a.profile.start_date_dt, a.profile)"
+                        [matDatepickerFilter]="dateFilter"
+                        disabled
+                    />
+                    <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+                </td>
+                <td>
+                    <mat-datepicker-toggle class="icon picker-toggle" matSuffix [for]="picker2">
+                        <mat-icon class="mat-icon-rtl-mirror"></mat-icon>
+                    </mat-datepicker-toggle>
+                    <input
+                        #input2
+                        class="dateinput"
+                        [matDatepicker]="picker2"
+                        placeholder="---"
+                        [(ngModel)]="a.profile.planned_completion_date_dt"
+                        (ngModelChange)="updatePCD(a.profile.planned_completion_date_dt, a)"
+                        [matDatepickerFilter]="dateFilter"
+                    />
+                    <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+                </td>
+                <td>
+                    <mat-datepicker-toggle class="icon picker-toggle" matSuffix [for]="picker3">
+                        <mat-icon class="mat-icon-rtl-mirror"></mat-icon>
+                    </mat-datepicker-toggle>
+                    <input
+                        #input3
+                        class="dateinput"
+                        [matDatepicker]="picker3"
+                        placeholder="---"
+                        [(ngModel)]="a.profile.finish_dt"
+                        (ngModelChange)="updateFinishDate(a.profile.finish_dt, a.profile)"
+                        [matDatepickerFilter]="dateFilter"
+                    />
+                    <mat-datepicker #picker3 (closed)="input2.blur()"></mat-datepicker>
+                </td>
+                <td>
+                    <input placeholder="" type="number" [value]="a.subProject.subGraphId" [(ngModel)]="a.subProject.subGraphId" (blur)="updateProject()" />
+                </td>
+                <td><input matInput placeholder="-" type="number" [value]="a.profile.minEST" [(ngModel)]="a.profile.minEST" (blur)="updateProject()" /></td>
+
+                <td>
+                    <div class="risk-cell">
+                        <span
+                            class="shadow"
+                            [ngStyle]="{
+                                color: +a.chartInfo.risk === 0 ? '#1c1' : a.chartInfo.risk === 1 ? '#ffd800' : a.chartInfo.risk === 2 ? 'red' : '#aaa',
+                                'font-weight': 'bold'
+                            }"
+                            >{{ a.chartInfo.tf }}</span
+                        >
+                    </div>
+                </td>
+                <td>
+                    <span class="divisible-error" [hidden]="!a.errors.showDivisibleBy5Error">5</span>
+                    <span class="monday-error" [hidden]="!a.errors.showMondayStartError">M</span>
+                    <span class="abnormal-error" [hidden]="!a.errors.showAbnormalError">A</span>
+                </td>
+                <td>
+                    <div class="remove-activity" (click)="removeActivity(a)">x</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

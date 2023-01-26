@@ -1,0 +1,266 @@
+.table-fixed {
+    width: 100%;
+}
+
+.table-fixed thead {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.table-fixed thead th {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 999;
+    color: #666;
+    padding-bottom: 3px;
+    background: #fafafa;
+}
+
+.table-container {
+    margin-top: 3px;
+    margin-left: 5px;
+    min-width: 1199px;
+    height: 683px;
+    overflow-y: auto;
+    overflow-x: auto;
+    position: relative;
+}
+.table-container {
+    display: flex;
+    flex-direction: column;
+}
+.table-fixed tr input {
+    width: 100%;
+    padding-left: 10px;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid #ccc !important;
+
+    &.name-txt {
+        width: 84%;
+        border-right: 1px solid white !important;
+    }
+}
+.table-fixed tr input.dateinput {
+    padding-left: 27px;
+}
+
+svg.mat-datepicker-toggle-default-icon {
+    height: 15px;
+    margin-right: 0px;
+}
+.icon {
+    font-size: 14px;
+}
+
+.table-fixed tr input.dateinput {
+    width: 100%;
+}
+
+::ng-deep .mat-icon-button {
+    height: 17px !important;
+    width: 17px !important;
+    line-height: 16px !important;
+}
+input.mat-input-element {
+    margin-top: 0 !important;
+}
+
+::ng-deep button.mat-icon-button {
+    height: 25px !important;
+    width: 27px !important;
+}
+.picker-toggle {
+    height: 10px;
+    float: left;
+    margin-right: -33px;
+    margin-top: 5px;
+}
+
+.table-fixed td {
+    border-collapse: collapse;
+    border: none;
+}
+table.table-fixed {
+    border-collapse: collapse;
+}
+.table-fixed td,
+.table-fixed th {
+    padding: 0;
+}
+.remove-activity {
+    cursor: pointer;
+}
+.risk-cell {
+    padding-left: 7px;
+}
+.remove-activity {
+    padding-left: 7px;
+}
+.list-empty {
+    position: absolute;
+    z-index: 10000;
+    left: 50%;
+    top: 35%;
+    transform: translate(-50%, -50%);
+}
+.shadow {
+    text-shadow: 1px 1px #555;
+}
+.pointer {
+    cursor: pointer;
+}
+.quick-activity {
+    width: 400px;
+}
+.dependency-button {
+    width: 10%;
+    height: 31px;
+    float: right;
+    background-color: white;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid #ccc !important;
+    border-right: 1px solid white !important;
+    border-left: 1px solid white !important;
+}
+
+.dep-edit {
+    width: 6%;
+    height: 31px;
+    float: right;
+    background-color: white;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid #ccc !important;
+    border-right: 1px solid white !important;
+    border-left: 1px solid white !important;
+}
+.ok-edit {
+    width: 44%;
+}
+.cancel-edit {
+    width: 56%;
+}
+.click-to-edit {
+    width: 10%;
+    color: #999;
+}
+.full-button {
+    width: 16%;
+}
+.create-txt {
+    position: absolute;
+    z-index: 1000;
+}
+.add-arrow {
+    position: relative;
+    height: 67px;
+}
+.dependency-button input[type='checkbox'] {
+    margin-left: 5px !important;
+}
+.activity-name {
+    width: 300px;
+}
+.duration {
+    width: 72px;
+}
+
+.confirm-btns {
+    width: 16%;
+    float: right;
+    background-color: white;
+    border: 1px 0px 1px 0px solid #ccc !important;
+}
+.depends-on-input {
+    width: 80% !important;
+    float: right;
+}
+.table-fixed tr input.depends-on-input {
+    border-left: 1px solid white !important;
+}
+
+.click-to-edit-dep {
+    width: 20%;
+    border-left: 1px solid #ccc !important;
+    border-right: 1px solid white !important;
+    color: #666;
+}
+
+input[type='text'] {
+    padding-left: 5px;
+    width: 150px;
+}
+::ng-deep .mat-form-field-infix {
+    width: 120px !important;
+}
+
+::ng-deep svg.mat-datepicker-toggle-default-icon {
+    height: 15px!important;
+    width: 14px!important;
+    margin-right: 0px;
+    display: block;
+}
+.icon {
+    transform: scale(1);
+}
+input.dateinput {
+    padding-left: 27px;
+    width: 150px;
+}
+
+::ng-deep .mat-icon-button {
+    height: 17px !important;
+    width: 27px !important;
+    line-height: 16px !important;
+}
+
+.picker-toggle {
+    height: 10px;
+    float: left;
+    margin-right: -33px;
+    margin-top: -9px;
+    position: absolute;
+}
+
+.confirm-btns {
+    .cancel-edit {
+        color: red;
+    }
+    .ok-edit {
+        color: green;
+    }
+}
+
+.subproj {
+    width: 60px;
+}
+.min-est {
+    width: 90px;
+}
+.float {
+    padding-right: 10px;
+}
+
+.divisible-error {
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+}
+.monday-error {
+    color: orange;
+    font-size: 15px;
+    font-weight: bold;
+}
+.abnormal-error {
+    color: green;
+    font-size: 15px;
+    font-weight: bold;
+}

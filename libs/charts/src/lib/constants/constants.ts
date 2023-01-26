@@ -137,3 +137,4 @@ export const DONUT_COLOR = {
 };
 export const RISK_WEEKS = 21;
 export const FLOAT_INCREMENTS = 7;
+export const VIEW_DUMMIES_IN_GRID_KEY = 'activity.grid.view.dumimes';

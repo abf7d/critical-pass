@@ -19,6 +19,7 @@ import { IsNotNaNPipe } from '@critical-pass/core';
 import { ArrowBarModule } from './sidebars/arrow-bar/arrow-bar.module';
 import { SharedModule } from '@critical-pass/shared/components';
 import {
+    ActivityGridModule,
     ArrowChartModule,
     ArrowSnapshotModule,
     RiskCurveModule,
@@ -80,6 +81,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         RiskDonutModule,
         StackedResourcesModule,
         RiskCurveModule,
+        ActivityGridModule,
     ],
     exports: [ActionButtonsComponent, SelectedActivityComponent],
 })
