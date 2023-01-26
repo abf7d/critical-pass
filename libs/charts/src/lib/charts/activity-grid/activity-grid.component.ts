@@ -18,7 +18,6 @@ export class ActivityGridComponent implements OnInit, OnDestroy {
     private subscription: Subscription | null = null;
     private viewDumSub: Subscription | null = null;
 
-
     constructor(private zone: NgZone, private events: GridEventsService) {}
 
     public ngOnInit() {
@@ -31,8 +30,8 @@ export class ActivityGridComponent implements OnInit, OnDestroy {
             });
         });
         this.viewDumSub = this.events.viewDummies$.pipe(filter(x => x !== null && x !== undefined)).subscribe(show => {
-          this.showDummies = show;
-      });
+            this.showDummies = show;
+        });
     }
 
     public ngOnDestroy() {
@@ -79,7 +78,7 @@ export class ActivityGridComponent implements OnInit, OnDestroy {
     }
 
     public updateProject() {
-      this.events.updateProject(this.project, true);
+        this.events.updateProject(this.project, true);
     }
 
     public removeActivity(activity: Activity): void {
