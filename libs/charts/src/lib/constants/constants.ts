@@ -135,3 +135,5 @@ export const DONUT_COLOR = {
     CRITICAL: '#555',
     UNPROCESSED: '#bbb',
 };
+export const RISK_WEEKS = 21;
+export const FLOAT_INCREMENTS = 7;

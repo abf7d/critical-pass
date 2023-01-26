@@ -21,6 +21,7 @@ import { SharedModule } from '@critical-pass/shared/components';
 import {
     ArrowChartModule,
     ArrowSnapshotModule,
+    RiskCurveModule,
     RiskDonutModule,
     ScoreBoardModule,
     ShallowSModule,
@@ -78,6 +79,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         ScoreBoardModule,
         RiskDonutModule,
         StackedResourcesModule,
+        RiskCurveModule
     ],
     exports: [ActionButtonsComponent, SelectedActivityComponent],
 })

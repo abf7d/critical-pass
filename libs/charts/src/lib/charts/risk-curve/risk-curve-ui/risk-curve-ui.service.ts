@@ -6,6 +6,7 @@ import * as d3 from 'd3';
 import { RiskCurveState, RiskCurveStateFactory } from '../risk-curve-state/risk-curve-state';
 import { RiskCurveDecompressorService } from '../risk-curve-decompressor/risk-curve-decompressor.service';
 // import { RiskOption } from '../../../models/charts/risk-curve';
+// @ts-ignore
 import * as d3reg from 'd3-regression';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import { Project } from '@critical-pass/project/models';
@@ -116,8 +117,8 @@ export class RiskCurveUiService {
             .append('g');
 
         this.st.mainG = this.st.svg.append('g').attr('transform', `translate(${this.st.margin.left},${this.st.margin.top})`);
-        this.xScale = d3.scaleLinear().range([0, this.st.innerWidth]);
-        this.yScale = d3.scaleLinear().range([this.st.innerHeight, 0]);
+        this.xScale = d3.scaleLinear().range([0, this.st.innerWidth as number]);
+        this.yScale = d3.scaleLinear().range([this.st.innerHeight as number, 0]);
         this.riskLineGen = d3
             .line<RiskPoint>()
             .x(d => this.xScale(d.extraFloat))
@@ -184,8 +185,8 @@ export class RiskCurveUiService {
     }
 
     private initMouseOverAndBrushEvents(infoContainer: any, riskData: RiskOption[], riskTypes: RiskMap[]): void {
-        const width = this.st.innerWidth;
-        const height = this.st.innerHeight;
+        const width = this.st.innerWidth!;
+        const height = this.st.innerHeight!;
         this.st.mainG
             .append('rect')
             .attr('width', width + this.st.margin.left + this.st.margin.right)
@@ -387,7 +388,7 @@ export class RiskCurveUiService {
     private drawSecondDerivativeLine(chartG: any): void {
         const x = this.st.secondDerivativeZero;
         const coefficients = this.st.activityReg.coefficients;
-        const y = coefficients[0] + coefficients[1] * x + coefficients[2] * x * x + coefficients[3] * Math.pow(x, 3); // +
+        const y = coefficients[0] + coefficients[1] * x! + coefficients[2] * x! * x! + coefficients[3] * Math.pow(x!, 3); // +
 
         if (x) {
             const points = [
@@ -423,7 +424,7 @@ export class RiskCurveUiService {
     private createAxes(chartG: any): void {
         const xAxis = d3.axisBottom(this.xScale);
         const yAxis = d3.axisLeft(this.yScale);
-        const xaxisHeight = +this.st.innerHeight;
+        const xaxisHeight = +this.st.innerHeight!;
         chartG
             .append('g')
             .attr('class', 'x axis')

@@ -1,6 +1,5 @@
 import { Component, ElementRef, inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { RiskCurveFactoryService } from './risk-curve-factory/risk-curve-factory.service';
 import { RiskCurveUiService } from './risk-curve-ui/risk-curve-ui.service';
 
 @Component({
@@ -16,9 +15,9 @@ export class RiskCurveComponent implements OnInit {
     @Input() height!: number;
     @ViewChild('chart', { static: true }) chart!: ElementRef;
     public isEmpty: BehaviorSubject<boolean>;
-    private ui: RiskCurveUiService
+    private ui: RiskCurveUiService;
 
-    constructor(factory: RiskCurveFactoryService) {
+    constructor() {
         this.isEmpty = new BehaviorSubject<boolean>(true);
         this.ui = inject(RiskCurveUiService);
     }

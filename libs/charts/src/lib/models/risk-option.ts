@@ -4,7 +4,7 @@ export interface RiskPoint {
 }
 export interface RiskMap {
     name: string;
-    values: RiskPoint[]; 
+    values: RiskPoint[];
 }
 export interface RiskOption {
     criticality: number;
@@ -12,7 +12,7 @@ export interface RiskOption {
     activity: number;
     extraFloat: number;
     criticalCount: number;
-    redCount: number; 
-    yellowCount: number; 
+    redCount: number;
+    yellowCount: number;
     greenCount: number;
-  }
+}
