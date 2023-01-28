@@ -3,13 +3,12 @@ import { ProjectTreeUiService } from './project-tree-ui/project-tree-ui.service'
 
 @Component({
     selector: 'cp-project-tree',
-    template: `
-    <div class="node-tree">
-        <div #chart  class="project-tree"></div>
+    template: ` <div class="node-tree">
+        <div #chart class="project-tree"></div>
     </div>`,
     styleUrls: ['./project-tree.component.scss'],
     providers: [ProjectTreeUiService],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class ProjectTreeComponent implements OnInit {
     @Input() id!: number;

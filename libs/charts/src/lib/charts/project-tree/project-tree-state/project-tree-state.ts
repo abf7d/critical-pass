@@ -1,4 +1,4 @@
-import { Project, TreeNode } from "@critical-pass/project/types";
+import { Project, TreeNode } from '@critical-pass/project/types';
 
 export interface ProjectTreeState {
     svg: any;
@@ -30,7 +30,7 @@ export class ProjectTreeFactory {
             head: null,
             latestId: 0,
             latestGroupId: 0,
-            seedProject: null
+            seedProject: null,
         };
     }
 }

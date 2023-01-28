@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { TreeNode } from '@critical-pass/project/types';
 import { EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
-import * as CONST from '../../../constants/constants'
+import * as CONST from '../../../constants/constants';
 import { HistoryFileManagerService } from '@critical-pass/shared/file-management';
 @Component({
     selector: 'cp-tree-buttons',

@@ -6,13 +6,17 @@ import { ProjectCompilerService } from '../../../services/utils/project-compiler
 import { TimeCostUiService } from '../time-cost-ui/time-cost-ui.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class TimeCostFactoryService {
+    constructor(
+        @Inject('ProjectManagerBase') private pManager: ProjectManagerBase,
+        private completion: CompletionNodeCalcService,
+        private compilerApi: ProjectCompilerApiBase,
+        private compiler: ProjectCompilerService,
+    ) {}
 
-  constructor(@Inject('ProjectManagerBase') private pManager: ProjectManagerBase, private completion: CompletionNodeCalcService, private compilerApi: ProjectCompilerApiBase, private compiler: ProjectCompilerService) { }
-  
-  get ui () {
-    return new TimeCostUiService(this.pManager, this.completion, this.compilerApi, this.compiler); // (this.pManager, this.ngZone, this.decompressor);
-  }
+    get ui() {
+        return new TimeCostUiService(this.pManager, this.completion, this.compilerApi, this.compiler); // (this.pManager, this.ngZone, this.decompressor);
+    }
 }
