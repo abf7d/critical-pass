@@ -15,7 +15,7 @@ import { ParentProjectComponent } from './components/parent-project/parent-proje
 import { ProfileRoutingModule } from './profile.routes';
 import { GridButtonsComponent } from './components/grid-buttons/grid-buttons.component';
 import { ProjectMetadataComponent } from './components/project-metadata/project-metadata.component';
-import { IsNotNaNPipe } from '@critical-pass/core';
+import { IsDatePipe, IsNotNaNPipe } from '@critical-pass/core';
 import { ArrowBarModule } from './sidebars/arrow-bar/arrow-bar.module';
 import { SharedModule } from '@critical-pass/shared/components';
 import {
@@ -56,6 +56,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         GridButtonsComponent,
         ProjectMetadataComponent,
         IsNotNaNPipe,
+        IsDatePipe
     ],
     imports: [
         RouterModule,
