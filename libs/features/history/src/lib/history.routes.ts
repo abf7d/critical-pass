@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CanDeactivateGuard } from '../../../core/guards/deactivate/can-deactivate.guard';
-import { ProjectProfileResolver } from '../../../core/resolvers/project-profile.resolver';
-import { LeftMenuLayoutComponent } from '../../../shared/components/left-menu-layout/left-menu-layout.component';
-import { ArrowBarComponent } from '../profile/sidebars/arrow-bar/arrow-bar.component';
-import { SketchbookLayoutComponent } from './sketchbook-layout/sketchbook-layout.component';
+import { LeftMenuLayoutComponent } from '@critical-pass/shared/components';
+import { HistoryLayoutComponent } from './history-layout/history-layout.component';
+import { ProjectResolver } from '@critical-pass/shared/data-access';
+import { CanDeactivateGuard } from '@critical-pass/core';
 
 const routes: Routes = [
     {
@@ -13,8 +12,8 @@ const routes: Routes = [
         children: [
             {
                 path: ':id',
-                component: SketchbookLayoutComponent,
-                resolve: { items: ProjectProfileResolver },
+                component: HistoryLayoutComponent,
+                resolve: { items: ProjectResolver },
                 canDeactivate: [CanDeactivateGuard],
             },
             { path: 'arrow/:id', component: ArrowBarComponent, outlet: 'sidebar' },

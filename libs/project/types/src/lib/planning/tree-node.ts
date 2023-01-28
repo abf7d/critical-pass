@@ -1,71 +1,19 @@
-// import { Serializer } from '../../services/serializers/serializer';
 import { Project } from '../project/project';
 
-export interface TreeNode /*<T, U>*/ {
+export interface TreeNode {
     parent: TreeNode | null;
-    children: TreeNode /*<T, U>*/[];
-    data: Project | null; //T;
+    children: TreeNode[];
+    data: Project | null;
     name: string;
     id: number;
     group: number;
     subgroup: number;
     parentNodeId: number | null; // This is for reconstructing tree after file load
-    metadata: ProjectMetadata | null; //U;
-    // assignmentCompleted: boolean;
-    // cost: number;
-    // time: number;
-    // constructor() {
-    //   this.parent = null;
-    //   this.children = [];
-    //   this.name = '';
-    //   this.id = 0;
-    //   this.group = 0;
-    //   this.subgroup = 0;
-    //   this.assignmentCompleted = false;
-    //   this.cost = 0;
-    //   this.time = 0;
-    // }
+    metadata: ProjectMetadata | null;
 }
 
 export interface ProjectMetadata {
     assignmentCompleted: boolean;
-    cost: number;
-    time: number;
-    //   this.cost = 0;
-    //   this.time = 0;
+    cost: number | null;
+    time: number | null;
 }
-
-// export class ProjectTreeNodeSerializerService implements Serializer<TreeNode> /*<T, U>>*/ {
-//     fromJson(json?: any): TreeNode {
-//         json = json ?? {};
-//         const obj: TreeNode = {
-//             // parentNodeId: json?.parentNodeId ?? null,
-//             // nodeId: json?.nodeId ?? null,
-//             name: json?.name ?? null,
-//             group: json?.group ?? null,
-//             subgroup: json?.subgroup ?? null,
-//             metadata: json?.metadata ?? null,
-//             data: json?.data ?? null,
-//             children: json?.children ?? [],
-//             id: json?.id ?? null,
-//             parent: json.parent ?? null,
-//             parentNodeId: json?.parentNodeId ?? null,
-//         };
-//         return obj;
-//     }
-//     toJson(obj: TreeNode): any {}
-
-//     head(): TreeNode {
-//         return {
-//             id: 0,
-//             group: 0,
-//             subgroup: 0,
-//             name: 'head',
-//             data: null,
-//             children: [],
-//             parent: null,
-//             metadata: null,
-//             parentNodeId: null,
-//         };
-//     }
-// }

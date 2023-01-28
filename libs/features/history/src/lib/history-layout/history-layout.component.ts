@@ -1,12 +1,10 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TreeNode } from '@critical-pass/critical-charts';
-import { ProjectManagerBase } from '@critical-pass/critical-charts';
-import { Project } from '@critical-pass/critical-charts';
+import { Project, TreeNode } from '@critical-pass/project/types';
+import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ChartKeys } from '@critical-pass/critical-charts';
-
+import { CHART_KEYS } from '@critical-pass/charts';
 @Component({
     selector: 'cp-history-layout',
     templateUrl: './history-layout.component.html',
@@ -15,17 +13,21 @@ import { ChartKeys } from '@critical-pass/critical-charts';
 })
 export class HistoryLayoutComponent implements OnInit {
     public id: number;
-    public historyArray$: Subject<TreeNode>;
+    public historyArray$: Subject<TreeNode[]>;
     public project$: Observable<Project>;
     public selectedTreeNode$: Subject<number>;
     private refresh = 0;
-    private subscription: Subscription;
+    private subscription!: Subscription;
 
-    constructor(route: ActivatedRoute, @Inject('ProjectManagerBase') private pManager: ProjectManagerBase) {
-        this.id = +route.snapshot.params.id;
-        this.project$ = pManager.getProject(this.id);
-        this.historyArray$ = pManager.getChannel(ChartKeys.historyArray);
-        this.selectedTreeNode$ = this.pManager.getChannel(ChartKeys.selectedTreeNode);
+    constructor(
+        route: ActivatedRoute,
+        @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
+        @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
+    ) {
+        this.id = +route.snapshot.params['id'];
+        this.project$ = this.dashboard.activeProject$;
+        this.historyArray$ = this.eventService.get<TreeNode[]>(CHART_KEYS.HISTORY_ARRAY_KEY);
+        this.selectedTreeNode$ = this.eventService.get(CHART_KEYS.SELECTED_TREE_NODE_KEY);
     }
 
     public ngOnInit(): void {
@@ -35,8 +37,7 @@ export class HistoryLayoutComponent implements OnInit {
         return this.refresh < 2;
     }
     public load(node: TreeNode): void {
-        node.data.profile.view.autoZoom;
-        this.pManager.updateProject(this.id, node.data, false);
+        this.dashboard.updateProject(node.data!, false);
         this.selectedTreeNode$.next(node.id);
     }
     public ngOnDestroy(): void {

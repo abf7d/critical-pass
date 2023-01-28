@@ -1,0 +1,54 @@
+cp-time-cost {
+    .y.axis path {
+        display: block;
+    }
+    .line {
+        stroke: #007bff;
+    }
+    circle {
+        fill: #4a4;
+        stroke: #4a4;
+        stroke-width: 1px;
+        cursor: pointer;
+    }
+    .title-row {
+        margin-top: 13px;
+    }
+    .assign-button {
+        margin-bottom: 8px;
+    }
+    .assign-lbl {
+        padding: 8px 0px;
+        padding-right: 60px;
+    }
+    circle.selected-options {
+        fill: darkred;
+        stroke: black;
+        stroke-width: 2px;
+    }
+    svg {
+        background-color: white;
+    }
+    .time-cost-container {
+        overflow: hidden;
+        cursor: text;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        height: auto;
+        border-radius: 0;
+        width: 475px;
+        display: flex;
+        justify-content: center;
+        height: 578px;
+        align-items: center;
+    }
+    .calc-button {
+        margin: 10px;
+    }
+    .axis * {
+        font-size: .75rem;
+    }
+    .btn-container {
+        padding: 10px 0px;
+    }
+}

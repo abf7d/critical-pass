@@ -5,7 +5,7 @@
       </div>
       
       <div class="current-view">
-        <cp-arrow-chart  [id]="id" width="1214" height="700" [rebuild]="true"></cp-arrow-chart>
+        <cp-arrow-chart  [id]="id" [width]="1214" [height]="700" [rebuild]="true"></cp-arrow-chart>
       </div>
       <div class="right-content">
           <div class="sb-chart">
@@ -20,7 +20,7 @@
       <div class="snapshots">
         <div class="sb-chart default-border" *ngFor="let node of (historyArray$ | async)"  [ngClass]="{'selected-chart': (selectedTreeNode$ | async) === node.id}" >
             <a (click)="load(node)">
-                <cp-arrow-snapshot [project]="node.data" width="300" height="200"></cp-arrow-snapshot>
+                <cp-arrow-snapshot [project]="node.data!" [width]="300" [height]="200"></cp-arrow-snapshot>
             </a>
         </div>
     </div>

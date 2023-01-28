@@ -1,0 +1,47 @@
+cp-project-tree {
+    text {
+        stroke: #999;
+    }
+    svg {
+        background-color: white;
+    }
+
+    .link-tree {
+        fill: none;
+        stroke: #000;
+    }
+
+    .border {
+        fill: none;
+        shape-rendering: crispEdges;
+        stroke: #aaa;
+    }
+
+    .node-tree {
+        stroke: #fff;
+        fill: #000;
+        cursor: pointer;
+    }
+
+    .node-tree.onpath {
+        stroke: cornflowerblue;
+        stroke-width: 4px;
+        fill: lightgray;
+    }
+
+    .node-tree.selected {
+        stroke: cornflowerblue;
+        stroke-width: 4px;
+        fill: #ff0000;
+    }
+
+    .node-tree.selected.completed,
+    .node-tree.completed {
+        stroke: cornflowerblue;
+        stroke-width: 4px;
+        fill: #00ee00;
+    }
+    .project-tree {
+        margin-top: 15px;
+    }
+}

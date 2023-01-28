@@ -29,13 +29,13 @@ export class ActionButtonsComponent implements OnInit, OnDestroy {
 
     constructor(
         private router: Router,
-        @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
-        @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
+        @Inject(DASHBOARD_TOKEN) protected dashboard: DashboardService,
+        @Inject(EVENT_SERVICE_TOKEN) protected eventService: EventService,
         private serializer: ProjectSerializerService,
         private sanitizer: ProjectSanatizerService,
         public toastr: ToastrService,
-        private storageApi: ProjectStorageApiService,
-        private projectApi: ProjectApiService,
+        protected storageApi: ProjectStorageApiService,
+        protected projectApi: ProjectApiService,
     ) {
         this.showHelp = false;
         this.actionText = '';

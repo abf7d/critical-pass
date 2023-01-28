@@ -1,0 +1,11 @@
+<div class="btns">
+    <div>
+        <a href="javascript:void(0)" (click)="commit()">Commit</a> &nbsp; | &nbsp; <a href="javascript:void(0)" (click)="branch()">Branch</a> &nbsp; | &nbsp;
+        <a href="javascript:void(0)" (click)="reset()">Reset</a>
+    </div>
+    <div [hidden]="!fileActions">
+        <a href="javascript:void(0)" (click)="downloadHistory()">Download</a>  &nbsp; | &nbsp;
+        <a href="javascript:void(0)" (click)="uploadFile.value=''; uploadFile.click()">Load File</a>
+        <input class="file-input" type="file" #uploadFile (change)="loadFile($event.target)" accept=".xlsx" />
+    </div>
+</div>
