@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { ActivityBuilder, MilestoneFactoryService } from '@critical-pass/shared/project-utils';
 import { ActivitySerializerService, IntegrationSerializerService } from '@critical-pass/shared/serializers';
 import { ArrowState } from '../arrow-state/arrow-state';

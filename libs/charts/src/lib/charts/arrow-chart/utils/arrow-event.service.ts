@@ -4,7 +4,7 @@ import { ElPositionerService } from './el-positioner.service';
 import { ElFactoryService } from './el-factory.service';
 import { NetworkOperationsService } from '../../../services/network-operations/network-operations.service';
 import { MilestoneFactoryService } from '@critical-pass/shared/project-utils';
-import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { Activity, Integration, Project } from '@critical-pass/project/types';
 
 @Injectable({
     providedIn: 'root',

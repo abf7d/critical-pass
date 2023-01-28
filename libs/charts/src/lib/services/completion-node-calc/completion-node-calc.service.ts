@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TreeNode } from '@critical-pass/project/models';
+import { TreeNode } from '@critical-pass/project/types';
 @Injectable({
     providedIn: 'root',
 })

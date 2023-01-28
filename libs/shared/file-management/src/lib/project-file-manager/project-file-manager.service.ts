@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 // import * as Keys from '../../../../constants/keys';
 import { FileManagerBaseService } from '../file-manager-base.service';
 import { ProjectMapperService } from './project-mapper/project-mapper.service';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import * as CONST from '../constants';
 
 @Injectable({

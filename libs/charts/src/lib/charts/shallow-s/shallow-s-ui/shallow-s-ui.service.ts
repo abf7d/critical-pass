@@ -9,7 +9,7 @@ import { lightFormat } from 'date-fns';
 import * as d3reg from 'd3-regression';
 import * as CONST from '../../../constants/constants';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { ShallowSPoint, Stats } from '../../../models/shallow-s';
 
 @Injectable()

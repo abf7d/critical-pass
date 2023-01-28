@@ -9,7 +9,7 @@ import { RiskCurveDecompressorService } from '../risk-curve-decompressor/risk-cu
 // @ts-ignore
 import * as d3reg from 'd3-regression';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { RiskMap, RiskOption, RiskPoint } from '../../../models/risk-option';
 import * as CONST from '../../../constants/constants';
 // import { ProjectManagerBase } from '../../../models';

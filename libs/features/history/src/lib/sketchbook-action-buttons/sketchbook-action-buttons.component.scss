@@ -1,0 +1,178 @@
+.btn-secondary {
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    background-color: #f9f9f9;
+    color: #666;
+
+    &:hover {
+        color: white;
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+}
+
+.btn {
+    font-size: 0.87rem;
+}
+.border-right {
+    border-right: 1px solid #333;
+}
+.stash .btn {
+    color: #45f;
+}
+.btn-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    div {
+        display: flex;
+        flex-direction: row;
+        & > * {
+            margin: 0 7px;
+        }
+    }
+    .right {
+        & > * {
+            margin: 0 5px;
+        }
+    }
+    .stash {
+        & > * {
+            margin: 0;
+        }
+    }
+    .btns {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        & > * {
+            padding-top: 3px;
+        }
+    }
+}
+
+.help-btn {
+    color: #999;
+    cursor: pointer;
+}
+.peek {
+    width: 410px;
+    height: 270px;
+    position: absolute;
+    border: 1px solid #e9e9e9;
+    z-index: 1;
+    background-color: #f9f9f9;
+    top: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.stash {
+    position: relative;
+}
+
+.help {
+    position: absolute;
+    top: 18px;
+    right: 0px;
+    width: 400px;
+    height: auto;
+    background-color: white;
+    border-radius: 5px;
+    z-index: 1000;
+    padding: 20px;
+    -webkit-box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.42);
+    -moz-box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.42);
+    box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.42);
+    h4 {
+        position: absolute;
+        padding-top: 10px;
+    }
+}
+
+.help-container {
+    position: relative;
+}
+.help-close {
+    position: absolute;
+    right: 13px;
+    cursor: pointer;
+    top: 13px;
+}
+.help-pointer {
+    cursor: pointer;
+    color: #999;
+}
+.help-list {
+    padding: 49px;
+    padding-top: 55px;
+    padding-bottom: 35px;
+}
+
+.alert-msg {
+    background: #4a4;
+    border: 1px solid #ddd;
+    position: fixed;
+    height: 70px;
+    width: 102px;
+    text-align: center;
+    vertical-align: center;
+    padding-top: 19px;
+    left: 50%;
+    color: white;
+    top: 50%;
+    font-size: 18px;
+    border-radius: 15px;
+    z-index: 2000;
+}
+.saved {
+    background: #4a4;
+    border: 1px solid #ddd;
+}
+.error {
+    background: #a44;
+    border: 1px solid #ddd;
+}
+.save-proj {
+    display: inline;
+}
+a.btn-primary {
+    color: white;
+}
+
+.top-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+.overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100000;
+    cursor: pointer;
+}
+.overlay-txt {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btn-secondary.disabled,
+.btn-secondary:disabled {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+
+.file-input { display: none}

@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 // import { ProjectSanatizerService } from '../../../services/utils/project-sanitizer/project-sanatizer.service';
 import { API_CONST, ProjectApiService } from '@critical-pass/shared/data-access';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
 import { ToastrService } from 'ngx-toastr';

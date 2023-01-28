@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Activity, Project, TreeNode } from '@critical-pass/project/models';
+import { Activity, Project, TreeNode } from '@critical-pass/project/types';
 // import { TreeNode } from '../../../models/assign/tree-node';
 // import { Activity } from '../../../models/project/activity/activity';
 // import { Project } from '../../../models/project/project';

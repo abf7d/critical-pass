@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectCompilerService } from '@critical-pass/project/processor';
 @Injectable({

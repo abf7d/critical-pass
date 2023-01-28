@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, ElementRef, Input } from '@angular/core';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';

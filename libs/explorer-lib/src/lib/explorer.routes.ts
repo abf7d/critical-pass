@@ -1,4 +1,3 @@
-// import { HomeComponent } from './home.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from '@critical-pass/features/landing';
@@ -17,14 +16,19 @@ const routes: Routes = [
     },
     {
         path: 'library',
-        loadChildren: () => import('@critical-pass/features/library').then(m => m.LibraryModule), //'./library/library.module').then(m => m.LibraryModule),
+        loadChildren: () => import('@critical-pass/features/library').then(m => m.LibraryModule), 
         canLoad: [AuthorizedUserGuard],
     },
     {
         path: 'profile',
-        loadChildren: () => import('@critical-pass/features/profile').then(m => m.ProfileModule), //'./library/library.module').then(m => m.LibraryModule),
+        loadChildren: () => import('@critical-pass/features/profile').then(m => m.ProfileModule), 
         canLoad: [AuthorizedUserGuard],
     },
+    // {
+    //     path: 'history',
+    //     loadChildren: () => import('@critical-pass/features/history').then(m => m.HistoryModule),
+    //     canLoad: [AuthorizedUserGuard],
+    // },
 ];
 
 @NgModule({

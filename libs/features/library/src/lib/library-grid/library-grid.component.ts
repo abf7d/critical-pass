@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 // import { ProjectManagerBase} from '@critical-pass/critical-charts';
 // import { ProjectStoreBase } from '@critical-pass/critical-charts';
 // import { Project } from '@critical-pass/critical-charts';

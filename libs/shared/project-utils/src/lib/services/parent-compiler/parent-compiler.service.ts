@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { DateUtilsService, RiskCompilerService } from '@critical-pass/project/processor';
 // import { ParentRiskRefreshService } from '../parent-risk-refresh/parent-risk-refresh.service';
 

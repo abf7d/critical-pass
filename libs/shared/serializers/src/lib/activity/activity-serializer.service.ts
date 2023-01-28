@@ -6,7 +6,7 @@ import { RiskSerializerService } from './risk/risk-serializer.service';
 import { ActivityErrorSerializerService } from './activity-error/activity-error-serializer.service';
 import { ActivityProfileSerializerService } from './profile/profile-serializer.service';
 import { AssignResourcesSerializerService } from './assign-resources/assign-resources-serializer.service';
-import { Activity } from '@critical-pass/project/models';
+import { Activity } from '@critical-pass/project/types';
 import { Serializer } from '../serializer';
 
 @Injectable({

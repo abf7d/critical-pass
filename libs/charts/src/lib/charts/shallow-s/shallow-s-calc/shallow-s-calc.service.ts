@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { subBusinessDays } from 'date-fns';
 import { LinearRegressions, OverrRunPoints, Point, ShallowSPoint, Stats } from '../../../models/shallow-s';
 @Injectable({

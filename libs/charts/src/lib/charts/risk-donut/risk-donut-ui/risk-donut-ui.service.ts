@@ -3,7 +3,7 @@ import { filter } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import * as d3 from 'd3';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import * as CONST from '../../../constants/constants';
 
 @Injectable()

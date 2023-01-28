@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { NodeConnectorService } from '@critical-pass/project/processor';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import * as CONST from '../../constants/constants';

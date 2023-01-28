@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy, ViewEncapsulation, SimpleChanges, OnChanges, inject } from '@angular/core';
 import { ArrowSnapshotUiService } from './arrow-snapshot-ui/arrow-snapshot-ui.service';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 @Component({
     selector: 'cp-arrow-snapshot',
     template: `<div #chart class="arrow-snapshot"></div>`,

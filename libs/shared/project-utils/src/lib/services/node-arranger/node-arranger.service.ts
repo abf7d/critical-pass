@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 // @ts-ignore
 import * as d3dag from 'd3-dag';
 import { tr } from 'date-fns/locale';

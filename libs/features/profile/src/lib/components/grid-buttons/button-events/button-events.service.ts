@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { ZametekApiService } from '@critical-pass/shared/data-access';
 import { FileCompilerService, ProjectSanatizerService } from '@critical-pass/shared/project-utils';
 import { Observable } from 'rxjs';

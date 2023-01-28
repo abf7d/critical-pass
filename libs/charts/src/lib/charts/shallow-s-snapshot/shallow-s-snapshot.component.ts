@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { BehaviorSubject } from 'rxjs';
 // import { Project } from '../../models/project/project';
 // import { ShallowSSnapshotFactoryService } from './shallow-s-snapshot-factory/shallow-s-snapshot-factory.service';

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Project, Route } from '@critical-pass/project/models';
+import { Project, Route } from '@critical-pass/project/types';
 import { GraphFactoryService } from '../path-factories/graph-factory/graph-factory.service';
 // import { LoggerBase } from '../../../models/base/logger-base';
 // import { GraphSerializerService } from '../../serializers/risk/graph-builder/graph-serializer.service';

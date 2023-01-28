@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';

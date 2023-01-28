@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Phase, PhaseSummary, PhaseView } from '@critical-pass/project/models';
+import { Phase, PhaseSummary, PhaseView } from '@critical-pass/project/types';
 import { ColorViewSerializerService } from '../../color/color-serilizer.service';
 import { Serializer } from '../../serializer';
 

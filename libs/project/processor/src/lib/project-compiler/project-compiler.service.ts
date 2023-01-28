@@ -14,7 +14,7 @@ import { CompletionCalcService } from '../completion-calc/completion-calc.servic
 // import { NodeArrangerService } from '../node-arranger/node-arranger.service';
 import { ActivitySorterService } from '../activity-sorter/activity-sorter.service';
 import { ActivityValidatorService } from '../activity-validator/activity-validator.service';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 
 @Injectable({
     providedIn: 'root',

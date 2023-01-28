@@ -4,7 +4,7 @@ import { filter } from 'rxjs/operators';
 import * as d3 from 'd3';
 import { ShallowSSnapshotState, ShallowSSnapshotStateFactory } from '../shallow-s-snapshot-state/shallow-s-snapshot-state';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { ShallowSCalcService } from '../../shallow-s/shallow-s-calc/shallow-s-calc.service';
 import { ShallowSPoint, Stats } from '../../../models/shallow-s';
 

@@ -7,7 +7,7 @@ import { CriticalPathUtilsService } from '../critical-path-utils/critical-path-u
 import { DateUtilsService } from '../date-utils/date-utils.service';
 import { ProjectValidatorService } from '../project-validator/project-validator.service';
 import * as CONST from '../constants';
-import { Activity, Edge, FloatInfo, Integration, Project, RiskStats, Route, Vertex } from '@critical-pass/project/models';
+import { Activity, Edge, FloatInfo, Integration, Project, RiskStats, Route, Vertex } from '@critical-pass/project/types';
 import { FloatFactoryService } from '../path-factories/float-factory/float-factory.service';
 
 @Injectable({

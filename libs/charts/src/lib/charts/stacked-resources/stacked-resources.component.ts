@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, Input, NgZone, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { BehaviorSubject } from 'rxjs';
 import { Margin } from './stacked-resources-state/stacked-resources-state';
 import { StackedResourcesUiService } from './stacked-resources-ui/stacked-resources-ui.service';

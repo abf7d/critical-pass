@@ -9,7 +9,7 @@ import { LassoToolService } from '../lasso-tool/lasso-tool.service';
 import { ArrowControllerService } from '../utils/arrow-controller.service';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import { NodeArrangerService } from '@critical-pass/shared/project-utils';
-import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { Activity, Integration, Project } from '@critical-pass/project/types';
 @Injectable({
     providedIn: 'root',
 })

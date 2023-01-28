@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { map, Observable } from 'rxjs';
 import { environment } from '@critical-pass/shared/environments';
 import urlJoin from 'url-join';

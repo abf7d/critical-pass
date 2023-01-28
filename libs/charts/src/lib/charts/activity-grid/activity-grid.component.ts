@@ -4,7 +4,7 @@ import { filter } from 'rxjs/operators';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { getDay } from 'date-fns';
 import { GridEventsService } from './grid-events/grid-events.service';
-import { Activity, ActivityProfile, Project } from '@critical-pass/project/models';
+import { Activity, ActivityProfile, Project } from '@critical-pass/project/types';
 
 @Component({
     selector: 'cp-activity-grid',

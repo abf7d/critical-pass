@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Edge, Route, Vertex } from '@critical-pass/project/models';
+import { Edge, Route, Vertex } from '@critical-pass/project/types';
 
 @Injectable({
     providedIn: 'root',

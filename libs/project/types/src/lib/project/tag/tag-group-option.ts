@@ -1,6 +1,6 @@
 // import { Tag } from '@critical-pass/critical-charts';
 
-import { Tag } from '@critical-pass/project/models';
+import { Tag } from '@critical-pass/project/types';
 
 export interface TagGroupOption {
     color: string;

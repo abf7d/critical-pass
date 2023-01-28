@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AssignResources } from '@critical-pass/project/models';
+import { AssignResources } from '@critical-pass/project/types';
 import { PhaseSummarySerializerService } from '../../phase/phase-serializer/phase-serializer.service';
 import { ResourceSummarySerializerService } from '../../resource/resource-serializer/resource-serializer.service';
 import { Serializer } from '../../serializer';

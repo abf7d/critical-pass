@@ -1,6 +1,6 @@
 import { Inject, Input, OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';

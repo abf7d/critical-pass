@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StackedResourcesState } from '../stacked-resources-state/stacked-resources-state';
 import * as d3 from 'd3';
-import { Activity, Project, Resource, Role } from '@critical-pass/project/models';
+import { Activity, Project, Resource, Role } from '@critical-pass/project/types';
 
 @Injectable({
     providedIn: 'root',

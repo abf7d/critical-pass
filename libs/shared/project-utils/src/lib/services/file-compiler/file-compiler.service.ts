@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { ActivitySorterService, NodeConnectorService, RiskCompilerService } from '@critical-pass/project/processor';
 import { EndNodesLocatorService } from '../end-nodes-locator/end-nodes-locator.service';
 import { NodeArrangerService } from '../node-arranger/node-arranger.service';

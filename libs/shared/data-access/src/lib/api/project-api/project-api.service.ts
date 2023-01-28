@@ -3,7 +3,7 @@ import { environment } from '@critical-pass/shared/environments';
 import { map, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import urlJoin from 'url-join';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import * as CONST from '../../constants/constants';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 

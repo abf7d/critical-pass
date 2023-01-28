@@ -13,7 +13,7 @@ import { StaffingSerializerService } from './profile/staffing-serializer/staffin
 import { ProjectSubprojectSerializerService } from './profile/project-subproject-serializer/project-subproject-serializer.service';
 import { PermissionsSerializerService } from './profile/permissions-serializer/permissions-serializer.service';
 import { Serializer } from './serializer';
-import { Project, ProjectProfile } from '@critical-pass/project/models';
+import { Project, ProjectProfile } from '@critical-pass/project/types';
 
 @Injectable({
     providedIn: 'root',

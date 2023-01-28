@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ButtonEventsService } from './button-events/button-events.service';
 import { ToastrService } from 'ngx-toastr';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { ActivitySorterService } from '@critical-pass/project/processor';
 import { ProjectFileManagerService } from '@critical-pass/shared/file-management';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 import { StatsCalculatorService } from '@critical-pass/project/processor';
 import { RiskOption } from '../../../models/risk-option';
 import * as CONST from '../../../constants/constants';

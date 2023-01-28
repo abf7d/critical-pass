@@ -1,5 +1,5 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
-import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { Observable, Subscription } from 'rxjs';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import * as CONST from '../../../constants/constants';

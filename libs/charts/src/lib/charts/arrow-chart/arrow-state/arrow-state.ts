@@ -1,4 +1,4 @@
-import { Activity, Integration } from '@critical-pass/project/models';
+import { Activity, Integration } from '@critical-pass/project/types';
 import { Subject } from 'rxjs';
 
 export interface ArrowState {

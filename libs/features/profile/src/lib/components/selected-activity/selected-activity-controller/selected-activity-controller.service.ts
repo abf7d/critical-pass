@@ -13,7 +13,7 @@ import { lightFormat, sub } from 'date-fns';
 // import { ProjectManagerBase } from '@critical-pass/critical-charts';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN, API_CONST, ProjectApiService } from '@critical-pass/shared/data-access';
 import { MilestoneFactoryService, ParentCompilerService, UTIL_CONST } from '@critical-pass/shared/project-utils';
-import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { P_CONST } from '@critical-pass/project/processor';
 

@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import { ComponentCanDeactivate, CORE_CONST } from '@critical-pass/core';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 @Component({
     selector: 'cp-profile',
     templateUrl: './profile-layout.component.html',

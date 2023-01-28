@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Integration, Project } from '@critical-pass/project/models';
+import { Integration, Project } from '@critical-pass/project/types';
 // import { LoggerBase } from '../../../models/base/logger-base';
 
 @Injectable({

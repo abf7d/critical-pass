@@ -4,7 +4,7 @@ import { ArrowPropertyService } from './arrow-property.service';
 import { ElFactoryService } from './el-factory.service';
 import { ElPositionerService } from './el-positioner.service';
 import { ArrowState } from '../arrow-state/arrow-state';
-import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { Activity, Integration, Project } from '@critical-pass/project/types';
 
 @Injectable({
     providedIn: 'root',

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import * as d3 from 'd3';
 import { SvgTranform } from '../../../models/svg-transform';

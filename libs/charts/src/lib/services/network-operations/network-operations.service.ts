@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Activity, Integration, Project } from '@critical-pass/project/models';
+import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { IntegrationSerializerService } from '@critical-pass/shared/serializers';
 
 @Injectable({

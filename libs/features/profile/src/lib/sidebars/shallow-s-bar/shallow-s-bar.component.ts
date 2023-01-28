@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 // import { ChartKeys } from '@critical-pass/critical-charts';
 import { CHART_KEYS } from '@critical-pass/charts';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
-import { Project } from '@critical-pass/project/models';
+import { Project } from '@critical-pass/project/types';
 
 @Component({
     selector: 'cp-shallow-s-bar',

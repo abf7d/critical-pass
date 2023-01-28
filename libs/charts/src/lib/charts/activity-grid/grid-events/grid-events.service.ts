@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { lightFormat, subBusinessDays } from 'date-fns';
-import { Activity, ActivityProfile, Project } from '@critical-pass/project/models';
+import { Activity, ActivityProfile, Project } from '@critical-pass/project/types';
 import { DependencyCrawlerService, MilestoneFactoryService } from '@critical-pass/shared/project-utils';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import * as CONST from '../../../constants/constants';

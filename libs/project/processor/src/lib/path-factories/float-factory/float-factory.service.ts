@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Edge, FloatInfo } from '@critical-pass/project/models';
+import { Edge, FloatInfo } from '@critical-pass/project/types';
 
 @Injectable({
     providedIn: 'root',

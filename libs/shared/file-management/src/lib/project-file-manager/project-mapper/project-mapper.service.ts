@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Activity, ActivityProfile, Chart, Integration, Project, ProjectProfile } from '@critical-pass/project/models';
+import { Activity, ActivityProfile, Chart, Integration, Project, ProjectProfile } from '@critical-pass/project/types';
 // import { Activity } from '../../../../../models/project/activity/activity';
 // import { ProjectSerializerService } from '../../../../serializers/project/project-serializer.service';
 // import { Project } from '../../../../../models/project/project';
