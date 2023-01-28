@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ProfileLayoutComponent } from './profile-layout/profile-layout.component';
 import { RouterModule } from '@angular/router';
-import { SelectedActivityComponent } from './components/selected-activity/selected-activity.component';
 import { ShallowSBarComponent } from './sidebars/shallow-s-bar/shallow-s-bar.component';
 import { RiskBarComponent } from './sidebars/risk-bar/risk-bar.component';
 import { StackedResourcesBarComponent } from './sidebars/stacked-resources-bar/stacked-resources-bar.component';
@@ -10,8 +9,7 @@ import { ParentProjectComponent } from './components/parent-project/parent-proje
 import { ProfileRoutingModule } from './profile.routes';
 import { GridButtonsComponent } from './components/grid-buttons/grid-buttons.component';
 import { ProjectMetadataComponent } from './components/project-metadata/project-metadata.component';
-import { ArrowBarModule } from './sidebars/arrow-bar/arrow-bar.module';
-import { ActionButtonsModule, SharedModule } from '@critical-pass/shared/components';
+import { ActionButtonsModule, ArrowBarModule, SharedModule } from '@critical-pass/shared/components';
 import {
     ActivityGridModule,
     ArrowChartModule,
@@ -73,6 +71,6 @@ import { CoreModule } from '@critical-pass/core';
         RiskCurveModule,
         ActivityGridModule,
     ],
-    exports: [SelectedActivityComponent],
+    // exports: [SelectedActivityComponent],
 })
 export class ProfileModule {}
