@@ -16,12 +16,12 @@ const routes: Routes = [
     },
     {
         path: 'library',
-        loadChildren: () => import('@critical-pass/features/library').then(m => m.LibraryModule), 
+        loadChildren: () => import('@critical-pass/features/library').then(m => m.LibraryModule),
         canLoad: [AuthorizedUserGuard],
     },
     {
         path: 'profile',
-        loadChildren: () => import('@critical-pass/features/profile').then(m => m.ProfileModule), 
+        loadChildren: () => import('@critical-pass/features/profile').then(m => m.ProfileModule),
         canLoad: [AuthorizedUserGuard],
     },
     // {

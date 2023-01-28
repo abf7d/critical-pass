@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TreeNode } from '@critical-pass/critical-charts';
-import { ProjectManagerBase } from '@critical-pass/critical-charts'; 
+import { ProjectManagerBase } from '@critical-pass/critical-charts';
 import { Project } from '@critical-pass/critical-charts';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ChartKeys} from '@critical-pass/critical-charts';
+import { ChartKeys } from '@critical-pass/critical-charts';
 
 @Component({
     selector: 'cp-sketchbook-layout',
@@ -20,7 +20,7 @@ export class SketchbookLayoutComponent implements OnInit {
     public selectedTreeNode$: Subject<number>;
     private refresh = 0;
     private subscription: Subscription;
-    
+
     constructor(route: ActivatedRoute, @Inject('ProjectManagerBase') private pManager: ProjectManagerBase) {
         this.id = +route.snapshot.params.id;
         this.project$ = pManager.getProject(this.id);
@@ -40,9 +40,8 @@ export class SketchbookLayoutComponent implements OnInit {
         this.selectedTreeNode$.next(node.id);
     }
     public ngOnDestroy(): void {
-      if(this.subscription) {
-        this.subscription.unsubscribe();
-      }
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
-
 }

@@ -7,19 +7,9 @@ import { SketchbookActionButtonsComponent } from './sketchbook-action-buttons/sk
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ArrowChartModule, ArrowSnapshotModule, ProjectTreeModule } from '@critical-pass/critical-charts';
 
-
 @NgModule({
-  declarations: [SketchbookLayoutComponent, SketchbookActionButtonsComponent],
-  imports: [
-    CommonModule,
-    SketchbookRoutingModule,
-    MatTooltipModule,
-    ArrowChartModule,
-    ArrowSnapshotModule,
-    ProjectTreeModule,
-  ],
-  exports: [
-    SketchbookActionButtonsComponent
-  ]
+    declarations: [SketchbookLayoutComponent, SketchbookActionButtonsComponent],
+    imports: [CommonModule, SketchbookRoutingModule, MatTooltipModule, ArrowChartModule, ArrowSnapshotModule, ProjectTreeModule],
+    exports: [SketchbookActionButtonsComponent],
 })
-export class SketchbookModule { }
+export class SketchbookModule {}

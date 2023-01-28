@@ -6,22 +6,24 @@ import { LeftMenuLayoutComponent } from '../../../shared/components/left-menu-la
 import { ArrowBarComponent } from '../profile/sidebars/arrow-bar/arrow-bar.component';
 import { SketchbookLayoutComponent } from './sketchbook-layout/sketchbook-layout.component';
 
-const routes: Routes = [   {
-  path: '',
-  component: LeftMenuLayoutComponent,
-  children: [
-      {
-          path: ':id',
-          component: SketchbookLayoutComponent,
-          resolve: { items: ProjectProfileResolver },
-          canDeactivate: [CanDeactivateGuard],
-      },
-      { path: 'arrow/:id', component: ArrowBarComponent, outlet: 'sidebar' },
-  ],
-},];
+const routes: Routes = [
+    {
+        path: '',
+        component: LeftMenuLayoutComponent,
+        children: [
+            {
+                path: ':id',
+                component: SketchbookLayoutComponent,
+                resolve: { items: ProjectProfileResolver },
+                canDeactivate: [CanDeactivateGuard],
+            },
+            { path: 'arrow/:id', component: ArrowBarComponent, outlet: 'sidebar' },
+        ],
+    },
+];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
-export class SketchbookRoutingModule { }
+export class SketchbookRoutingModule {}

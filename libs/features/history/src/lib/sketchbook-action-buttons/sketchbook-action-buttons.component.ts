@@ -1,12 +1,12 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProjectManagerBase} from '@critical-pass/critical-charts';
-import { ProjectStoreBase } from '@critical-pass/critical-charts'; 
+import { ProjectManagerBase } from '@critical-pass/critical-charts';
+import { ProjectStoreBase } from '@critical-pass/critical-charts';
 import { ProjectSerializerService } from '@critical-pass/critical-charts';
 import { ActionButtonsComponent } from '../../profile/components/action-buttons/action-buttons.component';
-import { HistoryFileManagerService } from '@critical-pass/critical-charts'; 
+import { HistoryFileManagerService } from '@critical-pass/critical-charts';
 import { ProjectSanatizerService } from '../../services/utils/project-sanitizer/project-sanatizer.service';
-import { ChartKeys } from '@critical-pass/critical-charts';;
+import { ChartKeys } from '@critical-pass/critical-charts';
 import { ProjectTreeNodeSerializerService, TreeNode } from '@critical-pass/critical-charts';
 import { ToastrService } from 'ngx-toastr';
 
