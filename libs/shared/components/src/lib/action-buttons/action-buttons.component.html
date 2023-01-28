@@ -1,4 +1,4 @@
-<!-- <div class="btn-row">
+<div class="btn-row">
     <div>
         <button class="btn btn-secondary" [routerLink]="['/profile', { outlets: { sidebar: ['grid', id] } }]">Activity Grid</button>
         <div class="pt-1" *ngIf="!!timestamp && (timestamp | isDate)"><span>Last Saved: </span>{{ timestamp | date: 'long' }}</div>
@@ -60,4 +60,4 @@
 <div class="alert-msg" [class.success]="alertMessage == 'Saved'" [class.error]="alertMessage == 'Error'" [hidden]="alertMessage == ''">{{ alertMessage }}</div>
 <div class="overlay" [hidden]="actionText === ''">
     <div class="overlay-txt">{{ actionText }}</div>
-</div> -->
+</div>

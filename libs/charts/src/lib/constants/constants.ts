@@ -138,3 +138,6 @@ export const DONUT_COLOR = {
 export const RISK_WEEKS = 21;
 export const FLOAT_INCREMENTS = 7;
 export const VIEW_DUMMIES_IN_GRID_KEY = 'activity.grid.view.dumimes';
+export const SELECTED_TREE_NODE_KEY = 'project.tree.selected.node';
+export const HISTORY_SEED_PROJECT_KEY = 'project.tree.seed.project';
+export const HISTORY_ARRAY_KEY = 'project.tree.history.array';

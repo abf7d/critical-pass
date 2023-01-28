@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Activity, ActivityProfile, Chart, Integration, Project, ProjectProfile } from '@critical-pass/project/types';
-// import { Activity } from '../../../../../models/project/activity/activity';
-// import { ProjectSerializerService } from '../../../../serializers/project/project-serializer.service';
-// import { Project } from '../../../../../models/project/project';
-// import { ActivitySerializerService } from '../../../../serializers/project/activity/activity-serializer.service';
-// import { IntegrationSerializerService } from '../../../../serializers/project/integration/integration-serializer/integration-serializer.service';
-// import { ChartSerializerService } from '../../../../serializers/project/activity/chart/chart-serializer.service';
-// import { Integration } from '../../../../../models/project/integration/integration';
 import { ProjectSerializerService, ActivitySerializerService, IntegrationSerializerService, ChartSerializerService } from '@critical-pass/shared/serializers';
 @Injectable({
     providedIn: 'root',
@@ -26,7 +19,6 @@ export class ProjectMapperService {
             const keys = Object.keys(activity) as (keyof ActivityProfile)[];
             for (const attr of keys) {
                 if (profile.hasOwnProperty(attr)) {
-                    // profile[attr] = activity[attr];
                     this.setProp<ActivityProfile>(profile, activity, attr);
                 }
             }
@@ -37,7 +29,6 @@ export class ProjectMapperService {
                 const chartkeys = Object.keys(arrow) as (keyof Chart)[];
                 for (const attr of chartkeys) {
                     if (chartInfo.hasOwnProperty(attr)) {
-                        // chartInfo[attr] = arrow[attr];
                         this.setProp<Chart>(chartInfo, arrow, attr);
                     }
                 }
@@ -61,7 +52,6 @@ export class ProjectMapperService {
             const projkeys = Object.keys(firstProfile) as (keyof ProjectProfile)[];
             for (const attr of projkeys) {
                 if (project.profile.hasOwnProperty(attr)) {
-                    // project.profile[attr] = firstProfile[attr];
                     this.setProp<ProjectProfile>(project.profile, firstProfile, attr);
                 }
             }
@@ -75,7 +65,6 @@ export class ProjectMapperService {
             const keys = Object.keys(int) as (keyof Integration)[];
             for (const attr of keys) {
                 if (newIntegration.hasOwnProperty(attr)) {
-                    // newIntegration[attr] = int[attr];
                     this.setProp<Integration>(newIntegration, int, attr);
                 }
             }

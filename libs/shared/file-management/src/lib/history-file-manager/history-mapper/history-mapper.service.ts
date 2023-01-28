@@ -1,41 +1,67 @@
 import { Injectable } from '@angular/core';
-import * as Keys from '../../../../../constants/keys';
-import { ExportWorkbook, HistoryWorkbook } from '../../../../../models/history/history-workbook';
-import { Activity, Project, ProjectTreeNodeSerializerService, Resource, TreeNode } from '../../../../../models';
-import {
-    ResourceProfileSerializerService,
-    ResourceSerializerService,
-    ResourceSummarySerializerService,
-} from '../../../../serializers/project/resource/resource-serializer/resource-serializer.service';
-import { RoleSerializerService, RoleSummarySerializerService } from '../../../../serializers/project/role/role-serializer.service';
-import { PhaseSerializerService } from '../../../../serializers/project/phase/phase-serializer/phase-serializer.service';
-import { AssignResourcesSerializerService } from '../../../../serializers/project/activity/assign-resources/assign-resources-serializer.service';
-import { ActivitySerializerService } from '../../../../serializers/project/activity/activity-serializer.service';
-import { ChartSerializerService } from '../../../../serializers/project/activity/chart/chart-serializer.service';
-import { IntegrationSerializerService } from '../../../../serializers/project/integration/integration-serializer/integration-serializer.service';
-import { ActivityProfileSerializerService } from '../../../../serializers/project/activity/profile/profile-serializer.service';
-import { ProjectProfileSerializerService, ProjectSerializerService } from '../../../../serializers/project/project-serializer.service';
+import { Activity, ActivityProfile, Chart, Integration, Phase, PhaseSummary, Project, ProjectProfile, Resource, ResourceProfile, ResourceSummary, Role, RoleSummary, Tag, TagEntry, TagGroup, TagGroupOption, TreeNode } from '@critical-pass/project/types';
+import { ActivityProfileSerializerService, ActivitySerializerService, AssignResourcesSerializerService, ChartSerializerService, IntegrationSerializerService, PhaseSerializerService, ProjectProfileSerializerService, ProjectSerializerService, ResourceProfileSerializerService, ResourceSerializerService, ResourceSummarySerializerService, RoleSerializerService, RoleSummarySerializerService } from '@critical-pass/shared/serializers';
+import { ExportWorkbook, HistoryWorkbook } from '../../types';
+import { ProjectTreeNodeSerializerService } from '@critical-pass/charts';
+import * as CONST from '../../constants';
+// import * as Keys from '../../../../../constants/keys';
+// import { ExportWorkbook, HistoryWorkbook } from '../../../../../models/history/history-workbook';
+// import { Activity, Project, ProjectTreeNodeSerializerService, Resource, TreeNode } from '../../../../../models';
+// import {
+//     ResourceProfileSerializerService,
+//     ResourceSerializerService,
+//     ResourceSummarySerializerService,
+// } from '../../../../serializers/project/resource/resource-serializer/resource-serializer.service';
+// import { RoleSerializerService, RoleSummarySerializerService } from '../../../../serializers/project/role/role-serializer.service';
+// import { PhaseSerializerService } from '../../../../serializers/project/phase/phase-serializer/phase-serializer.service';
+// import { AssignResourcesSerializerService } from '../../../../serializers/project/activity/assign-resources/assign-resources-serializer.service';
+// import { ActivitySerializerService } from '../../../../serializers/project/activity/activity-serializer.service';
+// import { ChartSerializerService } from '../../../../serializers/project/activity/chart/chart-serializer.service';
+// import { IntegrationSerializerService } from '../../../../serializers/project/integration/integration-serializer/integration-serializer.service';
+// import { ActivityProfileSerializerService } from '../../../../serializers/project/activity/profile/profile-serializer.service';
+// import { ProjectProfileSerializerService, ProjectSerializerService } from '../../../../serializers/project/project-serializer.service';
 @Injectable({
     providedIn: 'root',
 })
 export class HistoryMapperService {
-    constructor() {}
+    constructor(
+        private projectSerializer: ProjectSerializerService,
+        private projProfSerializer: ProjectProfileSerializerService,
+        private treeNodeSerializer: ProjectTreeNodeSerializerService,
+        private resProfSerializer: ResourceProfileSerializerService,
+        private resSerializer: ResourceSerializerService,
+        private resSumSerializer: ResourceSummarySerializerService,
+        private roleSerializer: RoleSerializerService, 
+        private phaseSerializer: PhaseSerializerService, 
+        private roleSumSerializer: RoleSummarySerializerService, 
+        private asResSerializer: AssignResourcesSerializerService , 
+        private actSerializer: ActivitySerializerService , 
+        private actProfSerializer: ActivityProfileSerializerService , 
+        private chartSerializer: ChartSerializerService, 
+        private intSerializer: IntegrationSerializerService
+    ) {}
+
+    public setProp<T>(target: T, source: any, key: keyof T) {
+        return (target[key] = source[key]);
+    }
 
     public getNode(profileEntry: unknown, workbook: HistoryWorkbook): TreeNode {
-        const projProfile = new ProjectProfileSerializerService().fromJson();
+        const projProfile = this.projProfSerializer.fromJson();
 
-        const treeNode = new ProjectTreeNodeSerializerService().fromJson();
+        const treeNode = this.treeNodeSerializer.fromJson();
         if (profileEntry) {
             const projkeys = Object.keys(profileEntry);
             for (const attr of projkeys) {
                 if (projProfile.hasOwnProperty(attr)) {
-                    projProfile[attr] = profileEntry[attr];
+                    // projProfile[attr] = profileEntry[attr];
+                    this.setProp<ProjectProfile>(projProfile, profileEntry, attr as keyof ProjectProfile);
                 }
                 if (treeNode.hasOwnProperty(attr)) {
-                    treeNode[attr] = profileEntry[attr];
+                    // treeNode[attr] = profileEntry[attr];
+                    this.setProp<TreeNode>(treeNode, profileEntry, attr as keyof TreeNode);
                 }
-                treeNode.parentNodeId = profileEntry[Keys.parentNodeColName] ?? null;
-                treeNode.id = profileEntry[Keys.nodeColName] ?? null;
+                treeNode.parentNodeId = (profileEntry as any)[CONST.PARENT_NODE_ID_COL] ?? null;
+                treeNode.id = (profileEntry as any)[CONST.NODE_ID_COL] ?? null;
             }
         }
 
@@ -52,7 +78,7 @@ export class HistoryMapperService {
         this.mapActivityPhases(profileEntry, activityPhaseData, projActivities);
         this.mapResourceRoles(profileEntry, resourceRoleData, resources);
 
-        const project: Project = new ProjectSerializerService().fromJson();
+        const project: Project = this.projectSerializer.fromJson();
         project.activities = projActivities;
         project.integrations = integrations;
         project.profile = projProfile;
@@ -78,14 +104,15 @@ export class HistoryMapperService {
         const resources = resourceData
             .filter(a => a.nodeId === profileEntry.nodeId)
             .map(resourceEntry => {
-                const resProfile = new ResourceProfileSerializerService().fromJson();
+                const resProfile = this.resProfSerializer.fromJson();
                 const keys = Object.keys(resourceEntry);
                 for (const attr of keys) {
                     if (resProfile.hasOwnProperty(attr)) {
-                        resProfile[attr] = resourceEntry[attr];
+                        // resProfile[attr] = resourceEntry[attr];
+                        this.setProp(resProfile, resourceEntry, attr as keyof ResourceProfile)
                     }
                 }
-                const newResource = new ResourceSerializerService().fromJson();
+                const newResource = this.resSerializer.fromJson();
                 newResource.profile = resProfile;
                 newResource.id = resourceEntry.id;
                 newResource.view.color.color = resourceEntry.colorV;
@@ -99,11 +126,12 @@ export class HistoryMapperService {
         const roles = roleData
             .filter(a => a.nodeId === profileEntry.nodeId)
             .map(roleEntry => {
-                const roleProfile = new RoleSerializerService().fromJson();
+                const roleProfile = this.roleSerializer.fromJson();
                 const keys = Object.keys(roleEntry);
                 for (const attr of keys) {
                     if (roleProfile.hasOwnProperty(attr)) {
-                        roleProfile[attr] = roleEntry[attr];
+                        // roleProfile[attr] = roleEntry[attr];
+                        this.setProp(roleProfile, roleProfile, attr as keyof Role)
                     }
                 }
                 roleProfile.view.color = roleEntry.backgroundcolor;
@@ -116,11 +144,12 @@ export class HistoryMapperService {
         const phases = phaseData
             .filter(a => a.nodeId === profileEntry.nodeId)
             .map(phaseEntry => {
-                const newPhase = new PhaseSerializerService().fromJson();
+                const newPhase = this.phaseSerializer.fromJson();
                 const keys = Object.keys(phaseEntry);
                 for (const attr of keys) {
                     if (newPhase.hasOwnProperty(attr)) {
-                        newPhase[attr] = phaseEntry[attr];
+                        // newPhase[attr] = phaseEntry[attr];
+                        this.setProp(newPhase, phaseEntry, attr as keyof Phase);
                     }
                 }
                 newPhase.view.color.color = phaseEntry.colorV;
@@ -130,7 +159,7 @@ export class HistoryMapperService {
         return phases;
     }
     private mapResourceRoles(profileEntry: any, resourceRoleData: any[], resources: Resource[]) {
-        const roleSumSerializer = new RoleSummarySerializerService();
+        const roleSumSerializer = this.roleSumSerializer;
         resourceRoleData
             .filter(a => a.nodeId === profileEntry.nodeId)
             .forEach(roleSummaryEntry => {
@@ -139,15 +168,16 @@ export class HistoryMapperService {
                 const keys = Object.keys(roleSummaryEntry);
                 for (const attr of keys) {
                     if (roleSum.hasOwnProperty(attr)) {
-                        roleSum[attr] = roleSummaryEntry[attr];
+                        // roleSum[attr] = roleSummaryEntry[attr];
+                        this.setProp(roleSum, roleSummaryEntry, attr as keyof RoleSummary)
                     }
                 }
                 roleSum.color = roleSummaryEntry.colorV;
-                resource.assign.roles.push(roleSum);
+                resource?.assign.roles.push(roleSum);
             });
     }
     private mapActivityResources(profileEntry: any, activityResourceData: any[], activities: Activity[]): void {
-        const resSumSerializer = new ResourceSummarySerializerService();
+        const resSumSerializer = this.resSumSerializer;
         activityResourceData
             .filter(a => a.nodeId === profileEntry.nodeId)
             .forEach(resourceSummaryEntry => {
@@ -156,36 +186,39 @@ export class HistoryMapperService {
                 const keys = Object.keys(resourceSummaryEntry);
                 for (const attr of keys) {
                     if (resSummary.hasOwnProperty(attr)) {
-                        resSummary[attr] = resourceSummaryEntry[attr];
+                        // resSummary[attr] = resourceSummaryEntry[attr];
+                        this.setProp(resSummary, resourceSummaryEntry, attr as keyof ResourceSummary)
                     }
                 }
                 resSummary.color.color = resourceSummaryEntry.colorV;
                 resSummary.color.backgroundcolor = resourceSummaryEntry.backgroundcolor;
-                activity.assign.resources.push(resSummary);
+                activity?.assign.resources.push(resSummary);
             });
     }
     private mapActivityPhases(profileEntry: any, activityPhaseData: any[], activities: Activity[]): void {}
     private mapActivities(profileEntry: any, activityData: any[], arrowData: any[]): Activity[] {
-        const assignResSer = new AssignResourcesSerializerService();
+        const assignResSer = this.asResSerializer;
         const projActivities = activityData
             .filter(a => a.nodeId === profileEntry.nodeId)
             .map(activity => {
-                const newActivity = new ActivitySerializerService().fromJson();
-                const profile = new ActivityProfileSerializerService().fromJson();
+                const newActivity = this.actSerializer.fromJson();
+                const profile = this.actProfSerializer.fromJson();
                 const keys = Object.keys(activity);
                 for (const attr of keys) {
                     if (profile.hasOwnProperty(attr)) {
-                        profile[attr] = activity[attr];
+                        // profile[attr] = activity[attr];
+                        this.setProp<ActivityProfile>(profile, activity, attr as keyof ActivityProfile )
                     }
                 }
                 newActivity.profile = profile;
                 const arrow = arrowData.filter(a => a.nodeId === profileEntry.nodeId).find(a => (a as any).id === (activity as any).id);
                 if (arrow) {
-                    const chartInfo = new ChartSerializerService().fromJson();
+                    const chartInfo = this.chartSerializer.fromJson();
                     const chartkeys = Object.keys(arrow);
                     for (const attr of chartkeys) {
                         if (chartInfo.hasOwnProperty(attr)) {
-                            chartInfo[attr] = arrow[attr];
+                            // chartInfo[attr] = arrow[attr];
+                            this.setProp(chartInfo, arrow, attr as keyof Chart)
                         }
                     }
 
@@ -202,13 +235,14 @@ export class HistoryMapperService {
 
     private mapIntegrations(profileEntry: any, integrationData: any) {
         const integrations = integrationData
-            .filter(a => a.nodeId === profileEntry.nodeId)
-            .map(int => {
-                const newIntegration = new IntegrationSerializerService().fromJson();
+            .filter((a: any) => a.nodeId === profileEntry.nodeId)
+            .map((int: any) => {
+                const newIntegration = this.intSerializer.fromJson();
                 const keys = Object.keys(int);
                 for (const attr of keys) {
                     if (newIntegration.hasOwnProperty(attr)) {
-                        newIntegration[attr] = int[attr];
+                        // newIntegration[attr] = int[attr];
+                        this.setProp(newIntegration, int, attr as keyof Integration )
                     }
                 }
                 return newIntegration;
@@ -217,7 +251,7 @@ export class HistoryMapperService {
     }
 
     public getHistoryEntryWorkbook(node: TreeNode): ExportWorkbook {
-        const project = node.data;
+        const project = node.data!;
         const treeNode = {
             name: node.name,
             nodeId: node.id,
@@ -267,9 +301,9 @@ export class HistoryMapperService {
                 nodeId: treeNode.nodeId,
             };
         });
-        let activityPhases = [];
+        let activityPhases: PhaseSummary[] = [];
 
-        let tagPool = [];
+        let tagPool: Tag[] = [];
         if (project.tags) {
             project.tags
                 .map(p => {
@@ -293,7 +327,7 @@ export class HistoryMapperService {
                 }),
             )
             .map(o => (activityPhases = [...o, ...activityPhases]));
-        let activityResources = [];
+        let activityResources: ResourceSummary[] = [];
         project.activities
             .map(a =>
                 a.assign.resources.map(r => {
@@ -308,7 +342,7 @@ export class HistoryMapperService {
                 }),
             )
             .map(o => (activityResources = [...o, ...activityResources]));
-        let resourceRoles = [];
+        let resourceRoles: RoleSummary[] = [];
         project.resources
             .map(resource =>
                 resource.assign.roles.map(role => {
@@ -321,7 +355,7 @@ export class HistoryMapperService {
                 }),
             )
             .map(o => (resourceRoles = [...o, ...resourceRoles]));
-        let activityTags = [];
+        let activityTags: TagEntry[] = [];
         project.activities.forEach(a => {
             a.tags?.forEach(g => {
                 g.tags.forEach(t => {

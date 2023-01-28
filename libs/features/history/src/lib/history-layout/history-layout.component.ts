@@ -8,12 +8,12 @@ import { filter } from 'rxjs/operators';
 import { ChartKeys } from '@critical-pass/critical-charts';
 
 @Component({
-    selector: 'cp-sketchbook-layout',
-    templateUrl: './sketchbook-layout.component.html',
-    styleUrls: ['./sketchbook-layout.component.scss'],
+    selector: 'cp-history-layout',
+    templateUrl: './history-layout.component.html',
+    styleUrls: ['./history-layout.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class SketchbookLayoutComponent implements OnInit {
+export class HistoryLayoutComponent implements OnInit {
     public id: number;
     public historyArray$: Subject<TreeNode>;
     public project$: Observable<Project>;

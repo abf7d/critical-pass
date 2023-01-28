@@ -33,3 +33,5 @@ export * from './lib/charts/arrow-snapshot/arrow-snapshot.component';
 // export * from './lib/charts/project-tree/project-tree.component';
 // export * from './lib/charts/risk-curve/risk-curve.component';
 // export * from './lib/charts/risk-donut/risk-donut.component';
+
+export * from './lib/services/project-tree-node-serializer/project-tree-node-serializer.service';

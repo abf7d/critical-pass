@@ -2,15 +2,15 @@
 import { Project } from '../project/project';
 
 export interface TreeNode /*<T, U>*/ {
-    parent: TreeNode;
+    parent: TreeNode | null;
     children: TreeNode /*<T, U>*/[];
-    data: Project; //T;
+    data: Project | null; //T;
     name: string;
     id: number;
     group: number;
     subgroup: number;
-    parentNodeId: number; // This is for reconstructing tree after file load
-    metadata: ProjectMetadata; //U;
+    parentNodeId: number | null; // This is for reconstructing tree after file load
+    metadata: ProjectMetadata | null; //U;
     // assignmentCompleted: boolean;
     // cost: number;
     // time: number;

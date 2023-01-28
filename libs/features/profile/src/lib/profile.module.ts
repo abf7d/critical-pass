@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { ProfileLayoutComponent } from './profile-layout/profile-layout.component';
 import { RouterModule } from '@angular/router';
 import { SelectedActivityComponent } from './components/selected-activity/selected-activity.component';
-import { ActionButtonsComponent } from './components/action-buttons/action-buttons.component';
 import { ShallowSBarComponent } from './sidebars/shallow-s-bar/shallow-s-bar.component';
 import { RiskBarComponent } from './sidebars/risk-bar/risk-bar.component';
 import { StackedResourcesBarComponent } from './sidebars/stacked-resources-bar/stacked-resources-bar.component';
@@ -11,9 +10,8 @@ import { ParentProjectComponent } from './components/parent-project/parent-proje
 import { ProfileRoutingModule } from './profile.routes';
 import { GridButtonsComponent } from './components/grid-buttons/grid-buttons.component';
 import { ProjectMetadataComponent } from './components/project-metadata/project-metadata.component';
-import { IsDatePipe, IsNotNaNPipe } from '@critical-pass/core';
 import { ArrowBarModule } from './sidebars/arrow-bar/arrow-bar.module';
-import { SharedModule } from '@critical-pass/shared/components';
+import { ActionButtonsModule, SharedModule } from '@critical-pass/shared/components';
 import {
     ActivityGridModule,
     ArrowChartModule,
@@ -33,11 +31,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CoreModule } from '@critical-pass/core';
 
 @NgModule({
     declarations: [
         ProfileLayoutComponent,
-        ActionButtonsComponent,
         ShallowSBarComponent,
         RiskBarComponent,
         StackedResourcesBarComponent,
@@ -45,8 +43,6 @@ import { FormsModule } from '@angular/forms';
         ParentProjectComponent,
         GridButtonsComponent,
         ProjectMetadataComponent,
-        IsNotNaNPipe,
-        IsDatePipe,
     ],
     imports: [
         RouterModule,
@@ -55,6 +51,8 @@ import { FormsModule } from '@angular/forms';
         ArrowBarModule,
         SharedModule,
         FormsModule,
+        CoreModule,
+        ActionButtonsModule,
 
         // Material
         MatDatepickerModule,
@@ -75,6 +73,6 @@ import { FormsModule } from '@angular/forms';
         RiskCurveModule,
         ActivityGridModule,
     ],
-    exports: [ActionButtonsComponent, SelectedActivityComponent],
+    exports: [SelectedActivityComponent],
 })
 export class ProfileModule {}

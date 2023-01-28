@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SketchbookLayoutComponent } from './sketchbook-layout.component';
+import { ActionButtonsComponent } from './action-buttons.component';
 
-describe('SketchbookLayoutComponent', () => {
-    let component: SketchbookLayoutComponent;
-    let fixture: ComponentFixture<SketchbookLayoutComponent>;
+describe('ActionButtonsComponent', () => {
+    let component: ActionButtonsComponent;
+    let fixture: ComponentFixture<ActionButtonsComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [SketchbookLayoutComponent],
+            declarations: [ActionButtonsComponent],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(SketchbookLayoutComponent);
+        fixture = TestBed.createComponent(ActionButtonsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

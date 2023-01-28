@@ -19,3 +19,9 @@ export const RESOURCES_WS_NAME = 'Resources';
 export const ACTIVITY_RESOURCES_WS_NAME = 'Activity Assigned Resources';
 export const ACTIVITY_PHASES_WS_NAME = 'Activity Assinged Phases';
 export const RESOURCE_ROLES_WS_NAME = 'Resource Roles';
+
+export const TAB_POOL_WS_NAME = 'Tag Pool';
+export const ACTIVITY_TAG_WS_NAME = 'Activity Tags';
+
+export const PARENT_NODE_ID_COL = 'parentNodeId';
+export const NODE_ID_COL = 'nodeId';
