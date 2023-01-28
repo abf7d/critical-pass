@@ -26,4 +26,3 @@ export class IsNotNaNPipe implements PipeTransform {
         return !isNaN(item);
     }
 }
-

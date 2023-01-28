@@ -1,6 +1,39 @@
 import { Injectable } from '@angular/core';
-import { Activity, ActivityProfile, Chart, Integration, Phase, PhaseSummary, Project, ProjectProfile, Resource, ResourceProfile, ResourceSummary, Role, RoleSummary, Tag, TagEntry, TagGroup, TagGroupOption, TreeNode } from '@critical-pass/project/types';
-import { ActivityProfileSerializerService, ActivitySerializerService, AssignResourcesSerializerService, ChartSerializerService, IntegrationSerializerService, PhaseSerializerService, ProjectProfileSerializerService, ProjectSerializerService, ResourceProfileSerializerService, ResourceSerializerService, ResourceSummarySerializerService, RoleSerializerService, RoleSummarySerializerService } from '@critical-pass/shared/serializers';
+import {
+    Activity,
+    ActivityProfile,
+    Chart,
+    Integration,
+    Phase,
+    PhaseSummary,
+    Project,
+    ProjectProfile,
+    Resource,
+    ResourceProfile,
+    ResourceSummary,
+    Role,
+    RoleSummary,
+    Tag,
+    TagEntry,
+    TagGroup,
+    TagGroupOption,
+    TreeNode,
+} from '@critical-pass/project/types';
+import {
+    ActivityProfileSerializerService,
+    ActivitySerializerService,
+    AssignResourcesSerializerService,
+    ChartSerializerService,
+    IntegrationSerializerService,
+    PhaseSerializerService,
+    ProjectProfileSerializerService,
+    ProjectSerializerService,
+    ResourceProfileSerializerService,
+    ResourceSerializerService,
+    ResourceSummarySerializerService,
+    RoleSerializerService,
+    RoleSummarySerializerService,
+} from '@critical-pass/shared/serializers';
 import { ExportWorkbook, HistoryWorkbook } from '../../types';
 import { ProjectTreeNodeSerializerService } from '@critical-pass/charts';
 import * as CONST from '../../constants';
@@ -31,14 +64,14 @@ export class HistoryMapperService {
         private resProfSerializer: ResourceProfileSerializerService,
         private resSerializer: ResourceSerializerService,
         private resSumSerializer: ResourceSummarySerializerService,
-        private roleSerializer: RoleSerializerService, 
-        private phaseSerializer: PhaseSerializerService, 
-        private roleSumSerializer: RoleSummarySerializerService, 
-        private asResSerializer: AssignResourcesSerializerService , 
-        private actSerializer: ActivitySerializerService , 
-        private actProfSerializer: ActivityProfileSerializerService , 
-        private chartSerializer: ChartSerializerService, 
-        private intSerializer: IntegrationSerializerService
+        private roleSerializer: RoleSerializerService,
+        private phaseSerializer: PhaseSerializerService,
+        private roleSumSerializer: RoleSummarySerializerService,
+        private asResSerializer: AssignResourcesSerializerService,
+        private actSerializer: ActivitySerializerService,
+        private actProfSerializer: ActivityProfileSerializerService,
+        private chartSerializer: ChartSerializerService,
+        private intSerializer: IntegrationSerializerService,
     ) {}
 
     public setProp<T>(target: T, source: any, key: keyof T) {
@@ -109,7 +142,7 @@ export class HistoryMapperService {
                 for (const attr of keys) {
                     if (resProfile.hasOwnProperty(attr)) {
                         // resProfile[attr] = resourceEntry[attr];
-                        this.setProp(resProfile, resourceEntry, attr as keyof ResourceProfile)
+                        this.setProp(resProfile, resourceEntry, attr as keyof ResourceProfile);
                     }
                 }
                 const newResource = this.resSerializer.fromJson();
@@ -131,7 +164,7 @@ export class HistoryMapperService {
                 for (const attr of keys) {
                     if (roleProfile.hasOwnProperty(attr)) {
                         // roleProfile[attr] = roleEntry[attr];
-                        this.setProp(roleProfile, roleProfile, attr as keyof Role)
+                        this.setProp(roleProfile, roleProfile, attr as keyof Role);
                     }
                 }
                 roleProfile.view.color = roleEntry.backgroundcolor;
@@ -169,7 +202,7 @@ export class HistoryMapperService {
                 for (const attr of keys) {
                     if (roleSum.hasOwnProperty(attr)) {
                         // roleSum[attr] = roleSummaryEntry[attr];
-                        this.setProp(roleSum, roleSummaryEntry, attr as keyof RoleSummary)
+                        this.setProp(roleSum, roleSummaryEntry, attr as keyof RoleSummary);
                     }
                 }
                 roleSum.color = roleSummaryEntry.colorV;
@@ -187,7 +220,7 @@ export class HistoryMapperService {
                 for (const attr of keys) {
                     if (resSummary.hasOwnProperty(attr)) {
                         // resSummary[attr] = resourceSummaryEntry[attr];
-                        this.setProp(resSummary, resourceSummaryEntry, attr as keyof ResourceSummary)
+                        this.setProp(resSummary, resourceSummaryEntry, attr as keyof ResourceSummary);
                     }
                 }
                 resSummary.color.color = resourceSummaryEntry.colorV;
@@ -207,7 +240,7 @@ export class HistoryMapperService {
                 for (const attr of keys) {
                     if (profile.hasOwnProperty(attr)) {
                         // profile[attr] = activity[attr];
-                        this.setProp<ActivityProfile>(profile, activity, attr as keyof ActivityProfile )
+                        this.setProp<ActivityProfile>(profile, activity, attr as keyof ActivityProfile);
                     }
                 }
                 newActivity.profile = profile;
@@ -218,7 +251,7 @@ export class HistoryMapperService {
                     for (const attr of chartkeys) {
                         if (chartInfo.hasOwnProperty(attr)) {
                             // chartInfo[attr] = arrow[attr];
-                            this.setProp(chartInfo, arrow, attr as keyof Chart)
+                            this.setProp(chartInfo, arrow, attr as keyof Chart);
                         }
                     }
 
@@ -242,7 +275,7 @@ export class HistoryMapperService {
                 for (const attr of keys) {
                     if (newIntegration.hasOwnProperty(attr)) {
                         // newIntegration[attr] = int[attr];
-                        this.setProp(newIntegration, int, attr as keyof Integration )
+                        this.setProp(newIntegration, int, attr as keyof Integration);
                     }
                 }
                 return newIntegration;

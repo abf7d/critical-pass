@@ -9,7 +9,15 @@ import { Router } from '@angular/router';
 // import { ChartKeys } from '@critical-pass/critical-charts';
 // import { ProjectTreeNodeSerializerService, TreeNode } from '@critical-pass/critical-charts';
 import { ToastrService } from 'ngx-toastr';
-import { DASHBOARD_TOKEN, DashboardService, EVENT_SERVICE_TOKEN, EventService, ProjectStorageApiService, ProjectApiService, API_CONST } from '@critical-pass/shared/data-access';
+import {
+    DASHBOARD_TOKEN,
+    DashboardService,
+    EVENT_SERVICE_TOKEN,
+    EventService,
+    ProjectStorageApiService,
+    ProjectApiService,
+    API_CONST,
+} from '@critical-pass/shared/data-access';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
 import { HistoryFileManagerService } from '@critical-pass/shared/file-management';
@@ -46,7 +54,7 @@ export class HistoryActionButtonsComponent extends ActionButtonsComponent {
         this.showPeek = false;
         try {
             const project = this.storageApi.get(API_CONST.LOCAL_STORAGE);
-            if(project !== null) {
+            if (project !== null) {
                 this.dashboard.updateProject(project, false);
                 // this.pManager.updateProject(this.id, project, false);
                 const head = new ProjectTreeNodeSerializerService().head();

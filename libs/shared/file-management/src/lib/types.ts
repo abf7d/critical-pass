@@ -13,17 +13,16 @@ export interface HistoryWorkbook {
 }
 
 export interface ExportWorkbook {
-    profiles: any; 
-    nodes: any; 
-    chartInfos: any; 
-    projProfile: any; 
-    phases: any; 
-    resources: any; 
-    roles: any; 
-    activityPhases: any; 
-    activityResources: any; 
+    profiles: any;
+    nodes: any;
+    chartInfos: any;
+    projProfile: any;
+    phases: any;
+    resources: any;
+    roles: any;
+    activityPhases: any;
+    activityResources: any;
     resourceRoles: any;
     tagPool: any;
-    activityTags: any; 
-  }
-  
+    activityTags: any;
+}

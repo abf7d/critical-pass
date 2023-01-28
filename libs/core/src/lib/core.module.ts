@@ -5,6 +5,6 @@ import { IsDatePipe } from './pipes/is-date-pipe';
 @NgModule({
     declarations: [IsNaNPipe, IsDatePipe, IsNotNaNPipe],
     imports: [CommonModule],
-    exports: [IsNaNPipe, IsDatePipe, IsNotNaNPipe]
+    exports: [IsNaNPipe, IsDatePipe, IsNotNaNPipe],
 })
 export class CoreModule {}
