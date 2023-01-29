@@ -8,28 +8,22 @@ import { filter } from 'rxjs/operators';
 // import { ProjectStoreService } from '../../../../services/api/project-store/project-store.service';
 // import { ProjectSerializerService } from '@critical-pass/critical-charts';
 import { lightFormat, sub } from 'date-fns';
-// import { Integration } from '@critical-pass/critical-charts';
-// import { MilestoneFactoryService } from '@critical-pass/critical-charts';
-// import { ProjectManagerBase } from '@critical-pass/critical-charts';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN, API_CONST, ProjectApiService } from '@critical-pass/shared/data-access';
 import { MilestoneFactoryService, ParentCompilerService, UTIL_CONST } from '@critical-pass/shared/project-utils';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { P_CONST } from '@critical-pass/project/processor';
+import { CORE_CONST } from '@critical-pass/core';
 
 @Injectable({
     providedIn: 'root',
 })
 export class SelectedActivityControllerService {
-    // id: number;
-    // parentData: BehaviorSubject<any> | null = null;
     drawChannel$!: BehaviorSubject<any>;
     activeProject$!: Observable<Project>;
     prntUpdate$!: BehaviorSubject<any>;
 
     constructor(
-        // @Inject('ProjectManagerBase') private pManager: ProjectManagerBase,
-        // private projectStore: ProjectStoreService,
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
         @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
         private parentCompiler: ParentCompilerService,
@@ -38,15 +32,9 @@ export class SelectedActivityControllerService {
         private projectSerializer: ProjectSerializerService,
     ) {}
 
-    ngOnInit(/*id: number*/) {
-        // if (id == null) {
-        //     return;
-        // }
-        // this.id = id;
+    ngOnInit() {
         this.drawChannel$ = this.eventService.get(UTIL_CONST.ACTIVITY_CREATED_KEY);
         this.activeProject$ = this.dashboard.activeProject$;
-        // this.prntUpdate$ = this.pManager.getChannel(AppKeys.updateParentProject);
-        // this.prntUpdate$ = this.eventService.get(API_CONST.UPDATE_PARENT_PROJECT_KEY);
     }
 
     public setDuration(duration: string, activity: Activity, project: Project) {
@@ -122,7 +110,7 @@ export class SelectedActivityControllerService {
         project.profile.view.selectedActivity = activity;
     }
 
-    public loadSubProject(activity: Activity, curProj: Project, projectPool?: Project[]): void {
+    public loadSubProject(activity: Activity, curProj: Project, projectPool: Project[] | null): void {
         let project = null;
         if (projectPool && projectPool.length > 0) {
             project = projectPool.find(x => x.profile.id === activity.subProject.subGraphId);
@@ -153,7 +141,7 @@ export class SelectedActivityControllerService {
             this.swapProjWithSubProj(activity.subProject.subGraphLoaded, activity, curProj);
         }
     }
-    public loadChildAndParentProjects(activity: Activity, project: Project, childProject: Project, projectPool?: Project[]): void {
+    public loadChildAndParentProjects(activity: Activity, project: Project, childProject: Project, projectPool: Project[] | null): void {
         childProject.profile.parentProject = project;
         activity.subProject.subGraphLoaded = childProject;
         childProject.profile.subProject.activityParentId = activity.profile.id;
@@ -190,7 +178,7 @@ export class SelectedActivityControllerService {
         // this.pManager.updateProject(this.id, subProj, true);
         // this.pManager.updateProject('parent', subProj.profile.parentProject, true);
     }
-    public createSubProject(activity: Activity, project: Project, projectPool?: Project[]) {
+    public createSubProject(activity: Activity, project: Project, projectPool: Project[] | null) {
         // when new network analysis file is loaded, it can have projs with id < -1
         // since each network is different this needs to be loaded here to determine
         // the count so the next project id can be determined
@@ -208,7 +196,7 @@ export class SelectedActivityControllerService {
         subProj.profile.name = activity.profile.name ?? 'New Sub Project';
         --subProjCount;
         subProjCount$.next(subProjCount);
-        this.eventService.get(UTIL_CONST.CREATED_PROJECT).next(subProj);
+        this.eventService.get(CORE_CONST.CREATED_PROJECT).next(subProj);
         this.swapProjWithSubProj(subProj, activity, project);
     }
 

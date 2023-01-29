@@ -1,0 +1,25 @@
+<div class="chart-options group">
+    <proj-tag-group
+        *ngIf="isResourceView"
+        title="Tag Groups"
+        [singleSelection]="true"
+        [tags]="tagGroups.tags"
+        [hideAssignLinks]="true"
+        (selectTag)="selectGroup($event)"
+        (removeTag)="removeGroup($event)"
+        (addTag)="addGroup($event)"
+    ></proj-tag-group>
+</div>
+<div class="group" *ngIf="project !== undefined">
+    <proj-tag-group
+        *ngIf="!!activeGroup"
+        [title]="activeGroup.name"
+        [tags]="activeGroup.tags"
+        [singleSelection]="true"
+        (assignTags)="assignToActivities($event)"
+        (unassignTags)="unassignFromActivities()"
+        (selectTag)="selectTag($event)"
+        (removeTag)="removeTag($event)"
+        (addTag)="addTag($event)"
+    ></proj-tag-group>
+</div>

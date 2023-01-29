@@ -18,7 +18,7 @@ export interface View {
     isSubProjSelected: boolean;
     lassoStart?: number | null;
     lassoEnd?: number | null;
-    selectedTagGroup?: string;
+    selectedTagGroup?: string | null;
     showActions: boolean; // For toggling right hand corner between seleted arrow stats and other actions
     showOrphaned: boolean; // For showing nodes that have no in arrows or out arrows. Start or end nodes.
     showStepChart: boolean;
@@ -27,5 +27,5 @@ export interface View {
     useStartDates: boolean;
     autoZoom: boolean;
     toggleZoom: boolean;
-    activeSubProjectId?: number; // FeaturesNetwork analysis highlight active
+    activeSubProjectId?: number | null; // FeaturesNetwork analysis highlight active
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Integration, Project } from '../../../models';
-import { ActivitySerializerService, IntegrationSerializerService, ProjectSerializerService } from '../../serializers/project';
+import { Integration, Project } from '@critical-pass/project/types';
+import { ActivitySerializerService, IntegrationSerializerService, ProjectSerializerService } from '@critical-pass/shared/serializers';
+// import { Integration, Project } from '../../../models';
+// import { ActivitySerializerService, IntegrationSerializerService, ProjectSerializerService } from '../../serializers/project';
 
 @Injectable({
     providedIn: 'root',
@@ -12,13 +14,13 @@ export class ProjectExtractorService {
         private activitySerializer: ActivitySerializerService,
     ) {}
 
-    public extractSubProject(project: Project, minProjId: number): Project {
+    public extractSubProject(project: Project, minProjId: number): Project | null {
         if (project.profile.view.isSubProjSelected) {
             const selectedActivities = project.activities.filter(x => {
                 return project.profile.view.lassoedLinks.indexOf(x.profile.id) > -1;
             });
-            let selectedStart: Integration = null;
-            let selectedEnd: Integration = null;
+            let selectedStart: Integration | null = null;
+            let selectedEnd: Integration | null = null;
             let internalNodes = project.integrations.filter(x => {
                 if (project.profile.view.lassoStart === x.id) {
                     selectedStart = x;
@@ -26,22 +28,22 @@ export class ProjectExtractorService {
                 if (project.profile.view.lassoEnd === x.id) {
                     selectedEnd = x;
                 }
-                return project.profile.view.lassoedNodes.indexOf(x.id) > -1 && selectedStart?.id != x.id && selectedEnd?.id != x.id;
+                return project.profile.view.lassoedNodes.indexOf(x.id) > -1 && selectedStart?.id !== x.id && selectedEnd?.id !== x.id;
             });
             if (selectedEnd && selectedStart) {
                 const newStart = this.nodeSerializer.fromJson(selectedStart);
                 const newEnd = this.nodeSerializer.fromJson(selectedEnd);
                 selectedActivities.forEach(a => {
-                    if (a.chartInfo.target_id === selectedStart.id) {
+                    if (a.chartInfo.target_id === selectedStart!.id) {
                         a.chartInfo.target = newStart;
                     }
-                    if (a.chartInfo.source_id === selectedStart.id) {
+                    if (a.chartInfo.source_id === selectedStart!.id) {
                         a.chartInfo.source = newStart;
                     }
-                    if (a.chartInfo.target_id === selectedEnd.id) {
+                    if (a.chartInfo.target_id === selectedEnd!.id) {
                         a.chartInfo.target = newEnd;
                     }
-                    if (a.chartInfo.source_id === selectedEnd.id) {
+                    if (a.chartInfo.source_id === selectedEnd!.id) {
                         a.chartInfo.source = newEnd;
                     }
                 });
@@ -64,8 +66,8 @@ export class ProjectExtractorService {
                 const replacementActivity = this.activitySerializer.fromJson();
                 const actId = Math.max(...project.activities.map(x => x.profile.id)) + 1;
                 replacementActivity.profile.id = actId;
-                replacementActivity.chartInfo.source_id = selectedStart.id;
-                replacementActivity.chartInfo.target_id = selectedEnd.id;
+                replacementActivity.chartInfo.source_id = (selectedStart as Integration).id;
+                replacementActivity.chartInfo.target_id = (selectedEnd as Integration).id;
                 replacementActivity.subProject.graphId = newSubProjId;
                 replacementActivity.subProject.subGraphId = newSubProjId;
                 replacementActivity.profile.name = subProjName;
@@ -77,5 +79,6 @@ export class ProjectExtractorService {
                 return newSubProject;
             }
         }
+        return null;
     }
 }

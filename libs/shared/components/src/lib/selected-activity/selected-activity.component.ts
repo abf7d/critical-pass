@@ -32,7 +32,7 @@ export class SelectedActivityComponent implements OnInit, OnDestroy {
     public isNDummy!: boolean;
     public isMilestone!: boolean;
 
-    @Input() projectPool!: Project[];
+    @Input() projectPool: Project[] | null = null;
     @ViewChild('activityName', { static: true }) activityName!: ElementRef;
     constructor(private controller: SelectedActivityControllerService, private route: ActivatedRoute, private cd: ChangeDetectorRef) {}
 

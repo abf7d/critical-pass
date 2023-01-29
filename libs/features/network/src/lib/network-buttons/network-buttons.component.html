@@ -1,0 +1,12 @@
+<div class="bars">
+    <div>
+        <a class="btn btn-secondary" href="javascript:void(0)" (click)="navToSingleGraph()">Base Controls</a>
+        <a class="btn btn-secondary" href="javascript:void(0)" (click)="navToMetaGraph()">Meta Controls</a>
+        
+    </div>
+    <div>
+      <a class="btn" href="javascript:void(0)" (click)="uploadFile.value = ''; uploadFile.click()">Load from File</a>
+        <input class="file-input" type="file" #uploadFile (change)="loadFileByUpload($event.target)" accept=".xlsx" />
+        <a class="btn" href="javascript:void(0)" (click)="saveByDownload()">Save to File</a>
+    </div>
+</div>
