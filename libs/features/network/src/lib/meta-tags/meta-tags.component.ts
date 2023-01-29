@@ -1,16 +1,8 @@
 import { Component, Inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-// import { ProjectManagerBase, TagGroupOption } from '@critical-pass/critical-charts';
-// import { Project, ResourceSerializerService } from '@critical-pass/critical-charts';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-// import { ChartKeys } from '@critical-pass/critical-charts';
-// import { AssignFrameworkService } from '../../services/utils/assign/assign-framework/assign-framework.service';
-// import { ResourceFactoryService } from '../../services/utils/assign/resource-factory/resource-factory.service';
-// import { PhaseFactoryService } from '../../services/utils/assign/phase-factory/phase-factory.service';
-// import { ColorFactoryService } from '../../services/utils/assign/color-factory/color-factory.service';
 import { MetaTagService } from './meta-tag.service';
-// import { TagSelection, TagLoad, TagSelectionGroup } from '../../../../core/models/tag-models';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import { Project, TagGroupOption, TagLoad, TagSelection, TagSelectionGroup } from '@critical-pass/project/types';
 import { ColorFactoryService } from '@critical-pass/shared/serializers';

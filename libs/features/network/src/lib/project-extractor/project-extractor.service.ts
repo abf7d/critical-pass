@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Integration, Project } from '@critical-pass/project/types';
 import { ActivitySerializerService, IntegrationSerializerService, ProjectSerializerService } from '@critical-pass/shared/serializers';
-// import { Integration, Project } from '../../../models';
-// import { ActivitySerializerService, IntegrationSerializerService, ProjectSerializerService } from '../../serializers/project';
 
 @Injectable({
     providedIn: 'root',

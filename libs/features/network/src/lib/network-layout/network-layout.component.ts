@@ -1,14 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Activity, Project } from '@critical-pass/project/types';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
-// import { Activity, Project, ProjectManagerBase } from '@critical-pass/critical-charts';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { distinct, filter, first } from 'rxjs/operators';
-// import { ChartKeys } from '@critical-pass/critical-charts';
-// import { ProjectsModule } from '../../projects.module';
-// import * as AppKeys from '../../../../core/constants/keys';
-// import { filteredNetworkArray } from 'projects/critical-charts/src/lib/constants/keys';
+import { filter } from 'rxjs/operators';
 import { CORE_CONST } from '@critical-pass/core';
 
 @Component({
@@ -33,7 +28,6 @@ export class NetworkLayoutComponent implements OnInit {
         route: ActivatedRoute,
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
         @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
-        private router: Router,
     ) {
         this.id = +route.snapshot.params['id'];
         this.project$ = this.dashboard.activeProject$;
