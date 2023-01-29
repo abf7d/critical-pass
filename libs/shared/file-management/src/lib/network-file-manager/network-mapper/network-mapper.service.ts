@@ -35,7 +35,26 @@ import {
     SubprojectSerializerService,
 } from '@critical-pass/shared/serializers';
 import { ProjectTreeNodeSerializerService } from '@critical-pass/charts';
-import { Activity, ActivityProfile, Chart, Integration, Phase, PhaseSummary, Project, ProjectProfile, Resource, ResourceProfile, ResourceSummary, Role, RoleSummary, TagButton, TagEntry, TagGroup, TagGroupOption, TreeNode } from '@critical-pass/project/types';
+import {
+    Activity,
+    ActivityProfile,
+    Chart,
+    Integration,
+    Phase,
+    PhaseSummary,
+    Project,
+    ProjectProfile,
+    Resource,
+    ResourceProfile,
+    ResourceSummary,
+    Role,
+    RoleSummary,
+    TagButton,
+    TagEntry,
+    TagGroup,
+    TagGroupOption,
+    TreeNode,
+} from '@critical-pass/project/types';
 @Injectable({
     providedIn: 'root',
 })
@@ -153,28 +172,28 @@ export class NetworkMapperService {
             .forEach(activityTagEntry => {
                 const activity = activities.find(a => a.profile.id === activityTagEntry.activityId);
                 if (activity) {
-                let actMap = tagMap.get(activity.profile.id);
-                if (!actMap) {
-                    actMap = new Map<string, TagGroup>();
-                    tagMap.set(activity.profile.id, actMap);
-                    activity.tags = [];
+                    let actMap = tagMap.get(activity.profile.id);
+                    if (!actMap) {
+                        actMap = new Map<string, TagGroup>();
+                        tagMap.set(activity.profile.id, actMap);
+                        activity.tags = [];
+                    }
+                    let tagGroup: TagGroup | undefined = actMap.get(activityTagEntry.group);
+                    if (!tagGroup) {
+                        tagGroup = {
+                            name: activityTagEntry.group,
+                            tags: [],
+                        };
+                        actMap.set(activityTagEntry.group, tagGroup);
+                        activity.tags?.push(tagGroup);
+                    }
+                    tagGroup.tags.push({
+                        color: activityTagEntry.color,
+                        backgroundcolor: activityTagEntry.backgroundcolor,
+                        name: activityTagEntry.name,
+                    });
                 }
-                let tagGroup: TagGroup | undefined = actMap.get(activityTagEntry.group);
-                if (!tagGroup) {
-                    tagGroup = {
-                        name: activityTagEntry.group,
-                        tags: [],
-                    };
-                    actMap.set(activityTagEntry.group, tagGroup);
-                    activity.tags?.push(tagGroup);
-                }
-                tagGroup.tags.push({
-                    color: activityTagEntry.color,
-                    backgroundcolor: activityTagEntry.backgroundcolor,
-                    name: activityTagEntry.name,
-                });
-            }
-        });
+            });
     }
 
     private mapResources(profileEntry: any, resourceData: any[]) {
@@ -426,7 +445,7 @@ export class NetworkMapperService {
                 }),
             )
             .map(o => (activityResources = [...o, ...activityResources]));
-        let resourceRoles: RoleSummary[]  = [];
+        let resourceRoles: RoleSummary[] = [];
         project.resources
             .map(resource =>
                 resource.assign.roles.map(role => {

@@ -64,7 +64,6 @@ export class NetworkLayoutComponent implements OnInit {
             this.project = project;
         });
 
-        
         this.filteredNetworkArray$ = this.eventService.get(CORE_CONST.FILTERED_NETWORK_ARRAY_KEY);
         this.filteredNetworkArray$.next([]);
         this.eventService
