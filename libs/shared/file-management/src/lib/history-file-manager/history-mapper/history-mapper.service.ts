@@ -13,7 +13,7 @@ import {
     ResourceSummary,
     Role,
     RoleSummary,
-    Tag,
+    TagButton,
     TagEntry,
     TagGroup,
     TagGroupOption,
@@ -336,7 +336,7 @@ export class HistoryMapperService {
         });
         let activityPhases: PhaseSummary[] = [];
 
-        let tagPool: Tag[] = [];
+        let tagPool: TagButton[] = [];
         if (project.tags) {
             project.tags
                 .map(p => {

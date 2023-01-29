@@ -37,6 +37,8 @@ export class NetworkLayoutComponent implements OnInit {
     ) {
         this.id = +route.snapshot.params['id'];
         this.project$ = this.dashboard.activeProject$;
+        this.networkArray$ = this.eventService.get(CORE_CONST.NETWORK_ARRAY_KEY);
+        this.networkArray$.next([]);
         this.project$.pipe(filter(x => !!x)).subscribe(project => {
             let crumb: Crumb[] = [];
             this.selectedActivity = project.profile.view.selectedActivity;
@@ -54,14 +56,15 @@ export class NetworkLayoutComponent implements OnInit {
                 const projects = this.networkArray$.getValue();
                 if (projects) {
                     const parent = projects.find(x => !!x.activities.find(x => x.subProject.subGraphId === project.profile.id));
-                    this.parentId = parent!.profile.id;
+                    if (parent) {
+                        this.parentId = parent!.profile.id;
+                    }
                 }
             }
             this.project = project;
         });
 
-        this.networkArray$ = this.eventService.get(CORE_CONST.NETWORK_ARRAY_KEY);
-        this.networkArray$.next([]);
+        
         this.filteredNetworkArray$ = this.eventService.get(CORE_CONST.FILTERED_NETWORK_ARRAY_KEY);
         this.filteredNetworkArray$.next([]);
         this.eventService

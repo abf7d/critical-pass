@@ -29,6 +29,11 @@ const routes: Routes = [
         loadChildren: () => import('@critical-pass/features/history').then(m => m.HistoryModule),
         canLoad: [AuthorizedUserGuard],
     },
+    {
+        path: 'network',
+        loadChildren: () => import('@critical-pass/features/network').then(m => m.NetworkModule),
+        canLoad: [AuthorizedUserGuard],
+    },
 ];
 
 @NgModule({

@@ -56,7 +56,7 @@ export class MetaTagsComponent implements OnInit {
         this.subscription?.unsubscribe();
     }
     public assignToActivities(tags: string[]) {
-        this.metaTagService.assignTagsToSelectedActivities(this.project, tags, this.activeGroup);
+        this.metaTagService.assignTagsToSelectedActivities(this.project, tags, this.activeGroup!);
         this.dashboard.updateProject(this.project, true);
     }
     public unassignFromActivities() {

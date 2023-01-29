@@ -1,1 +1,1 @@
-export * from './lib/features-network.module';
+export * from './lib/network.module'

@@ -1,4 +1,4 @@
-export interface Tag {
+export interface TagButton {
     name: string;
     color: string;
     backgroundcolor: string;
@@ -12,6 +12,6 @@ export interface TagLoad {
     groups: TagSelectionGroup[];
     activeGroup: TagSelectionGroup | null;
 }
-export interface TagSelection extends Tag {
+export interface TagSelection extends TagButton {
     isSelected: boolean;
 }
