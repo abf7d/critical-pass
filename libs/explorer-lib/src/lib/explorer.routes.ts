@@ -24,11 +24,11 @@ const routes: Routes = [
         loadChildren: () => import('@critical-pass/features/profile').then(m => m.ProfileModule),
         canLoad: [AuthorizedUserGuard],
     },
-    // {
-    //     path: 'history',
-    //     loadChildren: () => import('@critical-pass/features/history').then(m => m.HistoryModule),
-    //     canLoad: [AuthorizedUserGuard],
-    // },
+    {
+        path: 'history',
+        loadChildren: () => import('@critical-pass/features/history').then(m => m.HistoryModule),
+        canLoad: [AuthorizedUserGuard],
+    },
 ];
 
 @NgModule({

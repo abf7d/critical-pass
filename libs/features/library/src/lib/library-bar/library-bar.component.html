@@ -11,7 +11,7 @@
     </div>
 
     <a class="btn btn-secondary" (click)="navigate('profile/(-1//sidebar:arrow/-1)')">New Project</a>
-    <a class="btn btn-secondary" (click)="navigate('sketchbook/(-1//sidebar:arrow/-1)')">Scenario Planning</a>
+    <a class="btn btn-secondary" (click)="navigate('history/(-1//sidebar:arrow/-1)')">Scenario Planning</a>
     <a class="btn btn-secondary" (click)="navigate('network/(-1//sidebar:meta/-1)')">Network Analysis</a>
     <a class="btn btn-secondary" [hidden]="!hasWork" (click)="navigate('profile/(-3//sidebar:grid/-3)')">Continue work</a>
     <a class="btn btn-secondary" *ngIf="hasWork && showPeek" (click)="showPeek = false">

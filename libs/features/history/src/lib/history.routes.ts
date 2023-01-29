@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LeftMenuLayoutComponent } from '@critical-pass/shared/components';
+import { ArrowBarComponent, LeftMenuLayoutComponent } from '@critical-pass/shared/components';
 import { HistoryLayoutComponent } from './history-layout/history-layout.component';
 import { ProjectResolver } from '@critical-pass/shared/data-access';
 import { CanDeactivateGuard } from '@critical-pass/core';

@@ -1,1 +1,1 @@
-export * from './lib/features-history.module';
+export * from './lib/history.module';

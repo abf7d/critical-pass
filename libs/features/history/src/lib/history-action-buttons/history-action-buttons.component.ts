@@ -33,7 +33,7 @@ export class HistoryActionButtonsComponent extends ActionButtonsComponent {
         toastr: ToastrService,
         storageApi: ProjectStorageApiService,
         projectApi: ProjectApiService,
-        @Inject('HistoryFileManagerService') private fileManager: HistoryFileManagerService,
+        private fileManager: HistoryFileManagerService,
         private treeNodeSerializer: ProjectTreeNodeSerializerService,
     ) {
         super(router, dashboard, eventService, serializer, sanitizer, toastr, storageApi, projectApi);
