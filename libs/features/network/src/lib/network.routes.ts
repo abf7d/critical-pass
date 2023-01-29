@@ -7,24 +7,24 @@ import { ProjectResolver } from '@critical-pass/shared/data-access';
 import { NetworkBarComponent } from './network-bar/network-bar.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: LeftMenuLayoutComponent,
-    children: [
-      {
-        path: ':id',
-        component: NetworkLayoutComponent,
-        resolve: { items: ProjectResolver },
-        canDeactivate: [CanDeactivateGuard],
-      },
-      { path: 'arrow/:id', component: ArrowBarComponent, outlet: 'sidebar'},
-      { path: 'meta/:id', component: NetworkBarComponent, outlet: 'sidebar' },
-    ],
-  },
+    {
+        path: '',
+        component: LeftMenuLayoutComponent,
+        children: [
+            {
+                path: ':id',
+                component: NetworkLayoutComponent,
+                resolve: { items: ProjectResolver },
+                canDeactivate: [CanDeactivateGuard],
+            },
+            { path: 'arrow/:id', component: ArrowBarComponent, outlet: 'sidebar' },
+            { path: 'meta/:id', component: NetworkBarComponent, outlet: 'sidebar' },
+        ],
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
 export class NetworkRoutingModule {}

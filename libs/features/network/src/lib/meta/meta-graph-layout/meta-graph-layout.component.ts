@@ -124,8 +124,7 @@ export class MetaGraphLayoutComponent implements OnInit {
             }
         }
     }
-    public setFilterProject(node: NetworkNode) {
-    }
+    public setFilterProject(node: NetworkNode) {}
 }
 
 export interface NetworkNode {

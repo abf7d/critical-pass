@@ -17,7 +17,6 @@ import { ChartKeys } from '@critical-pass/critical-charts';
 import { NetworkNode } from '../meta-graph-layout/meta-graph-layout.component';
 import * as AppKeys from '../../../../core/constants/keys';
 
-
 @Component({
     selector: 'proj-meta-bar',
     templateUrl: './meta-bar.component.html',
@@ -100,10 +99,10 @@ export class MetaBarComponent implements OnInit, OnDestroy {
             const networkArray = this.networkArray$.getValue() ?? [];
             const filteredNetworkArray = this.filteredNetworkArray$.getValue() ?? [];
             let minSubProjId = Math.min(...networkArray.map(x => x.profile.id));
-            if(minSubProjId === Infinity && !this.project.profile.id) {
-              this.project.profile.id = -2;
-              this.project.profile.name = "Origin Project"
-              minSubProjId = -2;
+            if (minSubProjId === Infinity && !this.project.profile.id) {
+                this.project.profile.id = -2;
+                this.project.profile.name = 'Origin Project';
+                minSubProjId = -2;
             }
             if (filteredNetworkArray.length === 0) {
                 filteredNetworkArray.push(this.project);
@@ -113,8 +112,7 @@ export class MetaBarComponent implements OnInit, OnDestroy {
             }
 
             const newSubProject = this.projectExtractor.extractSubProject(this.project, minSubProjId);
-           
-           
+
             if (newSubProject) {
                 filteredNetworkArray.push(newSubProject);
                 networkArray.push(newSubProject);
@@ -162,11 +160,11 @@ export class MetaBarComponent implements OnInit, OnDestroy {
         this.sub?.unsubscribe();
     }
     public navToProjProfile() {
-      this.pManager.tempStore(this.project);
-      this.router.navigateByUrl(AppKeys.importProfileRoute);
+        this.pManager.tempStore(this.project);
+        this.router.navigateByUrl(AppKeys.importProfileRoute);
     }
     public navToScenarioPlanning() {
-      this.pManager.tempStore(this.project);
-      this.router.navigateByUrl(AppKeys.importScenarioRoute);
+        this.pManager.tempStore(this.project);
+        this.router.navigateByUrl(AppKeys.importScenarioRoute);
     }
 }

@@ -21,7 +21,7 @@ export class NetworkButtonsComponent implements OnInit {
         @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
         private router: Router,
         private fileManager: NetworkFileManagerService,
-        private nodeConnector: NodeConnectorService
+        private nodeConnector: NodeConnectorService,
     ) {
         this.networkArray$ = this.eventService.get(CORE_CONST.NETWORK_ARRAY_KEY);
         this.filteredNetworkArray$ = this.eventService.get(CORE_CONST.FILTERED_NETWORK_ARRAY_KEY);
@@ -46,7 +46,6 @@ export class NetworkButtonsComponent implements OnInit {
     public loadFileByUpload(event: any) {
         const files = event.files as FileList;
         const firstFile = files.item(0);
-
 
         if (firstFile !== null && files.length > 0) {
             this.fileManager.import(firstFile).then(projects => {
