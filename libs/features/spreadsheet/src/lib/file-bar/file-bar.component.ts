@@ -6,18 +6,18 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./file-bar.component.scss'],
 })
 export class FileBarComponent implements OnInit {
-  public hasBaseDropZoneOver = false;
-  public hasAnotherDropZoneOver = false;
+    public hasBaseDropZoneOver = false;
+    public hasAnotherDropZoneOver = false;
 
-  public data: any;
-  public fileName = 'SheetJS.xlsx';
-  public worksheettype = 'number';
-  public worksheetnumber = 0;
-  public worksheetname = '';
-  public headerFormat = 'custom'
-  public dateFormat = 'M/D/YYYY';// <- usa  //European: D-M-YYYY
-  
-  constructor() {}
+    public data: any;
+    public fileName = 'SheetJS.xlsx';
+    public worksheettype = 'number';
+    public worksheetnumber = 0;
+    public worksheetname = '';
+    public headerFormat = 'custom';
+    public dateFormat = 'M/D/YYYY'; // <- usa  //European: D-M-YYYY
+
+    constructor() {}
     public ngOnInit(): void {}
     // public exportexcel(activities: any): void {}
     // public saveFormat() {}

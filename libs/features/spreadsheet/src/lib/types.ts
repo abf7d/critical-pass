@@ -7,10 +7,10 @@ export interface Worksheet {
     headers: string[];
 }
 export interface DataTable {
-    data: ImportData,
-    name: string,
-    headers: string[],
-    columnDefs: ColDef[]
+    data: ImportData;
+    name: string;
+    headers: string[];
+    columnDefs: ColDef[];
 }
 
 export interface Header {

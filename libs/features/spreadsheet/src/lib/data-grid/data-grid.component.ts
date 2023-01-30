@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { DataTable, Header } from '../types';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
-import { ImportMapperService, MappingFileManagerService } from '@critical-pass/shared/file-management'
+import { ImportMapperService, MappingFileManagerService } from '@critical-pass/shared/file-management';
 import * as CONST from '../constants';
 import { ProjectStorageApiService, API_CONST } from '@critical-pass/shared/data-access';
 import { CORE_CONST } from '@critical-pass/core';
@@ -60,7 +60,7 @@ export class DataGridComponent implements OnInit {
     public createProject() {
         const snapshot = this.gridApi.getModel().gridOptionsService.gridOptions;
         const project = this.mapper.mapFromSheet(snapshot.columnDefs, snapshot.rowData, this.currentSchema);
-        
+
         this.storageApi.set(API_CONST.SESSION_STORAGE, project);
         this.router.navigateByUrl(CORE_CONST.IMPORT_PROFILE_ROUTE);
     }

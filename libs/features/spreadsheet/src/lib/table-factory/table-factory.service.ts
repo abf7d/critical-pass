@@ -29,22 +29,23 @@ export class TableFactoryService {
         return [];
     }
 
-    public setMatches(colDef: ColDef[], schema: Header[] ) {
-      schema.forEach( x => x.selected = false);
-      const lowerSchema = schema.map( x => x.name.toLowerCase());
-      colDef.forEach( c =>{
-        let index = lowerSchema.indexOf(c.headerName!.toLowerCase());
-        if( index > -1){
-          c.headerClass = 'matched';
-          schema[index].selected = true;
-
-        } else {
-          c.headerClass = 'unmatched'
-        }
-      });
+    public setMatches(colDef: ColDef[], schema: Header[]) {
+        schema.forEach(x => (x.selected = false));
+        const lowerSchema = schema.map(x => x.name.toLowerCase());
+        colDef.forEach(c => {
+            let index = lowerSchema.indexOf(c.headerName!.toLowerCase());
+            if (index > -1) {
+                c.headerClass = 'matched';
+                schema[index].selected = true;
+            } else {
+                c.headerClass = 'unmatched';
+            }
+        });
     }
 
     public createSchema(headers: Mapping[]): Header[] {
-      return headers.map( h => {return {name: h.fieldName, label: h.fieldName, selected: false, activityProp: h.activityProp} as Header})
+        return headers.map(h => {
+            return { name: h.fieldName, label: h.fieldName, selected: false, activityProp: h.activityProp } as Header;
+        });
     }
 }

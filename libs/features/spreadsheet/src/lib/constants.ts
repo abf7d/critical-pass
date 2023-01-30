@@ -1,4 +1,4 @@
-import { Mapping } from "./types";
+import { Mapping } from './types';
 
 export const IMPORT_HEADERS_KEY = 'import.headers.key';
 export const IMPORT_SCHEMA = 'import.headers.schema.key';

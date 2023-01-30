@@ -13,7 +13,7 @@ export class SheetHeaderComponent {
     public displayName!: string;
     @ViewChild('text') text!: ElementRef;
 
-    constructor(@Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,) {}
+    constructor(@Inject(EVENT_SERVICE_TOKEN) private eventService: EventService) {}
 
     @ViewChild('menuButton', { read: ElementRef }) public menuButton!: ElementRef;
 
@@ -31,19 +31,18 @@ export class SheetHeaderComponent {
         headers$.next(headers);
     }
 
-    enterPressed(){
-      this.onBlur(this.displayName);
+    enterPressed() {
+        this.onBlur(this.displayName);
     }
 
     dblClick() {
-      this.isEditing = !this.isEditing;
-      setTimeout((_: any) => { 
-        this.text.nativeElement.focus();
-      },0);
+        this.isEditing = !this.isEditing;
+        setTimeout((_: any) => {
+            this.text.nativeElement.focus();
+        }, 0);
     }
 
     onSortRequested(order: any, event: any) {
         this.params.setSort(order, event.shiftKey);
     }
 }
-

@@ -10,12 +10,7 @@ import { ColumnDefComponent } from './column-def/column-def.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [DataGridComponent, FileBarComponent, SheetHeaderComponent, ColumnDefComponent],
-  imports: [
-    CommonModule,
-    SpreadsheetRoutingModule,
-    FormsModule,
-    AgGridModule,
-  ]
+    declarations: [DataGridComponent, FileBarComponent, SheetHeaderComponent, ColumnDefComponent],
+    imports: [CommonModule, SpreadsheetRoutingModule, FormsModule, AgGridModule],
 })
-export class SpreadsheetModule { }
+export class SpreadsheetModule {}

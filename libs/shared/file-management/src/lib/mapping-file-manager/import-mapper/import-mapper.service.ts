@@ -8,13 +8,17 @@ import { Header, ImportData } from '../../constants';
     providedIn: 'root',
 })
 export class ImportMapperService {
-    constructor(private projectSerializer: ProjectSerializerService, private actSerializer: ActivitySerializerService, private intSerializer: IntegrationSerializerService) {}
+    constructor(
+        private projectSerializer: ProjectSerializerService,
+        private actSerializer: ActivitySerializerService,
+        private intSerializer: IntegrationSerializerService,
+    ) {}
 
     public mapFromSheet(columnDefs: ColDef[], rowData: ImportData, headerMapping: Header[]): Project {
         const project = this.projectSerializer.fromJson();
         const names = headerMapping.map(c => c.name.toLowerCase());
         const matchingCols = columnDefs.filter(c => names.indexOf(c.headerName!.toLowerCase()) > -1);
-        const actSerializer = this.actSerializer    ;
+        const actSerializer = this.actSerializer;
         project.activities = rowData.map(row => {
             const activity = actSerializer.fromJson();
             matchingCols.forEach((c, i) => {
