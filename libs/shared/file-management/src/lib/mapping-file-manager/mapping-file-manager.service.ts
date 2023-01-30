@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { ImportData, Worksheet } from '../../../../models/file-manager/import-data';
-import { FileManagerBaseService } from '../../../../models/base/file-manager-base.service';
+import { ImportData, Worksheet } from '../constants';
+import { FileManagerBaseService } from '../file-manager-base.service';
 @Injectable({
     providedIn: 'root',
 })

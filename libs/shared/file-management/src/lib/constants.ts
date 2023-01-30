@@ -9,6 +9,8 @@
 // export const activityPhasesWsName = 'Activity Assinged Phases';
 // export const resourceRolesWsName = 'Resource Roles';
 
+import { ColDef } from "ag-grid-community";
+
 export const ACTIVITIES_WS_NAME = 'Activities';
 export const ARROW_WS_NAME = 'Arrow Info';
 export const INTEGRATION_WS_NAME = 'Integrations';
@@ -25,3 +27,27 @@ export const ACTIVITY_TAG_WS_NAME = 'Activity Tags';
 
 export const PARENT_NODE_ID_COL = 'parentNodeId';
 export const NODE_ID_COL = 'nodeId';
+
+
+export type ImportData = Array<Array<any>>;
+export interface Worksheet {
+    name: string;
+    data: ImportData;
+    headers: string[];
+}
+export interface DataTable {
+    data: ImportData,
+    name: string,
+    headers: string[],
+    columnDefs: ColDef[]
+}
+
+export interface Header {
+    name: string;
+    selected: boolean;
+    activityProp: string;
+}
+export interface Mapping {
+    fieldName: string;
+    activityProp: string;
+}

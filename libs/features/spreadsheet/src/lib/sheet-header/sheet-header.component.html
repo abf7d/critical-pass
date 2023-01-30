@@ -1,0 +1,12 @@
+<div>
+    <input
+        [hidden]="!isEditing"
+        #text
+        (keydown.enter)="enterPressed()"
+        (blur)="onBlur($event.target)"
+        style="width: 100%"
+        [(ngModel)]="displayName"
+        type="text"
+    />
+    <div *ngIf="!isEditing" (dblclick)="dblClick()" class="customHeaderLabel">{{ params.displayName }}</div>
+</div>

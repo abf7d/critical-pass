@@ -25,8 +25,7 @@ export class ProjectStorageApiService {
         return project;
     }
     public set(storageType: string, project: Project): void {
-        const json = this.serializer.toJson(project);
-        const projectStr = JSON.stringify(json);
+        const projectStr = JSON.stringify(project);
         if (storageType === CONST.LOCAL_STORAGE) {
             localStorage.setItem(CONST.PROJECT_STORAGE_KEY, projectStr);
         }
@@ -35,13 +34,3 @@ export class ProjectStorageApiService {
         }
     }
 }
-//     public tempStore(project: Project): void {
-//         this.storage.session.set(Keys.cachedProjectStorage, project);
-//     }
-//     public tempUnstore(): Project {
-//         const project = this.storage.session.get(Keys.cachedProjectStorage);
-//         this.processor.processProject(project);
-//         project.profile.view.autoZoom = true;
-//         return project
-//     }
-// }

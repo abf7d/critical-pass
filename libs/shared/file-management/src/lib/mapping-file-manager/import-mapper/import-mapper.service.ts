@@ -1,28 +1,26 @@
 import { Injectable } from '@angular/core';
+import { Project } from '@critical-pass/project/types';
+import { ActivitySerializerService, IntegrationSerializerService, ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ColDef } from 'ag-grid-community';
-import { Project } from '../../../../../models/project/project';
-import { Header, ImportData, Mapping } from '../../../../../models/file-manager/import-data';
-import { ActivitySerializerService } from '../../../../serializers/project/activity/activity-serializer.service';
-import { IntegrationSerializerService } from '../../../../serializers/project/integration/integration-serializer/integration-serializer.service';
-import { ProjectSerializerService } from '../../../../serializers/project/project-serializer.service';
+import { Header, ImportData } from '../../constants';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ImportMapperService {
-    constructor() {}
+    constructor(private projectSerializer: ProjectSerializerService, private actSerializer: ActivitySerializerService, private intSerializer: IntegrationSerializerService) {}
 
     public mapFromSheet(columnDefs: ColDef[], rowData: ImportData, headerMapping: Header[]): Project {
-        const project = new ProjectSerializerService().fromJson();
+        const project = this.projectSerializer.fromJson();
         const names = headerMapping.map(c => c.name.toLowerCase());
-        const matchingCols = columnDefs.filter(c => names.indexOf(c.headerName.toLowerCase()) > -1);
-        const actSerializer = new ActivitySerializerService();
+        const matchingCols = columnDefs.filter(c => names.indexOf(c.headerName!.toLowerCase()) > -1);
+        const actSerializer = this.actSerializer    ;
         project.activities = rowData.map(row => {
             const activity = actSerializer.fromJson();
             matchingCols.forEach((c, i) => {
-                const header = headerMapping.find(x => x.name.toLowerCase() == c.headerName.toLowerCase());
+                const header = headerMapping.find(x => x.name.toLowerCase() == c.headerName!.toLowerCase());
                 if (header) {
-                    activity.profile[header.activityProp] = row[c.field] ?? null;
+                    (activity.profile as any)[header.activityProp] = (row as any)[c.field!] ?? null;
                 }
             });
             return activity;
@@ -33,7 +31,7 @@ export class ImportMapperService {
 
     public generateNodes(project: Project) {
         let id = 0;
-        const intFactory = new IntegrationSerializerService();
+        const intFactory = this.intSerializer;
         project.activities.forEach((a, i) => {
             a.chartInfo.source_id = ++id;
             const source = intFactory.fromJson({ id, name: id });

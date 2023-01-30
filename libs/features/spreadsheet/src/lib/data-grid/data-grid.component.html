@@ -1,0 +1,65 @@
+<div class="upload-container">
+    <div class="sample-proj">
+        <a href="../../../../../assets/data/SampleProjectData.xlsx">Excel Spreadsheet for sample project</a>
+    </div>
+    <div class="grid" *ngIf="activeTable === null; else grid"></div>
+    <ng-template #grid>
+        <div class="grid">
+            <ag-grid-angular
+                *ngIf="activeTable !== null"
+                #agGrid
+                class="ag-theme-alpine"
+                [rowData]="activeTable.data"
+                [columnDefs]="headers"
+                (gridReady)="onGridReady($event)"
+                [defaultColDef]="defaultColDef"
+            >
+                <!-- [frameworkComponents]="frameworkComponents" -->
+            </ag-grid-angular>
+        </div>
+    </ng-template>
+
+    <div class="header-format">
+        <div class="headers-container">
+            <div>
+                <div><span class="header-title">Activity Properties</span></div>
+                <div><span >Maps to Table Col</span>  </div>
+            </div>
+            <div class="schema">
+                <!-- <div *ngFor="let col of currentSchema" [ngClass]="{ selected: col.selected }">{{ col.name }}</div> -->
+                <div *ngFor="let col of currentSchema" [ngClass]="{ selected: col.selected }">
+                    <div>
+                        <div>{{ col.label }}</div>
+                        <cp-column-def [header]="col"></cp-column-def>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sheets">
+        <div class="upload-button date-format-txt">
+            <button class="btn btn-primary" (click)="upload.value = ''; upload.click()">Select File</button>
+            <input type="file" #upload (change)="fileSelected($event.target)" />
+        </div>
+        <div class="w-title">Worksheets</div>
+        <div class="sheet-window">
+            <div class="sheet" [ngClass]="{ active: table.name === activeTable?.name }" *ngFor="let table of tables" (click)="setActiveTable(table)">
+                <a href="javascript:void(0)">{{ table.name }}</a>
+            </div>
+        </div>
+    </div>
+    <div class="create-proj">
+        <label class="proj-title">Project Map</label>
+        <div>
+            <label>US: M/D/YYYY</label>
+
+            <label>European: D-M-YYYY</label>
+        </div>
+        <input class="date-format form-check-label form-control" (input)="changeDateFormat($event.target)" [(ngModel)]="dateFormat" type="text" />
+        <a class="btn btn-outline-secondary" (click)="saveFormat()"> Save Format </a>
+        <a class="btn btn-outline-secondary" (click)="saveFormat()">Download data </a>
+        <a class="btn btn-secondary" (click)="createProject()"> Create Project </a>
+    </div>
+    <div class="proj-gen"></div>
+</div>
+<div></div>

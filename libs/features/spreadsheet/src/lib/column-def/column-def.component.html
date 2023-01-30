@@ -1,0 +1,15 @@
+<div>
+    <input
+        [hidden]="!isEditing"
+        #text
+        (keydown.enter)="enterPressed()"
+        (blur)="onBlur($event.target)"
+        style="width: 100%"
+        [(ngModel)]="header.name"
+        type="text"
+    />
+    <div *ngIf="!isEditing" class="editting">
+        <i class="fas fa-pencil-alt pen" (click)="dblClick()"></i>
+        <div class="customHeaderLabel" *ngIf="header.name !== header.label">{{ header.name }}</div>
+    </div>
+</div>

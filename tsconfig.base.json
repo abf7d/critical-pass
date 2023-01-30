@@ -25,6 +25,7 @@
             "@critical-pass/features/network": ["libs/features/network/src/index.ts"],
             "@critical-pass/features/profile": ["libs/features/profile/src/index.ts"],
             "@critical-pass/features/resources": ["libs/features/resources/src/index.ts"],
+            "@critical-pass/features/spreadsheet": ["libs/features/spreadsheet/src/index.ts"],
             "@critical-pass/project/processor": ["libs/project/processor/src/index.ts"],
             "@critical-pass/project/types": ["libs/project/types/src/index.ts"],
             "@critical-pass/shared/components": ["libs/shared/components/src/index.ts"],
