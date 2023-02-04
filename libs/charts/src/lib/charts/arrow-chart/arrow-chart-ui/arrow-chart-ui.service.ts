@@ -448,7 +448,7 @@ export class ArrowChartUIService {
         this.st.svg
             .on('dblclick', (event: any) => {
                 event.preventDefault();
-                this.mousedown(event);
+                this.dblclick(event);
             })
             .on('click', (event: any) => {
                 this.st.allowDeletes = true;
@@ -458,11 +458,17 @@ export class ArrowChartUIService {
             .on('mouseup', () => this.mouseup());
 
         d3.select(window)
-            .on('keydown', event => this.keydown(event))
-            .on('keyup', event => this.keyup(event));
+            .on('keydown', event => {
+                this.keydown(event);
+                this.lassoTool.keydown(event)
+            })
+            .on('keyup', event => {
+                this.keyup(event);
+                this.lassoTool.keyup(event);
+            });
     }
 
-    private mousedown(event: any): void {
+    private dblclick(event: any): void {
         // prevent I-bar on drag
         if (!event.ctrlKey || this.st.drag_node != null) {
             event.stopPropagation();

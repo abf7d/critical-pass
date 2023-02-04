@@ -47,7 +47,7 @@ export class LibraryGridComponent implements OnInit, OnDestroy {
     }
 
     public navigateSketch(id: number) {
-        this.router.navigateByUrl(`sketchbook/(${id}//sidebar:arrow/${id})`);
+        this.router.navigateByUrl(`history/(${id}//sidebar:arrow/${id})`);
     }
 
     public navigateAssign(id: number) {
