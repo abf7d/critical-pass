@@ -14,6 +14,13 @@ export class ElPositionerService {
         this.repositionArrowText('text.glow', proj);
         this.repositionArrowFloatText(proj);
     }
+    public updateGroupPosition(project: Project, selectedNodes: number[]): void {
+        this.repositionConnectedArrows(selectedNodes);
+        this.repositionArrowText('text.label', project, selectedNodes);
+        this.repositionArrowText('text.glow', project, selectedNodes);
+        this.repositionArrowFloatText(project, selectedNodes);
+    }
+
     private moveNode(dx: number, dy: number): void {
         this.st.nodes
             .filter((d: Integration) => d === this.st.drag_node)
@@ -23,22 +30,38 @@ export class ElPositionerService {
                 return `translate(${d.x},${d.y})`;
             });
     }
-    private repositionConnectedArrows(): void {
+    private repositionConnectedArrows(selectedNodes: number[] | null = null): void {
         this.st.links
             .filter((d: Activity) => {
-                return d.chartInfo.source!.selected;
+                // selectedNodes is not nul when we are using lasso
+                if (!selectedNodes) {
+                    return d.chartInfo.source!.selected;
+                }
+                return selectedNodes.includes(d.chartInfo.source_id);
             })
             .select('path')
             .attr('d', (d: Activity) => this.getPath(d));
 
         this.st.links
-            .filter((d: Activity) => d.chartInfo.target!.selected)
+            .filter((d: Activity) => {
+                // selectedNodes is not nul when we are using lasso
+                if (!selectedNodes) {
+                    return d.chartInfo.target!.selected;
+                }
+                return selectedNodes.includes(d.chartInfo.target_id);
+            })
             .select('path')
             .attr('d', (d: Activity) => this.getPath(d));
     }
-    private repositionArrowText(selector: string, proj: Project): void {
+    private repositionArrowText(selector: string, proj: Project, selectedNodes: number[] | null = null): void {
         this.st.links
-            .filter((d: Activity) => d.chartInfo.target!.selected || d.chartInfo.source!.selected)
+            .filter((d: Activity) => {
+                // selectedNodes is not nul when we are using lasso
+                if (!selectedNodes) {
+                    return d.chartInfo.target!.selected || d.chartInfo.source!.selected;
+                }
+                return selectedNodes.includes(d.chartInfo.source!.id!) || selectedNodes.includes(d.chartInfo.target!.id!);
+            })
             .select(selector)
             .attr('y', (a: Activity) => {
                 const cInfo = a.chartInfo;
@@ -55,9 +78,15 @@ export class ElPositionerService {
                 return cInfo.source!.x! + (cInfo.target!.x! - cInfo.source!.x!) / 2;
             });
     }
-    private repositionArrowFloatText(proj: Project): void {
+    private repositionArrowFloatText(proj: Project, selectedNodes: number[] | null = null): void {
         this.st.links
-            .filter((d: Activity) => d.chartInfo.target!.selected || d.chartInfo.source!.selected)
+            .filter((d: Activity) => {
+                // selectedNodes is not nul when we are using lasso
+                if (!selectedNodes) {
+                    return d.chartInfo.target!.selected || d.chartInfo.source!.selected;
+                }
+                return selectedNodes.includes(d.chartInfo.source!.id!) || selectedNodes.includes(d.chartInfo.target!.id!);
+            })
             .select('text.float')
             .attr('y', (d: Activity) => d.chartInfo.source!.y! + (d.chartInfo.target!.y! - d.chartInfo.source!.y!) / 2 + 14)
             .attr('x', (a: Activity) => {

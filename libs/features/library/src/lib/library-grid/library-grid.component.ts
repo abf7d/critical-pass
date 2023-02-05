@@ -1,15 +1,9 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Project } from '@critical-pass/project/types';
-// import { ProjectManagerBase} from '@critical-pass/critical-charts';
-// import { ProjectStoreBase } from '@critical-pass/critical-charts';
-// import { Project } from '@critical-pass/critical-charts';
-// import { ProjectSerializerService } from '@critical-pass/critical-charts';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LibraryStoreService } from '../library-store/library-store.service';
-// import * as Keys from '../../../../core/constants/keys';
-// import { List } from '@critical-pass/critical-charts';
 import * as CONST from '../constants';
 import { ProjectApiService } from '@critical-pass/shared/data-access';
 import { NodeConnectorService } from '@critical-pass/project/processor';
@@ -23,18 +17,15 @@ export class LibraryGridComponent implements OnInit, OnDestroy {
     public projects!: Project[];
     public loadResult!: string;
     public subscription!: Subscription;
-    // public projSerializer: ProjectSerializerService;
     public pageNumSub!: Subscription;
     constructor(
         private router: Router,
-        // @Inject('ProjectStoreBase') private projectStore: ProjectStoreBase,
-        private libraryStore: LibraryStoreService, // @Inject('ProjectManagerBase') private pManager: ProjectManagerBase,
+        private libraryStore: LibraryStoreService,
         private projectApi: ProjectApiService,
         private nodeConnector: NodeConnectorService,
     ) {}
 
     public ngOnInit(): void {
-        // this.projSerializer = new ProjectSerializerService();
         this.pageSize = CONST.LIBRARY_PAGE_SIZE;
         this.projects = [];
         this.pageNumSub = this.libraryStore.pageNumber$.pipe(filter(x => x !== null)).subscribe(currentPage => {

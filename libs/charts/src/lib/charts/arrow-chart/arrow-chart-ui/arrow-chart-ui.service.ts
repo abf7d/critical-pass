@@ -460,7 +460,7 @@ export class ArrowChartUIService {
         d3.select(window)
             .on('keydown', event => {
                 this.keydown(event);
-                this.lassoTool.keydown(event)
+                this.lassoTool.keydown(event);
             })
             .on('keyup', event => {
                 this.keyup(event);

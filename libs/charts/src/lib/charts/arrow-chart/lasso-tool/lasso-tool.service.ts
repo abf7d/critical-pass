@@ -6,6 +6,7 @@ import { SvgTranform } from '../../../models/svg-transform';
 import { ArrowState } from '../arrow-state/arrow-state';
 import { Key } from 'ts-keycode-enum';
 import { ThisReceiver } from '@angular/compiler';
+import { ArrowControllerService } from '../utils/arrow-controller.service';
 
 @Injectable({
     providedIn: 'root',
@@ -30,7 +31,7 @@ export class LassoToolService {
     private lassoEnd: number | null = null;
     private id!: number;
 
-    constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService) {}
+    constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, private arrowController: ArrowControllerService) {}
 
     public setTransform(transform: SvgTranform) {
         this.transform = transform;
@@ -87,8 +88,7 @@ export class LassoToolService {
     }
 
     private previousPos: [number, number] | null = null;
-    public nodeMoveDragStart() {
-    }
+    public nodeMoveDragStart() {}
     public nodeMoveDragMove(event: any) {
         const pt = d3.pointer(event, this.mainG.node());
         const [x, y] = this.unTransformPt(pt);
@@ -104,74 +104,9 @@ export class LassoToolService {
                 }
                 return `translate(${d.x}, ${d.y})`;
             });
-            this.repositionConnectedArrows();
-            this.repositionArrowText('text.label', this.project);
-            this.repositionArrowText('text.glow', this.project);
-            this.repositionArrowFloatText(this.project);
+            this.arrowController.updateGroupPosition(this.project, this.selectedNodes);
         }
         this.previousPos = [x, y];
-    }
-
-    private repositionConnectedArrows(): void {
-        this.st.links
-            .filter((d: Activity) => {
-                return this.selectedNodes.indexOf(d.chartInfo.source_id);
-            })
-            .select('path')
-            .attr('d', (d: Activity) => this.getPath(d));
-
-        this.st.links
-            .filter((d: Activity) => this.selectedNodes.indexOf(d.chartInfo.target_id))
-            .select('path')
-            .attr('d', (d: Activity) => this.getPath(d));
-    }
-    private repositionArrowText(selector: string, proj: Project): void {
-        this.st.links
-            .filter((d: Activity) => this.selectedNodes.indexOf(d.chartInfo.source_id) || this.selectedNodes.indexOf(d.chartInfo.target_id))
-            .select(selector)
-            .attr('y', (a: Activity) => {
-                const cInfo = a.chartInfo;
-                if (proj.profile.view.displayText === 'name') {
-                    return cInfo.source!.y! + (cInfo.target!.y! - cInfo.source!.y!) / 2 - 14;
-                }
-                return cInfo.source!.y! + (cInfo.target!.y! - cInfo.source!.y!) / 2 - 6;
-            })
-            .attr('x', function (a: Activity) {
-                const cInfo = a.chartInfo;
-                if (proj.profile.view.displayText === 'name') {
-                    return cInfo.source!.x! + (cInfo.target!.x! - cInfo.source!.x!) / 4;
-                }
-                return cInfo.source!.x! + (cInfo.target!.x! - cInfo.source!.x!) / 2;
-            });
-    }
-    private repositionArrowFloatText(proj: Project): void {
-        this.st.links
-            .filter((d: Activity) => this.selectedNodes.indexOf(d.chartInfo.source_id) || this.selectedNodes.indexOf(d.chartInfo.target_id))
-            .select('text.float')
-            .attr('y', (d: Activity) => d.chartInfo.source!.y! + (d.chartInfo.target!.y! - d.chartInfo.source!.y!) / 2 + 14)
-            .attr('x', (a: Activity) => {
-                const cInfo = a.subProject;
-                const risk = a.risk;
-                const chart = a.chartInfo;
-                if (cInfo.subGraphLoaded !== null || cInfo.isParent || risk.criticalCount > 0 || risk.greenCount > 0) {
-                    return chart.source!.x! + (chart.target!.x! - chart.source!.x!) / 2 - 25;
-                }
-                return chart.source!.x! + (chart.target!.x! - chart.source!.x!) / 2 - 3;
-            });
-    }
-    public getPath(d: Activity): string {
-        const deltaX = d.chartInfo.target!.x! - d.chartInfo.source!.x!;
-        const deltaY = d.chartInfo.target!.y! - d.chartInfo.source!.y!;
-        const distr = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-        const normX = deltaX / distr;
-        const normY = deltaY / distr;
-        const sourcePadding = 12;
-        const targetPadding = 17;
-        const sourceX = d.chartInfo.source!.x! + sourcePadding * normX;
-        const sourceY = d.chartInfo.source!.y! + sourcePadding * normY;
-        const targetX = d.chartInfo.target!.x! - targetPadding * normX;
-        const targetY = d.chartInfo.target!.y! - targetPadding * normY;
-        return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
     }
 
     public nodeMoveDragEnd() {
