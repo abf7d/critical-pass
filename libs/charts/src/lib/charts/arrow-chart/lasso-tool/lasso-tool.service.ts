@@ -72,14 +72,14 @@ export class LassoToolService {
     private initForces(project: Project) {
         // Construct the forces.
 
-        const nmap = new Map<number, Integration>(project.integrations.map(x => [x.id,x])); //d3.map(nodes, nodeId).map(intern);
+        const nmap = new Map<number, Integration>(project.integrations.map(x => [x.id, x])); //d3.map(nodes, nodeId).map(intern);
         //project.activities.map(x => x.chartInfo)
         this.nodes = d3.map(project.integrations, (_, i) => ({ id: _.id }));
         this.nmap = new Map<number, any>(this.nodes.map((x: any) => [x.id, x]));
         this.links = d3.map(
             project.activities.map(x => x),
             (_, i) => ({ source: this.nmap.get(_.chartInfo.source!.id), target: this.nmap.get(_.chartInfo.target!.id), id: _.profile.id }),
-        ); 
+        );
 
         const nodeStrength = 100;
         const linkStrength = 1;
@@ -91,31 +91,42 @@ export class LassoToolService {
         // if (linkStrength !== undefined) forceLink.strength(linkStrength);
         const _this = this;
         // @ts-ignore
-        const simulation = d3.forceSimulation(this.nodes)
+        const simulation = d3
+            .forceSimulation(this.nodes)
             .force('link', forceLink)
             .force('charge', forceNode)
             .force('center', d3.forceCenter())
-            .on('tick', function() {
-                _this.ticked(this, _this.st)
+            .on('tick', function () {
+                _this.ticked(this, _this.st);
             });
         // this.st.nodes.call(simulation);
     }
     tickThreshold = 1000;
     tickCount = 0;
     private ticked(simulation: any, st: any) {
-        if(this.tickCount > this.tickThreshold) {
+        if (this.tickCount > this.tickThreshold) {
             return;
         }
         this.tickCount += 1;
-        st.links.select('path')
-            .attr('d', (d: Activity) => this.getPath(this.nmap.get(d.chartInfo.source!.id)!.x!, this.nmap.get(d.chartInfo.source!.id)!.y!, this.nmap.get(d.chartInfo.target!.id)!.x!, this.nmap.get(d.chartInfo.target!.id)!.y!));
+        st.links
+            .select('path')
+            .attr('d', (d: Activity) =>
+                this.getPath(
+                    this.nmap.get(d.chartInfo.source!.id)!.x!,
+                    this.nmap.get(d.chartInfo.source!.id)!.y!,
+                    this.nmap.get(d.chartInfo.target!.id)!.x!,
+                    this.nmap.get(d.chartInfo.target!.id)!.y!,
+                ),
+            );
 
-            st.nodes.attr('cx', (d: Integration) => this.nmap.get(d.id)!.x).attr('transform', (d: Integration) => `translate(${this.nmap.get(d.id)!.x},${this.nmap.get(d.id)!.y})` );
+        st.nodes
+            .attr('cx', (d: Integration) => this.nmap.get(d.id)!.x)
+            .attr('transform', (d: Integration) => `translate(${this.nmap.get(d.id)!.x},${this.nmap.get(d.id)!.y})`);
     }
 
-    public getPath(sx:number, sy: number, tx: number, ty: number): string {
+    public getPath(sx: number, sy: number, tx: number, ty: number): string {
         const deltaX = tx - sx;
-        const deltaY =ty - sy;
+        const deltaY = ty - sy;
         const distr = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         const normX = deltaX / distr;
         const normY = deltaY / distr;
