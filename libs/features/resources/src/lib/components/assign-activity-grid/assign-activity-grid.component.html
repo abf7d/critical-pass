@@ -1,0 +1,142 @@
+<div *ngIf="project !== undefined" class="activity-list-container">
+   <!-- <perfect-scrollbar style="max-width: 1176px; max-height: 1200px"> -->
+        <div class="edit-button">
+            <i [hidden]="isEditing" (click)="isEditing = true" title="Edit Form" class="fas fa-pen-square"></i>
+            <i [hidden]="!isEditing" (click)="isEditing = false" title="Assign to Activities" class="fas fa-bars"></i>
+            <i [hidden]="!sortByBranch" (click)="sortBranches()" title="Sort By Branch" class="fas fa-sort-amount-down"></i>
+            <i [hidden]="sortByBranch" (click)="sortIds()" title="Sort By Id" class="fas fa-sort-numeric-down"></i>
+        </div>
+        <div class="table-container" *ngIf="project !== undefined" #list>
+            <table class="table-fixed table-bordered resource-assignment-project-data">
+                <thead>
+                    <tr>
+                        <th class="id">Id</th>
+
+                        <th class="activity-name">Activity</th>
+                        <th class="duration">Duration</th>
+                        <th class="depends-on">Dependencies</th>
+                        <th class="pcd assign-pcd">Planned Compl Date</th>
+                        <th class="finish">Finish Date</th>
+                        <th class="start">Start Date</th>
+                        <th class="risk">Risk</th>
+                        <th class="resource">Resources</th>
+                        <th class="phase">Phase</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <ng-container *ngFor="let a of project.activities; let i = index">
+                        <tr
+                            [hidden]="isEditing"
+                            [style.color]="getColorClassForActivity(a).color"
+                            [style.background-color]="getColorClassForActivity(a).backgroundcolor"
+                            [class.selected]="a.assign.isSelected"
+                            [class.assigned]="isAssigned(a)"
+                            (click)="selectActivity(a, i)"
+                            (keydown)="keyDown($event)"
+                            (keyup)="keyUp($event)"
+                            tabindex="0"
+                        >
+                            <td>{{ a.profile.id }}</td>
+                            <td>{{ a.profile.name }}</td>
+                            <td>{{ a.profile.duration }}</td>
+                            <td class="depends-on">
+                                <span [hidden]="!a.assign.noDependencies">(s)</span><span [hidden]="!a.assign.noGoto">(e)</span
+                                ><span title="{{ a.profile.depends_on }}">{{ a.profile.depends_on }}</span>
+                            </td>
+                            <td class="assign-pcd">
+                                {{ a.profile.planned_completion_date }}
+                                <i class="fa fa-circle" style="color: #4a4" [hidden]="!a.assign.isStartBranch"></i>
+                            </td>
+                            <td>{{ a.profile.finish }}</td>
+                            <td>{{ a.profile.start_date }}</td>
+                            <td>{{ a.chartInfo.risk }}</td>
+                            <!-- -{{a.chartInfo.tf}} -->
+                            <td>
+                                <div class="initials">
+                                    <span class="activity-resource" *ngFor="let r of a.assign.resources">{{ r.initials }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="initials">
+                                    <span class="activity-phase" *ngFor="let p of a.assign.phases">{{ p.name }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="activity-info" [hidden]="!isEditing">
+                            <td>{{ a.profile.id }}</td>
+                            <td><input [(ngModel)]="a.profile.name" /></td>
+                            <td><input matInput placeholder="-" [value]="a.profile.depends_on" [(ngModel)]="a.profile.depends_on" /></td>
+                            <td><input matInput placeholder="-" [value]="a.profile.duration" [(ngModel)]="a.profile.duration" (blur)="updateProject()" /></td>
+                            <td>
+                                <mat-datepicker-toggle class="icon picker-toggle" matSuffix [for]="picker2">
+                                    <mat-icon class="mat-icon-rtl-mirror"></mat-icon>
+                                </mat-datepicker-toggle>
+                                <input
+                                    #input2
+                                    class="dateinput"
+                                    [matDatepicker]="picker2"
+                                    placeholder="---"
+                                    [(ngModel)]="a.profile.planned_completion_date_dt"
+                                    (ngModelChange)="updatePCDDate(a.profile.planned_completion_date_dt!, a.profile)"
+                                />
+                                <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+                            </td>
+                            <td>
+                                <mat-datepicker-toggle class="icon picker-toggle" matSuffix [for]="picker3">
+                                    <mat-icon class="mat-icon-rtl-mirror"></mat-icon>
+                                </mat-datepicker-toggle>
+                                <!-- ngModel is expecting a date object not a string of a date. Might need to pass the value in along with the element (activity) and set the string value on change, set the value on the activity, then that function will call update. Need to set the date vallue first. Try [value]="new Date(el.profile.start_date)" -->
+                                <input
+                                    #input3
+                                    class="dateinput"
+                                    [matDatepicker]="picker3"
+                                    placeholder="---"
+                                    [(ngModel)]="a.profile.finish_dt"
+                                    (ngModelChange)="updateFinishDate(a.profile.finish_dt!, a.profile)"
+                                />
+                                <mat-datepicker #picker3 (closed)="input3.blur()"></mat-datepicker>
+                            </td>
+                            <td>
+                                <mat-datepicker-toggle class="icon picker-toggle" matSuffix [for]="picker">
+                                    <mat-icon class="mat-icon-rtl-mirror"></mat-icon>
+                                </mat-datepicker-toggle>
+                                <!-- ngModel is expecting a date object not a string of a date. Might need to pass the value in along with the element (activity) and set the string value on change, set the value on the activity, then that function will call update. Need to set the date vallue first. Try [value]="new Date(el.profile.start_date)" -->
+                                <input
+                                    #input
+                                    class="dateinput"
+                                    [matDatepicker]="picker"
+                                    placeholder="---"
+                                    [(ngModel)]="a.profile.start_date_dt"
+                                    (ngModelChange)="updateStartDate(a.profile.start_date_dt!, a.profile)"
+                                />
+                                <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+                            </td>
+                            <td><input [(ngModel)]="a.chartInfo.tf" /></td>
+                            <td class="disabled-color">
+                                <div class="initials">
+                                    <span class="activity-resource" *ngFor="let r of a.assign.resources">{{ r.initials }}</span>
+                                </div>
+                            </td>
+                            <td class="disabled-color">
+                                <div class="initials">
+                                    <span class="activity-phase" *ngFor="let p of a.assign.phases">{{ p.name }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    <!-- </perfect-scrollbar> -->
+</div>

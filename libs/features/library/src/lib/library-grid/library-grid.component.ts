@@ -42,7 +42,7 @@ export class LibraryGridComponent implements OnInit, OnDestroy {
     }
 
     public navigateAssign(id: number) {
-        this.router.navigateByUrl(`assign/(${id}//sidebar:assignbar/${id})`);
+        this.router.navigateByUrl(`resources/(${id}//sidebar:assignbar/${id})`);
     }
 
     public navigateMetaGraph(id: number) {

@@ -39,6 +39,11 @@ const routes: Routes = [
         loadChildren: () => import('@critical-pass/features/spreadsheet').then(m => m.SpreadsheetModule),
         canLoad: [AuthorizedUserGuard],
     },
+    {
+        path: 'resources',
+        loadChildren: () => import('@critical-pass/features/resources').then(m => m.ResourcesModule),
+        canLoad: [AuthorizedUserGuard],
+    },
 ];
 
 @NgModule({

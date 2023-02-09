@@ -1,0 +1,280 @@
+.table-fixed {
+    width: 100%;
+    border: none;
+}
+
+/*This will work on every browser but Chrome Browser*/
+.table-fixed thead {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 999;
+}
+
+/*This will work on every browser*/
+.table-fixed thead th {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 999;
+    color: #666;
+    padding-bottom: 3px;
+    background: #fff;
+}
+
+.table-container {
+    margin-top: -17px;
+    margin-left: 5px;
+    width: 1041px;
+    height: 800px;
+    // overflow-y: auto;
+    // overflow-x: auto;
+}
+.table-fixed tr input {
+    width: 100%;
+    padding-left: 10px;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid #ccc !important;
+}
+.table-fixed tr input.dateinput {
+    padding-left: 27px;
+}
+
+svg.mat-datepicker-toggle-default-icon {
+    height: 15px;
+    margin-right: 0px;
+}
+.icon {
+    font-size: 14px;
+}
+
+.table-fixed tr input.dateinput {
+    width: 100%;
+}
+
+::ng-deep .mat-icon-button {
+    height: 17px !important;
+    width: 17px !important;
+    line-height: 16px !important;
+}
+input.mat-input-element {
+    margin-top: 0 !important;
+}
+
+::ng-deep button.mat-icon-button {
+    height: 25px !important;
+    width: 27px !important;
+}
+.picker-toggle {
+    height: 10px;
+    float: left;
+    margin-right: -33px;
+    margin-top: 5px;
+}
+
+.table-fixed td {
+    border-collapse: collapse;
+}
+table.table-fixed {
+    border-collapse: collapse;
+}
+.table-fixed td,
+.table-fixed th {
+}
+.activity-resource {
+    padding-right: 7px;
+}
+.activity-phase {
+    padding-right: 7px;
+}
+.initials {
+    overflow: hidden;
+    //overflow-wrap: break-word;
+}
+.activity-list-container {
+    height: 939px;
+}
+
+.table-fixed tr input.dateinput {
+    padding-left: 27px;
+}
+
+svg.mat-datepicker-toggle-default-icon {
+    height: 15px;
+    margin-right: 0px;
+}
+.icon {
+    font-size: 14px;
+}
+
+.table-fixed tr input.dateinput {
+    width: 100%;
+}
+
+::ng-deep .mat-icon-button {
+    height: 17px !important;
+    width: 17px !important;
+    line-height: 16px !important;
+}
+input.mat-input-element {
+    margin-top: 0 !important;
+}
+
+::ng-deep button.mat-icon-button {
+    height: 25px !important;
+    width: 27px !important;
+}
+.picker-toggle {
+    height: 10px;
+    float: left;
+    margin-right: -33px;
+    margin-top: 5px;
+}
+
+.table-bordered > tbody > tr.activity-info > td {
+    border: 1px solid #ddd;
+    border-right: 0;
+    padding-top: 0px;
+    border-left: 0px;
+    padding-bottom: 0px;
+}
+
+.depends-on {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.assign-pcd {
+    padding-left: 10px;
+}
+.resource-assignment-project-data tr.selected.assigned {
+    background-image: repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.3) 5px,
+        rgba(125, 125, 125, 0) 0px,
+        rgba(125, 125, 125, 0) 8px
+    );
+}
+.edit-button {
+    position: absolute;
+    top: 14px;
+    z-index: 1000;
+    right: 20px;
+    background-color: #fff;
+    color: #666;
+    width: 34px;
+    i {
+        width: 15px;
+        height: 15px;
+        padding: 4px;
+    }
+}
+perfect-scrollbar {
+    position: relative;
+}
+.table-bordered > tbody > tr.activity-info > td {
+    border: 0px solid #ddd;
+    border-right: 0;
+    padding-top: 0px;
+    margin: 0px;
+    border-left: 0px;
+    padding-bottom: 0px;
+    border-bottom: 1px solid #ccc;
+}
+
+.table-bordered > tbody > tr.activity-info > td:first-child {
+    border-left: none !important;
+    border-right: none;
+}
+
+.table-fixed tr input {
+    width: 100%;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 0px !important;
+}
+
+.disabled-color {
+    background-color: #eee;
+}
+
+table > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+    border: 1px solid #ddd;
+    border-right: 0;
+    padding-top: 13px;
+    border-left: 0;
+    padding-bottom: 5px;
+}
+
+* {
+    font-size: 13px;
+}
+tr:hover {
+    background-color: #eee;
+}
+
+tr.selected:hover {
+    background-color: #e2e28a;
+}
+tr.selected {
+    background-color: #fcfc9b;
+}
+.picker-toggle {
+    margin-top: 3px;
+}
+
+::ng-deep svg.mat-datepicker-toggle-default-icon {
+    height: 15px;
+    width: 14px;
+    margin-right: 0px;
+}
+
+.resource-assignment-project-data {
+    table-layout: fixed;
+    width: 1015px;
+}
+.resource-assignment-project-data tr th.id {
+    width: 20px;
+}
+.resource-assignment-project-data tr th.activity-name {
+    width: 217px;
+}
+.resource-assignment-project-data tr th.risk {
+    width: 42px;
+}
+.resource-assignment-project-data tr th.duration {
+    width: 42px;
+}
+.resource-assignment-project-data tr th.depends-on {
+    width: 107px;
+}
+.resource-assignment-project-data tr th.pcd {
+    width: 100px;
+}
+.resource-assignment-project-data tr th.pev {
+    width: 100px;
+}
+.resource-assignment-project-data tr th.finish {
+    width: 75px;
+}
+.resource-assignment-project-data tr th.start {
+    width: 75px;
+}
+.resource-assignment-project-data tr th.resource {
+    width: 75px;
+}
+.resource-assignment-project-data tr th.skill {
+    width: 75px;
+}
+.resource-assignment-project-data tr th.phase {
+    width: 75px;
+}

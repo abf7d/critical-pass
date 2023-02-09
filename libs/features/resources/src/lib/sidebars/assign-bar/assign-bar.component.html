@@ -1,0 +1,11 @@
+<div class="sidebar">
+    <div class="title">Assign Resources</div>
+    <a class="btn btn-secondary" (click)="navigateActivities()">Activities</a>
+    <a class="btn btn-secondary" (click)="navigateResources()">Resources</a>
+    <a class="btn btn-secondary" (click)="navigateCompare()">Compare</a>
+    <a class="btn btn-secondary" style="cursor: pointer" (click)="unstash()">Unstash</a> <!--(click)="loadFromLocal()"-->
+    <a class="btn btn-secondary" (click)="stash()">Stash</a> <!--(click)="storeInLocal()"-->
+    <div class="msg">Go to Profile and load from local storage. Must Save First before going!</div>
+    <a class="btn btn-secondary" [routerLink]="['/projects/lp/profile/-3', { outlets: { sidebar: ['resources', -3], subcontent:null } }]">Go To Profile</a>
+    <a class="btn btn-secondary">Load from backend</a> <!-- (click)="loadProjectFromBackend()"-->
+  </div>

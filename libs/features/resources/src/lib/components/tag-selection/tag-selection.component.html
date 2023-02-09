@@ -1,0 +1,22 @@
+<div class="actions">
+        <span class="tag-title">{{ title }}</span>
+        <span class="float-right assign-button" [hidden]="hideAssignLinks">
+            <a href="javascript:void(0)" (click)="assign()">Assign To Activities</a>
+            <span class="center">|</span>
+            <a href="javascript:void(0)" (click)="removeAll()">Unassign</a>
+        </span>
+</div>
+<div class="tags">
+    <button
+        type="button"
+        (click)="select(tag)"
+        [style.background-color]="getTagColor(tag).backgroundcolor"
+        [style.color]="getTagColor(tag).color"
+        class="btn btn-light tag-btn"
+        *ngFor="let tag of items"
+    >
+        {{ getName(tag) }}
+        <span (click)="remove(tag)">x</span>
+    </button>
+    <input class="add-tag" [(ngModel)]="newTag" (change)="add($event.target)" type="text" placeholder="Type Name" />
+</div>

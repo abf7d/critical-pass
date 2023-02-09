@@ -1,0 +1,10 @@
+perfect-scrollbar {
+    position: relative;
+}
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    & > * {
+        padding: 10px;
+    }
+}

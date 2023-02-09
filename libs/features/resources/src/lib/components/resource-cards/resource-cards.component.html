@@ -1,0 +1,15 @@
+<div *ngIf="project !== undefined" class="activity-list-container">
+    <!-- <perfect-scrollbar style="max-width: 1376px; max-height: 1200px"> -->
+        <div class="card-container">
+            <cp-profile-card
+                *ngFor="let resource of project.resources; index as i"
+                [name]="resource.profile.name"
+                [assignedRoles]="resource.assign.roles"
+                [options]="roles"
+                [index]="i"
+                (update)="updateResource($event)"
+                (delete)="deleteResource($event)"
+            ></cp-profile-card>
+        </div>
+    <!-- </perfect-scrollbar> -->
+</div>

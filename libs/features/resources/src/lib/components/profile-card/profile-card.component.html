@@ -1,0 +1,33 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <i mat-card-avatar class="user fas fa-user"></i>
+        <mat-card-title>
+            <div class="val" [hidden]="editing">{{ name }}</div>
+            <mat-form-field class="example-form-field val" [hidden]="!editing">
+                <mat-label>Clearable input</mat-label>
+                <input matInput type="text" [(ngModel)]="name" />
+                <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name = ''"></button>
+            </mat-form-field>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <div class="title">Role</div>
+            <div class="val" [hidden]="editing">{{ role }}</div>
+            <mat-form-field class="val" [hidden]="!editing" appearance="fill">
+                <mat-label>Select an option</mat-label>
+                <mat-select [(value)]="role">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let option of options" [value]="option.name">{{ option.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <div class="clearfix">
+            <div class="float-right">
+                <a class="delete-btn" href="javascript:void(0)" (click)="deleteResource()">Delete</a>
+                <button class="btn btn-secondary" [hidden]="editing" (click)="editing = true">Edit</button>
+                <button class="btn btn-secondary" [hidden]="!editing" (click)="updateResource()">Uptdate</button>
+            </div>
+        </div>
+    </mat-card-actions>
+</mat-card>

@@ -1,0 +1,26 @@
+.change-tracking {
+    width: 475px;
+
+    .tree-chart{
+        overflow: hidden;
+        cursor: text;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        height: auto;
+        border-radius: 0;
+        width: 475px;
+        display: flex;
+        justify-content: center;
+        height: 680px;
+        align-items: center;
+    }
+    cp-project-tree {
+        width: 100%;
+    }
+}
+.options {
+    padding-bottom: 3px;
+}
+.tree-buttons {
+    padding: 10px;
+}

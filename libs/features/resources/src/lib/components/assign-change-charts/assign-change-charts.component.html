@@ -1,0 +1,31 @@
+<div class="options">
+    <div class="form-check-inline">
+        <label class="form-check-label">
+            <input checked class="form-check-input" (change)="viewMultiverse = 'branching'" name="multiverse-options" type="radio" />Branch
+        </label>
+    </div>
+    <div class="form-check-inline">
+        <label class="form-check-label">
+            <input class="form-check-input" (change)="viewMultiverse = 'earnedvalue'" name="multiverse-options" type="radio" />Time Cost
+        </label>
+    </div>
+    <div class="form-check-inline">
+        <label class="form-check-label">
+            <input class="form-check-input" (change)="viewMultiverse = 'stacked'" name="multiverse-options" type="radio" />Stacked
+        </label>
+    </div>
+</div>
+<div class="change-tracking" [hidden]="viewMultiverse !== 'branching'">
+    <div class="tree-buttons">
+        <cp-tree-buttons [fileActions]="true"></cp-tree-buttons>
+    </div>
+    <div class="tree-chart">
+        <cp-project-tree [width]="460" [height]="660" [id]="id"></cp-project-tree>
+    </div>
+</div>
+
+<div [hidden]="viewMultiverse !== 'earnedvalue'">
+    <cp-time-cost [width]="460" [height]="560" [id]="id"></cp-time-cost>
+</div>
+
+<div [hidden]="viewMultiverse !== 'stacked'">Add Stacked Resources Here</div>

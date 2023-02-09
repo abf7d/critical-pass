@@ -8,3 +8,4 @@ export * from './end-nodes-locator/end-nodes-locator.service';
 export * from './milestone-factory/milestone-factory.service';
 export * from './parent-compiler/parent-compiler.service';
 export * from './node-arranger/node-arranger.service';
+export * from './indirect-cost-calculator/indirect-cost-calculator.service';

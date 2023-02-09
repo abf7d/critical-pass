@@ -1,0 +1,23 @@
+<div class="chart-options">
+    <div class="role-title">Resource</div>
+    <mat-form-field class="example-form-field">
+        <mat-label>Resource (card)</mat-label>
+        <input matInput type="text" [(ngModel)]="newResourcetTxt" #newResource (keydown.enter)="addResource($event.target)" />
+    </mat-form-field>
+    <button class="btn btn-secondary add" (click)="addResource(newResource.value)">Add</button>
+    <div *ngIf="project !== undefined">
+        <div class="role" *ngFor="let resource of project.resources">{{ resource.profile.name }} <span (click)="removeResource(resource)">X</span></div>
+    </div>
+</div>
+
+<div class="chart-options roles">
+    <div class="role-title">Roles</div>
+    <mat-form-field class="example-form-field">
+        <mat-label>New Role</mat-label>
+        <input matInput type="text" [(ngModel)]="newRoleTxt" #newRole (keydown.enter)="addRole($event.target)" />
+    </mat-form-field>
+    <button class="btn btn-secondary add" (click)="addRole(newRole.value)">Add</button>
+    <div *ngIf="project !== undefined">
+        <div class="role" *ngFor="let role of project.roles">{{ role.name }} <span (click)="removeRole(role)">X</span></div>
+    </div>
+</div>

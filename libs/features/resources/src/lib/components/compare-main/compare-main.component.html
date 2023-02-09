@@ -1,0 +1,17 @@
+<div class="layout">
+    <div class="grid-container">
+        <div class="chart-container">
+            <div class="charts" *ngFor="let node of completedNodes">
+                <cp-shallow-s-snapshot [project]="node.data!" [width]="390" [height]="250"></cp-shallow-s-snapshot>
+                <cp-stacked-resources
+                    [project]="node.data!"
+                    [width]="390"
+                    [height]="250"
+                    [barWidth]="10"
+                    [showAxes]="false"
+                    [margin]="{ top: 15, right: 15, left: 15, bottom: 15 }"
+                ></cp-stacked-resources>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="chart-options">
+    <div class="form-check-inline">
+        <label class="form-check-label">
+            <input class="form-check-input" checked (change)="setTagType('resource')"  name="rsc-phase" type="radio" value="resources" />Resources
+        </label>
+    </div>
+    <div class="form-check-inline">
+        <label class="form-check-label">
+            <input class="form-check-input" (change)="setTagType('phase')" name="rsc-phase" type="radio" value="phases" />Phases
+        </label>
+    </div>
+</div>
+<div *ngIf="project !== undefined">
+    <cp-tag-selection
+        *ngIf="isResourceView"
+        title="Resources"
+        colorBucket="resource"
+        nameAttr="profile"
+        [items]="project.resources"
+        (assignTags)="assignResources()"
+        (unassignTags)="unassignResources()"
+        (selectTag)="selectResource($event)"
+        (removeTag)="removeResource($event)"
+        (addTag)="addResource($event)"
+    ></cp-tag-selection>
+
+    <cp-tag-selection
+        *ngIf="!isResourceView"
+        title="Phases"
+        colorBucket="phase"
+        [items]="project.phases"
+        (assignTags)="assignPhases()"
+        (unassignTags)="unassignPhases()"
+        (selectTag)="selectPhase($event)"
+        (removeTag)="removePhase($event)"
+        (addTag)="addPhase($event)"
+    ></cp-tag-selection>
+</div>

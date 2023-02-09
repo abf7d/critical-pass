@@ -1,8 +1,8 @@
 export interface TimeCostState {
     svg: any;
     mainG: any;
-    innerWidth: number;
-    innerHeight: number;
+    innerWidth: number | null;
+    innerHeight: number | null;
     margin: { top: number; bottom: number; left: number; right: number };
 }
 

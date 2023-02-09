@@ -26,8 +26,7 @@ export class ArrowChartComponent implements OnInit, OnDestroy {
     public autoArrange: boolean = false;
     private ui: ArrowChartUIService;
 
-    constructor(/*private factory: ArrowFactoryService*/) {
-        // this.ui = this.factory.ui;
+    constructor() {
         this.ui = inject(ArrowChartUIService);
     }
     public ngOnInit(): void {

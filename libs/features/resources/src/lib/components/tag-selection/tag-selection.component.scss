@@ -1,0 +1,40 @@
+.tags{
+    overflow: auto;
+    cursor: text;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    height: auto;
+    border-radius: 0;
+    height: 98px;
+    width: 475px;
+}
+.add-tag{
+    padding: 3px;
+    margin: 2px;
+    width: 125px!important;
+    background-color: #fff;
+    height: 40px;
+    padding-left: 12px;
+    border: none!important;
+}
+.actions {
+    width: 475px;
+    padding: 10px;
+    padding-bottom: 7px;
+}
+.assign-button *  {
+    padding: 10px
+}
+.tag-btn {
+    margin: 2px;
+    padding: 0 12px;
+    height: 37px;
+    border: 1px solid #acacac;
+    border-radius: 3px;
+    background: none;
+    margin: 5px;
+    font-size: 15px;
+}
+.tag-title {
+    font-weight: bold;
+}

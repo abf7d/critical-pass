@@ -146,5 +146,6 @@ export const BRANCH_KEY = 'project.tree.branch';
 export const COMMIT_KEY = 'project.tree.commit';
 export const RESET_KEY = 'project.tree.reset';
 export const INITIAL_NODE_COUNT = 0;
+export const ASSIGN_COMPLETED_PROJECTS = 'assign.completed.projects';
 // export const NETWORK_ARRAY_KEY = 'project.newtwork.array';
 // export const FILTERED_NETWORK_ARRAY_KEY = 'project.filtered.newtwork.array';
