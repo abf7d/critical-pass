@@ -35,8 +35,6 @@ import { LeftMenuLayoutComponent } from '@critical-pass/shared/components';
 // })
 // export class ProfileRoutingModule {}
 
-
-
 // import { NgModule } from '@angular/core';
 // import { Routes, RouterModule } from '@angular/router';
 // import { CanDeactivateGuard } from '../../../core/guards/deactivate/can-deactivate.guard';
@@ -46,24 +44,25 @@ import { AssignLayoutComponent } from './assign-layout/assign-layout.component';
 import { AssignBarComponent } from './sidebars/assign-bar/assign-bar.component';
 
 const routes: Routes = [
-  {
-      path: '',
-      component: LeftMenuLayoutComponent, 
-      children: [
-        {
-          path: ':id',
-          component: AssignLayoutComponent,
-          resolve: { items: ProjectResolver },
+    {
+        path: '',
+        component: LeftMenuLayoutComponent,
+        children: [
+            {
+                path: ':id',
+                component: AssignLayoutComponent,
+                resolve: { items: ProjectResolver },
                 canDeactivate: [CanDeactivateGuard],
-      },
-      { path: 'assignbar/:id', component: AssignBarComponent, outlet: 'sidebar' },
-      { path: 'resources/:id', component: AssignBarComponent, outlet: 'sidebar' },
-      { path: 'compare/:id', component: AssignBarComponent, outlet: 'sidebar' }
-      ],
-  },];
+            },
+            { path: 'assignbar/:id', component: AssignBarComponent, outlet: 'sidebar' },
+            { path: 'resources/:id', component: AssignBarComponent, outlet: 'sidebar' },
+            { path: 'compare/:id', component: AssignBarComponent, outlet: 'sidebar' },
+        ],
+    },
+];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
-export class ResourcesRoutingModule { }
+export class ResourcesRoutingModule {}

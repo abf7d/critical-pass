@@ -30,7 +30,7 @@ export * from './lib/charts/arrow-snapshot/arrow-snapshot.component';
 // export * from './lib/charts/arrow-chart/arrow-chart.component';
 // export * from './lib/charts/activity-grid/activity-grid.component';
 export * from './lib/charts/arrow-snapshot/arrow-snapshot.component';
-export * from './lib/services/completion-node-calc/completion-node-calc.service'
+export * from './lib/services/completion-node-calc/completion-node-calc.service';
 // export * from './lib/charts/project-tree/project-tree.component';
 // export * from './lib/charts/risk-curve/risk-curve.component';
 // export * from './lib/charts/risk-donut/risk-donut.component';

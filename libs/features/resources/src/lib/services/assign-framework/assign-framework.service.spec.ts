@@ -3,14 +3,14 @@ import { TestBed } from '@angular/core/testing';
 import { AssignFrameworkService } from './assign-framework.service';
 
 describe('AssignFrameworkService', () => {
-  let service: AssignFrameworkService;
+    let service: AssignFrameworkService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AssignFrameworkService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(AssignFrameworkService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });

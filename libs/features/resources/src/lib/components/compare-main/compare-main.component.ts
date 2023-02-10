@@ -5,7 +5,6 @@ import { EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-ac
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-
 @Component({
     selector: 'cp-compare-main',
     templateUrl: './compare-main.component.html',
@@ -18,7 +17,8 @@ export class CompareMainComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.completedNodes = [];
-        this.sub = this.eventService.get<TreeNode[]>(CHART_KEYS.HISTORY_ARRAY_KEY)
+        this.sub = this.eventService
+            .get<TreeNode[]>(CHART_KEYS.HISTORY_ARRAY_KEY)
             .pipe(filter(x => !!x))
             .subscribe(historyArray => {
                 this.completedNodes = this.completed.getCompletedNodes(historyArray);

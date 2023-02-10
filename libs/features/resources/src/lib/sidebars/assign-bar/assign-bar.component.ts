@@ -21,7 +21,6 @@ export class AssignBarComponent implements OnInit, OnDestroy {
         private router: Router,
         private toastr: ToastrService,
         private storageApi: ProjectStorageApiService,
-
     ) {
         this.id = +this.route.snapshot.params['id'];
 

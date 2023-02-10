@@ -30,11 +30,9 @@ export class AssignActivityGridComponent implements OnInit {
         private activitySorter: ActivitySorterService,
     ) {}
     ngOnInit() {
-        this.subscription = this.dashboard.activeProject$
-            .pipe(filter(x => !!x))
-            .subscribe(project => {
-                this.project = project;
-            });
+        this.subscription = this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(project => {
+            this.project = project;
+        });
     }
 
     public isAssigned(activity: Activity) {

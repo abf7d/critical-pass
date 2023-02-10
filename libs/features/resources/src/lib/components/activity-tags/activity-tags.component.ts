@@ -84,8 +84,8 @@ export class ActivityTagsComponent implements OnInit {
         this.phaseFactory.addPhase(name, this.project.phases);
         this.dashboard.updateProject(this.project, false);
     }
-    public setTagType(view: string){
-      this.isResourceView = view === 'resource';
-      this.aManager.colorBy = view;
+    public setTagType(view: string) {
+        this.isResourceView = view === 'resource';
+        this.aManager.colorBy = view;
     }
 }

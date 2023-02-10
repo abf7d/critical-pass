@@ -55,8 +55,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
         MatSelectModule,
         MatAutocompleteModule,
         MatIconModule,
-        MatDatepickerModule
-      ],
+        MatDatepickerModule,
+    ],
     // exports: [TagSelectionComponent],
 })
 export class ResourcesModule {}

@@ -6,11 +6,11 @@ import { AssignFrameworkService } from '../../services/assign-framework/assign-f
     templateUrl: './tag-selection.component.html',
     styleUrls: ['./tag-selection.component.scss'],
 })
-export class TagSelectionComponent implements OnInit{
+export class TagSelectionComponent implements OnInit {
     @Input() title!: string;
     @Input() nameAttr!: string;
     @Input() colorBucket!: string;
-    @Input() items!: TagBase[]; 
+    @Input() items!: TagBase[];
     @Input() hideAssignLinks!: boolean;
     @Output() assignTags = new EventEmitter<string>();
     @Output() unassignTags = new EventEmitter<string>();
@@ -24,14 +24,13 @@ export class TagSelectionComponent implements OnInit{
     public select = (tag: TagBase) => this.selectTag.emit(tag);
     public remove = (tag: TagBase) => this.removeTag.emit(tag);
     public add(event: any) {
-      const name = event.value;
-      this.addTag.emit(name); 
-      this.newTag = '';
+        const name = event.value;
+        this.addTag.emit(name);
+        this.newTag = '';
     }
     public getTagColor = (tag: TagBase) => this.aManager.getColor(tag, this.colorBucket);
     public getName = (tag: any) => (this.nameAttr ? tag[this.nameAttr].name : tag['name']);
     public ngOnInit(): void {}
 }
 
-export interface TagBase {
-}
+export interface TagBase {}

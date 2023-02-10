@@ -156,10 +156,9 @@ export class TimeCostUiService {
             .attr('cy', (d: any) => yScale(d.cost))
             .attr('r', 4)
             .on('click', (event: any, d: any) => {
-                this.eventService.get(CONST.SELECTED_TREE_NODE_KEY).next(d.nodeId)
+                this.eventService.get(CONST.SELECTED_TREE_NODE_KEY).next(d.nodeId);
                 this.selectedNodeId = d.nodeId;
                 this.drawChart(timeCostPoints);
             });
     }
 }
-
