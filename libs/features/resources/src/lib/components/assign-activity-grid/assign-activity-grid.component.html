@@ -1,5 +1,6 @@
 <div *ngIf="project !== undefined" class="activity-list-container">
-   <!-- <perfect-scrollbar style="max-width: 1176px; max-height: 1200px"> -->
+    <!-- <perfect-scrollbar style="max-width: 1176px; max-height: 1200px"> -->
+    <div class="grid-area">
         <div class="edit-button">
             <i [hidden]="isEditing" (click)="isEditing = true" title="Edit Form" class="fas fa-pen-square"></i>
             <i [hidden]="!isEditing" (click)="isEditing = false" title="Assign to Activities" class="fas fa-bars"></i>
@@ -138,5 +139,6 @@
                 </tbody>
             </table>
         </div>
-    <!-- </perfect-scrollbar> -->
+        <!-- </perfect-scrollbar> -->
+    </div>
 </div>

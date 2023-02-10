@@ -47,3 +47,7 @@
 .assign-button > * {
     padding: 4px
 }
+.grid-container {
+    height: calc(100vh - 114px);
+    overflow-y: auto;
+}

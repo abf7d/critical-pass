@@ -36,7 +36,7 @@ export class IndirectCostCalculatorService {
         // const projectDuration = this.getTimeSpanBetweenPoints(project.activities);
         let totalCost = 0;
         for (const resource of project.resources) {
-            const resourcesActivities = project.activities.filter(a => a.assign.resources.filter(r => r.id === resource.id + '').length > 0);
+            const resourcesActivities = project.activities.filter(a => a.assign.resources.filter(r => r.id === resource.id).length > 0);
             let timeSpan = 0;
             if (resourcesActivities.length > 0) {
                 const chargeBetween = true;

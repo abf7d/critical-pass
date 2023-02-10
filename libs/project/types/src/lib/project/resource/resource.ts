@@ -24,7 +24,7 @@ export interface ResourceSummary {
     initials: string;
     color: ColorView;
     role: string;
-    id: string;
+    id: number;
 }
 
 export interface ColorView {

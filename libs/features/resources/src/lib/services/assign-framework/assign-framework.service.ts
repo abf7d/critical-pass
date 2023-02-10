@@ -134,7 +134,7 @@ export class AssignFrameworkService {
             const activities = project.activities.filter(a => a.assign.isSelected);
             for (const activity of activities) {
                 for (const resource of resources) {
-                    const dup = activity.assign.resources.find(r => r.id === resource.id + '');
+                    const dup = activity.assign.resources.find(r => r.id === resource.id);
                     if (dup === undefined) {
                         const summary = this.resourceFactory.getSummary(resource);
                         activity.assign.resources.push(summary);

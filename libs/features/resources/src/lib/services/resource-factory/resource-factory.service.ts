@@ -36,13 +36,13 @@ export class ResourceFactoryService {
     getSummary(resource: Resource) {
         const summary = this.summarySerializer.fromJson();
         summary.color = resource.view.color;
-        summary.id = resource.id + '';
+        summary.id = resource.id;
         summary.initials = resource.profile.initials;
         summary.name = resource.profile.name;
         return summary;
     }
     getResourceFromSummary(summary: ResourceSummary, resourceList: Resource[]) {
-        const resource = resourceList.find(r => r.id + '' === summary.id);
+        const resource = resourceList.find(r => r.id  === summary.id);
         return resource;
     }
 }

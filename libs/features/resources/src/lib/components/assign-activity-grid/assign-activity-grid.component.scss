@@ -241,6 +241,9 @@ tr.selected {
 .resource-assignment-project-data {
     table-layout: fixed;
     width: 1015px;
+    thead { 
+        z-index: 0;
+    }
 }
 .resource-assignment-project-data tr th.id {
     width: 20px;
