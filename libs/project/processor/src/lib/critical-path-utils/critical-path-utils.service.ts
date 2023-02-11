@@ -47,7 +47,6 @@ export class CriticalPathUtilsService {
         //   - If we made it to the destination, then we're done
         // 	- every branch is walked an the largest distances remain on each node
         // 	- sets distance which represents EFT
-        // console.log('dij ' + pathTxt);
 
         // Test if we're done.. If we have found the END vertex, then no need to search further
         // -1 is the default for no distance

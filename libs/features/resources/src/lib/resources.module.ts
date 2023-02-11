@@ -22,6 +22,7 @@ import { ResourcesRoutingModule } from './resources.routes';
 import { ArrowChartModule, ProjectTreeModule, ShallowSSnapshotModule, StackedResourcesModule, TimeCostModule } from '@critical-pass/charts';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ResourceArrowComponent } from './components/resource-arrow/resource-arrow.component';
 // import { ProjectTreeModule, TimeCostModule } from '@critical-pass/critical-charts';
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
         ResourceTagsComponent,
         ResourceCardsComponent,
         ProfileCardComponent,
+        ResourceArrowComponent,
     ],
     imports: [
         CommonModule,

@@ -2,15 +2,9 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivitySorterService } from '@critical-pass/project/processor';
 import { Activity, ActivityProfile, Project } from '@critical-pass/project/types';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
-// import { ProjectManagerBase } from '@critical-pass/critical-charts';
-// import { Activity } from '@critical-pass/critical-charts';
-// import { Project } from '@critical-pass/critical-charts';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AssignFrameworkService } from '../../services/assign-framework/assign-framework.service';
-// import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-// import { AssignFrameworkService } from '../../../services/utils/assign/assign-framework/assign-framework.service';
-// import { ActivitySorterService } from '@critical-pass/critical-charts';
 
 @Component({
     selector: 'cp-assign-activity-grid',
@@ -21,9 +15,9 @@ export class AssignActivityGridComponent implements OnInit {
     @Input() id!: number;
     public project!: Project;
     private subscription!: Subscription;
-    // public config: PerfectScrollbarConfigInterface = {};
     public isEditing = false;
     public sortByBranch = true;
+    public activities: Activity[] = [];
     constructor(
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
         private aManager: AssignFrameworkService,
@@ -32,6 +26,12 @@ export class AssignActivityGridComponent implements OnInit {
     ngOnInit() {
         this.subscription = this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(project => {
             this.project = project;
+            const selectedAct = this.project.profile.view.lassoedLinks;
+            if(selectedAct.length > 0) {
+                this.activities = this.project.activities.filter(x => selectedAct.includes(x.profile.id));
+            } else {
+                this.activities = this.project.activities;
+            }
         });
     }
 

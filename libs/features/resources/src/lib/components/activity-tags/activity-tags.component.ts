@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
-import { Project } from '@critical-pass/project/types';
+import { Activity, Project } from '@critical-pass/project/types';
 import { CHART_KEYS } from '@critical-pass/charts';
 import { AssignFrameworkService } from '../../services/assign-framework/assign-framework.service';
 import { ResourceFactoryService } from '../../services/resource-factory/resource-factory.service';
@@ -20,6 +20,7 @@ export class ActivityTagsComponent implements OnInit {
     public project!: Project;
     public subscription!: Subscription;
     public isResourceView = true;
+    public lassoedActivities: Activity[] = [];
     constructor(
         route: ActivatedRoute,
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
@@ -34,12 +35,16 @@ export class ActivityTagsComponent implements OnInit {
     public ngOnInit(): void {
         this.subscription = this.project$.pipe(filter(x => !!x)).subscribe(project => {
             this.project = project;
+            const lassoedActivities = this.project.profile.view.lassoedLinks;
+            if (lassoedActivities.length > 0) {
+                this.lassoedActivities = this.project.activities.filter(x => lassoedActivities.includes(x.profile.id));
+            }
         });
         this.aManager.colorBy = 'resource';
     }
     public assignResources() {
         const type = 'resources';
-        this.aManager.assignTagsToActivities(type, this.project);
+        this.aManager.assignTagsToActivities(type, this.project, this.lassoedActivities);
         this.dashboard.updateProject(this.project, false);
         this.eventService.get(CHART_KEYS.COMMIT_KEY).next(true);
     }
@@ -63,7 +68,7 @@ export class ActivityTagsComponent implements OnInit {
     }
     public assignPhases() {
         const type = 'phases';
-        this.aManager.assignTagsToActivities(type, this.project);
+        this.aManager.assignTagsToActivities(type, this.project, this.lassoedActivities);
         this.dashboard.updateProject(this.project, false);
     }
     public unassignPhases() {

@@ -99,6 +99,9 @@ export class TreeOperationsService {
     public copyNode(node: TreeNode) {
         const projCopy = new ProjectSerializerService().fromJson(node.data);
         const nodeCopy = new ProjectTreeNodeSerializerService().fromJson(node);
+        
+        // hack to get lassoOn to persist for the resources arrow chart after assignment
+        projCopy.profile.view.lassoOn = node.data!.profile.view.lassoOn;
         nodeCopy.data = projCopy;
         return nodeCopy;
     }
@@ -121,8 +124,11 @@ export class TreeOperationsService {
 
         // TODO: Inject a NodeDataFactoryBase and Implement with ProjectNodeFactory
         const data = this.projSerializer.fromJson(project);
-        const newNode: TreeNode = { id, group, subgroup, data, name, children: [], metadata: null, parent: null, parentNodeId: null };
 
+        // hack to get lassoOn to persist for the resources arrow chart after assignment
+        data.profile.view.lassoOn = project.profile.view.lassoOn;
+
+        const newNode: TreeNode = { id, group, subgroup, data, name, children: [], metadata: null, parent: null, parentNodeId: null };
         this.nodeConnector.connectArrowsToNodes(data);
 
         // TODO abstract this as a base class injected so the Tree component can be used

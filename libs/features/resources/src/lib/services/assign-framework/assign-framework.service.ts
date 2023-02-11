@@ -123,15 +123,15 @@ export class AssignFrameworkService {
         }
     }
 
-    public assignTagsToActivities(type: string, project: Project) {
+    public assignTagsToActivities(type: string, project: Project, lassoedActivities: Activity[]) {
         if (type === 'resources') {
             this._colorBy = 'resource';
         } else if (type === 'phases') {
             this._colorBy = 'phase';
         }
+        const activities = lassoedActivities.length ? lassoedActivities : project.activities.filter(a => a.assign.isSelected);
         if (type === 'resources') {
             const resources = project.resources.filter(r => r.view.isSelected);
-            const activities = project.activities.filter(a => a.assign.isSelected);
             for (const activity of activities) {
                 for (const resource of resources) {
                     const dup = activity.assign.resources.find(r => r.id === resource.id);
@@ -141,10 +141,8 @@ export class AssignFrameworkService {
                     }
                 }
             }
-            // this.renderService.commitChange(project);
         } else if (type === 'phases') {
             const phases = project.phases.filter(p => p.view.isSelected);
-            const activities = project.activities.filter(a => a.assign.isSelected);
             for (const activity of activities) {
                 for (const phase of phases) {
                     const dup = activity.assign.phases.find(p => p.id === phase.id);

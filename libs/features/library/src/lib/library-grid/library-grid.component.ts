@@ -69,7 +69,6 @@ export class LibraryGridComponent implements OnInit, OnDestroy {
             this.nodeConnector.connectArrowsToNodes(project);
             projects.push(project);
         }
-        console.log('projects', projects);
         this.projects = projects;
     }
 

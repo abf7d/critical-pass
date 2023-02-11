@@ -1,0 +1,10 @@
+<div class="options">
+    <div class="lasso-title">Lasso Tool:</div>
+    <div class="form-check-inline">
+        <label class="form-check-label"> <input class="form-check-input" (change)="toggleLasso(true)" name="lasso-on" type="radio" />On </label>
+    </div>
+    <div class="form-check-inline">
+        <label class="form-check-label"> <input class="form-check-input" checked (change)="toggleLasso(false)" name="lasso-on" type="radio" />Off </label>
+    </div>
+</div>
+<cp-arrow-chart [showFastCreator]="false" [width]="1214" [height]="700" [rebuild]="true"></cp-arrow-chart>
