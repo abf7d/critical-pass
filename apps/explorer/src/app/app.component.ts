@@ -10,6 +10,5 @@ import { ProjectApiService } from '@critical-pass/shared/data-access';
 export class AppComponent {
     title = 'explorer';
     project!: Project;
-    constructor(private projectApi: ProjectApiService) {
-    }
+    constructor(private projectApi: ProjectApiService) {}
 }

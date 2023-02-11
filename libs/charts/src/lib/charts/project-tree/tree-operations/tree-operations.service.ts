@@ -99,7 +99,7 @@ export class TreeOperationsService {
     public copyNode(node: TreeNode) {
         const projCopy = new ProjectSerializerService().fromJson(node.data);
         const nodeCopy = new ProjectTreeNodeSerializerService().fromJson(node);
-        
+
         // hack to get lassoOn to persist for the resources arrow chart after assignment
         projCopy.profile.view.lassoOn = node.data!.profile.view.lassoOn;
         nodeCopy.data = projCopy;

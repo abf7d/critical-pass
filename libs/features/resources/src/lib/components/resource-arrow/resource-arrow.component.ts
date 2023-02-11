@@ -12,9 +12,7 @@ export class ResourceArrowComponent {
     public isLassoOn: boolean = false;
     public project: Project | null = null;
     public sub!: Subscription;
-    constructor(
-        @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
-    ) { }
+    constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService) {}
 
     ngOnInit(): void {
         this.sub = this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(project => {
@@ -30,5 +28,4 @@ export class ResourceArrowComponent {
             this.dashboard.updateProject(this.project, true);
         }
     }
-
 }

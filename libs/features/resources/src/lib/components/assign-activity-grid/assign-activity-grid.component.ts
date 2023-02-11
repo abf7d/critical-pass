@@ -27,7 +27,7 @@ export class AssignActivityGridComponent implements OnInit {
         this.subscription = this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(project => {
             this.project = project;
             const selectedAct = this.project.profile.view.lassoedLinks;
-            if(selectedAct.length > 0) {
+            if (selectedAct.length > 0) {
                 this.activities = this.project.activities.filter(x => selectedAct.includes(x.profile.id));
             } else {
                 this.activities = this.project.activities;
