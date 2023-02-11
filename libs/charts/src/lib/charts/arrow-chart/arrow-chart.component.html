@@ -1,6 +1,6 @@
 <div class="arrow-empty-message" [hidden]="!(isEmpty | async)">Arrow diagram: click to add nodes and arrows</div>
 <div class="arrow-component-wrapper">
-    <div class="create-txt">
+    <div class="create-txt" *ngIf="showFastCreator">
         <div>
             <div>Add Activity</div>
             <input type="text" [(ngModel)]="activityTxt" (keydown)="processActivityTxt($event)" />

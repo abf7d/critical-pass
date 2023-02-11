@@ -42,7 +42,7 @@ export class ResourceFactoryService {
         return summary;
     }
     getResourceFromSummary(summary: ResourceSummary, resourceList: Resource[]) {
-        const resource = resourceList.find(r => r.id  === summary.id);
+        const resource = resourceList.find(r => r.id === summary.id);
         return resource;
     }
 }

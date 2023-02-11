@@ -17,6 +17,7 @@ export class ArrowChartComponent implements OnInit, OnDestroy {
     @Input() width!: number;
     @Input() height!: number;
     @Input() rebuild!: boolean;
+    @Input() showFastCreator: boolean = true;
     @ViewChild('chart', { static: true }) chart!: ElementRef;
 
     public isEmpty!: BehaviorSubject<boolean>;

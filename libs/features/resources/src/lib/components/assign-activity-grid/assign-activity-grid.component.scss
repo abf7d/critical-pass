@@ -7,7 +7,7 @@
 .table-fixed thead {
     position: sticky;
     position: -webkit-sticky;
-    top: 0;
+    top: -17px;
     z-index: 999;
 }
 
@@ -15,11 +15,12 @@
 .table-fixed thead th {
     position: sticky;
     position: -webkit-sticky;
-    top: 0;
+    top: -17px;
     z-index: 999;
     color: #666;
     padding-bottom: 3px;
     background: #fff;
+    height: 75px;
 }
 
 .table-container {
@@ -80,9 +81,7 @@ input.mat-input-element {
 table.table-fixed {
     border-collapse: collapse;
 }
-.table-fixed td,
-.table-fixed th {
-}
+
 .activity-resource {
     padding-right: 7px;
 }
@@ -158,10 +157,10 @@ input.mat-input-element {
     );
 }
 .edit-button {
-    position: absolute;
+    position: sticky;
     top: 14px;
     z-index: 1000;
-    right: 20px;
+    left: 1000px;
     background-color: #fff;
     color: #666;
     width: 34px;
@@ -280,4 +279,7 @@ tr.selected {
 }
 .resource-assignment-project-data tr th.phase {
     width: 75px;
+}
+.grid-area {
+    position: relative;
 }

@@ -14,6 +14,11 @@
             <input class="form-check-input" (change)="viewMultiverse = 'stacked'" name="multiverse-options" type="radio" />Stacked
         </label>
     </div>
+    <div class="form-check-inline">
+        <label class="form-check-label">
+            <input class="form-check-input" (change)="viewMultiverse = 'arrow'" name="multiverse-options" type="radio" />Arrow
+        </label>
+    </div>
 </div>
 <div class="change-tracking" [hidden]="viewMultiverse !== 'branching'">
     <div class="tree-buttons">
@@ -29,3 +34,8 @@
 </div>
 
 <div [hidden]="viewMultiverse !== 'stacked'">Add Stacked Resources Here</div>
+<div [hidden]="viewMultiverse !== 'arrow'">
+    <div class="current-view arrow-view">
+        <cp-arrow-chart [showFastCreator]="false" [width]="1214" [height]="700" [rebuild]="true"></cp-arrow-chart>
+    </div>
+</div>
