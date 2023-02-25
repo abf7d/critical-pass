@@ -1,8 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { environment } from '@critical-pass/shared/environments';
 import { ClaimsApiService } from '@critical-pass/shared/data-access';
 import * as CONST from '../constants';
 declare let require: any;

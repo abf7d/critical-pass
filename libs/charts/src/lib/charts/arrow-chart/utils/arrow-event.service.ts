@@ -124,7 +124,9 @@ export class ArrowEventsService {
         // select new link, selected_link is what is used when the diagram is redrawn to class the g element so it shows as selected
         this.st.selected_link = targetActivity;
         this.setLinkIsSelected(targetActivity, proj, true);
-        this.setNodeIsSelected(this.st.selected_node!, proj, false);
+        if (this.st.selected_node != null) {
+            this.st.selected_node.selected = false;
+        }
         proj.profile.view.selectedIntegration = null;
         this.st.selected_node = null;
         return true;
@@ -136,12 +138,6 @@ export class ArrowEventsService {
         }
         if (!isSelected) {
             proj.profile.view.selectedActivity = null;
-        }
-    }
-    // TODO: Remove this function
-    private setNodeIsSelected(node: Integration, proj: Project, isSelected: boolean): void {
-        if (node) {
-            node.selected = isSelected;
         }
     }
     private resetState(): void {
@@ -265,8 +261,9 @@ export class ArrowEventsService {
             // Highlight link with css class
             this.st.links.classed('selected', (a: any) => a === d);
         }
-        this.setNodeIsSelected(this.st.selected_node!, proj, false);
-
+        if (this.st.selected_node != null) {
+            this.st.selected_node.selected = false;
+        }
         // Maybe make a function that sets the selected_node and one that sets the selected_link and also sets the css
         this.st.selected_node = null;
         proj.profile.view.selectedIntegration = null;

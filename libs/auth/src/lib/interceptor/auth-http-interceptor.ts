@@ -4,7 +4,6 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/c
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { switchMap } from 'rxjs/operators';
 import { MsalService } from '@critical-pass/auth';
-// import { AuthService } from '../services/auth/auth.service';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {

@@ -1,15 +1,14 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from '@critical-pass/project/types';
-// import { ProjectStoreBase } from '@critical-pass/critical-charts';
-// import { Project } from '@critical-pass/critical-charts';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LibraryStoreService } from '../library-store/library-store.service';
-// import * as Keys from '../../../../core/constants/keys';
 import * as CONST from '../constants';
 import { API_CONST } from '@critical-pass/shared/data-access';
 import { ProjectStorageApiService } from '@critical-pass/shared/data-access';
+import { AUTH_CONST } from '@critical-pass/auth';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'cp-library-bar',
@@ -31,6 +30,7 @@ export class LibraryBarComponent implements OnInit, OnDestroy {
         private libraryStore: LibraryStoreService,
         private router: Router,
         private storageApi: ProjectStorageApiService,
+        private httpClient: HttpClient
     ) {}
 
     public ngOnInit(): void {
@@ -71,5 +71,9 @@ export class LibraryBarComponent implements OnInit, OnDestroy {
     }
     public navigate(url: string): void {
         this.router.navigateByUrl(url);
+    }
+    public toJira(): void {
+        this.httpClient.get(AUTH_CONST.JIRA_LOGIN_URL).subscribe(test => console.log(test));
+        // window.location.href = AUTH_CONST.JIRA_LOGIN_URL;
     }
 }

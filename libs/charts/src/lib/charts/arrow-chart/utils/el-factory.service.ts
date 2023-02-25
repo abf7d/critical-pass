@@ -84,20 +84,32 @@ export class ElFactoryService {
         const nonMilestoneAct = this.filterOutMilestones(proj);
         if (nodeType !== 'end') {
             if (proj.profile.start === node.id) {
+                let sourceStartCount = 0;
+                let targetId = null;
                 connectedLink = nonMilestoneAct.forEach((l: Activity) => {
                     if (l.chartInfo.source!.id === node.id) {
-                        proj.profile.start = l.chartInfo.target!.id;
+                        sourceStartCount++;
+                        targetId = l.chartInfo.target!.id;
                     }
                 });
+                if (sourceStartCount === 1 && targetId !== null) {
+                    proj.profile.start = targetId;
+                }
             }
         }
         if (nodeType !== 'start') {
             if (proj.profile.end === node.id) {
+                let sourceEndCount = 0;
+                let sourceId = null;
                 connectedLink = nonMilestoneAct.forEach((l: Activity) => {
                     if (l.chartInfo.target!.id === node.id) {
-                        proj.profile.end = l.chartInfo.source!.id;
+                        sourceEndCount++;
+                        sourceId = l.chartInfo.source!.id;
                     }
                 });
+                if (sourceEndCount === 1 && sourceId !== null) {
+                    proj.profile.end = sourceId;
+                }
             }
         }
     }

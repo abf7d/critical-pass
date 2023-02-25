@@ -1,11 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
-import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
+import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import * as d3 from 'd3';
 import { SvgTranform } from '../../../models/svg-transform';
 import { ArrowState } from '../arrow-state/arrow-state';
 import { Key } from 'ts-keycode-enum';
-import { ThisReceiver } from '@angular/compiler';
 import { ArrowControllerService } from '../utils/arrow-controller.service';
 
 @Injectable({

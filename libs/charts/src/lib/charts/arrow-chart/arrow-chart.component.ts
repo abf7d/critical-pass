@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, ElementRef, ViewChild, ViewEncapsulation, OnDestroy, inject } from '@angular/core';
 import { ArrowChartUIService } from './arrow-chart-ui/arrow-chart-ui.service';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
-// import { ArrowFactoryService } from './arrow-factory/arrow-factory.service';
 import * as CONST from '../../constants/constants';
 
 @Component({

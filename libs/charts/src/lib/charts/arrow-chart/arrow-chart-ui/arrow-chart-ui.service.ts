@@ -95,7 +95,7 @@ export class ArrowChartUIService {
     public initSvg(width: number, height: number, el: any): void {
         const st = this.st;
         const svgclass = 'big-arrow-' + this.id;
-        // use this.fullRefresh to remove the everything or don't refresh all
+        // use this fullRefresh to remove the everything and rebuild the svg
         if (this.rebuild) {
             d3.select(el).select('svg').remove();
         }
@@ -181,6 +181,7 @@ export class ArrowChartUIService {
             .classed('dummy', (d: Integration) => d.isDummy)
             .classed('active', (d: Integration) => d === this.st.selected_node)
             .classed('last-selected', (d: Integration) => d === this.st.last_selected_node);
+            
         // Inner text
         enterNodes
             .append('text')

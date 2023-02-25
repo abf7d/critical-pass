@@ -33,7 +33,7 @@ export class ElPositionerService {
     private repositionConnectedArrows(selectedNodes: number[] | null = null): void {
         this.st.links
             .filter((d: Activity) => {
-                // selectedNodes is not nul when we are using lasso
+                // selectedNodes is not null when we are using lasso
                 if (!selectedNodes) {
                     return d.chartInfo.source!.selected;
                 }
@@ -44,7 +44,7 @@ export class ElPositionerService {
 
         this.st.links
             .filter((d: Activity) => {
-                // selectedNodes is not nul when we are using lasso
+                // selectedNodes is not null when we are using lasso
                 if (!selectedNodes) {
                     return d.chartInfo.target!.selected;
                 }
@@ -56,7 +56,7 @@ export class ElPositionerService {
     private repositionArrowText(selector: string, proj: Project, selectedNodes: number[] | null = null): void {
         this.st.links
             .filter((d: Activity) => {
-                // selectedNodes is not nul when we are using lasso
+                // selectedNodes is not null when we are using lasso
                 if (!selectedNodes) {
                     return d.chartInfo.target!.selected || d.chartInfo.source!.selected;
                 }
@@ -81,7 +81,7 @@ export class ElPositionerService {
     private repositionArrowFloatText(proj: Project, selectedNodes: number[] | null = null): void {
         this.st.links
             .filter((d: Activity) => {
-                // selectedNodes is not nul when we are using lasso
+                // selectedNodes is not null when we are using lasso
                 if (!selectedNodes) {
                     return d.chartInfo.target!.selected || d.chartInfo.source!.selected;
                 }
