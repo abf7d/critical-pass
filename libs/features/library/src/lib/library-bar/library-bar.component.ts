@@ -30,7 +30,7 @@ export class LibraryBarComponent implements OnInit, OnDestroy {
         private libraryStore: LibraryStoreService,
         private router: Router,
         private storageApi: ProjectStorageApiService,
-        private httpClient: HttpClient
+        private httpClient: HttpClient,
     ) {}
 
     public ngOnInit(): void {

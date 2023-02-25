@@ -181,7 +181,7 @@ export class ArrowChartUIService {
             .classed('dummy', (d: Integration) => d.isDummy)
             .classed('active', (d: Integration) => d === this.st.selected_node)
             .classed('last-selected', (d: Integration) => d === this.st.last_selected_node);
-            
+
         // Inner text
         enterNodes
             .append('text')
