@@ -13,7 +13,7 @@ export class ProjectSubprojectSerializerService implements Serializer<SubProject
             activityParentId: json.activityParentId ?? null,
             riskDepthCalc: json.riskDepthCalc ?? 'top-level',
             activityParentName: json.activityParentName ?? '',
-            parentProject: json.parentProject ?? null,
+            // parentProject: json.parentProject ?? null,
         };
         return obj;
     }

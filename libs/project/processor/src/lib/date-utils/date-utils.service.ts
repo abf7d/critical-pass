@@ -56,6 +56,7 @@ export class DateUtilsService {
                 if (pcd) {
                     const pcdDt = new Date(pcd);
                     project.profile.staffing.earliestFinishDate = lightFormat(addBusinessDays(pcdDt, eft), CONST.MAIN_DATE_FORMAT);
+                    project.profile.staffing.eft = eft;
                 }
                 return;
             }

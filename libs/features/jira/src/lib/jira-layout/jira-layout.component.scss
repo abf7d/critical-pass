@@ -1,0 +1,15 @@
+.page-content {
+    display: flex; 
+    grid-gap: 20px;
+    margin: 15px;
+    color: #666;
+}
+.page-content {
+    grid-template-columns: repeat(4, 1fr);
+    background-color: #f9f9f9;
+}
+
+.page-content {
+    padding: 12px;
+    flex-wrap: wrap;
+}

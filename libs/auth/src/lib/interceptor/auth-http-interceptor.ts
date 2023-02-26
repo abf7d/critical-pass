@@ -4,6 +4,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/c
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { switchMap } from 'rxjs/operators';
 import { MsalService } from '@critical-pass/auth';
+import { CORE_CONST } from '@critical-pass/core';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
@@ -16,11 +17,14 @@ export class AuthHttpInterceptor implements HttpInterceptor {
         const _this = this;
         return from(this.authenticationService.getAuthToken()).pipe(
             switchMap(token => {
-                req = req.clone({
-                    setHeaders: {
-                        Authorization: `Bearer ${token.accessToken}`,
-                    },
-                });
+                const existingBearer = req.headers.get('Authorization');
+                if (!existingBearer) {
+                    req = req.clone({
+                        setHeaders: {
+                            Authorization: `Bearer ${token.accessToken}`,
+                        },
+                    });
+                }
                 return next.handle(req);
             }),
         );

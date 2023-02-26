@@ -17,4 +17,7 @@ export const environment = {
 
     criticalPathApi: 'https://localhost:7071/api/', // new webapi: 'https://localhost:44369/api/',  // old'https://localhost:44392/api/',// new backend:
     webApi: 'https://localhost:44369/api/', //old'https://localhost:44392/api',
+
+    jiraClientId: '1SdMM8pTryWCljI1Awm9drfKvnU2BR2H',
+    jiraClientSecret: '123',
 };

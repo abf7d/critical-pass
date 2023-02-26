@@ -4,6 +4,6 @@ export interface SubProject {
     clearSelectedArrow: boolean;
     activityParentName: string;
     activityParentId: any;
-    parentProject: Project;
+    // parentProject: Project;
     riskDepthCalc: string; // 'top-level';
 }

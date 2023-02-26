@@ -20,6 +20,7 @@
             "@critical-pass/core": ["libs/core/src/index.ts"],
             "@critical-pass/explorer-lib": ["libs/explorer-lib/src/index.ts"],
             "@critical-pass/features/history": ["libs/features/history/src/index.ts"],
+            "@critical-pass/features/jira": ["libs/features/jira/src/index.ts"],
             "@critical-pass/features/landing": ["libs/features/landing/src/index.ts"],
             "@critical-pass/features/library": ["libs/features/library/src/index.ts"],
             "@critical-pass/features/network": ["libs/features/network/src/index.ts"],

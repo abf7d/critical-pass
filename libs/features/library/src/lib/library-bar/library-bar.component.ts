@@ -72,8 +72,4 @@ export class LibraryBarComponent implements OnInit, OnDestroy {
     public navigate(url: string): void {
         this.router.navigateByUrl(url);
     }
-    public toJira(): void {
-        this.httpClient.get(AUTH_CONST.JIRA_LOGIN_URL).subscribe(test => console.log(test));
-        // window.location.href = AUTH_CONST.JIRA_LOGIN_URL;
-    }
 }

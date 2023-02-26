@@ -14,4 +14,6 @@ export const environment = {
     clientID: '7515b8bc-44ba-4f60-9740-62b9ac197bf3',
     payPalClientId: 'AUyE2UNCsa6sgAKS3Ccj4WUzXw-PisRoJL2zn9pzxbN5sje0xalPOx9ioUCug9sK6HQF9Vybu2Bh_4LB',
     criticalPathApi: 'https://criticalpathapifunctions.azurewebsites.net/api/',
+    jiraClientId: '1SdMM8pTryWCljI1Awm9drfKvnU2BR2H',
+    jiraClientSecret: '123',
 };

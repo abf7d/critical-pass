@@ -24,6 +24,7 @@ export class NetworkLayoutComponent implements OnInit {
     public filteredNetworkArray$: BehaviorSubject<Project[]>;
     public selectedActivity: Activity | null = null;
     public subProjectIds!: Map<number, boolean>;
+    public previousEFT: number | null = null;
     constructor(
         route: ActivatedRoute,
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
@@ -54,7 +55,13 @@ export class NetworkLayoutComponent implements OnInit {
                         this.parentId = parent!.profile.id;
                     }
                 }
+            } else if (this.previousEFT !== project.profile.staffing.eft ?? null) {
+                this.previousEFT = project.profile.staffing.eft ?? null;
+                const activityId =project.profile.subProject.activityParentId;
+                const parentId = project.profile.parentProjectId;
+                console.log('EFT changed', this.previousEFT, 'activityId', activityId, 'parentId', parentId);
             }
+
             this.project = project;
         });
 

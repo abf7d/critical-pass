@@ -44,6 +44,11 @@ const routes: Routes = [
         loadChildren: () => import('@critical-pass/features/resources').then(m => m.ResourcesModule),
         canLoad: [AuthorizedUserGuard],
     },
+    {
+        path: 'jira',
+        loadChildren: () => import('@critical-pass/features/jira').then(m => m.JiraModule),
+        canLoad: [AuthorizedUserGuard],
+    },
 ];
 
 @NgModule({
