@@ -41,10 +41,7 @@ export class JiraLayoutComponent implements OnInit {
             //     'Content-Type': 'application/json',
             //     Authorization: `Bearer ${auth_token}`,
             // });
-            let headers = new HttpHeaders().set('Content-Type', 'application/json').set(
-                "Authorization",
-                `Bearer ${auth_token}`,
-              );
+            let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
             this.httpClient.get(CONST.JIRA_CLOUD_ID_URL, requestOptions).subscribe((res: any) => {
                 console.log('issues res', res);

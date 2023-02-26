@@ -5,5 +5,5 @@ export const JIRA_LOGIN_URL =
 export const JIRA_TOKEN_URL = 'https://auth.atlassian.com/oauth/token';
 export const JIRA_REDIRECT_URI = 'https://localhost:4200/jira';
 export const JIRA_CLOUD_ID_URL = 'https://api.atlassian.com/oauth/token/accessible-resources';
-export const JIRA_ISSUES_URL = 'https://criticalpass.atlassian.net/rest/api/3/search?jql=project%20%3D%20CP';;
+export const JIRA_ISSUES_URL = 'https://criticalpass.atlassian.net/rest/api/3/search?jql=project%20%3D%20CP';
 // https://api.atlassian.com/oauth/token/accessible-resources
