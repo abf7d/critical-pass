@@ -119,7 +119,7 @@ export class HistoryFileManagerService implements FileManagerBaseService<TreeNod
                     integrationData,
                     tagPoolData,
                     activityTagData,
-                    subProjectData
+                    subProjectData,
                 };
 
                 const nodes = profileData.map(profileEntry => this.mapper.getNode(profileEntry, workbook));

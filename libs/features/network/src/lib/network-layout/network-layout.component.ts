@@ -152,9 +152,8 @@ export class NetworkLayoutComponent implements OnInit {
                 activity.profile.duration = project.profile.staffing.eft;
             }
             this.projectCompiler.compile(parent);
-            const duplicate = {...parent};
+            const duplicate = { ...parent };
             projects.splice(projects.indexOf(parent), 1, duplicate);
-
         }
     }
     public setFilterProject(node: NetworkNode) {}
