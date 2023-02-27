@@ -140,21 +140,32 @@ export class NetworkLayoutComponent implements OnInit {
             }
         }
     }
-    public updateParentProject(project: Project) {
-        const projects = this.filteredNetworkArray$.getValue();
+    public updateProject(project: Project, projects: Project[]) {
         const parentId = project.profile.parentProjectId;
         const parent = projects.find(x => x.profile.id === parentId);
         if (parent) {
-            // compile project for new risk
             const activityId = project.profile.subProject.activityParentId;
             const activity = parent.activities.find(x => x.profile.id === activityId);
+            let dateUpdated = activity?.profile.duration !== project.profile.staffing.eft;
             if (activity) {
                 activity.profile.duration = project.profile.staffing.eft;
+                dateUpdated = true;
             }
             this.projectCompiler.compile(parent);
             const duplicate = { ...parent };
             projects.splice(projects.indexOf(parent), 1, duplicate);
+            
+            
+            // The first parent project gets updated from sidebar input, by the time it gets here, the eft has already been updated
+            // Calling it this way updates all projects in lineage if the current project eft changes.
+            if(dateUpdated) {
+                this.updateProject(parent, projects);
+            }
         }
+    }
+    public updateParentProject(project: Project) {
+        const projects = this.filteredNetworkArray$.getValue();
+        this.updateProject(project, projects);
     }
     public setFilterProject(node: NetworkNode) {}
 }
