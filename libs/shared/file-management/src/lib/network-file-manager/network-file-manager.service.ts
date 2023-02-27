@@ -17,6 +17,7 @@ export class NetworkFileManagerService implements FileManagerBaseService<Project
         let arrowChartInfos: any[] = [];
         let nodes: any[] = [];
         let projProfiles: any[] = [];
+        let subProjects: any[] = [];
 
         let phases: any[] = [];
         let roles: any[] = [];
@@ -33,6 +34,7 @@ export class NetworkFileManagerService implements FileManagerBaseService<Project
             arrowChartInfos = [...arrowChartInfos, ...tables.chartInfos];
             nodes = [...nodes, ...tables.nodes];
             projProfiles = [...projProfiles, tables.projProfile];
+            subProjects = [...subProjects, tables.subProject];
 
             phases = [...phases, ...tables.phases];
             roles = [...roles, ...tables.roles];
@@ -48,6 +50,7 @@ export class NetworkFileManagerService implements FileManagerBaseService<Project
         const nds: XLSX.WorkSheet = XLSX.utils.json_to_sheet(nodes);
         const arrows: XLSX.WorkSheet = XLSX.utils.json_to_sheet(arrowChartInfos);
         const proj: XLSX.WorkSheet = XLSX.utils.json_to_sheet(projProfiles);
+        const subProjWs: XLSX.WorkSheet = XLSX.utils.json_to_sheet(subProjects);
 
         let phasesWs: XLSX.WorkSheet = XLSX.utils.json_to_sheet(phases);
         let rolesWs: XLSX.WorkSheet = XLSX.utils.json_to_sheet(roles);
@@ -65,6 +68,7 @@ export class NetworkFileManagerService implements FileManagerBaseService<Project
         XLSX.utils.book_append_sheet(wb, arrows, CONST.ARROW_WS_NAME);
         XLSX.utils.book_append_sheet(wb, nds, CONST.INTEGRATION_WS_NAME);
         XLSX.utils.book_append_sheet(wb, proj, CONST.PROFILE_WS_NAME);
+        XLSX.utils.book_append_sheet(wb, subProjWs, CONST.SUB_PROJECT_WS_NAME);
 
         XLSX.utils.book_append_sheet(wb, phasesWs, CONST.PHASES_WS_NAME);
         XLSX.utils.book_append_sheet(wb, rolesWs, CONST.ROLES_WS_NAME);
@@ -91,6 +95,7 @@ export class NetworkFileManagerService implements FileManagerBaseService<Project
                 const arrowData = this.getWorksheetData(wb, CONST.ARROW_WS_NAME);
                 const integrationData = this.getWorksheetData(wb, CONST.INTEGRATION_WS_NAME);
                 const profileData = this.getWorksheetData(wb, CONST.PROFILE_WS_NAME);
+                const subProjectData = this.getWorksheetData(wb, CONST.SUB_PROJECT_WS_NAME);
 
                 const phaseData = this.getWorksheetData(wb, CONST.PHASES_WS_NAME);
                 const rolesData = this.getWorksheetData(wb, CONST.ROLES_WS_NAME);
@@ -114,6 +119,7 @@ export class NetworkFileManagerService implements FileManagerBaseService<Project
                     integrationData,
                     tagPoolData,
                     activityTagData,
+                    subProjectData,
                 };
 
                 const nodes = profileData.map(profileEntry => this.mapper.getNode(profileEntry, workbook));

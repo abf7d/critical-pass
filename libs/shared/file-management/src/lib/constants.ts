@@ -15,6 +15,7 @@ export const ACTIVITIES_WS_NAME = 'Activities';
 export const ARROW_WS_NAME = 'Arrow Info';
 export const INTEGRATION_WS_NAME = 'Integrations';
 export const PROFILE_WS_NAME = 'Profile';
+export const SUB_PROJECT_WS_NAME = 'Sub-Parent Projects'
 export const PHASES_WS_NAME = 'Phases';
 export const ROLES_WS_NAME = 'Roles';
 export const RESOURCES_WS_NAME = 'Resources';

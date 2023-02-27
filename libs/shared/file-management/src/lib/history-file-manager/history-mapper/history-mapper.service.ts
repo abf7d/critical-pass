@@ -13,6 +13,7 @@ import {
     ResourceSummary,
     Role,
     RoleSummary,
+    SubProject,
     TagButton,
     TagEntry,
     TagGroup,
@@ -28,6 +29,7 @@ import {
     PhaseSerializerService,
     ProjectProfileSerializerService,
     ProjectSerializerService,
+    ProjectSubprojectSerializerService,
     ResourceProfileSerializerService,
     ResourceSerializerService,
     ResourceSummarySerializerService,
@@ -37,22 +39,6 @@ import {
 import { ExportWorkbook, HistoryWorkbook } from '../../types';
 import { ProjectTreeNodeSerializerService } from '@critical-pass/charts';
 import * as CONST from '../../constants';
-// import * as Keys from '../../../../../constants/keys';
-// import { ExportWorkbook, HistoryWorkbook } from '../../../../../models/history/history-workbook';
-// import { Activity, Project, ProjectTreeNodeSerializerService, Resource, TreeNode } from '../../../../../models';
-// import {
-//     ResourceProfileSerializerService,
-//     ResourceSerializerService,
-//     ResourceSummarySerializerService,
-// } from '../../../../serializers/project/resource/resource-serializer/resource-serializer.service';
-// import { RoleSerializerService, RoleSummarySerializerService } from '../../../../serializers/project/role/role-serializer.service';
-// import { PhaseSerializerService } from '../../../../serializers/project/phase/phase-serializer/phase-serializer.service';
-// import { AssignResourcesSerializerService } from '../../../../serializers/project/activity/assign-resources/assign-resources-serializer.service';
-// import { ActivitySerializerService } from '../../../../serializers/project/activity/activity-serializer.service';
-// import { ChartSerializerService } from '../../../../serializers/project/activity/chart/chart-serializer.service';
-// import { IntegrationSerializerService } from '../../../../serializers/project/integration/integration-serializer/integration-serializer.service';
-// import { ActivityProfileSerializerService } from '../../../../serializers/project/activity/profile/profile-serializer.service';
-// import { ProjectProfileSerializerService, ProjectSerializerService } from '../../../../serializers/project/project-serializer.service';
 @Injectable({
     providedIn: 'root',
 })
@@ -72,6 +58,7 @@ export class HistoryMapperService {
         private actProfSerializer: ActivityProfileSerializerService,
         private chartSerializer: ChartSerializerService,
         private intSerializer: IntegrationSerializerService,
+        private projectSubProjectSerializer: ProjectSubprojectSerializerService,
     ) {}
 
     public setProp<T>(target: T, source: any, key: keyof T) {
@@ -98,14 +85,25 @@ export class HistoryMapperService {
             }
         }
 
-        const { activityData, arrowData, integrationData, activityResourceData, activityPhaseData, rolesData, resourcesData, phaseData, resourceRoleData } =
-            workbook;
+        const {
+            activityData,
+            arrowData,
+            integrationData,
+            activityResourceData,
+            activityPhaseData,
+            rolesData,
+            resourcesData,
+            phaseData,
+            resourceRoleData,
+            subProjectData,
+        } = workbook;
 
         const projActivities = this.mapActivities(profileEntry, activityData, arrowData);
         const resources = this.mapResources(profileEntry, resourcesData);
         const phases = this.mapPhases(profileEntry, phaseData);
         const integrations = this.mapIntegrations(profileEntry, integrationData);
         const roles = this.mapRoles(profileEntry, rolesData);
+        const subProject = this.mapSubProject(profileEntry, subProjectData);
 
         this.mapActivityResources(profileEntry, activityResourceData, projActivities);
         this.mapActivityPhases(profileEntry, activityPhaseData, projActivities);
@@ -119,6 +117,9 @@ export class HistoryMapperService {
         project.phases = phases;
         project.roles = roles;
         treeNode.data = project;
+        if (subProject !== null) {
+            project.profile.subProject = subProject;
+        }
         this.updateNodeMetadata(projActivities, treeNode);
         return treeNode;
     }
@@ -131,6 +132,26 @@ export class HistoryMapperService {
             time: 0,
             cost: 0,
         };
+    }
+
+    private mapSubProject(profileEntry: any, subProjectData: any[]): SubProject | null {
+        const subProjs = subProjectData
+            .filter(a => a.nodeId === profileEntry.nodeId)
+            .map(subProjectEntry => {
+                const subProject = this.projectSubProjectSerializer.fromJson();
+                const keys = Object.keys(subProjectEntry);
+                for (const attr of keys) {
+                    if (subProject.hasOwnProperty(attr)) {
+                        this.setProp(subProject, subProjectEntry, attr as keyof SubProject);
+                    }
+                }
+
+                return subProject;
+            });
+        if (subProjs.length === 1) {
+            return subProjs[0];
+        }
+        return null;
     }
 
     private mapResources(profileEntry: any, resourceData: any[]) {
@@ -304,6 +325,8 @@ export class HistoryMapperService {
         });
         const projProfile = { ...project.profile, ...treeNode };
 
+        const subProject = { ...project.profile.subProject, graphId: project.profile.id, nodeId: treeNode.nodeId };
+
         const phases = project.phases.map(p => {
             return {
                 ...p,
@@ -402,6 +425,20 @@ export class HistoryMapperService {
                 });
             });
         });
-        return { profiles, nodes, chartInfos, projProfile, phases, resources, roles, activityPhases, activityResources, resourceRoles, tagPool, activityTags };
+        return {
+            profiles,
+            nodes,
+            chartInfos,
+            projProfile,
+            phases,
+            resources,
+            roles,
+            activityPhases,
+            activityResources,
+            resourceRoles,
+            tagPool,
+            activityTags,
+            subProject,
+        };
     }
 }

@@ -124,17 +124,8 @@ export class SelectedActivityControllerService {
             if (childProject) {
                 this.loadChildAndParentProjects(activity, curProj, childProject, projectPool);
             } else {
-                // this.projectStore
-                //     .load(activity.subProject.subGraphId)
-                //     .pipe(filter(x => !!x))
                 this.projectApi.get(activity.subProject.subGraphId).subscribe(childProject => {
                     this.loadChildAndParentProjects(activity, curProj, childProject, projectPool);
-                    // childProject.profile.parentProject = curProj;
-                    // activity.subProject.subGraphLoaded = childProject;
-                    // childProject.profile.subProject.activityParentId = activity.profile.id;
-                    // childProject.profile.view.autoZoom = true;
-                    // this.pManager.updateProject(ChartKeys.parentKey, curProj, false);
-                    // this.pManager.updateProject(this.id, childProject, true);
                 });
             }
         } else {
@@ -144,12 +135,16 @@ export class SelectedActivityControllerService {
     public loadChildAndParentProjects(activity: Activity, project: Project, childProject: Project, projectPool: Project[] | null): void {
         childProject.profile.parentProject = project;
         activity.subProject.subGraphLoaded = childProject;
+        // TODO: activityParentId and parentProjectId get set when a new project is created, these lines are temporary to create new file
+        // so remove these lines
+        // They potentially break saving loading to the backend, need to test saving/loading project with subproject
+        // can always remove parentProjectId from serializer for now
         childProject.profile.subProject.activityParentId = activity.profile.id;
+        childProject.profile.parentProjectId = project.profile.id;
+
         childProject.profile.view.autoZoom = true;
         this.dashboard.updateProject(childProject, true);
         this.dashboard.secondaryProject$.next(project);
-        // this.pManager.updateProject(ChartKeys.parentKey, curProj, false);
-        // this.pManager.updateProject(this.id, childProject, true);
     }
 
     public swapProjWithSubProj(subProj: Project, activity: Activity, project: Project) {
@@ -168,16 +163,17 @@ export class SelectedActivityControllerService {
         subProj.profile.view.autoZoom = true;
 
         // need this so when a new sub project is created, it can be added to the proper activity
+        // TODO: activityParentId and parentProjectId get set when a new project is created, these lines are temporary to create new file
+        // so remove these lines
         subProj.profile.subProject.activityParentId = activity.profile.id;
+        subProj.profile.parentProjectId = project.profile.id;
 
         this.dashboard.updateProject(subProj, true);
 
         // TODO: do we need to compile the project here?
         this.dashboard.secondaryProject$.next(project);
-
-        // this.pManager.updateProject(this.id, subProj, true);
-        // this.pManager.updateProject('parent', subProj.profile.parentProject, true);
     }
+
     public createSubProject(activity: Activity, project: Project, projectPool: Project[] | null) {
         // when new network analysis file is loaded, it can have projs with id < -1
         // since each network is different this needs to be loaded here to determine
@@ -194,6 +190,8 @@ export class SelectedActivityControllerService {
         }
         subProj.profile.id = subProjCount;
         subProj.profile.name = activity.profile.name ?? 'New Sub Project';
+        subProj.profile.parentProjectId = project.profile.id;
+        subProj.profile.subProject.activityParentId = activity.profile.id;
         --subProjCount;
         subProjCount$.next(subProjCount);
         this.eventService.get(CORE_CONST.CREATED_PROJECT).next(subProj);

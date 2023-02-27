@@ -5,6 +5,7 @@ import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } 
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CORE_CONST } from '@critical-pass/core';
+import { ProjectCompilerService } from '@critical-pass/project/processor';
 
 @Component({
     selector: 'proj-meta-graph-layout',
@@ -29,6 +30,7 @@ export class NetworkLayoutComponent implements OnInit {
         route: ActivatedRoute,
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
         @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
+        private projectCompiler: ProjectCompilerService,
     ) {
         this.id = +route.snapshot.params['id'];
         this.project$ = this.dashboard.activeProject$;
@@ -55,11 +57,10 @@ export class NetworkLayoutComponent implements OnInit {
                         this.parentId = parent!.profile.id;
                     }
                 }
-            } else if (this.previousEFT !== project.profile.staffing.eft ?? null) {
                 this.previousEFT = project.profile.staffing.eft ?? null;
-                const activityId = project.profile.subProject.activityParentId;
-                const parentId = project.profile.parentProjectId;
-                console.log('EFT changed', this.previousEFT, 'activityId', activityId, 'parentId', parentId);
+            } else if (this.previousEFT !== (project.profile.staffing.eft ?? null)) {
+                this.previousEFT = project.profile.staffing.eft ?? null;
+                this.updateParentProject(project);
             }
 
             this.project = project;
@@ -137,6 +138,23 @@ export class NetworkLayoutComponent implements OnInit {
                 this.project.profile.view.selectedActivity = selectedActivity;
                 this.dashboard.updateProject(this.project, false);
             }
+        }
+    }
+    public updateParentProject(project: Project) {
+        const projects = this.filteredNetworkArray$.getValue();
+        const parentId = project.profile.parentProjectId;
+        const parent = projects.find(x => x.profile.id === parentId);
+        if (parent) {
+            // compile project for new risk
+            const activityId = project.profile.subProject.activityParentId;
+            const activity = parent.activities.find(x => x.profile.id === activityId);
+            if (activity) {
+                activity.profile.duration = project.profile.staffing.eft;
+            }
+            this.projectCompiler.compile(parent);
+            const duplicate = {...parent};
+            projects.splice(projects.indexOf(parent), 1, duplicate);
+
         }
     }
     public setFilterProject(node: NetworkNode) {}

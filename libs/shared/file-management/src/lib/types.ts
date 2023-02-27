@@ -10,6 +10,7 @@ export interface HistoryWorkbook {
     resourceRoleData: unknown[];
     tagPoolData: unknown[];
     activityTagData: unknown[];
+    subProjectData: unknown[];
 }
 
 export interface ExportWorkbook {
@@ -17,6 +18,7 @@ export interface ExportWorkbook {
     nodes: any;
     chartInfos: any;
     projProfile: any;
+    subProject: any;
     phases: any;
     resources: any;
     roles: any;

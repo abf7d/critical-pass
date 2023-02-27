@@ -29,7 +29,7 @@
                 class="sb-chart default-border"
                 *ngFor="let node of filteredNetworkArray$ | async"
                 [ngClass]="{
-                    'selected-chart': project === node
+                    'selected-chart': project.profile.id === node.profile.id
                 }"
             >
                 <span class="parent-marker">{{ parentId === node.profile.id ? 'P' : '' }}</span>
@@ -49,7 +49,7 @@
 
                 <div class="proj-id">{{ node.profile.id }} {{ node.profile!.name }}</div>
                 <a (click)="load(node.profile.id)">
-                    <cp-arrow-snapshot [project]="node" [width]="300" [height]="200" [refresh]="node === project ? refreshCount : 0"></cp-arrow-snapshot>
+                    <cp-arrow-snapshot [project]="node" [width]="300" [height]="200" [refresh]="node.profile.id === project.profile.id ? refreshCount : 0"></cp-arrow-snapshot>
                 </a>
             </div>
         </div>

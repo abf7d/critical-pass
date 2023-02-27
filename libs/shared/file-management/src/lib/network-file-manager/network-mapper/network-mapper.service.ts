@@ -1,23 +1,6 @@
 import { Injectable } from '@angular/core';
-// import * as Keys from '../../../../../constants/keys';
-// import { ExportWorkbook, HistoryWorkbook } from '../../../../../models/history/history-workbook';
-// import { Activity, Project, ProjectTreeNodeSerializerService, Resource, TagGroup, TagGroupOption, TreeNode } from '../../../../../models';
 import { ExportWorkbook, HistoryWorkbook } from '../../types';
 import * as CONST from '../../constants';
-// import {
-//     ResourceProfileSerializerService,
-//     ResourceSerializerService,
-//     ResourceSummarySerializerService,
-// } from '../../../../serializers/project/resource/resource-serializer/resource-serializer.service';
-// import { RoleSerializerService, RoleSummarySerializerService } from '../../../../serializers/project/role/role-serializer.service';
-// import { PhaseSerializerService } from '../../../../serializers/project/phase/phase-serializer/phase-serializer.service';
-// import { AssignResourcesSerializerService } from '../../../../serializers/project/activity/assign-resources/assign-resources-serializer.service';
-// import { ActivitySerializerService } from '../../../../serializers/project/activity/activity-serializer.service';
-// import { ChartSerializerService } from '../../../../serializers/project/activity/chart/chart-serializer.service';
-// import { IntegrationSerializerService } from '../../../../serializers/project/integration/integration-serializer/integration-serializer.service';
-// import { ActivityProfileSerializerService } from '../../../../serializers/project/activity/profile/profile-serializer.service';
-// import { ProjectProfileSerializerService, ProjectSerializerService } from '../../../../serializers/project/project-serializer.service';
-// import { SubprojectSerializerService } from '../../../../serializers/project/activity/subproject/subproject-serializer.service';
 import {
     ActivityProfileSerializerService,
     ActivitySerializerService,
@@ -27,6 +10,7 @@ import {
     PhaseSerializerService,
     ProjectProfileSerializerService,
     ProjectSerializerService,
+    ProjectSubprojectSerializerService,
     ResourceProfileSerializerService,
     ResourceSerializerService,
     ResourceSummarySerializerService,
@@ -49,6 +33,7 @@ import {
     ResourceSummary,
     Role,
     RoleSummary,
+    SubProject,
     TagButton,
     TagEntry,
     TagGroup,
@@ -75,6 +60,7 @@ export class NetworkMapperService {
         private chartSerializer: ChartSerializerService,
         private intSerializer: IntegrationSerializerService,
         private subprojSerializer: SubprojectSerializerService,
+        private projectSubProjectSerializer: ProjectSubprojectSerializerService,
     ) {}
 
     public setProp<T>(target: T, source: any, key: keyof T) {
@@ -111,6 +97,7 @@ export class NetworkMapperService {
             resourceRoleData,
             tagPoolData,
             activityTagData,
+            subProjectData,
         } = workbook;
 
         const projActivities = this.mapActivities(profileEntry, activityData, arrowData);
@@ -119,6 +106,7 @@ export class NetworkMapperService {
         const integrations = this.mapIntegrations(profileEntry, integrationData);
         const roles = this.mapRoles(profileEntry, rolesData);
         const tagPool = this.mapTagPool(profileEntry, tagPoolData);
+        const subProject = this.mapSubProject(profileEntry, subProjectData);
 
         this.mapActivityTags(profileEntry, activityTagData, projActivities);
         this.mapActivityResources(profileEntry, activityResourceData, projActivities);
@@ -133,6 +121,9 @@ export class NetworkMapperService {
         project.phases = phases;
         project.roles = roles;
         project.tags = tagPool;
+        if (subProject !== null) {
+            project.profile.subProject = subProject;
+        }
         return project;
     }
 
@@ -194,6 +185,26 @@ export class NetworkMapperService {
                     });
                 }
             });
+    }
+
+    private mapSubProject(profileEntry: any, subProjectData: any[]): SubProject | null {
+        const subProjs = subProjectData
+            .filter(a => a.nodeId === profileEntry.nodeId)
+            .map(subProjectEntry => {
+                const subProject = this.projectSubProjectSerializer.fromJson();
+                const keys = Object.keys(subProjectEntry);
+                for (const attr of keys) {
+                    if (subProject.hasOwnProperty(attr)) {
+                        this.setProp(subProject, subProjectEntry, attr as keyof SubProject);
+                    }
+                }
+
+                return subProject;
+            });
+        if (subProjs.length === 1) {
+            return subProjs[0];
+        }
+        return null;
     }
 
     private mapResources(profileEntry: any, resourceData: any[]) {
@@ -360,6 +371,8 @@ export class NetworkMapperService {
         });
         const projProfile = { ...project.profile, ...treeNode };
 
+        const subProject = { ...project.profile.subProject, graphId: project.profile.id, nodeId: treeNode.nodeId };
+
         const phases = project.phases.map(p => {
             return {
                 ...p,
@@ -473,6 +486,20 @@ export class NetworkMapperService {
                 });
             });
         });
-        return { profiles, nodes, chartInfos, projProfile, phases, resources, roles, activityPhases, activityResources, resourceRoles, tagPool, activityTags };
+        return {
+            profiles,
+            nodes,
+            chartInfos,
+            projProfile,
+            subProject,
+            phases,
+            resources,
+            roles,
+            activityPhases,
+            activityResources,
+            resourceRoles,
+            tagPool,
+            activityTags,
+        };
     }
 }

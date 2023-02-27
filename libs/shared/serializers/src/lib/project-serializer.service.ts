@@ -65,6 +65,7 @@ export class ProjectProfileSerializerService implements Serializer<ProjectProfil
             subProject: new ProjectSubprojectSerializerService().fromJson(json.subProject),
             permissions: new PermissionsSerializerService().fromJson(json.permissions),
             parentProject: json.parentProject ? new ProjectSerializerService().fromJson(json.parentProject) : null,
+            parentProjectId: json?.parentProjectId ?? null,
         };
         return obj;
     }

@@ -24,7 +24,7 @@ export interface ProjectProfile {
     subProject: SubProject;
     permissions: Permissions;
     parentProject: Project | null;
-    parentProjectId?: number;
+    parentProjectId?: number | null;
     loopDetected: boolean;
     lft: number;
     timestamp?: number;
