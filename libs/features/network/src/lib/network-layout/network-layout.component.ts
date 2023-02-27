@@ -154,11 +154,10 @@ export class NetworkLayoutComponent implements OnInit {
             this.projectCompiler.compile(parent);
             const duplicate = { ...parent };
             projects.splice(projects.indexOf(parent), 1, duplicate);
-            
-            
+
             // The first parent project gets updated from sidebar input, by the time it gets here, the eft has already been updated
             // Calling it this way updates all projects in lineage if the current project eft changes.
-            if(dateUpdated) {
+            if (dateUpdated) {
                 this.updateProject(parent, projects);
             }
         }
