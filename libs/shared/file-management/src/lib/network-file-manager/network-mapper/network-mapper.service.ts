@@ -332,7 +332,10 @@ export class NetworkMapperService {
                 this.setActivityDates(newActivity);
                 return newActivity;
             });
-        return projActivities;
+        // filter out activities that have the same source and target as a sanity check
+        return projActivities.filter(
+            a => (a.chartInfo.source_id !== undefined && a.chartInfo.source_id !== a.chartInfo.target_id) || a.chartInfo.source_id === undefined,
+        );
     }
 
     private setActivityDates(activity: Activity): void {}

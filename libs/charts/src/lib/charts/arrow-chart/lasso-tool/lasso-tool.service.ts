@@ -11,16 +11,16 @@ import { ArrowControllerService } from '../utils/arrow-controller.service';
     providedIn: 'root',
 })
 export class LassoToolService {
-    private lassoG: any;
-    private mainG: any;
-    private targetArea: any;
+    private lassoG!:  d3.Selection<SVGGElement, unknown, null, undefined>;
+    private mainG!: d3.Selection<SVGGElement, unknown, null, undefined>;;
+    private targetArea!: d3.Selection<SVGRectElement, unknown, null, undefined>
     private drawnCoords!: [number, number][];
-    private dynPath: any;
-    private closePath: any;
+    private dynPath!: d3.Selection<SVGPathElement, unknown, null, undefined>;
+    private closePath!: d3.Selection<SVGPathElement, unknown, null, undefined>;
     private tpath!: string;
     private origin!: [number, number];
     private torigin!: [number, number];
-    private originNode: any;
+    private originNode!:  d3.Selection<SVGCircleElement, unknown, null, undefined>;
     private project!: Project;
     private transform: SvgTranform = { k: 1, x: 0, y: 0 };
     private st!: ArrowState;
@@ -52,8 +52,8 @@ export class LassoToolService {
         this.originNode = this.lassoG.append('circle').attr('class', 'origin');
         this.drawnCoords = [];
         this.tpath = '';
-        const dragEvent = d3
-            .drag()
+        const dragEvent: d3.DragBehavior<SVGRectElement, unknown, unknown> = d3
+            .drag<SVGRectElement, any>()
             .filter(event => !event.button)
             .on('start', () => this.dragstart)
             .on('drag', event => this.dragmove(event))
@@ -68,8 +68,8 @@ export class LassoToolService {
         if (event.keyCode === Key.Ctrl) {
             if (this.project.profile.view.lassoOn === true) {
                 this.previousPos = null;
-                const dragEvent = d3
-                    .drag()
+                const dragEvent: d3.DragBehavior<SVGRectElement, unknown, unknown> = d3
+                .drag<SVGRectElement, any>()
                     .filter(event => !event.button)
                     .on('start', this.nodeMoveDragStart)
                     .on('drag', event => this.nodeMoveDragMove(event))
