@@ -10,8 +10,8 @@ import { CORE_CONST } from '@critical-pass/core';
     styleUrls: ['./jira-layout.component.scss'],
 })
 export class JiraLayoutComponent implements OnInit {
+    private cloudId: string | null = null;
     constructor(private httpClient: HttpClient, private route: ActivatedRoute) {}
-    //https://criticalpass.atlassian.net/jira/software/projects/CP/boards/1
     public ngOnInit(): void {
         const code = this.route.snapshot.queryParams['code'];
         console.log('code', this.route.snapshot.queryParams['code']);
@@ -37,13 +37,22 @@ export class JiraLayoutComponent implements OnInit {
     public getIssues(): void {
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
         if (auth_token !== null) {
-            // const headers = new HttpHeaders({
-            //     'Content-Type': 'application/json',
-            //     Authorization: `Bearer ${auth_token}`,
-            // });
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
             this.httpClient.get(CONST.JIRA_CLOUD_ID_URL, requestOptions).subscribe((res: any) => {
+                console.log('issues res', res);
+                this.cloudId = res[0].id;
+                this.getJiraProject();
+                
+            });
+        }
+    }
+    public getJiraProject(): void {
+        const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+        if (auth_token !== null) {
+            let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+            const requestOptions = { headers: headers };
+            this.httpClient.get(`${CONST.JIRA_ISSUES_URL}${this.cloudId}/${CONST.JIRA_API}`, requestOptions).subscribe((res: any) => {
                 console.log('issues res', res);
             });
         }

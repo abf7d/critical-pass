@@ -157,11 +157,13 @@ export class ArrowSnapshotUiService {
             console.error('getPath point undefined');
             return 'M';
         }
-        if(d.chartInfo?.target?.x == d.chartInfo?.source?.x &&
-            d.chartInfo?.target?.y == d.chartInfo?.source?.y) {
-                d.chartInfo.target.x += 10;
-                d.chartInfo.target.y += 10;
-            }
+        if (d.chartInfo?.target?.x == d.chartInfo?.source?.x && d.chartInfo?.target?.y == d.chartInfo?.source?.y) {
+            d.chartInfo.target.x += 10;
+            d.chartInfo.target.y += 10;
+        }
+        if (d.chartInfo.target_id === d.chartInfo.source_id) {
+            console.error('getPath arrow source === target');
+        }
         const deltaX = d.chartInfo.target.x - d.chartInfo.source.x,
             deltaY = d.chartInfo.target.y - d.chartInfo.source.y,
             dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
@@ -173,7 +175,7 @@ export class ArrowSnapshotUiService {
             sourceY = d.chartInfo.source.y + sourcePadding * normY,
             targetX = d.chartInfo.target.x - targetPadding * normX,
             targetY = d.chartInfo.target.y - targetPadding * normY;
-        
+
         if (isNaN(sourceX) || isNaN(sourceY) || isNaN(targetX) || isNaN(targetY)) {
             console.error('getPath point NaN', d);
             return 'M';

@@ -282,8 +282,8 @@ export class HistoryMapperService {
                 this.setActivityDates(newActivity);
                 return newActivity;
             });
-         // filter out activities that have the same source and target as a sanity check
-         return projActivities.filter(
+        // filter out activities that have the same source and target as a sanity check
+        return projActivities.filter(
             a => (a.chartInfo.source_id !== undefined && a.chartInfo.source_id !== a.chartInfo.target_id) || a.chartInfo.source_id === undefined,
         );
     }
