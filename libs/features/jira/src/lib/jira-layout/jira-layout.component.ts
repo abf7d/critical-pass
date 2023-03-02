@@ -43,7 +43,6 @@ export class JiraLayoutComponent implements OnInit {
                 console.log('issues res', res);
                 this.cloudId = res[0].id;
                 this.getJiraProject();
-                
             });
         }
     }
