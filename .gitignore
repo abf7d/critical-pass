@@ -39,3 +39,5 @@ testem.log
 Thumbs.db
 
 .angular
+/libs/shared/environments/src/lib/environment.ts
+/libs/shared/environments/src/lib/environment.prod.ts
