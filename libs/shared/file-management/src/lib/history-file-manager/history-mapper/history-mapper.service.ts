@@ -36,9 +36,10 @@ import {
     RoleSerializerService,
     RoleSummarySerializerService,
 } from '@critical-pass/shared/serializers';
-import { ExportWorkbook, HistoryWorkbook } from '../../types';
 import { ProjectTreeNodeSerializerService } from '@critical-pass/charts';
 import * as CONST from '../../constants';
+import { HistoryWorkbook } from '../../types/history-workbook';
+import { ExportWorkbook } from '../../types/export-workbook';
 @Injectable({
     providedIn: 'root',
 })

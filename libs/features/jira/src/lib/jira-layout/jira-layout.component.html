@@ -2,3 +2,7 @@
     <button class="btn btn-primary" (click)="toJira()">Authorize Jira</button>
     <button class="btn btn-secondary" (click)="getIssues()">Get Issues</button>
 </div>
+<div *ngIf="project !== null">
+    <cp-arrow-chart [width]="1214" [height]="700" [rebuild]="true"></cp-arrow-chart>
+    <!-- <cp-arrow-snapshot [project]="project" [width]="300" [height]="200"></cp-arrow-snapshot> -->
+</div>

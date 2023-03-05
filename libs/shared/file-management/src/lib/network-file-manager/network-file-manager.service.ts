@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Project } from '@critical-pass/project/types';
 import * as XLSX from 'xlsx';
 import { FileManagerBaseService } from '../file-manager-base.service';
-import { HistoryWorkbook } from '../types';
 import * as CONST from '../constants';
 import { NetworkMapperService } from './network-mapper/network-mapper.service';
+import { HistoryWorkbook } from '../types/history-workbook';
 
 @Injectable({
     providedIn: 'root',

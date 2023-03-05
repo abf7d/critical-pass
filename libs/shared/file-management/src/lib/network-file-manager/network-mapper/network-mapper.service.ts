@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ExportWorkbook, HistoryWorkbook } from '../../types';
 import * as CONST from '../../constants';
 import {
     ActivityProfileSerializerService,
@@ -40,6 +39,8 @@ import {
     TagGroupOption,
     TreeNode,
 } from '@critical-pass/project/types';
+import { ExportWorkbook } from '../../types/export-workbook';
+import { HistoryWorkbook } from '../../types/history-workbook';
 @Injectable({
     providedIn: 'root',
 })

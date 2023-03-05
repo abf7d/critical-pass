@@ -4,7 +4,7 @@ import * as XLSX from 'xlsx';
 import { FileManagerBaseService } from '../file-manager-base.service';
 import { HistoryMapperService } from './history-mapper/history-mapper.service';
 import * as CONST from '../constants';
-import { HistoryWorkbook } from '../types';
+import { HistoryWorkbook } from '../types/history-workbook';
 
 @Injectable({
     providedIn: 'root',

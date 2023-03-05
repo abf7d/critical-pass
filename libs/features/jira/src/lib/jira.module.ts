@@ -5,9 +5,10 @@ import { JiraLayoutComponent } from './jira-layout/jira-layout.component';
 import { SharedModule } from '@critical-pass/shared/components';
 import { JiraRoutingModule } from './jira.routes';
 import { HttpClientModule } from '@angular/common/http';
+import { ArrowChartModule, ArrowSnapshotModule } from '@critical-pass/charts';
 
 @NgModule({
     declarations: [JiraLayoutComponent, JiraBarComponent],
-    imports: [CommonModule, SharedModule, JiraRoutingModule, HttpClientModule],
+    imports: [CommonModule, SharedModule, JiraRoutingModule, HttpClientModule, ArrowChartModule],
 })
 export class JiraModule {}

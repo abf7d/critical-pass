@@ -1,9 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@critical-pass/shared/environments';
 import * as CONST from '../constants';
 import { CORE_CONST } from '@critical-pass/core';
+import { Activity, Project } from '@critical-pass/project/types';
+import { JiraImportMapperService, JiraProjectResult } from '@critical-pass/shared/file-management';
+import { NodeConnectorService } from '@critical-pass/project/processor';
+import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 @Component({
     selector: 'critical-pass-jira-layout',
     templateUrl: './jira-layout.component.html',
@@ -11,7 +15,14 @@ import { CORE_CONST } from '@critical-pass/core';
 })
 export class JiraLayoutComponent implements OnInit {
     private cloudId: string | null = null;
-    constructor(private httpClient: HttpClient, private route: ActivatedRoute) {}
+    public project: Project | null = null;
+    constructor(
+        private httpClient: HttpClient,
+        private route: ActivatedRoute,
+        private connector: NodeConnectorService,
+        @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
+        private importer: JiraImportMapperService,
+    ) {}
     public ngOnInit(): void {
         const code = this.route.snapshot.queryParams['code'];
         console.log('code', this.route.snapshot.queryParams['code']);
@@ -51,11 +62,23 @@ export class JiraLayoutComponent implements OnInit {
         if (auth_token !== null) {
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
-            this.httpClient.get(`${CONST.JIRA_ISSUES_URL}${this.cloudId}/${CONST.JIRA_API}`, requestOptions).subscribe((res: any) => {
-                console.log('issues res', res);
+            this.httpClient.get<JiraProjectResult>(`${CONST.JIRA_ISSUES_URL}${this.cloudId}/${CONST.JIRA_API}`, requestOptions).subscribe((res: any) => {
+                this.getActivities(res);
             });
         }
     }
+    // Convert JiraProjectResult to Activity[]
+    private getActivities(response: JiraProjectResult): void {
+        //TODO: create arrowsnapshot, extract lasso from network bar to shared/components then add here  connect to zametek endpoint, position chart, save graph info to jira
+        const project = this.importer.mapJiraProject(response);
+        if (project) {
+            this.connector.connectArrowsToNodes(project);
+            this.dashboard.activeProject$.next(project);
+        }
+        this.project = project;
+        // console.log('project', p);
+    }
+
     public toJira(): void {
         window.location.href = CONST.JIRA_LOGIN_URL;
     }
