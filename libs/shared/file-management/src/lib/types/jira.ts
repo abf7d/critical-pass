@@ -14,6 +14,11 @@ export interface JiraIssueFields {
         emailAddress: string;
         displayName: string;
     };
+    assignee: {
+        accountId: string;
+        displayName: string;
+        self?: string;
+    }
     // depencencies
     issuelinks?: JiraIssueLink[];
     project?: {

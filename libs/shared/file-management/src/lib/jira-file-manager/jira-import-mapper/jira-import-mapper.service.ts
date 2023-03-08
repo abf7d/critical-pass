@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Activity, Project } from '@critical-pass/project/types';
+import { Activity, Project, TagGroupOption } from '@critical-pass/project/types';
+import { TagManagerService } from '@critical-pass/shared/project-utils';
 import { ActivitySerializerService, IntegrationSerializerService, ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { JiraProjectResult } from '../../types/jira';
-
+import * as CONST from '../../constants';
 @Injectable({
     providedIn: 'root',
 })
@@ -11,6 +12,7 @@ export class JiraImportMapperService {
         private projectSerializer: ProjectSerializerService,
         private actSerializer: ActivitySerializerService,
         private intSerializer: IntegrationSerializerService,
+        private tagManager: TagManagerService,
     ) {}
 
     public mapJiraProject(response: JiraProjectResult): Project | null {
@@ -23,6 +25,10 @@ export class JiraImportMapperService {
             issues.forEach((issue, i) => {
                 idMap.set(issue.key, i);
             });
+            console.log('res', response);
+
+            const assignedTo = issues.map(x => x.fields.assignee?.displayName).filter(x => !!x);
+            this.tagManager.addTagGroup(project, CONST.RESOURCE_TAG_GROUP, assignedTo);
 
             issues.forEach(issue => {
                 const activity = this.actSerializer.fromJson();
@@ -32,6 +38,7 @@ export class JiraImportMapperService {
                     activity.profile.name = issue.fields.summary;
                     // activity.profile. = issue.fields.description;
                     activity.profile.planned_completion_date = issue.fields.duedate;
+                    
                     // activity.type = issue.fields.issuetype.name;
                     // activity.status = issue.fields.issuetype.name;
                     // activity.assignedTo = issue.fields.creator?.displayName;

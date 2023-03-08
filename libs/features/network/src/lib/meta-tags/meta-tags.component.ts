@@ -6,6 +6,7 @@ import { MetaTagService } from './meta-tag.service';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import { Project, TagGroupOption, TagLoad, TagSelection, TagSelectionGroup } from '@critical-pass/project/types';
 import { ColorFactoryService } from '@critical-pass/shared/serializers';
+import { TagManagerService } from '@critical-pass/shared/project-utils';
 
 @Component({
     selector: 'proj-meta-tags',
@@ -25,7 +26,7 @@ export class MetaTagsComponent implements OnInit {
         route: ActivatedRoute,
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
         private colorFactory: ColorFactoryService,
-        private metaTagService: MetaTagService,
+        private metaTagService: TagManagerService,
     ) {
         this.id = +route.snapshot.params['id'];
         this.project$ = this.dashboard.activeProject$;

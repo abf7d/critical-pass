@@ -19,5 +19,5 @@ export const environment = {
     webApi: 'https://localhost:44369/api/', //old'https://localhost:44392/api',
 
     jiraClientId: '1SdMM8pTryWCljI1Awm9drfKvnU2BR2H',
-    jiraClientSecret: '123',
+    jiraClientSecret: 'ATOAhrQuTdDIXMy36tPlQwyVkDqJgUiWvKKe0zW0lndUShBScNn5v9GsKXRgyar1fMEPFB46E506',
 };
