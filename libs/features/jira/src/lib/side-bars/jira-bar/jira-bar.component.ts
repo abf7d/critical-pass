@@ -14,7 +14,13 @@ export class JiraBarComponent {
     public isProcessing: boolean = false;
     public project!: Project;
     private subscription!: Subscription;
-    constructor(private toastr: ToastrService, @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, private fCompiler: FileCompilerService, private projectSanitizer: ProjectSanatizerService, private zametekApi: ZametekApiService,) {}
+    constructor(
+        private toastr: ToastrService,
+        @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
+        private fCompiler: FileCompilerService,
+        private projectSanitizer: ProjectSanatizerService,
+        private zametekApi: ZametekApiService,
+    ) {}
     public ngOnInit(): void {
         this.subscription = this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(p => {
             this.project = p;

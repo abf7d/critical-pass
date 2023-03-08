@@ -23,13 +23,13 @@ export class TagManagerService {
                 color: itemColor.color,
                 backgroundcolor: itemColor.backgroundcolor,
             };
-          });
+        });
         const tagGroup: TagGroupOption = {
-          color: color.color,
-          backgroundcolor: color.backgroundcolor,
-          name,
-          tags
-        }
+            color: color.color,
+            backgroundcolor: color.backgroundcolor,
+            name,
+            tags,
+        };
         project.tags.push(tagGroup);
     }
 

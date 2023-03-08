@@ -38,7 +38,7 @@ export class JiraImportMapperService {
                     activity.profile.name = issue.fields.summary;
                     // activity.profile. = issue.fields.description;
                     activity.profile.planned_completion_date = issue.fields.duedate;
-                    
+
                     // activity.type = issue.fields.issuetype.name;
                     // activity.status = issue.fields.issuetype.name;
                     // activity.assignedTo = issue.fields.creator?.displayName;

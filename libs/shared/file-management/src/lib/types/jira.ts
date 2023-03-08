@@ -18,7 +18,7 @@ export interface JiraIssueFields {
         accountId: string;
         displayName: string;
         self?: string;
-    }
+    };
     // depencencies
     issuelinks?: JiraIssueLink[];
     project?: {
