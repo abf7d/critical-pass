@@ -13,3 +13,10 @@
     padding: 12px;
     flex-wrap: wrap;
 }
+.jira-projects {
+    margin: 15px;
+    color: #666;
+    .jira-project {
+        margin: 20px;
+    }
+}

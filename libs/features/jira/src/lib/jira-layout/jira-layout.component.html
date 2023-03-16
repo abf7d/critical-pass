@@ -1,8 +1,16 @@
 <div class="page-content">
     <button class="btn btn-primary" (click)="toJira()">Authorize Jira</button>
     <button class="btn btn-secondary" (click)="getProjects()">Get Projects</button>
-    <button class="btn btn-secondary" (click)="getIssues()">Get Issues</button>
+    <!-- <button class="btn btn-secondary" (click)="getIssues()">Get Issues</button> -->
+    <a href="javascript:void(0)" (click)="selectedTab = 'projects'">Projects List</a>
+    <a href="javascript:void(0)" (click)="selectedTab = 'viz'">Project Viz</a>
 </div>
-<div *ngIf="project !== null">
+<div *ngIf="projects.length > 0 && selectedTab === 'projects'" class="jira-projects">
+    <div>Projects</div>
+    <div *ngFor="let proj of projects" class="jira-project" >
+        <a href="javascript:void(0)" (click)="selectProject(proj)">{{proj.name}}</a>
+    </div>
+</div>
+<div *ngIf="project !== null && selectedTab === 'viz'">
     <cp-arrow-chart [width]="1214" [height]="700" [rebuild]="true"></cp-arrow-chart>
 </div>

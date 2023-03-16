@@ -56,7 +56,7 @@ export class JiraImportMapperService {
                                 return null;
                             });
                         if (dependencies?.length) {
-                            activity.profile.depends_on = (dependencies?.filter(x => !!x) as number[]).join(',');
+                            activity.profile.depends_on = (dependencies?.filter(x => x !== null) as number[]).join(',');
                         }
                     }
                     project.activities.push(activity);
