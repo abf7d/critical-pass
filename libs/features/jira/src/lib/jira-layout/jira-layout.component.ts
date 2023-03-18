@@ -9,6 +9,8 @@ import { JiraImportMapperService, JiraProjectResult } from '@critical-pass/share
 import { NodeConnectorService } from '@critical-pass/project/processor';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import urlJoin from 'url-join';
+import { ProjectSerializerService } from '@critical-pass/shared/serializers';
+import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
 @Component({
     selector: 'critical-pass-jira-layout',
     templateUrl: './jira-layout.component.html',
@@ -27,12 +29,17 @@ export class JiraLayoutComponent implements OnInit {
         private connector: NodeConnectorService,
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
         private importer: JiraImportMapperService,
+        private sanitizer: ProjectSanatizerService,
+        private serializer: ProjectSerializerService,
     ) {}
     public ngOnInit(): void {
         const code = this.route.snapshot.queryParams['code'];
         if (code) {
             this.getJiraToken(code);
         }
+        this.dashboard.activeProject$.subscribe(project => {
+            this.project = project;
+        });
     }
     public getJiraToken(code: string): void {
         this.httpClient.get<{ access_token: string }>(urlJoin(this.baseUrl, 'account/jira-token', code)).subscribe(
@@ -45,19 +52,6 @@ export class JiraLayoutComponent implements OnInit {
             },
         );
         return;
-        // this.httpClient
-        //     .post(CONST.JIRA_TOKEN_URL, {
-        //         grant_type: 'authorization_code',
-        //         code,
-        //         client_id: environment.jiraClientId,
-        //         client_secret: environment.jiraClientSecret,
-        //         redirect_uri: CONST.JIRA_REDIRECT_URI,
-        //     })
-        //     .subscribe((res: any) => {
-        //         console.log('res', res);
-        //         localStorage.setItem(CORE_CONST.JIRA_TOKEN_KEY, res.access_token);
-        //         this.getIssues();
-        //     });
     }
     public getCloudId(): void {
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
@@ -76,12 +70,7 @@ export class JiraLayoutComponent implements OnInit {
         if (auth_token !== null) {
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
-            // const projectUrl = `${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECT_QUERY}${project.key}`;
-            // const projectUrl = `${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECT_QUERY}${project.key}`;// urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_QUERY, project.key);
             const projectUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, `${CONST.JIRA_PROJECT_QUERY}${project.key}`);
-            // console.log(projectUrl)
-            // console.log('url2', url2);
-
             this.httpClient.get<JiraProjectResult>(projectUrl, requestOptions).subscribe((res: any) => {
                 this.getActivities(res);
             });
@@ -100,7 +89,6 @@ export class JiraLayoutComponent implements OnInit {
         if (auth_token !== null) {
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
-            // const projectsUrl = `${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECTS_ENDPOINT}`;
             const projectsUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECTS_ENDPOINT);
 
             this.httpClient.get<JiraProjectResult>(projectsUrl, requestOptions).subscribe((res: any) => {
@@ -112,22 +100,25 @@ export class JiraLayoutComponent implements OnInit {
         }
     }
 
-    public setProjectProperty(project: JiraProject): void {
+    public setProjectProperty(): void {
+        const project = this.selectedProject;
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
         if (auth_token !== null) {
-            const propertyKey = 'my-project-property';
+            const propertyKey = CONST.CP_PROPERTY_KEY;
+            const copy = this.serializer.fromJson(this.project);
+            this.sanitizer.sanatizeForSave(copy);
+
+            const projectTxt = JSON.stringify(copy);
             const bodyData = {
-                number: 5,
-                string: 'string-value',
+                "string": projectTxt,
             };
             const body = JSON.stringify(bodyData);
 
-            // const propertyUrl = `${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECT_PROPERTY_URL}${project.key}/${CONST.JIRA_PROJECT_PROPERTY_ENDPOINT}/${propertyKey}`;
             const propertyUrl = urlJoin(
                 CONST.JIRA_QUERY_BASE_URL,
                 this.cloudId!,
                 CONST.JIRA_PROJECT_PROPERTY_URL,
-                project.key,
+                project!.key,
                 CONST.JIRA_PROJECT_PROPERTY_ENDPOINT,
                 propertyKey,
             );
@@ -138,23 +129,28 @@ export class JiraLayoutComponent implements OnInit {
             });
         }
     }
-    public getProjectProperty(project: JiraProject): void {
+    public getProjectProperty(): void {
+        const project = this.selectedProject;
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
         if (auth_token !== null) {
-            const propertyKey = 'my-project-property';
-            // const propertyUrl = `${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECT_PROPERTY_URL}${project.key}/${CONST.JIRA_PROJECT_PROPERTY_ENDPOINT}/${propertyKey}`;
+            const propertyKey = CONST.CP_PROPERTY_KEY;
             const propertyUrl = urlJoin(
                 CONST.JIRA_QUERY_BASE_URL,
                 this.cloudId!,
                 CONST.JIRA_PROJECT_PROPERTY_URL,
-                project.key,
+                project!.key,
                 CONST.JIRA_PROJECT_PROPERTY_ENDPOINT,
                 propertyKey,
             );
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
             this.httpClient.get(propertyUrl, requestOptions).subscribe((res: any) => {
-                console.log(res);
+                const projectTxt = res.value.string;
+                const json = JSON.parse(projectTxt);
+                const projectObj = this.serializer.fromJson(json);
+                this.connector.connectArrowsToNodes(projectObj);
+                projectObj.profile.view.autoZoom = true;
+                this.dashboard.activeProject$.next(projectObj)
             });
         }
     }

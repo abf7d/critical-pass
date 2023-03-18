@@ -7,10 +7,14 @@
 </div>
 <div *ngIf="projects.length > 0 && selectedTab === 'projects'" class="jira-projects">
     <div>Projects</div>
-    <div *ngFor="let proj of projects" class="jira-project" >
-        <a href="javascript:void(0)" (click)="selectProject(proj)">{{proj.name}}</a>
+    <div *ngFor="let proj of projects" class="jira-project">
+        <a href="javascript:void(0)" (click)="selectProject(proj)">{{ proj.name }}</a>
     </div>
 </div>
 <div *ngIf="project !== null && selectedTab === 'viz'">
+    <div class="page-content">
+        <a href="javascript:void(0)" (click)="setProjectProperty()">Set Property</a>
+        <a href="javascript:void(0)" (click)="getProjectProperty()">Get Property</a>
+    </div>
     <cp-arrow-chart [width]="1214" [height]="700" [rebuild]="true"></cp-arrow-chart>
 </div>

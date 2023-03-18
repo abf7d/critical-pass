@@ -11,3 +11,4 @@ export const JIRA_PROJECT_PROPERTY_URL = 'rest/api/3/project/';
 export const JIRA_PROJECT_PROPERTY_ENDPOINT = '/properties';
 
 export const JIRA_PROJECT_QUERY = 'rest/api/3/search?jql=project%20%3D%20';
+export const CP_PROPERTY_KEY = 'critical-pass-project';
