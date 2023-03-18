@@ -82,11 +82,9 @@ export class JiraLayoutComponent implements OnInit {
             // console.log(projectUrl)
             // console.log('url2', url2);
 
-            this.httpClient
-                .get<JiraProjectResult>(projectUrl, requestOptions)
-                .subscribe((res: any) => {
-                    this.getActivities(res);
-                });
+            this.httpClient.get<JiraProjectResult>(projectUrl, requestOptions).subscribe((res: any) => {
+                this.getActivities(res);
+            });
         }
     }
     private getActivities(response: JiraProjectResult): void {
