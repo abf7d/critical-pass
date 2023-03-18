@@ -76,9 +76,17 @@ export class JiraLayoutComponent implements OnInit {
         if (auth_token !== null) {
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
-            this.httpClient.get<JiraProjectResult>(`${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECT_QUERY}${project.key}`, requestOptions).subscribe((res: any) => {
-                this.getActivities(res);
-            });
+            // const projectUrl = `${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECT_QUERY}${project.key}`;
+            // const projectUrl = `${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECT_QUERY}${project.key}`;// urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_QUERY, project.key);
+            const projectUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, `${CONST.JIRA_PROJECT_QUERY}${project.key}`);
+            // console.log(projectUrl)
+            // console.log('url2', url2);
+
+            this.httpClient
+                .get<JiraProjectResult>(projectUrl, requestOptions)
+                .subscribe((res: any) => {
+                    this.getActivities(res);
+                });
         }
     }
     private getActivities(response: JiraProjectResult): void {
@@ -94,14 +102,62 @@ export class JiraLayoutComponent implements OnInit {
         if (auth_token !== null) {
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
-            this.httpClient
-                .get<JiraProjectResult>(`${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECTS_ENDPOINT}`, requestOptions)
-                .subscribe((res: any) => {
-                    this.projects = res.values.map((p: any) => {
-                        return { id: p.id, key: p.key, name: p.name };
-                    });
-                    this.selectedTab = 'projects';
+            // const projectsUrl = `${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECTS_ENDPOINT}`;
+            const projectsUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECTS_ENDPOINT);
+
+            this.httpClient.get<JiraProjectResult>(projectsUrl, requestOptions).subscribe((res: any) => {
+                this.projects = res.values.map((p: any) => {
+                    return { id: p.id, key: p.key, name: p.name };
                 });
+                this.selectedTab = 'projects';
+            });
+        }
+    }
+
+    public setProjectProperty(project: JiraProject): void {
+        const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+        if (auth_token !== null) {
+            const propertyKey = 'my-project-property';
+            const bodyData = {
+                number: 5,
+                string: 'string-value',
+            };
+            const body = JSON.stringify(bodyData);
+
+            // const propertyUrl = `${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECT_PROPERTY_URL}${project.key}/${CONST.JIRA_PROJECT_PROPERTY_ENDPOINT}/${propertyKey}`;
+            const propertyUrl = urlJoin(
+                CONST.JIRA_QUERY_BASE_URL,
+                this.cloudId!,
+                CONST.JIRA_PROJECT_PROPERTY_URL,
+                project.key,
+                CONST.JIRA_PROJECT_PROPERTY_ENDPOINT,
+                propertyKey,
+            );
+            let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+            const requestOptions = { headers: headers };
+            this.httpClient.put(propertyUrl, body, requestOptions).subscribe((res: any) => {
+                console.log(res);
+            });
+        }
+    }
+    public getProjectProperty(project: JiraProject): void {
+        const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+        if (auth_token !== null) {
+            const propertyKey = 'my-project-property';
+            // const propertyUrl = `${CONST.JIRA_QUERY_BASE_URL}${this.cloudId}/${CONST.JIRA_PROJECT_PROPERTY_URL}${project.key}/${CONST.JIRA_PROJECT_PROPERTY_ENDPOINT}/${propertyKey}`;
+            const propertyUrl = urlJoin(
+                CONST.JIRA_QUERY_BASE_URL,
+                this.cloudId!,
+                CONST.JIRA_PROJECT_PROPERTY_URL,
+                project.key,
+                CONST.JIRA_PROJECT_PROPERTY_ENDPOINT,
+                propertyKey,
+            );
+            let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+            const requestOptions = { headers: headers };
+            this.httpClient.get(propertyUrl, requestOptions).subscribe((res: any) => {
+                console.log(res);
+            });
         }
     }
 
