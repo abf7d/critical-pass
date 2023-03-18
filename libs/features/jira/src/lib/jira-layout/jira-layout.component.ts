@@ -110,7 +110,7 @@ export class JiraLayoutComponent implements OnInit {
 
             const projectTxt = JSON.stringify(copy);
             const bodyData = {
-                "string": projectTxt,
+                string: projectTxt,
             };
             const body = JSON.stringify(bodyData);
 
@@ -150,7 +150,7 @@ export class JiraLayoutComponent implements OnInit {
                 const projectObj = this.serializer.fromJson(json);
                 this.connector.connectArrowsToNodes(projectObj);
                 projectObj.profile.view.autoZoom = true;
-                this.dashboard.activeProject$.next(projectObj)
+                this.dashboard.activeProject$.next(projectObj);
             });
         }
     }
