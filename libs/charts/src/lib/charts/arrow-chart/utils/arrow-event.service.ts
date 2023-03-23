@@ -18,12 +18,12 @@ export class ArrowEventsService {
         private elFactory: ElFactoryService,
     ) {}
     public checkDeselect(project: Project): boolean {
-        return (
-            this.st.selected_node ||
+        return this.st.selected_node ||
             project.profile.view.selectedActivity !== null ||
             project.profile.view.selectedIntegration !== null ||
             this.st.selected_link
-        ) ? true : false;
+            ? true
+            : false;
     }
     public deselectActivity(project: Project): void {
         project.activities.forEach(a => (a.chartInfo.isSelected = false));

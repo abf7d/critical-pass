@@ -169,7 +169,6 @@ export class JiraLayoutComponent implements OnInit {
             this.getJiraProject(this.selectedProject);
         }
     }
-
 }
 
 // 1.2) add story points to issues in jira, then convert to days for activity duration

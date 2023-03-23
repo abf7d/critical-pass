@@ -13,5 +13,5 @@ export interface ActivityProfile {
     start_date_dt: Date | null;
     minEST: number;
     minESDate: Date | null;
-    jiraIssueKey?: string; 
+    jiraIssueKey?: string;
 }
