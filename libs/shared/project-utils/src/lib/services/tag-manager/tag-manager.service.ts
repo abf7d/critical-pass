@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project, TagGroup, TagGroupOption, TagLoad, TagSelection, TagSelectionGroup } from '@critical-pass/project/types';
+import { Activity, Project, TagGroup, TagGroupOption, TagLoad, TagSelection, TagSelectionGroup } from '@critical-pass/project/types';
 import { ColorFactoryService } from '@critical-pass/shared/serializers';
 
 @Injectable({
@@ -72,6 +72,82 @@ export class TagManagerService {
             project.profile.view.selectedTagGroup = null;
         }
         project.tags = project.tags?.filter(x => x.name !== tag.name);
+    }
+
+    public addNewTagGroup(project: Project, name: string) {
+        if (!project.tags) {
+            project.tags = [];
+        }
+        const groupIndex = project.tags.length;
+        const scheme = this.colorFactory.getSchemeByIndex(0);
+        const color = scheme.colors[groupIndex % scheme.colors.length];
+        const tagGroup: TagGroupOption = {
+            color: color.color,
+            backgroundcolor: color.backgroundcolor,
+            name,
+            tags: [],
+        };
+        project.tags.push(tagGroup);
+    }
+    public createNewTag(project: Project, groupName: string, name: string) {
+        // get index of groupName from project.tags
+        const groupIndex = project.tags?.findIndex(x => x.name === groupName) ?? 0;
+        const groupScheme = this.colorFactory.getSchemeByIndex(groupIndex);
+        // get index of tag name from project.tags.tags
+        const itemIndex = project.tags?.find(x => x.name === groupName)?.tags?.length ?? 0;
+
+        const tagColor = groupScheme.colors[itemIndex % groupScheme.colors.length];
+        const newTag = {
+            name,
+            color: tagColor.color,
+            backgroundcolor: tagColor.backgroundcolor,
+        };
+        return newTag;
+    }
+
+    // Todo In jiraProjectMapper pass the assignee along with one activity
+    public addTagToActivities(project: Project, tagName: string, tagGroupName: string, activities: Activity[]) {
+        const group = project.tags?.find(x => x.name === tagGroupName);
+        if (!group) {
+            if (project.tags) {
+                this.addNewTagGroup(project, tagGroupName);
+                const newTag = this.createNewTag(project, tagGroupName, tagName);
+                project.tags.find(x => x.name === tagGroupName)?.tags?.push(newTag);
+            }
+        }
+        activities.forEach(a => {
+            //check if group name already exists in activity.tags
+            const existingTag = a.tags?.find(x => x.name === tagGroupName);
+
+            //check if tag name exists in groups tags
+            const existingTagName = existingTag?.tags?.find(x => x.name === tagName);
+
+            if (existingTagName) {
+                return;
+            }
+
+            // get tag from project.tags
+            const tag = project?.tags?.find(x => x.name === tagGroupName)?.tags.find(x => x.name === tagName);
+
+            // create new activity-tag with project-tag color
+            const activityTag = {
+                name: tagName,
+                color: tag?.color ?? 'black',
+                backgroundcolor: tag?.backgroundcolor ?? 'white',
+            };
+
+            if (existingTag) {
+                existingTag.tags.push(activityTag);
+                return;
+            }
+            const aTagGroup: TagGroup = {
+                name: tagGroupName,
+                tags: [activityTag],
+            };
+            a.tags = a.tags ?? [];
+            a.tags.push(aTagGroup);
+        });
+        return;
     }
     public assignTagsToSelectedActivities(project: Project, tagNames: string[], tagGroup: TagSelectionGroup): void {
         const selectedLinkids = project.profile.view?.lassoedLinks;

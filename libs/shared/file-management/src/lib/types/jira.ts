@@ -34,6 +34,8 @@ export interface JiraIssueFields {
     summary: string;
     description?: string;
     duedate?: string;
+    customfield_10016: number; // Story Points
+
 }
 export interface JiraIssueLink {
     outwardIssue?: JiraIssue;

@@ -124,6 +124,9 @@ export class ArrowControllerService {
     public deselectActivity(project: Project): void {
         return this.events.deselectActivity(project);
     }
+    public checkDeselect(project: Project) {
+        return this.events.checkDeselect(project);
+    }
     public updateGroupPosition(project: Project, selectedNodes: number[]): void {
         return this.positioner.updateGroupPosition(project, selectedNodes);
     }

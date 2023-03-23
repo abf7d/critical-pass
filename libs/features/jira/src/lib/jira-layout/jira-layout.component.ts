@@ -23,6 +23,7 @@ export class JiraLayoutComponent implements OnInit {
     public selectedProject: JiraProject | null = null;
     public projects: JiraProject[] = [];
     public selectedTab: string | null = null;
+    public projectKey: string | null = null;
     constructor(
         private httpClient: HttpClient,
         private route: ActivatedRoute,
@@ -72,11 +73,11 @@ export class JiraLayoutComponent implements OnInit {
             const requestOptions = { headers: headers };
             const projectUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, `${CONST.JIRA_PROJECT_QUERY}${project.key}`);
             this.httpClient.get<JiraProjectResult>(projectUrl, requestOptions).subscribe((res: any) => {
-                this.getActivities(res);
+                this.convertIssuesToProject(res);
             });
         }
     }
-    private getActivities(response: JiraProjectResult): void {
+    private convertIssuesToProject(response: JiraProjectResult): void {
         const project = this.importer.mapJiraProject(response);
         if (project) {
             this.connector.connectArrowsToNodes(project);
@@ -159,15 +160,31 @@ export class JiraLayoutComponent implements OnInit {
         window.location.href = CONST.JIRA_LOGIN_URL;
     }
     public selectProject(project: JiraProject): void {
+        this.projectKey = project.key;
         this.selectedProject = project;
-        this.getJiraProject(project);
         this.selectedTab = 'viz';
     }
+    public newArrowChart(): void {
+        if (this.selectedProject) {
+            this.getJiraProject(this.selectedProject);
+        }
+    }
+
 }
 
+// 1.2) add story points to issues in jira, then convert to days for activity duration
+// implement a better version of zametekapi with resource dependencies, or implement it in TS, verify its up and running in azure.
+// automatatically generate arrow diagram from backend when newArrowChart is called
+// deploy new functions with jira token to azure
+// get this crtical-pass repo into azure
+
+// Add code to secrets
+// Check in backend
+// Unit tests with chat gpt
+// TODO: add tags from jira to project (assigned persson will be a resource and a tag), show tags like in network viz, allow to edit
 // 1) get a lisst of projects and create a list on the page to select a project
 // 1.1)  we need to create a custom propery in jira for the project to test saving nodes
-// 1.2) add story points to issues in jira, then convert to days for activity duration
+
 // 2) get a list of issues for the selected project
 // 3) create a graph from the issues
 // 4) save the graph to jira BUT first we need to create a custom propery in jira for the project

@@ -46,17 +46,10 @@ export class SelectedActivityComponent implements OnInit, OnDestroy {
             this.project = project;
             this.activity = project.profile.view.selectedActivity ?? null;
             this.selectedNode = project.profile.view.selectedIntegration ?? null;
-            if (this.activity) this.loadSelectedActivity(this.activity);
+            this.loadSelectedActivity(this.activity);
             this.loadSelectedNode(this.selectedNode);
             this.cd.detectChanges();
         });
-
-        // TODO: Do we need this? It is not used in the controller.
-        /*this.controller.prntUpdate$.pipe(filter(x => !!x)).subscribe(val => {
-            if (val !== 0) {
-                if (this.activity) this.controller.updateSelectedActivity(this.activity, this.project);
-            }
-        });*/
     }
 
     public ngOnDestroy() {
@@ -68,7 +61,7 @@ export class SelectedActivityComponent implements OnInit, OnDestroy {
         }
     }
 
-    public loadSelectedActivity(activity: Activity) {
+    public loadSelectedActivity(activity: Activity | null) {
         if (activity === null) {
             this.showPanel = false;
             return;

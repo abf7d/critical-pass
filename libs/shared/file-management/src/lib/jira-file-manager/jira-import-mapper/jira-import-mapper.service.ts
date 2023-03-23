@@ -29,13 +29,15 @@ export class JiraImportMapperService {
 
             const assignedTo = issues.map(x => x.fields.assignee?.displayName).filter(x => !!x);
             this.tagManager.addTagGroup(project, CONST.RESOURCE_TAG_GROUP, assignedTo);
-
+            // this.tagManager.addTagGroupToProject
+            // this.tagManager.assignTagsToSelectedActivities
             issues.forEach(issue => {
                 const activity = this.actSerializer.fromJson();
                 const id = idMap.get(issue.key);
                 if (id !== undefined) {
                     activity.profile.id = id;
                     activity.profile.name = issue.fields.summary;
+                    activity.profile.jiraIssueKey = issue.key;
                     // activity.profile. = issue.fields.description;
                     activity.profile.planned_completion_date = issue.fields.duedate;
 
@@ -46,6 +48,10 @@ export class JiraImportMapperService {
                     // activity.createdDate = issue.fields.created;
                     // activity.project = issue.fields.project?.key;
                     // idMap.set(issue.key, id);
+                    activity.profile.duration = issue.fields.customfield_10016 / 2;
+
+                    // Todo: test this to see if the tag is added to the project and activities
+                    this.tagManager.addTagToActivities(project, CONST.RESOURCE_TAG_GROUP, issue.fields.assignee?.displayName, [activity]);
                     if (issue.fields.issuelinks) {
                         const dependencies = issue.fields.issuelinks
                             ?.filter(x => !!x.inwardIssue)

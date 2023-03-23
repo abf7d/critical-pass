@@ -201,7 +201,7 @@ export class RiskDonutUiService {
         this.labelG.select('g.center').remove('*');
         if (!isEmpty) {
             const group = this.labelG.append('g').attr('class', 'center');
-            this.svg.select('g.missing-data').remove();
+            this.svg.selectAll('g.missing-data').remove();
             if (proj.profile.risk.criticalityRisk) {
                 group.append('text').attr('class', 'center').text('Criticality').attr('x', -30).attr('y', -12).attr('class', 'crit-label');
                 group

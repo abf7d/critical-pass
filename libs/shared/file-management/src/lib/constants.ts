@@ -28,7 +28,7 @@ export const ACTIVITY_TAG_WS_NAME = 'Activity Tags';
 
 export const PARENT_NODE_ID_COL = 'parentNodeId';
 export const NODE_ID_COL = 'nodeId';
-export const RESOURCE_TAG_GROUP = 'Assigned To';
+export const RESOURCE_TAG_GROUP = 'Jira Assignee';
 
 export type ImportData = Array<Array<any>>;
 export interface Worksheet {

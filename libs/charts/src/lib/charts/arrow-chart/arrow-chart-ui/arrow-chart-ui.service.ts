@@ -77,9 +77,12 @@ export class ArrowChartUIService {
 
     public deselectItem() {
         this.st.allowDeletes = false;
-        this.controller.deselectActivity(this.proj);
-        this.controller.deselectNode(this.proj);
-        this.dashboard.updateProject(this.proj, false);
+        const needsUpdate = this.controller.checkDeselect(this.proj);
+        if (needsUpdate) {
+            this.controller.deselectActivity(this.proj);
+            this.controller.deselectNode(this.proj);
+            this.dashboard.updateProject(this.proj, false);
+        }
     }
 
     public disableDeletes() {
