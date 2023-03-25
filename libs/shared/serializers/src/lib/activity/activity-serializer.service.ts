@@ -16,7 +16,7 @@ import { ActivityTagSerializerService } from './tag/activity-tag-serializer.serv
 export class ActivitySerializerService implements Serializer<Activity> {
     fromJson(json: any = null): Activity {
         json = json ?? {};
-        const tagSerilizer = new ActivityTagSerializerService()
+        const tagSerilizer = new ActivityTagSerializerService();
         const obj: Activity = {
             processInfo: new ProcessedSerializerService().fromJson(json.processInfo),
             chartInfo: new ChartSerializerService().fromJson(json.chartInfo),
@@ -25,7 +25,7 @@ export class ActivitySerializerService implements Serializer<Activity> {
             errors: new ActivityErrorSerializerService().fromJson(),
             profile: new ActivityProfileSerializerService().fromJson(json.profile),
             assign: new AssignResourcesSerializerService().fromJson(json.assign),
-            tags: json?.tags?.map((x: any) => tagSerilizer.fromJson(x))
+            tags: json?.tags?.map((x: any) => tagSerilizer.fromJson(x)),
         };
         return obj;
     }

@@ -106,12 +106,6 @@ export class TagManagerService {
         return newTag;
     }
 
-
-
-
-
-
-
     // Todo In jiraProjectMapper pass the assignee along with one activity
     public addTagToActivities(project: Project, tagName: string, tagGroupName: string, activities: Activity[]) {
         const group = project.tags?.find(x => x.name === tagGroupName);
