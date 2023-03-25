@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@critical-pass/shared/environments';
 import * as CONST from '../constants';
@@ -11,12 +11,13 @@ import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-ac
 import urlJoin from 'url-join';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
+import { Subscription } from 'rxjs';
 @Component({
     selector: 'critical-pass-jira-layout',
     templateUrl: './jira-layout.component.html',
     styleUrls: ['./jira-layout.component.scss'],
 })
-export class JiraLayoutComponent implements OnInit {
+export class JiraLayoutComponent implements OnInit, OnDestroy {
     private cloudId: string | null = null;
     public project: Project | null = null;
     public baseUrl = environment.criticalPathApi;
@@ -24,6 +25,7 @@ export class JiraLayoutComponent implements OnInit {
     public projects: JiraProject[] = [];
     public selectedTab: string | null = null;
     public projectKey: string | null = null;
+    public sub!: Subscription;
     constructor(
         private httpClient: HttpClient,
         private route: ActivatedRoute,
@@ -38,9 +40,12 @@ export class JiraLayoutComponent implements OnInit {
         if (code) {
             this.getJiraToken(code);
         }
-        this.dashboard.activeProject$.subscribe(project => {
+        this.sub = this.dashboard.activeProject$.subscribe(project => {
             this.project = project;
         });
+    }
+    public ngOnDestroy(): void {
+        this.sub.unsubscribe();
     }
     public getJiraToken(code: string): void {
         this.httpClient.get<{ access_token: string }>(urlJoin(this.baseUrl, 'account/jira-token', code)).subscribe(

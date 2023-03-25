@@ -71,6 +71,7 @@ export const LIBRARY_ROUTE = 'library/(grid/0//sidebar:libar/0)';
 export const ASSIGN_ROUTE = 'assign/(-1//sidebar:arrow/-1)';
 export const IMPORT_PROFILE_ROUTE = 'profile/(-2//sidebar:grid/-2)';
 export const IMPORT_SCENARIO_ROUTE = 'history/(-2//sidebar:arrow/-2)';
+export const IMPORT_NETWORK_ROUTE = 'network/(-2//sidebar:meta/-2)';
 export const IMPORT_ID_ROUTE_PARAM = -2;
 
 export const CREATED_PROJECT = 'created.project';

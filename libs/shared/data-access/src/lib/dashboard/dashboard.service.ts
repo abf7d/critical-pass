@@ -35,6 +35,9 @@ export class DashboardService {
     // public cacheProject(project: Project) {
     //     this._cache.set(project.profile.id, project);
     // }
+    public cleanSlateForNewPage(project: Project) {
+        this._activeProject = new BehaviorSubject<Project>(project);
+    }
     public updateProject(project: Project, compile: boolean = true) {
         if (compile) this.compiler.compile(project);
         this._cache.set(project.profile.id, project);

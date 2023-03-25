@@ -1,12 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
-
 import { Resolve } from '@angular/router';
-
 import { ActivatedRouteSnapshot } from '@angular/router';
-// import { ProjectStoreService } from '../../features/projects/services/api/project-store/project-store.service';
 import { first, tap } from 'rxjs/operators';
-// import * as Keys from '../constants/keys';
-import { of } from 'rxjs';
 import { DASHBOARD_TOKEN, ProjectApiService } from '../..';
 import * as CONST from '../constants/constants';
 import { ProjectStorageApiService } from '../api/project-storage-api/project-storage-api.service';
@@ -26,12 +21,13 @@ export class ProjectResolver implements Resolve<any> {
 
     resolve(route: ActivatedRouteSnapshot) {
         if (+route.params['id'] === CONST.IMPORT_ROUTE_PARAM_ID) {
-            const imported = this.storageApi.get(CONST.SESSION_STORAGE); //this.projStore.tempUnstore();
-            const bs = this.dashboard.activeProject$; //this.projStore.get(CONST.IMPORT_ROUTE_PARAM_ID);
-            if (imported !== null) bs.next(imported);
+            const imported = this.storageApi.get(CONST.SESSION_STORAGE);
+            if (imported !== null) {
+                imported.profile.view.autoZoom = true;
+                this.dashboard.cleanSlateForNewPage(imported);
+            }
+            const bs = this.dashboard.activeProject$;
             return bs.pipe(first());
-            // returnbs.pipe(first());
-            // return of(imported);
         } else {
             return this.projectApi.get(route.params['id']).pipe(
                 tap(project => {
@@ -39,10 +35,7 @@ export class ProjectResolver implements Resolve<any> {
                     this.dashboard.activeProject$.next(project);
                 }),
                 first(),
-            ); //this.projStore.load(route.params.id).pipe(first());
+            );
         }
     }
 }
-
-//tokens need to be in shared library along with configService
-// shared utils? what should be the name of the library

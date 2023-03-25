@@ -1,4 +1,7 @@
 .meta-bar {
     padding-left: 27px;
     padding-right: 16px;
+    & > a {
+        margin-top: 20px;
+    }
 }

@@ -12,6 +12,7 @@ export class TagManagerService {
         if (!project.tags) {
             project.tags = [];
         }
+        items = Array.from(new Set(items));
         const groupIndex = project.tags.length;
         const scheme = this.colorFactory.getSchemeByIndex(0);
         const color = scheme.colors[groupIndex % scheme.colors.length];
@@ -105,6 +106,12 @@ export class TagManagerService {
         return newTag;
     }
 
+
+
+
+
+
+
     // Todo In jiraProjectMapper pass the assignee along with one activity
     public addTagToActivities(project: Project, tagName: string, tagGroupName: string, activities: Activity[]) {
         const group = project.tags?.find(x => x.name === tagGroupName);
@@ -117,10 +124,10 @@ export class TagManagerService {
         }
         activities.forEach(a => {
             //check if group name already exists in activity.tags
-            const existingTag = a.tags?.find(x => x.name === tagGroupName);
+            const existingTagGroup = a.tags?.find(x => x.name === tagGroupName);
 
             //check if tag name exists in groups tags
-            const existingTagName = existingTag?.tags?.find(x => x.name === tagName);
+            const existingTagName = existingTagGroup?.tags?.find(x => x.name === tagName);
 
             if (existingTagName) {
                 return;
@@ -136,8 +143,8 @@ export class TagManagerService {
                 backgroundcolor: tag?.backgroundcolor ?? 'white',
             };
 
-            if (existingTag) {
-                existingTag.tags.push(activityTag);
+            if (existingTagGroup) {
+                existingTagGroup.tags.push(activityTag);
                 return;
             }
             const aTagGroup: TagGroup = {

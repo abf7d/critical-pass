@@ -50,8 +50,13 @@ export class JiraImportMapperService {
                     // idMap.set(issue.key, id);
                     activity.profile.duration = issue.fields.customfield_10016 / 2;
 
+
+
+
+
+
                     // Todo: test this to see if the tag is added to the project and activities
-                    this.tagManager.addTagToActivities(project, CONST.RESOURCE_TAG_GROUP, issue.fields.assignee?.displayName, [activity]);
+                    this.tagManager.addTagToActivities(project,  issue.fields.assignee?.displayName, CONST.RESOURCE_TAG_GROUP, [activity]);
                     if (issue.fields.issuelinks) {
                         const dependencies = issue.fields.issuelinks
                             ?.filter(x => !!x.inwardIssue)
