@@ -174,6 +174,48 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             this.getJiraProject(this.selectedProject);
         }
     }
+    public createJiraProject(): void {
+        const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+        if (auth_token !== null) {
+            const createProjUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_PROPERTY_URL);
+            // I found this id by loading the jira issues for a project, then looking an assignee id from one of the response issues the response.
+            const leadAccountId = '5c741c367dae4b653384935c';
+            const body = this.importer.getCreateJiraProjectBody(leadAccountId);
+            // const project = this.project;
+            // const projectTxt = JSON.stringify(project);
+            // const bodyData = {
+            //     string: projectTxt,
+            // };
+            // const body = JSON.stringify(bodyData);
+            let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+            const requestOptions = { headers: headers };
+            
+            const projCategoriesUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJ_CATEGORIES_URL);
+            this.httpClient.get(projCategoriesUrl, requestOptions).subscribe((res: any) => {
+                console.log(res);
+            });
+
+            // const permissionSchemeUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PERMISSION_SCHEME_URL);
+            // this.httpClient.get(permissionSchemeUrl, requestOptions).subscribe((res: any) => {
+            //     console.log(res);
+            // });
+
+            // const notificationSchemeUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_NOTIFICATION_SCHEME_URL);
+            // this.httpClient.get(notificationSchemeUrl, requestOptions).subscribe((res: any) => {
+            //     console.log(res);
+            // });
+
+            // for creating a project
+            this.httpClient.post(createProjUrl, body, requestOptions).subscribe((res: any) => {
+                console.log(res);
+            });
+
+            /* Result:
+            id: 10002
+            key: "P1"
+            self:"https://api.atlassian.com/ex/jira/b5155f7a-e0aa-4d26-a9c9-f55d206ecddf/rest/api/3/project/10002"*/
+        }
+    }
 }
 
 // 1.2) add story points to issues in jira, then convert to days for activity duration

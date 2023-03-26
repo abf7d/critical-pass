@@ -7,6 +7,9 @@ export interface JiraIssue {
     self: string;
     fields: JiraIssueFields;
 }
+export interface JiraIssueExport {
+    fields: JiraIssueFields;
+}
 export interface JiraIssueFields {
     created?: string;
     creator?: {
@@ -14,9 +17,11 @@ export interface JiraIssueFields {
         emailAddress: string;
         displayName: string;
     };
-    assignee: {
-        accountId: string;
-        displayName: string;
+    assignee?: {
+
+        id?: string;
+        accountId?: string;
+        displayName?: string;
         self?: string;
     };
     // depencencies
@@ -26,7 +31,7 @@ export interface JiraIssueFields {
         key: string;
         name: string;
     };
-    issuetype: {
+    issuetype?: {
         id: string;
         name: string;
         entityId: string;
