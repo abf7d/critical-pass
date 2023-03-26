@@ -189,7 +189,7 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             // const body = JSON.stringify(bodyData);
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
-            
+
             const projCategoriesUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJ_CATEGORIES_URL);
             this.httpClient.get(projCategoriesUrl, requestOptions).subscribe((res: any) => {
                 console.log(res);

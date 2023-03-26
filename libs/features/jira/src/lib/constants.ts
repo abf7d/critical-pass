@@ -14,7 +14,7 @@ export const JIRA_PROJECTS_ENDPOINT = 'rest/api/3/project/search';
 export const JIRA_PROJECT_PROPERTY_URL = 'rest/api/3/project/';
 export const JIRA_PERMISSION_SCHEME_URL = 'rest/api/3/permissionscheme';
 export const JIRA_NOTIFICATION_SCHEME_URL = 'rest/api/3/notificationscheme';
-export const JIRA_PROJ_CATEGORIES_URL = 'rest/api/3/projectCategory';  
+export const JIRA_PROJ_CATEGORIES_URL = 'rest/api/3/projectCategory';
 export const JIRA_PROJECT_PROPERTY_ENDPOINT = '/properties';
 
 export const JIRA_PROJECT_QUERY = 'rest/api/3/search?jql=project%20%3D%20';

@@ -164,7 +164,7 @@ export class JiraImportMapperService {
                 key: inIssueKey,
             },
             outwardIssue: {
-                key: outIssueKey//"MKY-1"
+                key: outIssueKey, //"MKY-1"
             },
             type: {
                 //"name": "Duplicate"
@@ -207,52 +207,51 @@ export class JiraImportMapperService {
             leadAccountId: leadAccountId, //'5b10a0effa615349cb016cd8', // need to get this from user that is approving jira access
             name: 'Project 1',
             notificationScheme: 10000, // 10002 is CE, 10001 is CP, 10000 is default
-            permissionScheme: 0,// 0 is the default permission scheme  10001 is cyto-explorer simplified, 10000 is crtitical pass simplified,
+            permissionScheme: 0, // 0 is the default permission scheme  10001 is cyto-explorer simplified, 10000 is crtitical pass simplified,
             projectTemplateKey: 'com.pyxis.greenhopper.jira:gh-simplified-agility-kanban', //'com.atlassian.jira-core-project-templates:jira-core-simplified-process-control',
             projectTypeKey: 'software',
             url: 'http://atlassian.com',
         };
 
-//        const x = {
-//            entityId
-//             : 
-//             "1c443fe2-878a-4167-be3f-9dedaf66721c"
-//             expand
-//             : 
-//             "description,lead,issueTypes,url,projectKeys,permissions,insight"
-//             id
-//             : 
-//             "10001"
-//             isPrivate
-//             : 
-//             false
-//             key
-//             : 
-//             "CE"
-//             name
-//             : 
-//             "Cyto Explorer"
-//             projectTypeKey
-//             : 
-//             "software"
-//             properties
-//             : 
-//             {}
-//             self
-//             : 
-//             "https://api.atlassian.com/ex/jira/b5155f7a-e0aa-4d26-a9c9-f55d206ecddf/rest/api/3/project/10001"
-//             simplified
-//             : 
-//             true
-//             style
-//             : 
-//             "next-gen"
-//             uuid
-// : 
-// "1c443fe2-878a-4167-be3f-9dedaf66721c"
+        //        const x = {
+        //            entityId
+        //             :
+        //             "1c443fe2-878a-4167-be3f-9dedaf66721c"
+        //             expand
+        //             :
+        //             "description,lead,issueTypes,url,projectKeys,permissions,insight"
+        //             id
+        //             :
+        //             "10001"
+        //             isPrivate
+        //             :
+        //             false
+        //             key
+        //             :
+        //             "CE"
+        //             name
+        //             :
+        //             "Cyto Explorer"
+        //             projectTypeKey
+        //             :
+        //             "software"
+        //             properties
+        //             :
+        //             {}
+        //             self
+        //             :
+        //             "https://api.atlassian.com/ex/jira/b5155f7a-e0aa-4d26-a9c9-f55d206ecddf/rest/api/3/project/10001"
+        //             simplified
+        //             :
+        //             true
+        //             style
+        //             :
+        //             "next-gen"
+        //             uuid
+        // :
+        // "1c443fe2-878a-4167-be3f-9dedaf66721c"
 
-
-/*
+        /*
 assignee
 : 
 accountId
@@ -280,11 +279,9 @@ timeZone
 : 
 "America/New_York"*/
 
-
-
-//         }
+        //         }
         return bodyData;
-       /* fetch('https://your-domain.atlassian.net/rest/api/3/project', {
+        /* fetch('https://your-domain.atlassian.net/rest/api/3/project', {
             method: 'POST',
             headers: {
                 Authorization: `Basic ${Buffer.from('email@example.com:<api_token>').toString('base64')}`,
@@ -302,20 +299,17 @@ timeZone
     }
 }
 
-
 // create interface for createIssueLinkBody
 export interface JiraIssueLinkBody {
     comment: {
         body: {
-            content: 
-                {
-                    content: 
-                        {
-                            text: string;
-                            type: string;
-                        }[];
+            content: {
+                content: {
+                    text: string;
                     type: string;
                 }[];
+                type: string;
+            }[];
             type: string;
             version: number;
         };

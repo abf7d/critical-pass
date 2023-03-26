@@ -18,7 +18,6 @@ export interface JiraIssueFields {
         displayName: string;
     };
     assignee?: {
-
         id?: string;
         accountId?: string;
         displayName?: string;
