@@ -206,6 +206,8 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             // });
 
             // for creating a project
+            // const project = this.selectedProject;
+            // const deleteProjUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_PROPERTY_URL, project!.key);
             this.httpClient.post(createProjUrl, body, requestOptions).subscribe((res: any) => {
                 console.log(res);
             });
@@ -216,7 +218,19 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             self:"https://api.atlassian.com/ex/jira/b5155f7a-e0aa-4d26-a9c9-f55d206ecddf/rest/api/3/project/10002"*/
         }
     }
-}
+    public deleteJiraProject(): void {
+        const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+        if (auth_token !== null) {
+            const project = this.selectedProject;
+            const deleteProjUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_PROPERTY_URL, project!.key);
+            let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+            const requestOptions = { headers: headers };
+            this.httpClient.delete(deleteProjUrl, requestOptions).subscribe((res: any) => {
+                console.log(res);
+            });
+        }
+    }
+}   
 
 // 1.2) add story points to issues in jira, then convert to days for activity duration
 // implement a better version of zametekapi with resource dependencies, or implement it in TS, verify its up and running in azure.

@@ -17,5 +17,11 @@ export const JIRA_NOTIFICATION_SCHEME_URL = 'rest/api/3/notificationscheme';
 export const JIRA_PROJ_CATEGORIES_URL = 'rest/api/3/projectCategory';
 export const JIRA_PROJECT_PROPERTY_ENDPOINT = '/properties';
 
+// Update project
+// PUT /rest/api/3/project/{projectIdOrKey}
+
+// Delete project
+// DELETE /rest/api/3/project/{projectIdOrKey}
+
 export const JIRA_PROJECT_QUERY = 'rest/api/3/search?jql=project%20%3D%20';
 export const CP_PROPERTY_KEY = 'critical-pass-project';
