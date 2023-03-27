@@ -25,7 +25,6 @@ export class JiraBarComponent implements OnInit, OnDestroy {
         private zametekApi: ZametekApiService,
         private storageApi: ProjectStorageApiService,
         private router: Router,
-
     ) {}
     public ngOnInit(): void {
         this.subscription = this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(p => {

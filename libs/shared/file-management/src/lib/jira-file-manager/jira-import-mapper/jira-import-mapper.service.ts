@@ -106,7 +106,7 @@ export class JiraImportMapperService {
                         of scope: project:{id: '10003'}, type:"PROJECT"
                         where 10003 is the id of the generated project P1. There is a story that is missing scope
                         Maybe I configured the generated project incorrectly. Ask the forum why the project id is missing
-                        and how I generate a story for the P1 project */ 
+                        and how I generate a story for the P1 project */
                     },
                     summary: activity.profile.name!,
                     // description: {content: [{content:[{text: "TODO: add description to activity object", type: "text"}], type: "paragraph"}], version: 1},

@@ -112,23 +112,23 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
         if (auth_token !== null) {
             const propertyKey = CONST.CP_PROPERTY_KEY;
             const copy = this.serializer.fromJson(this.project) as any;
-            
+
             this.sanitizer.sanatizeForSave(copy);
             copy.profile.subProject = undefined;
             copy.profile.view = undefined;
-            
+
             const projectTxt = JSON.stringify(copy);
             const bodyData = {
                 string: projectTxt,
             };
             // const smallerBody = '{"string": ' + projectTxt + '}';
-            
+
             // This adds a lot of escape characters, need to use gzip to compress the json
             // compress bodyData string
             // const compressed = pako.gzip(JSON.stringify(bodyData), { to: 'string' });
             const body = JSON.stringify(bodyData);
             // const body = JSON.stringify(smallerBody);
-            
+
             const propertyUrl = urlJoin(
                 CONST.JIRA_QUERY_BASE_URL,
                 this.cloudId!,
@@ -268,7 +268,6 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             }
         }
     }
-    
 }
 
 // 1.2) add story points to issues in jira, then convert to days for activity duration
