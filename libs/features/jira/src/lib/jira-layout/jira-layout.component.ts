@@ -7,7 +7,7 @@ import { CORE_CONST } from '@critical-pass/core';
 import { Activity, Project } from '@critical-pass/project/types';
 import { JiraImportMapperService, JiraProjectResult } from '@critical-pass/shared/file-management';
 import { NodeConnectorService } from '@critical-pass/project/processor';
-import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
+import { API_CONST, DashboardService, DASHBOARD_TOKEN, ProjectStorageApiService } from '@critical-pass/shared/data-access';
 import urlJoin from 'url-join';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
@@ -111,15 +111,24 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
         if (auth_token !== null) {
             const propertyKey = CONST.CP_PROPERTY_KEY;
-            const copy = this.serializer.fromJson(this.project);
+            const copy = this.serializer.fromJson(this.project) as any;
+            
             this.sanitizer.sanatizeForSave(copy);
-
+            copy.profile.subProject = undefined;
+            copy.profile.view = undefined;
+            
             const projectTxt = JSON.stringify(copy);
             const bodyData = {
                 string: projectTxt,
             };
+            // const smallerBody = '{"string": ' + projectTxt + '}';
+            
+            // This adds a lot of escape characters, need to use gzip to compress the json
+            // compress bodyData string
+            // const compressed = pako.gzip(JSON.stringify(bodyData), { to: 'string' });
             const body = JSON.stringify(bodyData);
-
+            // const body = JSON.stringify(smallerBody);
+            
             const propertyUrl = urlJoin(
                 CONST.JIRA_QUERY_BASE_URL,
                 this.cloudId!,
@@ -242,6 +251,9 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             console.log(res);
         });
     }
+
+    // Issues returning
+
     public deleteJiraProject(): void {
         if (confirm('Are you sure you want to delete this project?')) {
             const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
@@ -256,6 +268,7 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             }
         }
     }
+    
 }
 
 // 1.2) add story points to issues in jira, then convert to days for activity duration

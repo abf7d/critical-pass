@@ -31,7 +31,7 @@ export interface JiraIssueFields {
         name?: string;
     };
     issuetype?: {
-        id: string;
+        id: string | number;
         name?: string;
         entityId?: string;
     };

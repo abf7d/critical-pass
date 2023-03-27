@@ -1,10 +1,10 @@
 <div class="meta-bar">
     <div>
-      <a class="btn" href="javascript:void(0)" (click)="navToProjProfile()">Load Project in Profile</a>
+        <a class="btn" href="javascript:void(0)" (click)="navToProjProfile()">Load Project in Profile</a>
     </div>
     <div>
         <a class="btn" href="javascript:void(0)" (click)="navToScenarioPlanning()">Load in Scenarios</a>
-      </div>
+    </div>
     <!-- <div>
         <div>Load to snaphsot</div>
         <div>
@@ -34,7 +34,7 @@
     <div>
         <div>Sub Project</div>
         <div>
-            <button class="btn btn-secondary" [ngClass]="{'disabled': !isSubProjSelected}" (click)="extractSubProject()">Extract Sub Project</button>
+            <button class="btn btn-secondary" [ngClass]="{ disabled: !isSubProjSelected }" (click)="extractSubProject()">Extract Sub Project</button>
         </div>
     </div>
     <cp-selected-activity [projectPool]="networkArray$ | async"></cp-selected-activity>

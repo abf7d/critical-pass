@@ -25,6 +25,7 @@ export class JiraBarComponent implements OnInit, OnDestroy {
         private zametekApi: ZametekApiService,
         private storageApi: ProjectStorageApiService,
         private router: Router,
+
     ) {}
     public ngOnInit(): void {
         this.subscription = this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(p => {
@@ -67,5 +68,13 @@ export class JiraBarComponent implements OnInit, OnDestroy {
         this.project.profile.view.autoZoom = true;
         this.storageApi.set(API_CONST.SESSION_STORAGE, this.project!);
         this.router.navigateByUrl(CORE_CONST.IMPORT_NETWORK_ROUTE);
+    }
+
+    public getProjectFromStorage(): void {
+        const project = this.storageApi.get(API_CONST.SESSION_STORAGE);
+        if (project) {
+            this.project = project;
+            this.dashboard.updateProject(project, false);
+        }
     }
 }
