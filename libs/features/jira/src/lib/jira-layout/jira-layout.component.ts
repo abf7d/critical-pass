@@ -11,7 +11,7 @@ import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-ac
 import urlJoin from 'url-join';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 @Component({
     selector: 'critical-pass-jira-layout',
     templateUrl: './jira-layout.component.html',
@@ -218,19 +218,45 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             self:"https://api.atlassian.com/ex/jira/b5155f7a-e0aa-4d26-a9c9-f55d206ecddf/rest/api/3/project/10002"*/
         }
     }
-    public deleteJiraProject(): void {
+    public addIssuesToJiraProject(): void {
+        const leadAccountId = '5c741c367dae4b653384935c';
+        const issues = this.importer.mapProjectToJiraIssues(this.project!, this.selectedProject!.id, leadAccountId);
+
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
-        if (auth_token !== null) {
-            const project = this.selectedProject;
-            const deleteProjUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_PROPERTY_URL, project!.key);
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+        const requestOptions = { headers: headers };
+        const issueTypeUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_TYPE_URL);
+        this.httpClient.get(issueTypeUrl, requestOptions).subscribe((res: any) => {
+            console.log(res);
+        });
+
+        const issueApiCalls$ = issues.map(issue => {
+            const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+            const createIssueUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_URL);
+            const body = JSON.stringify(issue);
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
-            this.httpClient.delete(deleteProjUrl, requestOptions).subscribe((res: any) => {
-                console.log(res);
-            });
+            return this.httpClient.post<SaveIssueResponse>(createIssueUrl, body, requestOptions);
+        });
+        forkJoin(issueApiCalls$).subscribe(res => {
+            console.log(res);
+        });
+    }
+    public deleteJiraProject(): void {
+        if (confirm('Are you sure you want to delete this project?')) {
+            const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+            if (auth_token !== null) {
+                const project = this.selectedProject;
+                const deleteProjUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_PROPERTY_URL, project!.key);
+                let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+                const requestOptions = { headers: headers };
+                this.httpClient.delete(deleteProjUrl, requestOptions).subscribe((res: any) => {
+                    console.log(res);
+                });
+            }
         }
     }
-}   
+}
 
 // 1.2) add story points to issues in jira, then convert to days for activity duration
 // implement a better version of zametekapi with resource dependencies, or implement it in TS, verify its up and running in azure.
@@ -256,6 +282,18 @@ export interface JiraProject {
     name: string;
 }
 
+export interface SaveIssueResponse {
+    id: string;
+    key: string;
+    self: string;
+    transition: {
+        status: number;
+        errorCollection: {
+            errorMessages: [];
+            errors: {};
+        };
+    };
+}
 /*
 const bodyData = `{
   "number": 5,

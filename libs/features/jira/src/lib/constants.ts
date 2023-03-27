@@ -15,6 +15,8 @@ export const JIRA_PROJECT_PROPERTY_URL = 'rest/api/3/project/';
 export const JIRA_PERMISSION_SCHEME_URL = 'rest/api/3/permissionscheme';
 export const JIRA_NOTIFICATION_SCHEME_URL = 'rest/api/3/notificationscheme';
 export const JIRA_PROJ_CATEGORIES_URL = 'rest/api/3/projectCategory';
+export const JIRA_ISSUE_URL = 'rest/api/3/issue';
+export const JIRA_ISSUE_TYPE_URL = 'rest/api/3/issuetype';
 export const JIRA_PROJECT_PROPERTY_ENDPOINT = '/properties';
 
 // Update project

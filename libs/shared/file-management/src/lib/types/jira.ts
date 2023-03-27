@@ -27,18 +27,19 @@ export interface JiraIssueFields {
     issuelinks?: JiraIssueLink[];
     project?: {
         id: string;
-        key: string;
-        name: string;
+        key?: string;
+        name?: string;
     };
     issuetype?: {
         id: string;
-        name: string;
-        entityId: string;
+        name?: string;
+        entityId?: string;
     };
     summary: string;
-    description?: string;
+    description?: any;
     duedate?: string;
-    customfield_10016: number; // Story Points
+    customfield_10016?: number; // Story Points
+    
 }
 export interface JiraIssueLink {
     outwardIssue?: JiraIssue;
