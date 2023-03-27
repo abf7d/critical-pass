@@ -44,7 +44,7 @@ export class JiraImportMapperService {
                     // activity.createdDate = issue.fields.created;
                     // activity.project = issue.fields.project?.key;
                     // idMap.set(issue.key, id);
-                    activity.profile.duration = issue.fields.customfield_10016? issue.fields.customfield_10016 / 2: 0;
+                    activity.profile.duration = issue.fields.customfield_10016 ? issue.fields.customfield_10016 / 2 : 0;
 
                     // Todo: test this to see if the tag is added to the project and activities
                     this.tagManager.addTagToActivities(project, issue.fields.assignee?.displayName!, CONST.RESOURCE_TAG_GROUP, [activity]);
@@ -100,7 +100,7 @@ export class JiraImportMapperService {
             const issue = {
                 fields: {
                     issuetype: {
-                        id: "10015",
+                        id: '10015',
                     },
                     summary: activity.profile.name!,
                     // description: {content: [{content:[{text: "TODO: add description to activity object", type: "text"}], type: "paragraph"}], version: 1},
@@ -135,8 +135,8 @@ export class JiraImportMapperService {
                     },
                     // customfield_10016: activity.profile.duration! * 2,
                     reporter: {
-                        id: assigneeId
-                    }
+                        id: assigneeId,
+                    },
                     // versions: [
                     //     {
                     //       id: "10000"
@@ -206,7 +206,6 @@ export class JiraImportMapperService {
             url: 'http://atlassian.com',
         };
         return bodyData;
-       
     }
 }
 /*
@@ -302,8 +301,7 @@ export interface JiraProjectBody {
     url: string;
 }
 
-
-  /*fetch('https://your-domain.atlassian.net/rest/api/3/issueLink', {
+/*fetch('https://your-domain.atlassian.net/rest/api/3/issueLink', {
             method: 'POST',
             headers: {
                 'Authorization': `Basic ${Buffer.from(
@@ -323,7 +321,7 @@ export interface JiraProjectBody {
             .then(text => console.log(text))
             .catch(err => console.error(err)); */
 
- /* fetch('https://your-domain.atlassian.net/rest/api/3/project', {
+/* fetch('https://your-domain.atlassian.net/rest/api/3/project', {
             method: 'POST',
             headers: {
                 Authorization: `Basic ${Buffer.from('email@example.com:<api_token>').toString('base64')}`,
@@ -338,45 +336,45 @@ export interface JiraProjectBody {
             })
             .then(text => console.log(text))
             .catch(err => console.error(err)); */
- //        const x = {
-        //            entityId
-        //             :
-        //             "1c443fe2-878a-4167-be3f-9dedaf66721c"
-        //             expand
-        //             :
-        //             "description,lead,issueTypes,url,projectKeys,permissions,insight"
-        //             id
-        //             :
-        //             "10001"
-        //             isPrivate
-        //             :
-        //             false
-        //             key
-        //             :
-        //             "CE"
-        //             name
-        //             :
-        //             "Cyto Explorer"
-        //             projectTypeKey
-        //             :
-        //             "software"
-        //             properties
-        //             :
-        //             {}
-        //             self
-        //             :
-        //             "https://api.atlassian.com/ex/jira/b5155f7a-e0aa-4d26-a9c9-f55d206ecddf/rest/api/3/project/10001"
-        //             simplified
-        //             :
-        //             true
-        //             style
-        //             :
-        //             "next-gen"
-        //             uuid
-        // :
-        // "1c443fe2-878a-4167-be3f-9dedaf66721c"
+//        const x = {
+//            entityId
+//             :
+//             "1c443fe2-878a-4167-be3f-9dedaf66721c"
+//             expand
+//             :
+//             "description,lead,issueTypes,url,projectKeys,permissions,insight"
+//             id
+//             :
+//             "10001"
+//             isPrivate
+//             :
+//             false
+//             key
+//             :
+//             "CE"
+//             name
+//             :
+//             "Cyto Explorer"
+//             projectTypeKey
+//             :
+//             "software"
+//             properties
+//             :
+//             {}
+//             self
+//             :
+//             "https://api.atlassian.com/ex/jira/b5155f7a-e0aa-4d26-a9c9-f55d206ecddf/rest/api/3/project/10001"
+//             simplified
+//             :
+//             true
+//             style
+//             :
+//             "next-gen"
+//             uuid
+// :
+// "1c443fe2-878a-4167-be3f-9dedaf66721c"
 
-        /*
+/*
 assignee
 : 
 accountId
