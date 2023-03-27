@@ -12,6 +12,8 @@ import urlJoin from 'url-join';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
 import { forkJoin, Subscription } from 'rxjs';
+import { inflate, deflate, gzip, ungzip } from 'pako';
+
 @Component({
     selector: 'critical-pass-jira-layout',
     templateUrl: './jira-layout.component.html',
@@ -121,13 +123,9 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             const bodyData = {
                 string: projectTxt,
             };
-            // const smallerBody = '{"string": ' + projectTxt + '}';
 
-            // This adds a lot of escape characters, need to use gzip to compress the json
-            // compress bodyData string
-            // const compressed = pako.gzip(JSON.stringify(bodyData), { to: 'string' });
             const body = JSON.stringify(bodyData);
-            // const body = JSON.stringify(smallerBody);
+            const binaryBody = gzip(JSON.stringify(body))
 
             const propertyUrl = urlJoin(
                 CONST.JIRA_QUERY_BASE_URL,
@@ -139,7 +137,7 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             );
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
-            this.httpClient.put(propertyUrl, body, requestOptions).subscribe((res: any) => {
+            this.httpClient.put(propertyUrl, binaryBody, requestOptions).subscribe((res: any) => {
                 console.log(res);
             });
         }
@@ -160,7 +158,9 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
             this.httpClient.get(propertyUrl, requestOptions).subscribe((res: any) => {
-                const projectTxt = res.value.string;
+                const restored = JSON.parse(ungzip(res.value, { to: 'string' }));
+                const projectTxt = JSON.parse(restored).string;
+
                 const json = JSON.parse(projectTxt);
                 const projectObj = this.serializer.fromJson(json);
                 this.connector.connectArrowsToNodes(projectObj);
