@@ -214,35 +214,21 @@ export class JiraImportMapperService {
         return bodyData;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string?answertab=trending#tab-top
-    public async base64_arraybuffer  (data: any) {
+    // https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string?answertab=trending#tab-top
+    public async base64_arraybuffer(data: any) {
         // Use a FileReader to generate a base64 data URI
-        const base64url: any = await new Promise((r) => {
-            const reader = new FileReader()
-            reader.onload = () => r(reader.result)
-            reader.readAsDataURL(new Blob([data]))
-        })
-    
+        const base64url: any = await new Promise(r => {
+            const reader = new FileReader();
+            reader.onload = () => r(reader.result);
+            reader.readAsDataURL(new Blob([data]));
+        });
+
         /*
         The result looks like 
         "data:application/octet-stream;base64,<your base64 data>", 
         so we split off the beginning:
         */
-        return base64url.split(",", 2)[1]
+        return base64url.split(',', 2)[1];
     }
 
     public base64StringToByteArray(base64String: string) {
@@ -255,10 +241,7 @@ export class JiraImportMapperService {
         }
         return bytes;
     }
-    
 }
-
-
 
 /*
 {id: '10005', desc: 'Subtasks track small pieces of work that are part of a larger task.'}

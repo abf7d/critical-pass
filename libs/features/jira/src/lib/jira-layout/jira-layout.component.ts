@@ -124,9 +124,8 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             const smaller = await this.importer.base64_arraybuffer(binaryBody);
             const bodyData = {
                 string: smaller,
-            }
+            };
             const body = JSON.stringify(bodyData);
-
 
             const propertyUrl = urlJoin(
                 CONST.JIRA_QUERY_BASE_URL,
