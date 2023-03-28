@@ -108,7 +108,7 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
         }
     }
 
-    public setProjectProperty(): void {
+    public async setProjectProperty(): Promise<void> {
         const project = this.selectedProject;
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
         if (auth_token !== null) {
@@ -120,12 +120,13 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             copy.profile.view = undefined;
 
             const projectTxt = JSON.stringify(copy);
+            const binaryBody = deflate(projectTxt);
+            const smaller = await this.importer.base64_arraybuffer(binaryBody);
             const bodyData = {
-                string: projectTxt,
-            };
-
+                string: smaller,
+            }
             const body = JSON.stringify(bodyData);
-            const binaryBody = gzip(JSON.stringify(body))
+
 
             const propertyUrl = urlJoin(
                 CONST.JIRA_QUERY_BASE_URL,
@@ -137,7 +138,7 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             );
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
-            this.httpClient.put(propertyUrl, binaryBody, requestOptions).subscribe((res: any) => {
+            this.httpClient.put(propertyUrl, body, requestOptions).subscribe((res: any) => {
                 console.log(res);
             });
         }
@@ -158,10 +159,10 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
             this.httpClient.get(propertyUrl, requestOptions).subscribe((res: any) => {
-                const restored = JSON.parse(ungzip(res.value, { to: 'string' }));
-                const projectTxt = JSON.parse(restored).string;
-
-                const json = JSON.parse(projectTxt);
+                const propVal = res.value.string;
+                const decode64 = this.importer.base64StringToByteArray(propVal);
+                const inflated = inflate(decode64, { to: 'string' });
+                const json = JSON.parse(inflated);
                 const projectObj = this.serializer.fromJson(json);
                 this.connector.connectArrowsToNodes(projectObj);
                 projectObj.profile.view.autoZoom = true;
