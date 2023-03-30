@@ -1,7 +1,6 @@
 <div class="page-content">
     <button class="btn btn-primary" (click)="toJira()">Authorize Jira</button>
     <button class="btn btn-secondary" (click)="getProjects()">Get Projects</button>
-    <!-- <button class="btn btn-secondary" (click)="getIssues()">Get Issues</button> -->
     <a href="javascript:void(0)" (click)="selectedTab = 'projects'">Projects List</a>
     <a href="javascript:void(0)" (click)="selectedTab = 'viz'">Project Viz</a>
 </div>
@@ -16,6 +15,10 @@
         <a href="javascript:void(0)" (click)="newArrowChart()">New {{ projectKey }} Arrow Chart</a>
     </div>
     <div class="jira-action">
+        <a href="javascript:void(0)" (click)="getIssueTypes()">Populate Issue Types</a>
+        <select (change)="setIssueType($event.target)"><option value="{{issueType.id}}" *ngFor="let issueType of projIssueTypes">{{issueType.description.split(' ')[0]}}</option></select>
+    </div>
+    <div class="jira-action">
         <a href="javascript:void(0)" (click)="getProjectProperty()">Load Chart From Jira</a>
         <a href="javascript:void(0)" (click)="setProjectProperty()">Save Chart To Jira</a>
     </div>
@@ -25,6 +28,7 @@
     </div>
     <div class="jira-action">
         <a href="javascript:void(0)" (click)="addIssuesToJiraProject()">Add Issues to Jira</a>
+        <a href="javascript:void(0)" (click)="createIssueLink()">Create Issue Links</a>
     </div>
     <cp-arrow-chart [width]="1214" [height]="700" [rebuild]="true"></cp-arrow-chart>
 </div>

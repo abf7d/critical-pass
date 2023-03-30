@@ -5,7 +5,7 @@ import { environment } from '@critical-pass/shared/environments';
 import * as CONST from '../constants';
 import { CORE_CONST } from '@critical-pass/core';
 import { Activity, Project } from '@critical-pass/project/types';
-import { JiraImportMapperService, JiraProjectResult } from '@critical-pass/shared/file-management';
+import { JiraImportMapperService, JiraIssueLinkBody, JiraProjectResult, SaveIssueResponse } from '@critical-pass/shared/file-management';
 import { NodeConnectorService } from '@critical-pass/project/processor';
 import { API_CONST, DashboardService, DASHBOARD_TOKEN, ProjectStorageApiService } from '@critical-pass/shared/data-access';
 import urlJoin from 'url-join';
@@ -28,6 +28,7 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
     public selectedTab: string | null = null;
     public projectKey: string | null = null;
     public sub!: Subscription;
+    public issueType: string | null = null;
     constructor(
         private httpClient: HttpClient,
         private route: ActivatedRoute,
@@ -183,6 +184,9 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             this.getJiraProject(this.selectedProject);
         }
     }
+    public setIssueType(target:any) {
+        this.issueType = target.value;
+    }
     public createJiraProject(): void {
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
         if (auth_token !== null) {
@@ -199,10 +203,10 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
 
-            const projCategoriesUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJ_CATEGORIES_URL);
-            this.httpClient.get(projCategoriesUrl, requestOptions).subscribe((res: any) => {
-                console.log(res);
-            });
+            // const projCategoriesUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJ_CATEGORIES_URL);
+            // this.httpClient.get(projCategoriesUrl, requestOptions).subscribe((res: any) => {
+            //     console.log(res);
+            // });
 
             // const permissionSchemeUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PERMISSION_SCHEME_URL);
             // this.httpClient.get(permissionSchemeUrl, requestOptions).subscribe((res: any) => {
@@ -217,9 +221,16 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             // for creating a project
             // const project = this.selectedProject;
             // const deleteProjUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_PROPERTY_URL, project!.key);
+            
+            
+            
+            
             this.httpClient.post(createProjUrl, body, requestOptions).subscribe((res: any) => {
                 console.log(res);
             });
+
+
+
 
             /* Result:
             id: 10002
@@ -227,17 +238,51 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             self:"https://api.atlassian.com/ex/jira/b5155f7a-e0aa-4d26-a9c9-f55d206ecddf/rest/api/3/project/10002"*/
         }
     }
-    public addIssuesToJiraProject(): void {
-        const leadAccountId = '5c741c367dae4b653384935c';
-        const issues = this.importer.mapProjectToJiraIssues(this.project!, this.selectedProject!.id, leadAccountId);
-
+    public issueTypes: IssueType[] = [];
+    public projIssueTypes: IssueType[] = [];
+    public getIssueTypes(): void {
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
         let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
         const requestOptions = { headers: headers };
         const issueTypeUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_TYPE_URL);
-        this.httpClient.get(issueTypeUrl, requestOptions).subscribe((res: any) => {
+        this.issueTypes = [];
+        this.httpClient.get<IssueTypeResponse[]>(issueTypeUrl, requestOptions).subscribe((res) => {
             console.log(res);
+            res.forEach((issueType) => {
+                const issueTypeObj = {
+                    id: issueType.id,
+                    description: issueType.description,
+                    projectId: issueType.scope?.project?.id,
+                }
+                this.issueTypes.push(issueTypeObj);
+                if(issueTypeObj.projectId === this.selectedProject?.id) {
+                    this.projIssueTypes.push(issueTypeObj);
+                }
+            })
         });
+    }
+
+
+
+    // TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--------------------------------------------------------------
+    // this adds issue keys to arrows then saves the project to jira after the issues are created
+    // need to alter the createIssueLink and createIssueLinkBody to use the project for dependencies and issues for keys
+    // to dynamically generate links 
+    // Then have one button that says "Save to Jira" and it will create the project and issues and links
+    // Every time you bring down a project you will need to compare the (bring down) issues, links, and project activity arrows and update the 
+    // project property/arrowchart json in order to keep jira adn the arrow chart up to date. If there are differences, you will 
+    // need to add (in defualt positions) / remove activities. 
+    // have a button "create a new project" that will create a new project, issues, issue links in jira and a new arrow chart json file
+    // have a button "update project" that will use PUT to update the project, issues, issue links in jira and the arrow chart json file
+    public addIssuesToJiraProject(): void {
+        const leadAccountId = '5c741c367dae4b653384935c';
+        const issueTypeIdTask = this.issueType; //'10018'
+        if (!issueTypeIdTask) {
+            return;
+        }
+        const nonDummies = this.project!.activities.filter(x => !x.chartInfo.isDummy);
+
+        const issues = this.importer.mapProjectToJiraIssues(nonDummies, this.selectedProject!.id, leadAccountId, issueTypeIdTask);
 
         const issueApiCalls$ = issues.map(issue => {
             const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
@@ -248,6 +293,10 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             return this.httpClient.post<SaveIssueResponse>(createIssueUrl, body, requestOptions);
         });
         forkJoin(issueApiCalls$).subscribe(res => {
+            this.importer.addIssueKeysToArrows(nonDummies, res);
+            const links = this.importer.getIssueLinks(this.project!);
+            this.createIssueLinks(links);
+            this.setProjectProperty();
             console.log(res);
         });
     }
@@ -264,8 +313,38 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
                 const requestOptions = { headers: headers };
                 this.httpClient.delete(deleteProjUrl, requestOptions).subscribe((res: any) => {
                     console.log(res);
+                    // TODO add keys to the arrows from here res[0].key, then from the arrow diagram create issue links
                 });
             }
+        }
+    }
+    public createIssueLink(): void {
+        const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+        if (auth_token !== null) {
+            const createIssueLinkUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_LINK_URL);
+            const issueTarget = 'P1-10';
+            const dependencyIssue = 'P1-8';
+            const body = this.importer.createIssueLinkBody(dependencyIssue, issueTarget);
+            let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+            const requestOptions = { headers: headers };
+            this.httpClient.post(createIssueLinkUrl, body, requestOptions).subscribe((res: any) => {
+                console.log(res);
+            });
+        }
+    }
+    public createIssueLinks(links:  JiraIssueLinkBody[]): void {
+        const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+        if (auth_token !== null) {
+            const createIssueLinkUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_LINK_URL);
+            let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+            const requestOptions = { headers: headers };
+            const issueLinkApiCalls$ = links.map(linkBody => {
+                // const body = JSON.stringify(link);
+                return this.httpClient.post(createIssueLinkUrl, linkBody, requestOptions);
+            });
+            forkJoin(issueLinkApiCalls$).subscribe(res => {
+                console.log('issueLinks created', res);
+            });
         }
     }
 }
@@ -294,18 +373,20 @@ export interface JiraProject {
     name: string;
 }
 
-export interface SaveIssueResponse {
+
+export interface IssueType {
+    description: string;
     id: string;
-    key: string;
-    self: string;
-    transition: {
-        status: number;
-        errorCollection: {
-            errorMessages: [];
-            errors: {};
-        };
-    };
+    projectId?: string;
 }
+export interface IssueTypeResponse {
+    id: string;
+    description: string;
+    scope?: {
+        project: { id: string }
+    }
+}
+
 /*
 const bodyData = `{
   "number": 5,

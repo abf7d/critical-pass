@@ -93,14 +93,43 @@ export class JiraImportMapperService {
         });
     }
 
-    public mapProjectToJiraIssues(project: Project, projId: string, /*projName: string, projKey: string,*/ assigneeId: string): JiraIssueExport[] {
+    public addIssueKeysToArrows(activities: Activity[], issues: SaveIssueResponse[]) {
+        // const nonDummies = project.activities.filter(x => !x.chartInfo.isDummy);
+        issues.forEach((issue, i) => {
+            activities[i].profile.jiraIssueKey = issue.key;
+        });
+    }
+
+    public getIssueLinks(project: Project): JiraIssueLinkBody[] {
+        // create a map for id to activity in project
+        const idMap = new Map<number, Activity>(project.activities.map(x => [x.profile.id, x]));
+
+
+        const links: JiraIssueLinkBody[] = [];
+        project.activities.forEach(activity => {
+            if (activity.profile.depends_on) {
+                const dependsOn = activity.profile.depends_on.split(',');
+                dependsOn.forEach(id => {
+                    const dependency = idMap.get(+id);
+                    const depKey = dependency?.profile.jiraIssueKey; 
+                    const actKey = activity.profile.jiraIssueKey
+                    if (depKey && actKey) {
+                        const issueLink = this.createIssueLinkBody(depKey, actKey);
+                        links.push(issueLink);
+                    }
+                });
+            }
+        });
+        return links;
+    }
+
+    public mapProjectToJiraIssues(activities: Activity[], projId: string, /*projName: string, projKey: string,*/ assigneeId: string, issueTypeId: string): JiraIssueExport[] {
         // const issues: JiraIssueExport[] = [];
-        const nonDummies = project.activities.filter(x => !x.chartInfo.isDummy);
-        const issues: JiraIssueExport[] = nonDummies.map(activity => {
+        const issues: JiraIssueExport[] = activities.map(activity => {
             const issue = {
                 fields: {
                     issuetype: {
-                        id: '10015',
+                        id: issueTypeId,
                         /* the issueType Story for the generated project doesn't exist
                         it is missing a scope attribute. The type 10015 has a scope attribute
                         of scope: project:{id: '10003'}, type:"PROJECT"
@@ -156,9 +185,9 @@ export class JiraImportMapperService {
     }
 
     //https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-links/#api-rest-api-3-issuelink-post
-    public createIssueLinkBody(inIssueKey: string, outIssueKey: string): JiraIssueLinkBody {
+    public createIssueLinkBody(dependencyIssueKey: string, targetIssueKey: string): JiraIssueLinkBody {
         const bodyData = {
-            comment: {
+            /*comment: {
                 body: {
                     content: [
                         {
@@ -179,16 +208,16 @@ export class JiraImportMapperService {
                     type: 'group',
                     value: 'jira-software-users',
                 },
-            },
+            },*/
             inwardIssue: {
-                key: inIssueKey,
+                key: dependencyIssueKey,
             },
             outwardIssue: {
-                key: outIssueKey, //"MKY-1"
+                key: targetIssueKey, //"MKY-1"
             },
             type: {
                 //"name": "Duplicate"
-                name: 'is blocked by',
+                name: 'Blocks',
             },
         };
         return bodyData;
@@ -242,7 +271,18 @@ export class JiraImportMapperService {
         return bytes;
     }
 }
-
+export interface SaveIssueResponse {
+    id: string;
+    key: string;
+    self: string;
+    transition: {
+        status: number;
+        errorCollection: {
+            errorMessages: [];
+            errors: {};
+        };
+    };
+}
 /*
 {id: '10005', desc: 'Subtasks track small pieces of work that are part of a larger task.'}
 1
@@ -290,24 +330,24 @@ export class JiraImportMapperService {
 **/
 // create interface for createIssueLinkBody
 export interface JiraIssueLinkBody {
-    comment: {
-        body: {
-            content: {
-                content: {
-                    text: string;
-                    type: string;
-                }[];
-                type: string;
-            }[];
-            type: string;
-            version: number;
-        };
-        visibility: {
-            identifier: string;
-            type: string;
-            value: string;
-        };
-    };
+    // comment: {
+    //     body: {
+    //         content: {
+    //             content: {
+    //                 text: string;
+    //                 type: string;
+    //             }[];
+    //             type: string;
+    //         }[];
+    //         type: string;
+    //         version: number;
+    //     };
+    //     visibility: {
+    //         identifier: string;
+    //         type: string;
+    //         value: string;
+    //     };
+    // };
     inwardIssue: {
         key: string;
     };
