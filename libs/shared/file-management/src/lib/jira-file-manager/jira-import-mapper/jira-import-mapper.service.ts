@@ -104,15 +104,14 @@ export class JiraImportMapperService {
         // create a map for id to activity in project
         const idMap = new Map<number, Activity>(project.activities.map(x => [x.profile.id, x]));
 
-
         const links: JiraIssueLinkBody[] = [];
         project.activities.forEach(activity => {
             if (activity.profile.depends_on) {
                 const dependsOn = activity.profile.depends_on.split(',');
                 dependsOn.forEach(id => {
                     const dependency = idMap.get(+id);
-                    const depKey = dependency?.profile.jiraIssueKey; 
-                    const actKey = activity.profile.jiraIssueKey
+                    const depKey = dependency?.profile.jiraIssueKey;
+                    const actKey = activity.profile.jiraIssueKey;
                     if (depKey && actKey) {
                         const issueLink = this.createIssueLinkBody(depKey, actKey);
                         links.push(issueLink);
@@ -123,7 +122,12 @@ export class JiraImportMapperService {
         return links;
     }
 
-    public mapProjectToJiraIssues(activities: Activity[], projId: string, /*projName: string, projKey: string,*/ assigneeId: string, issueTypeId: string): JiraIssueExport[] {
+    public mapProjectToJiraIssues(
+        activities: Activity[],
+        projId: string,
+        /*projName: string, projKey: string,*/ assigneeId: string,
+        issueTypeId: string,
+    ): JiraIssueExport[] {
         // const issues: JiraIssueExport[] = [];
         const issues: JiraIssueExport[] = activities.map(activity => {
             const issue = {

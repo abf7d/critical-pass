@@ -184,7 +184,7 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             this.getJiraProject(this.selectedProject);
         }
     }
-    public setIssueType(target:any) {
+    public setIssueType(target: any) {
         this.issueType = target.value;
     }
     public createJiraProject(): void {
@@ -221,16 +221,10 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             // for creating a project
             // const project = this.selectedProject;
             // const deleteProjUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_PROPERTY_URL, project!.key);
-            
-            
-            
-            
+
             this.httpClient.post(createProjUrl, body, requestOptions).subscribe((res: any) => {
                 console.log(res);
             });
-
-
-
 
             /* Result:
             id: 10002
@@ -246,32 +240,30 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
         const requestOptions = { headers: headers };
         const issueTypeUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_TYPE_URL);
         this.issueTypes = [];
-        this.httpClient.get<IssueTypeResponse[]>(issueTypeUrl, requestOptions).subscribe((res) => {
+        this.httpClient.get<IssueTypeResponse[]>(issueTypeUrl, requestOptions).subscribe(res => {
             console.log(res);
-            res.forEach((issueType) => {
+            res.forEach(issueType => {
                 const issueTypeObj = {
                     id: issueType.id,
                     description: issueType.description,
                     projectId: issueType.scope?.project?.id,
-                }
+                };
                 this.issueTypes.push(issueTypeObj);
-                if(issueTypeObj.projectId === this.selectedProject?.id) {
+                if (issueTypeObj.projectId === this.selectedProject?.id) {
                     this.projIssueTypes.push(issueTypeObj);
                 }
-            })
+            });
         });
     }
-
-
 
     // TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--------------------------------------------------------------
     // this adds issue keys to arrows then saves the project to jira after the issues are created
     // need to alter the createIssueLink and createIssueLinkBody to use the project for dependencies and issues for keys
-    // to dynamically generate links 
+    // to dynamically generate links
     // Then have one button that says "Save to Jira" and it will create the project and issues and links
-    // Every time you bring down a project you will need to compare the (bring down) issues, links, and project activity arrows and update the 
-    // project property/arrowchart json in order to keep jira adn the arrow chart up to date. If there are differences, you will 
-    // need to add (in defualt positions) / remove activities. 
+    // Every time you bring down a project you will need to compare the (bring down) issues, links, and project activity arrows and update the
+    // project property/arrowchart json in order to keep jira adn the arrow chart up to date. If there are differences, you will
+    // need to add (in defualt positions) / remove activities.
     // have a button "create a new project" that will create a new project, issues, issue links in jira and a new arrow chart json file
     // have a button "update project" that will use PUT to update the project, issues, issue links in jira and the arrow chart json file
     public addIssuesToJiraProject(): void {
@@ -332,7 +324,7 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             });
         }
     }
-    public createIssueLinks(links:  JiraIssueLinkBody[]): void {
+    public createIssueLinks(links: JiraIssueLinkBody[]): void {
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
         if (auth_token !== null) {
             const createIssueLinkUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_LINK_URL);
@@ -373,7 +365,6 @@ export interface JiraProject {
     name: string;
 }
 
-
 export interface IssueType {
     description: string;
     id: string;
@@ -383,8 +374,8 @@ export interface IssueTypeResponse {
     id: string;
     description: string;
     scope?: {
-        project: { id: string }
-    }
+        project: { id: string };
+    };
 }
 
 /*
