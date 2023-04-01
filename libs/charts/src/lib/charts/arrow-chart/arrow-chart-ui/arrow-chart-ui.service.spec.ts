@@ -15,6 +15,4 @@ describe('ArrowChartUiService', () => {
     });
 
     // write a unit test for init
-        
-
 });

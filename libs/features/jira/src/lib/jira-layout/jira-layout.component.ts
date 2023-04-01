@@ -282,57 +282,72 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
         const createProjUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_PROPERTY_URL);
 
         // create project
-        this.httpClient.post<JiraProjectResponse>(createProjUrl, createProjectBody, requestOptions).subscribe((projCreationRes: any) => {
-            console.log('create project', projCreationRes);
-            const newProjId = '' + projCreationRes.id;
-            
+        this.httpClient.post<JiraProjectResponse>(createProjUrl, createProjectBody, requestOptions).subscribe(
+            (projCreationRes: any) => {
+                console.log('create project', projCreationRes);
+                const newProjId = '' + projCreationRes.id;
 
-            // need to refactor this into multiple functions
-            // getNewProjectIssueTypes
-            const issueTypeKey = 'Task';
-            const issueTypeUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_TYPE_URL);
-            this.issueTypes = [];
-            this.httpClient.get<IssueTypeResponse[]>(issueTypeUrl, requestOptions).subscribe(issueTypRes => {
-                console.log(issueTypRes);
-                issueTypRes.forEach(issueType => {
-                    const issueTypeObj = {
-                        id: issueType.id,
-                        description: issueType.description,
-                        projectId: issueType.scope?.project?.id,
-                    };
-                    this.issueTypes.push(issueTypeObj);
-                    if (issueTypeObj.projectId === newProjId) {
-                        this.projIssueTypes.push(issueTypeObj);
-                    }
-                });
-                const issueType = this.projIssueTypes.find(iType => iType.projectId === newProjId && iType.description.indexOf(issueTypeKey) > -1);
-                if (issueType) {
-                    // GenerateIssueLinks and setProjProperty and refreshProjectList
-                    const issueTypeIdTask = issueType.id;
-                    const nonDummies = this.project!.activities.filter(x => !x.chartInfo.isDummy);
-                    const issues = this.importer.mapProjectToJiraIssues(nonDummies, /*this.selectedProject!.id*/ newProjId, leadAccountId, issueTypeIdTask);
+                // need to refactor this into multiple functions
+                // getNewProjectIssueTypes
+                const issueTypeKey = 'Task';
+                const issueTypeUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_TYPE_URL);
+                this.issueTypes = [];
+                this.httpClient.get<IssueTypeResponse[]>(issueTypeUrl, requestOptions).subscribe(
+                    issueTypRes => {
+                        console.log(issueTypRes);
+                        issueTypRes.forEach(issueType => {
+                            const issueTypeObj = {
+                                id: issueType.id,
+                                description: issueType.description,
+                                projectId: issueType.scope?.project?.id,
+                            };
+                            this.issueTypes.push(issueTypeObj);
+                            if (issueTypeObj.projectId === newProjId) {
+                                this.projIssueTypes.push(issueTypeObj);
+                            }
+                        });
+                        const issueType = this.projIssueTypes.find(iType => iType.projectId === newProjId && iType.description.indexOf(issueTypeKey) > -1);
+                        if (issueType) {
+                            // GenerateIssueLinks and setProjProperty and refreshProjectList
+                            const issueTypeIdTask = issueType.id;
+                            const nonDummies = this.project!.activities.filter(x => !x.chartInfo.isDummy);
+                            const issues = this.importer.mapProjectToJiraIssues(
+                                nonDummies,
+                                /*this.selectedProject!.id*/ newProjId,
+                                leadAccountId,
+                                issueTypeIdTask,
+                            );
 
-                    const issueApiCalls$ = issues.map(issue => {
-                        const createIssueUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_URL);
-                        const body = JSON.stringify(issue);
-                        return this.httpClient.post<SaveIssueResponse>(createIssueUrl, body, requestOptions);
-                    });
-                    forkJoin(issueApiCalls$).subscribe(res => {
-                        this.importer.addIssueKeysToArrows(nonDummies, res);
-                        const links = this.importer.getIssueLinks(this.project!);
-                        this.createIssueLinks(links);
-                        this.setProjectProperty(projCreationRes);
-                        console.log(res);
-                        this.getProjects();
+                            const issueApiCalls$ = issues.map(issue => {
+                                const createIssueUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_URL);
+                                const body = JSON.stringify(issue);
+                                return this.httpClient.post<SaveIssueResponse>(createIssueUrl, body, requestOptions);
+                            });
+                            forkJoin(issueApiCalls$).subscribe(
+                                res => {
+                                    this.importer.addIssueKeysToArrows(nonDummies, res);
+                                    const links = this.importer.getIssueLinks(this.project!);
+                                    this.createIssueLinks(links);
+                                    this.setProjectProperty(projCreationRes);
+                                    console.log(res);
+                                    this.getProjects();
+                                },
+                                err => {
+                                    console.error('error creating jira issues', err);
+                                },
+                            );
+                        }
                     },
-                    err => {console.error('error creating jira issues', err); });
-                }
+                    err => {
+                        console.error('error getting issue types', err);
+                    },
+                );
             },
-            err => {console.error('error getting issue types', err); })
-        },
-        err => {console.error('error creating jira base project', err); });
+            err => {
+                console.error('error creating jira base project', err);
+            },
+        );
     }
-
 
     public addIssuesToJiraProject(): void {
         const leadAccountId = '5c741c367dae4b653384935c';
