@@ -1,16 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ArrowChartUiService } from './arrow-chart-ui.service';
+import { ArrowChartUIService } from './arrow-chart-ui.service';
 
 describe('ArrowChartUiService', () => {
-    let service: ArrowChartUiService;
+    let service: ArrowChartUIService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(ArrowChartUiService);
+        service = TestBed.inject(ArrowChartUIService);
     });
 
     it('should be created', () => {
         expect(service).toBeTruthy();
     });
+
+    // write a unit test for init
+        
+
 });

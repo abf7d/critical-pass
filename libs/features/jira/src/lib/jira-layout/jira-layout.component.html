@@ -1,34 +1,73 @@
 <div class="page-content">
-    <button class="btn btn-primary" (click)="toJira()">Authorize Jira</button>
-    <button class="btn btn-secondary" (click)="getProjects()">Get Projects</button>
-    <a href="javascript:void(0)" (click)="selectedTab = 'projects'">Projects List</a>
-    <a href="javascript:void(0)" (click)="selectedTab = 'viz'">Project Viz</a>
-</div>
-<div *ngIf="projects.length > 0 && selectedTab === 'projects'" class="jira-projects">
-    <div>Projects</div>
-    <div *ngFor="let proj of projects" class="jira-project">
-        <a href="javascript:void(0)" (click)="selectProject(proj)">{{ proj.name }}</a>
+    <div class="jira-buttons">
+        <div>
+            <button class="btn btn-primary" (click)="toJira()">Authorize Jira</button>
+        </div>
+        <div><button class="btn btn-secondary" (click)="getProjects()">Get Projects</button></div>
+        <a href="javascript:void(0)" (click)="selectedTab = 'projects'">Projects List</a>
+        <a href="javascript:void(0)" (click)="selectedTab = 'viz'">Project Viz</a>
     </div>
-</div>
-<div *ngIf="project !== null && selectedTab === 'viz'">
-    <div class="jira-action">
-        <a href="javascript:void(0)" (click)="newArrowChart()">New {{ projectKey }} Arrow Chart</a>
+    <div *ngIf="projects.length > 0 && selectedTab === 'projects'" class="project-list">
+        <div class="jira-projects">
+            <div>Projects</div>
+
+            <div *ngFor="let proj of projects" class="jira-project">
+                <a href="javascript:void(0)" (click)="selectProject(proj)">{{ proj.name }}</a>
+            </div>
+        </div>
     </div>
-    <div class="jira-action">
-        <a href="javascript:void(0)" (click)="getIssueTypes()">Populate Issue Types</a>
-        <select (change)="setIssueType($event.target)"><option value="{{issueType.id}}" *ngFor="let issueType of projIssueTypes">{{issueType.description.split(' ')[0]}}</option></select>
+    <div class="arrow-snapshot" *ngIf="projects.length > 0"><cp-arrow-snapshot [width]="300" [height]="200"></cp-arrow-snapshot></div>
+    <div class="project-actions" *ngIf="project !== null && selectedTab === 'viz'">
+        <div>
+            <div class="jira-action">
+                <a href="javascript:void(0)" (click)="newArrowChart()">New {{ projectKey }} Arrow Chart</a>
+            </div>
+            <div class="jira-action">
+                <a href="javascript:void(0)" (click)="getIssueTypes()">Populate Issue Types</a>
+                <select (change)="setIssueType($event.target)">
+                    <option value="{{ issueType.id }}" *ngFor="let issueType of projIssueTypes">{{ issueType.description.split(' ')[0] }}</option>
+                </select>
+            </div>
+            <div class="jira-action">
+                <a href="javascript:void(0)" (click)="getProjectProperty()">Load Chart From Jira</a>
+                <a href="javascript:void(0)" (click)="setProjectProperty()">Save Chart To Jira</a>
+            </div>
+            <div class="jira-action">
+                <a href="javascript:void(0)" (click)="createJiraProject()">Create Jira Project</a>
+                <a href="javascript:void(0)" (click)="deleteJiraProject()">Delete This Jira Project</a>
+            </div>
+            <div class="jira-action">
+                <!-- <a href="javascript:void(0)" (click)="createProjWithIssuesAndArrowChartInJira()">Create Full Jira Project</a> -->
+                <a href="javascript:void(0)" (click)="createIssueLink()">Create Issue Links</a>
+            </div>
+            <!-- <cp-arrow-chart [width]="1214" [height]="700" [rebuild]="true"></cp-arrow-chart> -->
+        </div>
     </div>
-    <div class="jira-action">
-        <a href="javascript:void(0)" (click)="getProjectProperty()">Load Chart From Jira</a>
-        <a href="javascript:void(0)" (click)="setProjectProperty()">Save Chart To Jira</a>
+    <div class="project-controls" *ngIf="projects.length > 0">
+        <!-- -->
+        <div>
+            <div>Project Key</div>
+            <input type="text" [value]="projKey" (change)="setProjKey($event)" />
+        </div>
+        <div>
+            <div>Project Name</div>
+            <input type="text" [value]="projName"  (change)="setProjName($event)" />
+        </div> 
+        <div>
+            <div>Project Lead</div>
+            <select name="" id=""><option value="">Task</option></select>
+        </div>
+        <div>
+            <div>Project Template</div>
+            <select name="" id=""><option value="">Team</option></select>
+        </div>
+        <div>
+            <div>Issue Type</div>
+            <select name="" id=""><option value="">Task</option></select>
+        </div>
+        <div>
+            <a href="javascript:void(0)" *ngIf="project?.integrations?.length" (click)="createFullJiraProject()">Arrow to New Jira Project</a>
+            <a *ngIf="!project?.integrations?.length">Arrow to New Jira Project</a>
+        </div>
     </div>
-    <div class="jira-action">
-        <a href="javascript:void(0)" (click)="createJiraProject()">Create Jira Project</a>
-        <a href="javascript:void(0)" (click)="deleteJiraProject()">Delete This Jira Project</a>
-    </div>
-    <div class="jira-action">
-        <a href="javascript:void(0)" (click)="addIssuesToJiraProject()">Add Issues to Jira</a>
-        <a href="javascript:void(0)" (click)="createIssueLink()">Create Issue Links</a>
-    </div>
-    <cp-arrow-chart [width]="1214" [height]="700" [rebuild]="true"></cp-arrow-chart>
 </div>

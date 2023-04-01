@@ -6,9 +6,10 @@ import { LassoBarModule, SharedModule } from '@critical-pass/shared/components';
 import { JiraRoutingModule } from './jira.routes';
 import { HttpClientModule } from '@angular/common/http';
 import { ArrowChartModule } from '@critical-pass/charts';
+import { ArrowSnapshotModule } from "../../../../charts/src/lib/charts/arrow-snapshot/arrow-snapshot.module";
 
 @NgModule({
     declarations: [JiraLayoutComponent, JiraBarComponent],
-    imports: [CommonModule, SharedModule, JiraRoutingModule, HttpClientModule, ArrowChartModule, LassoBarModule],
+    imports: [CommonModule, SharedModule, JiraRoutingModule, HttpClientModule, ArrowChartModule, LassoBarModule, ArrowSnapshotModule]
 })
 export class JiraModule {}

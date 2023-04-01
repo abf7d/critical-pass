@@ -29,6 +29,8 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
     public projectKey: string | null = null;
     public sub!: Subscription;
     public issueType: string | null = null;
+    public projName: string | null = null;
+    public projKey: string | null = null;
     constructor(
         private httpClient: HttpClient,
         private route: ActivatedRoute,
@@ -109,8 +111,9 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
         }
     }
 
-    public async setProjectProperty(): Promise<void> {
-        const project = this.selectedProject;
+    public async setProjectProperty(jiraProj: JiraProjectResponse | null = null): Promise<void> {
+        let projKey = jiraProj?.key ?? this.selectedProject?.key;
+        // const project = this.selectedProject;
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
         if (auth_token !== null) {
             const propertyKey = CONST.CP_PROPERTY_KEY;
@@ -132,7 +135,7 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
                 CONST.JIRA_QUERY_BASE_URL,
                 this.cloudId!,
                 CONST.JIRA_PROJECT_PROPERTY_URL,
-                project!.key,
+                projKey!,
                 CONST.JIRA_PROJECT_PROPERTY_ENDPOINT,
                 propertyKey,
             );
@@ -266,6 +269,71 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
     // need to add (in defualt positions) / remove activities.
     // have a button "create a new project" that will create a new project, issues, issue links in jira and a new arrow chart json file
     // have a button "update project" that will use PUT to update the project, issues, issue links in jira and the arrow chart json file
+
+    // Just added create project logic, need to test this out. it createss everything at once
+    // need to add input files for leadAccountId, project name, project key, project description, project lead, etc
+    // public createProjWithIssuesAndArrowChartInJira(): void {
+    public createFullJiraProject(): void {
+        const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+        const leadAccountId = '5c741c367dae4b653384935c';
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+        const requestOptions = { headers: headers };
+        const createProjectBody = this.importer.getCreateJiraProjectBody(leadAccountId);
+        const createProjUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_PROPERTY_URL);
+
+        // create project
+        this.httpClient.post<JiraProjectResponse>(createProjUrl, createProjectBody, requestOptions).subscribe((projCreationRes: any) => {
+            console.log('create project', projCreationRes);
+            const newProjId = '' + projCreationRes.id;
+            
+
+            // need to refactor this into multiple functions
+            // getNewProjectIssueTypes
+            const issueTypeKey = 'Task';
+            const issueTypeUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_TYPE_URL);
+            this.issueTypes = [];
+            this.httpClient.get<IssueTypeResponse[]>(issueTypeUrl, requestOptions).subscribe(issueTypRes => {
+                console.log(issueTypRes);
+                issueTypRes.forEach(issueType => {
+                    const issueTypeObj = {
+                        id: issueType.id,
+                        description: issueType.description,
+                        projectId: issueType.scope?.project?.id,
+                    };
+                    this.issueTypes.push(issueTypeObj);
+                    if (issueTypeObj.projectId === newProjId) {
+                        this.projIssueTypes.push(issueTypeObj);
+                    }
+                });
+                const issueType = this.projIssueTypes.find(iType => iType.projectId === newProjId && iType.description.indexOf(issueTypeKey) > -1);
+                if (issueType) {
+                    // GenerateIssueLinks and setProjProperty and refreshProjectList
+                    const issueTypeIdTask = issueType.id;
+                    const nonDummies = this.project!.activities.filter(x => !x.chartInfo.isDummy);
+                    const issues = this.importer.mapProjectToJiraIssues(nonDummies, /*this.selectedProject!.id*/ newProjId, leadAccountId, issueTypeIdTask);
+
+                    const issueApiCalls$ = issues.map(issue => {
+                        const createIssueUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ISSUE_URL);
+                        const body = JSON.stringify(issue);
+                        return this.httpClient.post<SaveIssueResponse>(createIssueUrl, body, requestOptions);
+                    });
+                    forkJoin(issueApiCalls$).subscribe(res => {
+                        this.importer.addIssueKeysToArrows(nonDummies, res);
+                        const links = this.importer.getIssueLinks(this.project!);
+                        this.createIssueLinks(links);
+                        this.setProjectProperty(projCreationRes);
+                        console.log(res);
+                        this.getProjects();
+                    },
+                    err => {console.error('error creating jira issues', err); });
+                }
+            },
+            err => {console.error('error getting issue types', err); })
+        },
+        err => {console.error('error creating jira base project', err); });
+    }
+
+
     public addIssuesToJiraProject(): void {
         const leadAccountId = '5c741c367dae4b653384935c';
         const issueTypeIdTask = this.issueType; //'10018'
@@ -306,6 +374,7 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
                 this.httpClient.delete(deleteProjUrl, requestOptions).subscribe((res: any) => {
                     console.log(res);
                     // TODO add keys to the arrows from here res[0].key, then from the arrow diagram create issue links
+                    this.getProjects();
                 });
             }
         }
@@ -339,6 +408,12 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
             });
         }
     }
+    public setProjName(event: Event) {
+        this.projName = (event.target as HTMLInputElement).value;
+    }
+    public setProjKey(event: Event) {
+        this.projKey = (event.target as HTMLInputElement).value;
+    }
 }
 
 // 1.2) add story points to issues in jira, then convert to days for activity duration
@@ -363,6 +438,11 @@ export interface JiraProject {
     id: string;
     key: string;
     name: string;
+}
+export interface JiraProjectResponse {
+    id: string;
+    key: string;
+    self: string;
 }
 
 export interface IssueType {
