@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 import { ProjectExtractorService } from '../project-extractor/project-extractor.service';
 import { Activity, Project } from '@critical-pass/project/types';
 import { CORE_CONST } from '@critical-pass/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'proj-meta-bar',
@@ -30,6 +31,7 @@ export class NetworkBarComponent implements OnInit, OnDestroy {
         private projectExtractor: ProjectExtractorService,
         private router: Router,
         private storageApi: ProjectStorageApiService,
+        private toastr: ToastrService,
     ) {
         this.networkArray$ = this.eventService.get<Project[]>(CORE_CONST.NETWORK_ARRAY_KEY);
         this.filteredNetworkArray$ = this.eventService.get<Project[]>(CORE_CONST.FILTERED_NETWORK_ARRAY_KEY);
@@ -132,5 +134,15 @@ export class NetworkBarComponent implements OnInit, OnDestroy {
     public navToScenarioPlanning() {
         this.storageApi.set(API_CONST.SESSION_STORAGE, this.project!);
         this.router.navigateByUrl(CORE_CONST.IMPORT_SCENARIO_ROUTE);
+    }
+    public stash() {
+        try {
+            this.storageApi.set(API_CONST.LOCAL_STORAGE, this.project!);
+        } catch (ex) {
+            this.toastr.error('Stash Chart', 'Error occured.');
+            console.error(ex);
+            return;
+        }
+        this.toastr.success('Stash Chart', 'Success!');
     }
 }

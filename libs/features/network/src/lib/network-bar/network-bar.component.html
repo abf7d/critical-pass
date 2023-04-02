@@ -36,6 +36,9 @@
         <div>
             <button class="btn btn-secondary" [ngClass]="{ disabled: !isSubProjSelected }" (click)="extractSubProject()">Extract Sub Project</button>
         </div>
+        <div>
+            <a class="btn" href="javascript:void(0)" (click)="stash()">Stash Project</a>
+        </div>
     </div>
     <cp-selected-activity [projectPool]="networkArray$ | async"></cp-selected-activity>
 </div>

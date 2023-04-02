@@ -76,4 +76,19 @@ export class JiraBarComponent implements OnInit, OnDestroy {
             this.dashboard.updateProject(project, false);
         }
     }
+
+    public unstash() {
+        // this.showPeek = false;
+        try {
+            const project = this.storageApi.get(API_CONST.LOCAL_STORAGE);
+            if (project) {
+                this.dashboard.activeProject$.next(project);
+            }
+        } catch (ex) {
+            this.toastr.error('Unstash Chart', 'Error occured.');
+            console.error(ex);
+            return;
+        }
+        this.toastr.success('Unstash Chart', 'Success!');
+    }
 }
