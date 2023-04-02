@@ -79,3 +79,4 @@ export const CREATED_PROJECT = 'created.project';
 export const NETWORK_ARRAY_KEY = 'project.newtwork.array';
 export const FILTERED_NETWORK_ARRAY_KEY = 'project.filtered.newtwork.array';
 export const JIRA_TOKEN_KEY = 'jira.token.key';
+export const JIRA_TOKEN_EXPIRY_KEY = 'jira.token.expiry.key';

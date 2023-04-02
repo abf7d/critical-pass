@@ -1,16 +1,33 @@
 <div class="page-content">
-    <div class="jira-buttons">
-        <div>
-            <button class="btn btn-primary" (click)="toJira()">Authorize Jira</button>
+    <div class="jira-header">
+        <div class="jira-buttons">
+            
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link" [ngClass]="{'active': selectedTab === 'projects'}" (click)="selectedTab = 'projects'">Projects List</a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link" [ngClass]="{'active': selectedTab === 'viz'}" (click)="selectedTab = 'viz'">Project Viz</a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link" [ngClass]="{'active': selectedTab === 'new-proj'}" (click)="selectedTab = 'new-proj'">New Project</a>
+                </li>
+            </ul>
+            <div>
+                <button class="btn btn-primary" (click)="toJira()">Authorize Jira</button>
+            </div>
+           
+            
         </div>
-        <div><button class="btn btn-secondary" (click)="getProjects()">Get Projects</button></div>
-        <a href="javascript:void(0)" (click)="selectedTab = 'projects'">Projects List</a>
-        <a href="javascript:void(0)" (click)="selectedTab = 'viz'">Project Viz</a>
+        <div>
+            <div *ngIf="authExpireTime !== null">Auth Expires: {{ authExpireTime | date : 'long' }}</div>
+            <div *ngIf="me !== null">{{me.displayName}}</div>
+        </div>
     </div>
     <div *ngIf="projects.length > 0 && selectedTab === 'projects'" class="project-list">
         <div class="jira-projects">
-            <div>Projects</div>
-
+            <div><button class="btn btn-secondary" (click)="selectedTab = 'new-proj'">Create New Project</button></div>
+            <div class="proj-title">Projects</div>
             <div *ngFor="let proj of projects" class="jira-project">
                 <a href="javascript:void(0)" (click)="selectProject(proj)">{{ proj.name }}</a>
             </div>
@@ -18,9 +35,11 @@
     </div>
     <div class="arrow-snapshot" *ngIf="projects.length > 0"><cp-arrow-snapshot [width]="300" [height]="200"></cp-arrow-snapshot></div>
     <div class="project-actions" *ngIf="project !== null && selectedTab === 'viz'">
-        <div>
+        <div class="action-container">
+            <div class="jira-action">Project: {{ selectedProject?.name }}</div>
+            <div class="jira-action">Key: {{ selectedProject?.key }}</div>
             <div class="jira-action">
-                <a href="javascript:void(0)" (click)="newArrowChart()">New {{ projectKey }} Arrow Chart</a>
+                <a href="javascript:void(0)" (click)="newArrowChart()">New Arrow Chart</a>
             </div>
             <div class="jira-action">
                 <a href="javascript:void(0)" (click)="getIssueTypes()">Populate Issue Types</a>
@@ -43,31 +62,69 @@
             <!-- <cp-arrow-chart [width]="1214" [height]="700" [rebuild]="true"></cp-arrow-chart> -->
         </div>
     </div>
-    <div class="project-controls" *ngIf="projects.length > 0">
+    <div class="jira-issues" *ngIf="issuesProject !== null && selectedTab === 'viz'">
+        <div *ngFor="let activity of issuesProject?.activities">{{activity.profile.name}}</div>
+    </div>
+    <div class="project-actions" *ngIf="selectedTab === 'new-proj'">
         <!-- -->
-        <div>
-            <div>Project Key</div>
-            <input type="text" [value]="projKey" (change)="setProjKey($event)" />
-        </div>
-        <div>
-            <div>Project Name</div>
-            <input type="text" [value]="projName"  (change)="setProjName($event)" />
-        </div> 
-        <div>
-            <div>Project Lead</div>
-            <select name="" id=""><option value="">Task</option></select>
-        </div>
-        <div>
-            <div>Project Template</div>
-            <select name="" id=""><option value="">Team</option></select>
-        </div>
-        <div>
-            <div>Issue Type</div>
-            <select name="" id=""><option value="">Task</option></select>
-        </div>
-        <div>
-            <a href="javascript:void(0)" *ngIf="project?.integrations?.length" (click)="createFullJiraProject()">Arrow to New Jira Project</a>
-            <a *ngIf="!project?.integrations?.length">Arrow to New Jira Project</a>
-        </div>
+        <form [formGroup]="newProjectForm" (ngSubmit)="createFullJiraProject()">
+            <div>
+                <div>
+                    <div *ngIf="project?.integrations?.length">Project Loaded</div>
+                    <div *ngIf="!project?.integrations?.length">Please load a project</div>
+                </div>
+                <div>
+                    <div>Project Key</div>
+                    <input type="text" formControlName="key" [value]="projKey" (change)="setProjKey($event)" />
+                    <div *ngIf="newProjectForm.get('key')?.hasError('required')">Project Key is required</div>
+                    <div *ngIf="newProjectForm.get('key')?.hasError('minlength') || newProjectForm.get('key')?.hasError('maxlength')">
+                        Key needs to be 2 or 3 chars
+                    </div>
+                    <div *ngIf="newProjectForm.get('key')?.hasError('duplicate')">Duplicate project key detected</div>
+                </div>
+                <div>
+                    <div>Project Name</div>
+                    <input type="text" formControlName="name" [value]="projName" (change)="setProjName($event)" />
+                    <div *ngIf="newProjectForm.get('name')?.hasError('required')">Project Name is required</div>
+                    <div *ngIf="newProjectForm.get('name')?.hasError('minlength')">Name needs to be 4 chars or more</div>
+                    <div *ngIf="newProjectForm.get('name')?.hasError('duplicate')">Duplicate project name detected</div>
+                </div>
+                <div class="p-flex">
+                    <div>Project Lead</div>
+                    <select name="" id="" formControlName="lead">
+                        <option value="">Task</option>
+                    </select>
+                </div>
+                <div class="p-flex">
+                    <div>Project Template</div>
+                    <select name=""  id="" formControlName="template">
+                        <option value="">Team Run</option>
+                        <option value="">Company Run</option>
+                    </select>
+                </div>
+                <div class="p-flex">
+                    <div>Issue Type</div>
+                    <select name="" id="" formControlName="issueType">
+                        <option value="">Task</option>
+                    </select>
+                </div>
+                <div class="submit-button">
+
+                    <div *ngIf="newProjectForm.errors">
+                        <div *ngFor="let error of newProjectForm.errors | keyvalue">
+                            <div>{{error.key}}: {{error.value}}</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" type="submit" [disabled]="!newProjectForm.valid || !project?.integrations?.length">
+                        Arrow to New Jira Project
+                    </button>
+                    <div>
+                        <a href="javascript:void(0)" *ngIf="project?.integrations?.length">Arrow to New Jira Project</a>
+                        <a *ngIf="!project?.integrations?.length">Arrow to New Jira Project</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="project-controls" *ngIf="projects.length > 0"></div>
     </div>
 </div>

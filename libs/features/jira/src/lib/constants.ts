@@ -19,6 +19,8 @@ export const JIRA_ISSUE_URL = 'rest/api/3/issue';
 export const JIRA_ISSUE_TYPE_URL = 'rest/api/3/issuetype';
 export const JIRA_ISSUE_LINK_URL = 'rest/api/3/issueLink';
 export const JIRA_ISSUE_LINK_TYPE_URL = 'rest/api/3/issueLinkType';
+export const JIRA_USER_URL = 'rest/api/3/user/assignable/multiProjectSearch?query=query&projectKeys=';
+export const JIRA_ME_URL = 'rest/api/3/myself';
 export const JIRA_PROJECT_PROPERTY_ENDPOINT = '/properties';
 
 // Update project

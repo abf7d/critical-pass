@@ -11,8 +11,9 @@ import { API_CONST, DashboardService, DASHBOARD_TOKEN, ProjectStorageApiService 
 import urlJoin from 'url-join';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
-import { forkJoin, Subscription } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { inflate, deflate, gzip, ungzip } from 'pako';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'critical-pass-jira-layout',
@@ -31,6 +32,11 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
     public issueType: string | null = null;
     public projName: string | null = null;
     public projKey: string | null = null;
+    // public authToken: string | null = null;
+    public authExpireTime: Date | null = null;
+    public newProjectForm!: FormGroup;
+    public me: User | null = null;
+    public issuesProject: Project | null = null;
     constructor(
         private httpClient: HttpClient,
         private route: ActivatedRoute,
@@ -39,27 +45,92 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
         private importer: JiraImportMapperService,
         private sanitizer: ProjectSanatizerService,
         private serializer: ProjectSerializerService,
+        private fb: FormBuilder,
     ) {}
     public ngOnInit(): void {
         const code = this.route.snapshot.queryParams['code'];
+
         if (code) {
             this.getJiraToken(code);
+        } else {
+            this.getCloudId();
         }
         this.sub = this.dashboard.activeProject$.subscribe(project => {
             this.project = project;
         });
+
+        this.newProjectForm = this.fb.group({
+            key: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(3), this.duplicateError('key')]],
+            name: ['',[Validators.required, Validators.minLength(4),  this.duplicateError('name')]],
+            lead: ['', []],
+            template: ['', []],
+            issueType: ['', []],
+        });
+    }
+    public duplicateError(field: string) {
+        return (control: FormControl) => {
+            if(field === 'key') {
+                if(this.projects.find(x => x.key.toLocaleLowerCase() === control.value.toLocaleLowerCase())) {
+                    return { duplicate: true };
+                }
+            }
+            if(field === 'name') {
+                if(this.projects.find(x => x.name.toLocaleLowerCase() === control.value.toLocaleLowerCase())) {
+                    return { duplicate: true };
+                }
+            }
+            return null;
+        };
+    }
+    public onNewProjSubmit(): void {
+        const key = this.newProjectForm.get('key')?.value;
+        const name = this.newProjectForm.get('name')?.value;
+        const lead = this.newProjectForm.get('lead')?.value;
+        const template = this.newProjectForm.get('template')?.value;
+        const issueType = this.newProjectForm.get('issueType')?.value;
+        // this.createProject(key, name, lead, template, issueType);
     }
     public ngOnDestroy(): void {
         this.sub.unsubscribe();
     }
+
+
+    public getMe(): void {
+        const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+        if (auth_token !== null) {
+            let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+            const requestOptions = { headers: headers };
+            const userUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_ME_URL);
+
+            this.httpClient.get<User>(userUrl, requestOptions).subscribe(
+                (res: any) => {
+                    this.me = res;
+                    console.log('users', res);
+                },
+                err => {
+                    console.error('users resonse', err);
+                },
+            );
+        }
+    
+    }
+
     public getJiraToken(code: string): void {
         this.httpClient.get<{ access_token: string }>(urlJoin(this.baseUrl, 'account/jira-token', code)).subscribe(
             res => {
                 localStorage.setItem(CORE_CONST.JIRA_TOKEN_KEY, res.access_token);
+                const expireMs = new Date().getTime() + 60 * 60 * 1000;
+                localStorage.setItem(CORE_CONST.JIRA_TOKEN_EXPIRY_KEY, expireMs + '');
                 this.getCloudId();
+                this.authExpireTime = new Date(expireMs);
             },
             err => {
-                console.error(err);
+                console.error('token resonse', err);
+                const expireMs = localStorage.getItem(CORE_CONST.JIRA_TOKEN_EXPIRY_KEY);
+                if (expireMs) {
+                    this.authExpireTime = new Date(parseInt(expireMs, 10));
+                }
+                this.getCloudId();
             },
         );
         return;
@@ -69,31 +140,60 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
         if (auth_token !== null) {
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
-            this.httpClient.get(CONST.JIRA_CLOUD_ID_URL, requestOptions).subscribe((res: any) => {
-                this.cloudId = res[0].id;
-                this.getProjects();
-            });
+            this.httpClient.get(CONST.JIRA_CLOUD_ID_URL, requestOptions).subscribe(
+                (res: any) => {
+                    this.cloudId = res[0].id;
+                    this.getProjects();
+                    this.getMe();
+                },
+                err => {
+                    console.error('cloud id resonse', err);
+                    this.toJira();
+                },
+            );
         }
     }
 
-    public getJiraProject(project: JiraProject): void {
+    // get the list of issue names from the result
+    // public getIssueList(project: JiraProject) {
+    //     const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
+    //     if (auth_token !== null) {
+    //         let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
+    //         const requestOptions = { headers: headers };
+    //         const projectUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, `${CONST.JIRA_PROJECT_QUERY}${project.key}`);
+    //         this.httpClient.get<JiraProjectResult>(projectUrl, requestOptions).subscribe((res: any) => {
+    //             this.convertIssuesToProject(res);
+    //             const issues = this.project?.activities.filter(x => x.profile.name);
+    //         });
+    //     }
+    // }
+
+    public setJiraProject(project: JiraProject): void {
+        this.getJiraProjectResult(project)?.subscribe((res: any) => {
+            this.project = this.convertIssuesToProject(res);
+            this.dashboard.activeProject$.next(this.project!);
+        });
+    }
+
+    public getJiraProjectResult(project: JiraProject): Observable<JiraProjectResult> | null {
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
         if (auth_token !== null) {
             let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
             const requestOptions = { headers: headers };
             const projectUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, `${CONST.JIRA_PROJECT_QUERY}${project.key}`);
-            this.httpClient.get<JiraProjectResult>(projectUrl, requestOptions).subscribe((res: any) => {
-                this.convertIssuesToProject(res);
-            });
+            return this.httpClient.get<JiraProjectResult>(projectUrl, requestOptions)/*.subscribe((res: any) => {
+                this.project = this.convertIssuesToProject(res);
+            });*/
         }
+        return null;
     }
-    private convertIssuesToProject(response: JiraProjectResult): void {
+    private convertIssuesToProject(response: JiraProjectResult): Project | null {
         const project = this.importer.mapJiraProject(response);
         if (project) {
             this.connector.connectArrowsToNodes(project);
-            this.dashboard.activeProject$.next(project);
+            
         }
-        this.project = project;
+        return project;
     }
     public getProjects() {
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
@@ -170,21 +270,31 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
                 this.connector.connectArrowsToNodes(projectObj);
                 projectObj.profile.view.autoZoom = true;
                 this.dashboard.activeProject$.next(projectObj);
-            });
+            },
+            error => { this.setJiraProject(project!);});
         }
     }
 
     public toJira(): void {
+        // localStorage.removeItem(CORE_CONST.JIRA_TOKEN_KEY);
+        // localStorage.removeItem(CORE_CONST.JIRA_TOKEN_EXPIRY_KEY);
         window.location.href = CONST.JIRA_LOGIN_URL;
     }
     public selectProject(project: JiraProject): void {
         this.projectKey = project.key;
         this.selectedProject = project;
         this.selectedTab = 'viz';
+        this.getJiraProjectResult(project)?.subscribe((res: any) => {
+            // this populates the jira issues in the ui by generating project and using activities
+            this.issuesProject = this.convertIssuesToProject(res);
+
+            // Populate the arrow chart from the jira project's property
+            this.getProjectProperty();
+        });
     }
     public newArrowChart(): void {
         if (this.selectedProject) {
-            this.getJiraProject(this.selectedProject);
+            this.setJiraProject(this.selectedProject);
         }
     }
     public setIssueType(target: any) {
@@ -275,12 +385,14 @@ export class JiraLayoutComponent implements OnInit, OnDestroy {
     // public createProjWithIssuesAndArrowChartInJira(): void {
     public createFullJiraProject(): void {
         const auth_token = localStorage.getItem(CORE_CONST.JIRA_TOKEN_KEY);
-        const leadAccountId = '5c741c367dae4b653384935c';
+        const leadAccountId = this.me!.accountId;
         let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${auth_token}`);
         const requestOptions = { headers: headers };
-        const createProjectBody = this.importer.getCreateJiraProjectBody(leadAccountId);
+        const key = this.newProjectForm.get('key')?.value;
+        const name = this.newProjectForm.get('name')?.value;
+        const createProjectBody = this.importer.getCreateJiraProjectBody(leadAccountId, key, name);
         const createProjUrl = urlJoin(CONST.JIRA_QUERY_BASE_URL, this.cloudId!, CONST.JIRA_PROJECT_PROPERTY_URL);
-
+        
         // create project
         this.httpClient.post<JiraProjectResponse>(createProjUrl, createProjectBody, requestOptions).subscribe(
             (projCreationRes: any) => {
@@ -472,7 +584,13 @@ export interface IssueTypeResponse {
         project: { id: string };
     };
 }
-
+export interface User {
+    self: string;
+    accountId: string;
+    accountType: string;
+    displayName: string;
+    emailAddress: string;
+}
 /*
 const bodyData = `{
   "number": 5,

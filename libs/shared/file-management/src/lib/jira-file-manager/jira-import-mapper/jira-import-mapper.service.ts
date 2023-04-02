@@ -228,16 +228,19 @@ export class JiraImportMapperService {
     }
 
     // https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-post
-    public getCreateJiraProjectBody(/*project: Project,**/ leadAccountId: string): JiraProjectBody {
+    public getCreateJiraProjectBody(/*project: Project,**/ leadAccountId: string, key: string | null = null, name: string | null = null): JiraProjectBody {
+        name = name || 'Default Project Name';
+        key = key || 'DP';
+
         const bodyData = {
             assigneeType: 'UNASSIGNED', // other value is  'PROJECT_LEAD'
             // avatarId: 10200,
             // categoryId: 10120,
             description: 'Project Design sample project 1',
             issueSecurityScheme: 10001,
-            key: 'P1',
+            key,
             leadAccountId: leadAccountId, //'5b10a0effa615349cb016cd8', // need to get this from user that is approving jira access
-            name: 'Project 1',
+            name,
             notificationScheme: 10000, // 10002 is CE, 10001 is CP, 10000 is default
             permissionScheme: 0, // 0 is the default permission scheme  10001 is cyto-explorer simplified, 10000 is crtitical pass simplified,
             projectTemplateKey: 'com.pyxis.greenhopper.jira:gh-simplified-agility-kanban', //'com.atlassian.jira-core-project-templates:jira-core-simplified-process-control',

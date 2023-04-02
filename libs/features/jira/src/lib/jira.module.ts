@@ -7,9 +7,10 @@ import { JiraRoutingModule } from './jira.routes';
 import { HttpClientModule } from '@angular/common/http';
 import { ArrowChartModule } from '@critical-pass/charts';
 import { ArrowSnapshotModule } from '../../../../charts/src/lib/charts/arrow-snapshot/arrow-snapshot.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [JiraLayoutComponent, JiraBarComponent],
-    imports: [CommonModule, SharedModule, JiraRoutingModule, HttpClientModule, ArrowChartModule, LassoBarModule, ArrowSnapshotModule],
+    imports: [CommonModule, SharedModule, JiraRoutingModule, HttpClientModule, ArrowChartModule, LassoBarModule, ArrowSnapshotModule, ReactiveFormsModule],
 })
 export class JiraModule {}
