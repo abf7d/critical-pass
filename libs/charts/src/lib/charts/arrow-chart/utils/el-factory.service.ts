@@ -4,7 +4,7 @@ import { ActivityBuilder, MilestoneFactoryService } from '@critical-pass/shared/
 import { ActivitySerializerService, IntegrationSerializerService } from '@critical-pass/shared/serializers';
 import { ArrowStateService } from '../arrow-chart-ui/arrow-chart-ui.service';
 import { ArrowState } from '../arrow-state/arrow-state';
-import * as CONST from '../../../constants/constants'
+import * as CONST from '../../../constants/constants';
 @Injectable({
     providedIn: 'root',
 })
@@ -63,7 +63,7 @@ export class ElFactoryService {
     }
     private clearSelectedLink(project: Project) {
         const activity = this.st.selected_link;
-        if(activity) {
+        if (activity) {
             activity.chartInfo.isSelected = false;
             this.st.selected_link = null;
         }
@@ -76,7 +76,6 @@ export class ElFactoryService {
             this.st.selected_node = null;
         }
         project.profile.view.selectedIntegration = null;
-
     }
     private updateStartEndNodes(node: Integration, proj: Project, nodeType: string | null = null) {
         let connectedLink;
@@ -150,7 +149,7 @@ export class ElFactoryService {
                 }
             }
             this.clearSelectedLink(proj);
-            
+
             this.st.selected_link = null;
             this.st.selected_node = null;
             proj.profile.view.selectedActivity = null;

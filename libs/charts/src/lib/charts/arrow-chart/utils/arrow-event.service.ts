@@ -6,7 +6,7 @@ import { NetworkOperationsService } from '../../../services/network-operations/n
 import { MilestoneFactoryService } from '@critical-pass/shared/project-utils';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { ArrowStateService } from '../arrow-chart-ui/arrow-chart-ui.service';
-import * as CONST from '../../../constants/constants'
+import * as CONST from '../../../constants/constants';
 @Injectable({
     providedIn: 'root',
 })
@@ -15,7 +15,7 @@ export class ArrowEventsService {
         private networkOps: NetworkOperationsService,
         private msFactory: MilestoneFactoryService,
         private elFactory: ElFactoryService,
-        private st: ArrowStateService
+        private st: ArrowStateService,
     ) {}
     public checkDeselect(project: Project): boolean {
         return this.st.selected_node ||

@@ -39,7 +39,7 @@ export class ArrowChartUIService {
         private events: ArrowEventBinderService,
         private elements: ElementFactoryService,
         private svgZoom: ArrowSvgZoomService,
-       /*@Inject(CONST.ARROW_STATE_TOKEN)*/ private st: ArrowStateService,
+        /*@Inject(CONST.ARROW_STATE_TOKEN)*/ private st: ArrowStateService,
     ) {
         this.projIsEmpty = new BehaviorSubject(true);
     }
@@ -777,11 +777,10 @@ export class ArrowSvgZoomService {
             d3.zoom().on('zoom', (event, d) => {
                 this.st.mainG.attr('transform', event.transform);
                 this.lassoTool.setTransform(event.transform);
-            })
+            }),
         );
 
-        this.st.svg.on("dblclick.zoom", null)
-        
+        this.st.svg.on('dblclick.zoom', null);
 
         if (groupZoom != null) {
             // Zoom and scale the viewport within bounds of nodes

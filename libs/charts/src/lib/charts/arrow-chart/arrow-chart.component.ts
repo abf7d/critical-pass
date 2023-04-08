@@ -30,7 +30,7 @@ import { ArrowPropertyService } from './utils/arrow-property.service';
         ElementFactoryService, //ChartElFactory
         ArrowStateService,
         ElPositionerService,
-        ArrowPropertyService
+        ArrowPropertyService,
     ],
     encapsulation: ViewEncapsulation.None,
 })
