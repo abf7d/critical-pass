@@ -6,6 +6,7 @@ import { SvgTranform } from '../../../models/svg-transform';
 import { ArrowState } from '../arrow-state/arrow-state';
 import { Key } from 'ts-keycode-enum';
 import { ArrowControllerService } from '../utils/arrow-controller.service';
+import { ArrowStateService } from '../arrow-chart-ui/arrow-chart-ui.service';
 
 @Injectable({
     providedIn: 'root',
@@ -23,24 +24,22 @@ export class LassoToolService {
     private originNode!: d3.Selection<SVGCircleElement, unknown, null, undefined>;
     private project!: Project;
     private transform: SvgTranform = { k: 1, x: 0, y: 0 };
-    private st!: ArrowState;
     private selectedNodes!: number[];
     private selectedActivities!: number[];
     private lassoStart: number | null = null;
     private lassoEnd: number | null = null;
     private id!: number;
 
-    constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, private arrowController: ArrowControllerService) {}
+    constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, private arrowController: ArrowControllerService, private st: ArrowStateService) {}
 
     public setTransform(transform: SvgTranform) {
         this.transform = transform;
     }
-    public init(st: ArrowState, project: Project, id: number) {
+    public init(project: Project, id: number) {
         this.id = id;
-        this.st = st;
-        st.svg.selectAll('.lasso').remove();
-        this.mainG = st.svg;
-        this.lassoG = st.svg.append('g');
+        this.st.svg.selectAll('.lasso').remove();
+        this.mainG = this.st.svg;
+        this.lassoG = this.st.svg.append('g');
         this.lassoG.classed('lasso', true);
         this.targetArea = this.lassoG.append('rect');
         this.selectedNodes = project.profile.view.lassoedNodes;
@@ -66,7 +65,7 @@ export class LassoToolService {
 
     public keydown(event: any) {
         if (event.keyCode === Key.Ctrl) {
-            if (this.project.profile.view.lassoOn === true) {
+            if (this.project?.profile.view.lassoOn === true) {
                 this.previousPos = null;
                 const dragEvent: d3.DragBehavior<SVGRectElement, unknown, unknown> = d3
                     .drag<SVGRectElement, any>()
@@ -80,8 +79,8 @@ export class LassoToolService {
     }
     public keyup(event: any) {
         if (event.keyCode === Key.Ctrl) {
-            if (this.project.profile.view.lassoOn === true) {
-                this.init(this.st, this.project, this.id);
+            if (this.project?.profile.view.lassoOn === true) {
+                this.init(this.project, this.id);
             }
         }
     }
@@ -112,9 +111,9 @@ export class LassoToolService {
         this.previousPos = null;
     }
 
-    public remove(st: ArrowState, id: number) {
+    public remove(id: number) {
         this.id = id;
-        st.svg.selectAll('.lasso').remove();
+        this.st.svg.selectAll('.lasso').remove();
     }
 
     public dragstart() {

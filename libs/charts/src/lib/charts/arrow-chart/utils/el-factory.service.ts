@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { ActivityBuilder, MilestoneFactoryService } from '@critical-pass/shared/project-utils';
 import { ActivitySerializerService, IntegrationSerializerService } from '@critical-pass/shared/serializers';
+import { ArrowStateService } from '../arrow-chart-ui/arrow-chart-ui.service';
 import { ArrowState } from '../arrow-state/arrow-state';
-
+import * as CONST from '../../../constants/constants'
 @Injectable({
     providedIn: 'root',
 })
 export class ElFactoryService {
-    public st!: ArrowState;
-    constructor(private actBuilder: ActivityBuilder, private msFactory: MilestoneFactoryService) {}
+    constructor(private st: ArrowStateService, private actBuilder: ActivityBuilder, private msFactory: MilestoneFactoryService) {}
     public addProjectActivity(source: Integration, target: Integration, proj: Project): Activity {
         let maxId = Math.max(...proj.activities.map(a => a.profile.id), 0);
         const id = maxId + 1;
@@ -31,12 +31,8 @@ export class ElFactoryService {
         if (ctrl || this.st.mousedown_node || this.st.mousedown_link) {
             return false;
         }
-        this.setLinkIsSelected(this.st.selected_link!, proj, false);
-        this.setNodeIsSelected(this.st.selected_node!, proj, false);
-        this.st.selected_link = null;
-        this.st.selected_node = null;
-        proj.profile.view.selectedIntegration = null;
-
+        this.clearSelectedLink(proj);
+        this.clearSelectedNode(proj);
         let id = Math.max(...proj.integrations.map(x => x.id), 0) + 1;
         const node = new IntegrationSerializerService().new(id, id.toString(), 0, point[0], point[1]);
         node.x = Math.round(point[0]);
@@ -65,19 +61,22 @@ export class ElFactoryService {
         }
         return null;
     }
-    private setLinkIsSelected(activity: Activity, proj: Project, isSelected: boolean): void {
-        if (activity?.chartInfo) {
-            activity.chartInfo.isSelected = isSelected;
-            proj.profile.view.selectedActivity = activity;
+    private clearSelectedLink(project: Project) {
+        const activity = this.st.selected_link;
+        if(activity) {
+            activity.chartInfo.isSelected = false;
+            this.st.selected_link = null;
         }
-        if (!isSelected) {
-            proj.profile.view.selectedActivity = null;
-        }
+        project.profile.view.selectedActivity = null;
     }
-    private setNodeIsSelected(node: Integration, proj: Project, isSelected: boolean): void {
+    private clearSelectedNode(project: Project) {
+        const node = this.st.selected_node;
         if (node) {
-            node.selected = isSelected;
+            node.selected = false;
+            this.st.selected_node = null;
         }
+        project.profile.view.selectedIntegration = null;
+
     }
     private updateStartEndNodes(node: Integration, proj: Project, nodeType: string | null = null) {
         let connectedLink;
@@ -150,7 +149,8 @@ export class ElFactoryService {
                     proj.integrations.splice(indexT, 1);
                 }
             }
-            this.setLinkIsSelected(this.st.selected_link!, proj, false);
+            this.clearSelectedLink(proj);
+            
             this.st.selected_link = null;
             this.st.selected_node = null;
             proj.profile.view.selectedActivity = null;

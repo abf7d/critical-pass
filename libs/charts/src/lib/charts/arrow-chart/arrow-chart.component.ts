@@ -1,13 +1,37 @@
 import { Component, OnInit, Input, ElementRef, ViewChild, ViewEncapsulation, OnDestroy, inject } from '@angular/core';
-import { ArrowChartUIService } from './arrow-chart-ui/arrow-chart-ui.service';
+import {
+    ArrowChartUIService,
+    ArrowEventBinderService,
+    ArrowStateService,
+    ArrowSvgZoomService,
+    ElementFactoryService,
+} from './arrow-chart-ui/arrow-chart-ui.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import * as CONST from '../../constants/constants';
+import { ElFactoryService } from './utils/el-factory.service';
+import { LassoToolService } from './lasso-tool/lasso-tool.service';
+import { ArrowEventsService } from './utils/arrow-event.service';
+import { ArrowControllerService } from './utils/arrow-controller.service';
+import { ElPositionerService } from './utils/el-positioner.service';
+import { ArrowPropertyService } from './utils/arrow-property.service';
 
 @Component({
     selector: 'cp-arrow-chart',
     templateUrl: './arrow-chart.component.html',
     styleUrls: ['./arrow-chart.component.scss'],
-    providers: [ArrowChartUIService],
+    providers: [
+        ArrowChartUIService,
+        ArrowControllerService,
+        ArrowSvgZoomService,
+        ArrowEventsService, //EventHandlerService
+        ArrowEventBinderService, // EventBinderService
+        ElFactoryService, //ProjectElFactory
+        LassoToolService, //TODO: need to test lasso service with new design
+        ElementFactoryService, //ChartElFactory
+        ArrowStateService,
+        ElPositionerService,
+        ArrowPropertyService
+    ],
     encapsulation: ViewEncapsulation.None,
 })
 export class ArrowChartComponent implements OnInit, OnDestroy {

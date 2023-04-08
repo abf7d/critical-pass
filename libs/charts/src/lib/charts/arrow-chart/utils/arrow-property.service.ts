@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { ArrowState } from '../arrow-state/arrow-state';
 import * as CONST from '../../../constants/constants';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
+import { ArrowStateService } from '../arrow-chart-ui/arrow-chart-ui.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ArrowPropertyService {
-    public st!: ArrowState;
+    constructor(private st: ArrowStateService) {}
     public getNodeCss(d: Integration, proj: Project): string {
         const nonMilestoneAct = this.filterOutMilestones(proj);
         if (proj.profile.view.showOrphaned) {

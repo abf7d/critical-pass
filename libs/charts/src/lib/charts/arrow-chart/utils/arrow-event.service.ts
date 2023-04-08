@@ -1,21 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ArrowState } from '../arrow-state/arrow-state';
 import { ElPositionerService } from './el-positioner.service';
 import { ElFactoryService } from './el-factory.service';
 import { NetworkOperationsService } from '../../../services/network-operations/network-operations.service';
 import { MilestoneFactoryService } from '@critical-pass/shared/project-utils';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
-
+import { ArrowStateService } from '../arrow-chart-ui/arrow-chart-ui.service';
+import * as CONST from '../../../constants/constants'
 @Injectable({
     providedIn: 'root',
 })
 export class ArrowEventsService {
-    public st!: ArrowState;
     constructor(
         private networkOps: NetworkOperationsService,
         private msFactory: MilestoneFactoryService,
-        private positioner: ElPositionerService,
         private elFactory: ElFactoryService,
+        private st: ArrowStateService
     ) {}
     public checkDeselect(project: Project): boolean {
         return this.st.selected_node ||

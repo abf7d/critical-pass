@@ -16,12 +16,6 @@ export class ArrowControllerService {
         private factory: ElFactoryService,
         private positioner: ElPositionerService,
     ) {}
-    set st(st: ArrowState) {
-        this.events.st = st;
-        this.props.st = st;
-        this.factory.st = st;
-        this.positioner.st = st;
-    }
     public getPath(d: Activity): string {
         return this.positioner.getPath(d);
     }
