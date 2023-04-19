@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ArrowState } from '../arrow-state/arrow-state';
-import * as CONST from '../../../constants/constants';
+import * as CONST from '../../../../constants/constants';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
-import { ArrowStateService } from '../arrow-chart-ui/arrow-chart-ui.service';
+import { ArrowStateService } from '../../arrow-state/arrow-state';
 
 @Injectable({
     providedIn: 'root',

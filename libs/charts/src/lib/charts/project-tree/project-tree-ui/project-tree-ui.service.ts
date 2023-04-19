@@ -135,6 +135,7 @@ export class ProjectTreeUiService {
     }
 
     public destroy(): void {
+        this.reset();
         if (this.commitSub) {
             this.commitSub.unsubscribe();
         }

@@ -1,7 +1,6 @@
 // import { TreeNode } from '../models/assign/tree-node';
 import { InjectionToken } from '@angular/core';
 import * as d3 from 'd3';
-import { ArrowStateService } from '../charts/arrow-chart/arrow-chart-ui/arrow-chart-ui.service';
 // export const activityDrawnKey = 'arrow.activity.drawn';
 // export const activityTypedKey = 'arrow.activity.typed';
 // export const projectKey = 'project.data.key';

@@ -2,11 +2,10 @@ import { Inject, Injectable } from '@angular/core';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import * as d3 from 'd3';
-import { SvgTranform } from '../../../models/svg-transform';
-import { ArrowState } from '../arrow-state/arrow-state';
+import { SvgTranform } from '../../../../models/svg-transform';
 import { Key } from 'ts-keycode-enum';
-import { ArrowControllerService } from '../utils/arrow-controller.service';
-import { ArrowStateService } from '../arrow-chart-ui/arrow-chart-ui.service';
+import { ArrowStateService } from '../../arrow-state/arrow-state';
+import { ArrowControllerService } from '../../arrow-controller/arrow-controller.service';
 
 @Injectable({
     providedIn: 'root',
@@ -34,6 +33,13 @@ export class LassoToolService {
 
     public setTransform(transform: SvgTranform) {
         this.transform = transform;
+    }
+    public buildLasso(project: Project): void {
+        if (project.profile.view.lassoOn === true) {
+            this.init(project, this.id);
+        } else {
+            this.remove(this.id);
+        }
     }
     public init(project: Project, id: number) {
         this.id = id;

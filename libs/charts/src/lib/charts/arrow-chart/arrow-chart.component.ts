@@ -1,19 +1,17 @@
 import { Component, OnInit, Input, ElementRef, ViewChild, ViewEncapsulation, OnDestroy, inject } from '@angular/core';
-import {
-    ArrowChartUIService,
-    ArrowEventBinderService,
-    ArrowStateService,
-    ArrowSvgZoomService,
-    ElementFactoryService,
-} from './arrow-chart-ui/arrow-chart-ui.service';
+import { ArrowChartUIService } from './arrow-chart-ui/arrow-chart-ui.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import * as CONST from '../../constants/constants';
-import { ElFactoryService } from './utils/el-factory.service';
-import { LassoToolService } from './lasso-tool/lasso-tool.service';
-import { ArrowEventsService } from './utils/arrow-event.service';
-import { ArrowControllerService } from './utils/arrow-controller.service';
-import { ElPositionerService } from './utils/el-positioner.service';
-import { ArrowPropertyService } from './utils/arrow-property.service';
+import { LassoToolService } from './arrow-chart-ui/lasso-tool/lasso-tool.service';
+import { ArrowSvgZoomService } from './arrow-chart-ui/arrow-svg-zoom/arrow-svg-zoom.service';
+import { EventBinderService } from './arrow-chart-ui/event-binder/event-binder.service';
+import { ChartElFactory } from './arrow-chart-ui/chart-el-factory/chart-el-factory.service';
+import { ArrowStateService } from './arrow-state/arrow-state';
+import { ArrowControllerService } from './arrow-controller/arrow-controller.service';
+import { EventHandlerService } from './arrow-controller/event-handler/event-handler.service';
+import { ProjectElFactory } from './arrow-controller/project-el-factory/project-el-factory.service';
+import { ElPositionerService } from './arrow-controller/el-positioner/el-positioner.service';
+import { ArrowPropertyService } from './arrow-controller/arrow-property/arrow-property.service';
 
 @Component({
     selector: 'cp-arrow-chart',
@@ -23,11 +21,11 @@ import { ArrowPropertyService } from './utils/arrow-property.service';
         ArrowChartUIService,
         ArrowControllerService,
         ArrowSvgZoomService,
-        ArrowEventsService, //EventHandlerService
-        ArrowEventBinderService, // EventBinderService
-        ElFactoryService, //ProjectElFactory
-        LassoToolService, //TODO: need to test lasso service with new design
-        ElementFactoryService, //ChartElFactory
+        EventHandlerService,
+        EventBinderService,
+        ProjectElFactory,
+        LassoToolService,
+        ChartElFactory,
         ArrowStateService,
         ElPositionerService,
         ArrowPropertyService,

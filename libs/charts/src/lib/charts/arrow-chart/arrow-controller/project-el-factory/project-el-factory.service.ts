@@ -2,13 +2,11 @@ import { Inject, Injectable } from '@angular/core';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { ActivityBuilder, MilestoneFactoryService } from '@critical-pass/shared/project-utils';
 import { ActivitySerializerService, IntegrationSerializerService } from '@critical-pass/shared/serializers';
-import { ArrowStateService } from '../arrow-chart-ui/arrow-chart-ui.service';
-import { ArrowState } from '../arrow-state/arrow-state';
-import * as CONST from '../../../constants/constants';
+import { ArrowStateService } from '../../arrow-state/arrow-state';
 @Injectable({
     providedIn: 'root',
 })
-export class ElFactoryService {
+export class ProjectElFactory {
     constructor(private st: ArrowStateService, private actBuilder: ActivityBuilder, private msFactory: MilestoneFactoryService) {}
     public addProjectActivity(source: Integration, target: Integration, proj: Project): Activity {
         let maxId = Math.max(...proj.activities.map(a => a.profile.id), 0);

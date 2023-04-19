@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LassoToolService } from './lasso-tool.service';
+import { ArrowSvgZoomService } from './arrow-svg-zoom.service';
 
-describe('LassoToolService', () => {
-    let service: LassoToolService;
+describe('ArrowSvgZoomService', () => {
+    let service: ArrowSvgZoomService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(LassoToolService);
+        service = TestBed.inject(ArrowSvgZoomService);
     });
 
     it('should be created', () => {

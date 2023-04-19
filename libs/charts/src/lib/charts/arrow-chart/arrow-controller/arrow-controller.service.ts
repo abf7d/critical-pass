@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
-import { ArrowEventsService } from './arrow-event.service';
-import { ArrowPropertyService } from './arrow-property.service';
-import { ElFactoryService } from './el-factory.service';
-import { ElPositionerService } from './el-positioner.service';
-import { ArrowState } from '../arrow-state/arrow-state';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
+import { ArrowPropertyService } from './arrow-property/arrow-property.service';
+import { ElPositionerService } from './el-positioner/el-positioner.service';
+import { EventHandlerService } from './event-handler/event-handler.service';
+import { ProjectElFactory } from './project-el-factory/project-el-factory.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ArrowControllerService {
     constructor(
-        private events: ArrowEventsService,
+        private events: EventHandlerService,
         private props: ArrowPropertyService,
-        private factory: ElFactoryService,
+        private factory: ProjectElFactory,
         private positioner: ElPositionerService,
     ) {}
     public getPath(d: Activity): string {
