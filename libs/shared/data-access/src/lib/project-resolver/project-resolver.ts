@@ -20,6 +20,7 @@ export class ProjectResolver implements Resolve<any> {
     ) {}
 
     resolve(route: ActivatedRouteSnapshot) {
+        this.dashboard.secondaryProject$.next(null);
         if (+route.params['id'] === CONST.IMPORT_ROUTE_PARAM_ID) {
             const imported = this.storageApi.get(CONST.SESSION_STORAGE);
             if (imported !== null) {

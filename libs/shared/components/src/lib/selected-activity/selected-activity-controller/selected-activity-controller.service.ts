@@ -1,13 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-// import { Activity } from '@critical-pass/critical-charts';
-// import { Project } from '@critical-pass/critical-charts';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-// import { ChartKeys } from '@critical-pass/critical-charts';
-// import * as AppKeys from '../../../../../../core/constants/keys';
-import { filter } from 'rxjs/operators';
-// import { ProjectStoreService } from '../../../../services/api/project-store/project-store.service';
-// import { ProjectSerializerService } from '@critical-pass/critical-charts';
-import { lightFormat, sub } from 'date-fns';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { lightFormat } from 'date-fns';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN, API_CONST, ProjectApiService } from '@critical-pass/shared/data-access';
 import { MilestoneFactoryService, ParentCompilerService, UTIL_CONST } from '@critical-pass/shared/project-utils';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
@@ -196,6 +189,10 @@ export class SelectedActivityControllerService {
         subProjCount$.next(subProjCount);
         this.eventService.get(CORE_CONST.CREATED_PROJECT).next(subProj);
         this.swapProjWithSubProj(subProj, activity, project);
+    }
+
+    public destroy() {
+        this.eventService.get(CORE_CONST.CREATED_PROJECT).next(null);
     }
 
     public formatDate(date: Date) {

@@ -59,6 +59,7 @@ export class SelectedActivityComponent implements OnInit, OnDestroy {
         if (this.cActSub) {
             this.cActSub.unsubscribe();
         }
+        this.controller.destroy();
     }
 
     public loadSelectedActivity(activity: Activity | null) {

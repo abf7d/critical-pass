@@ -12,17 +12,18 @@ import { ProjectCompilerService } from '@critical-pass/project/processor';
     templateUrl: './network-layout.component.html',
     styleUrls: ['./network-layout.component.scss'],
 })
-export class NetworkLayoutComponent implements OnInit {
+export class NetworkLayoutComponent {
     public id: number;
     public parentId!: number;
-    public project$: Observable<Project>;
+    public project$!: Observable<Project>;
     public project!: Project;
     public refreshCount = 0;
     private subscription!: Subscription;
+    private newProjSub!: Subscription;
     public breadcrumb: Crumb[] = [];
-    public networkArray$: BehaviorSubject<Project[]>;
+    public networkArray$!: BehaviorSubject<Project[]>;
     public selectedNetworkProject$!: Subject<number>;
-    public filteredNetworkArray$: BehaviorSubject<Project[]>;
+    public filteredNetworkArray$!: BehaviorSubject<Project[]>;
     public selectedActivity: Activity | null = null;
     public subProjectIds!: Map<number, boolean>;
     public previousEFT: number | null = null;
@@ -33,10 +34,12 @@ export class NetworkLayoutComponent implements OnInit {
         private projectCompiler: ProjectCompilerService,
     ) {
         this.id = +route.snapshot.params['id'];
+
         this.project$ = this.dashboard.activeProject$;
         this.networkArray$ = this.eventService.get(CORE_CONST.NETWORK_ARRAY_KEY);
         this.networkArray$.next([]);
-        this.project$.pipe(filter(x => !!x)).subscribe(project => {
+        this.subscription = this.project$.pipe(filter(x => !!x)).subscribe(project => {
+            this.refreshCount++;
             let crumb: Crumb[] = [];
             this.selectedActivity = project.profile.view.selectedActivity;
             this.subProjectIds = new Map<number, boolean>();
@@ -68,7 +71,7 @@ export class NetworkLayoutComponent implements OnInit {
 
         this.filteredNetworkArray$ = this.eventService.get(CORE_CONST.FILTERED_NETWORK_ARRAY_KEY);
         this.filteredNetworkArray$.next([]);
-        this.eventService
+        this.newProjSub = this.eventService
             .get<Project>(CORE_CONST.CREATED_PROJECT)
             .pipe(filter(x => !!x))
             .subscribe(proj => {
@@ -105,16 +108,12 @@ export class NetworkLayoutComponent implements OnInit {
         return crumb;
     }
 
-    public ngOnInit(): void {
-        this.subscription = this.project$.pipe(filter(x => !!x)).subscribe(_ => this.refreshCount++);
-    }
     public canDeactivate(): boolean {
         return this.refreshCount < 2;
     }
     public ngOnDestroy(): void {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
+        this.subscription?.unsubscribe();
+        this.newProjSub?.unsubscribe();
     }
     public load(projectId: number): void {
         const nodes = this.networkArray$.getValue();
