@@ -1,3 +1,4 @@
+
 .title {
     font-size: 0.95rem;
     font-weight: bold;
@@ -22,15 +23,16 @@ input[type=text] {
 }
 
 ::ng-deep svg.mat-datepicker-toggle-default-icon {
-    height: 15px;
-    width: 14px;
+    height: 15px !important;
+    width: 14px !important;
     margin-right: 0px;
+    display: inherit;
 }
 .icon {
     transform: scale(1);
 }
 input.dateinput {
-    padding-left: 27px;
+    padding-left: 24px;
     width: 150px;
 }
 
@@ -39,15 +41,19 @@ input.dateinput {
     width: 27px !important;
     line-height: 16px !important;
 }
-
+.dt-picker {
+    position: relative;
+}
 .picker-toggle {
-    height: 10px;
-    float: left;
-    margin-right: -33px;
     margin-top: 2px;
+
     position: absolute;
-    left: 17px;
-    margin-top: -15px;
+    top: -22px;
+    left: -8px;
+}
+::ng-deep button.mat-icon-button {
+    height: 25px !important;
+    width: 27px !important;
 }
 
 label.btn {
@@ -56,3 +62,4 @@ label.btn {
     margin-top: 10px;
     width: 154px;
 }
+
