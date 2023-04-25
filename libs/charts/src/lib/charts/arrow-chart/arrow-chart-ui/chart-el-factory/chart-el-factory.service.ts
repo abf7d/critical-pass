@@ -9,11 +9,7 @@ import { ArrowControllerService } from '../../arrow-controller/arrow-controller.
     providedIn: 'root',
 })
 export class ChartElFactory {
-    constructor(
-        private st: ArrowStateService,
-        private controller: ArrowControllerService,
-        @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
-    ) {}
+    constructor(private st: ArrowStateService, private controller: ArrowControllerService, @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService) {}
     public createNodes(project: Project): void {
         this.st.nodes = this.st.mainG.append('g').attr('class', 'node').selectAll('g');
 

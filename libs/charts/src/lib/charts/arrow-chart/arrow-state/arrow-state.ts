@@ -33,7 +33,7 @@ export class ArrowStateService {
     width: number | null = null;
     height: number | null = null;
     prevProjId: number | null = null;
-   
+
     nodeRisk: Map<number, number> = new Map<number, number>();
     arrowRisk: Map<number, number> = new Map<number, number>();
     constructor() {}
