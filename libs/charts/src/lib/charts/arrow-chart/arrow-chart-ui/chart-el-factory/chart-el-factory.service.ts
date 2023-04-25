@@ -10,7 +10,7 @@ import { ArrowControllerService } from '../../arrow-controller/arrow-controller.
 })
 export class ChartElFactory {
     constructor(
-        /*@Inject(CONST.ARROW_STATE_TOKEN)*/ private st: ArrowStateService,
+        private st: ArrowStateService,
         private controller: ArrowControllerService,
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
     ) {}
