@@ -2,25 +2,22 @@ import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 describe(AppComponent.name, () => {
+    beforeEach(() => {
+        TestBed.overrideComponent(AppComponent, {
+            add: {
+                imports: [],
+                providers: [],
+            },
+        });
+    });
 
-  beforeEach(() => {
-    TestBed.overrideComponent(AppComponent, {
-      add: { 
-        imports: [],
-        providers: []
-      }
-    }) 
-  })
+    it('renders', () => {
+        cy.mount(AppComponent);
 
-  it('renders', () => {
-     cy.mount(AppComponent,);
-
-     cy.mount(AppComponent, {
-      componentProperties: {
-        title: 'test title',
-      },
-    })
-  })
-
-
-})
+        cy.mount(AppComponent, {
+            componentProperties: {
+                title: 'test title',
+            },
+        });
+    });
+});
