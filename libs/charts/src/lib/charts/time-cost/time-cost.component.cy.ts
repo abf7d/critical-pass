@@ -7,35 +7,34 @@ import { Observable, of } from 'rxjs';
 import { Project } from '@critical-pass/project/types';
 
 describe(TimeCostComponent.name, () => {
+    beforeEach(() => {
+        const zametek = {
+            compileMsProject(file: File): Observable<Project | null> {
+                return of(null);
+            },
+            compileArrowGraph(project: Project): Observable<Project | null> {
+                return of(null);
+            },
+        };
+        TestBed.overrideComponent(TimeCostComponent, {
+            add: {
+                imports: [TimeCostModule, HttpClientTestingModule],
+                providers: [
+                    { provide: ZametekApiService, useValue: zametek },
+                    { provide: DASHBOARD_TOKEN, useClass: DashboardService },
+                    { provide: EVENT_SERVICE_TOKEN, useClass: EventService },
+                ],
+            },
+        });
+    });
 
-  beforeEach(() => {
-    const zametek = {
-      compileMsProject(file: File): Observable<Project | null> {
-        return of(null);
-      },
-      compileArrowGraph(project: Project): Observable<Project | null> {
-        return of(null)
-      }
-    }
-    TestBed.overrideComponent(TimeCostComponent, {
-      add: { 
-        imports: [TimeCostModule, HttpClientTestingModule],
-        providers: [ 
-          { provide: ZametekApiService, useValue: zametek },
-          { provide: DASHBOARD_TOKEN, useClass: DashboardService },
-          { provide: EVENT_SERVICE_TOKEN, useClass: EventService },]
-      }
-    }) 
-  })
-
-  it('renders', () => {
-     cy.mount(TimeCostComponent, {
-           componentProperties: {
-               id:  0,
-               width:  0,
-               height:  0,
-          }
-       });
-  })
-
-})
+    it('renders', () => {
+        cy.mount(TimeCostComponent, {
+            componentProperties: {
+                id: 0,
+                width: 0,
+                height: 0,
+            },
+        });
+    });
+});

@@ -4,24 +4,23 @@ import { ScoreBoardComponent } from './score-board.component';
 import { ScoreBoardModule } from './score-board.module';
 
 describe(ScoreBoardComponent.name, () => {
+    beforeEach(() => {
+        TestBed.overrideComponent(ScoreBoardComponent, {
+            add: {
+                imports: [ScoreBoardModule],
+                providers: [
+                    { provide: DASHBOARD_TOKEN, useClass: DashboardService },
+                    { provide: EVENT_SERVICE_TOKEN, useClass: EventService },
+                ],
+            },
+        });
+    });
 
-  beforeEach(() => {
-    TestBed.overrideComponent(ScoreBoardComponent, {
-      add: { 
-        imports: [ScoreBoardModule],
-        providers: [
-          { provide: DASHBOARD_TOKEN, useClass: DashboardService },
-          { provide: EVENT_SERVICE_TOKEN, useClass: EventService },]
-      }
-    }) 
-  })
-
-  it('renders', () => {
-     cy.mount(ScoreBoardComponent, {
-           componentProperties: {
-               id:  0,
-          }
-       });
-  })
-
-})
+    it('renders', () => {
+        cy.mount(ScoreBoardComponent, {
+            componentProperties: {
+                id: 0,
+            },
+        });
+    });
+});
