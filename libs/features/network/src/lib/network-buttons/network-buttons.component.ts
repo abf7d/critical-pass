@@ -22,7 +22,7 @@ export class NetworkButtonsComponent implements OnInit {
         private router: Router,
         private fileManager: NetworkFileManagerService,
         private nodeConnector: NodeConnectorService,
-        private projFileManager: ProjectFileManagerService
+        private projFileManager: ProjectFileManagerService,
     ) {
         this.networkArray$ = this.eventService.get(CORE_CONST.NETWORK_ARRAY_KEY);
         this.filteredNetworkArray$ = this.eventService.get(CORE_CONST.FILTERED_NETWORK_ARRAY_KEY);

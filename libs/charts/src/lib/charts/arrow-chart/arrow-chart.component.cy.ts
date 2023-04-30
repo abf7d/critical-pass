@@ -19,7 +19,7 @@ let mockDashboard = {
 before(function () {
     cy.fixture('project.json').then(function (json) {
         data = json;
-        cy.task('log', {message: 'This will be output to the terminal'})
+        cy.task('log', { message: 'This will be output to the terminal' });
         if (data) {
             const project = serializer.fromJson(data);
             mockDashboard.updateProject(project);

@@ -104,7 +104,7 @@ export class ProjectFileManagerService implements FileManagerBaseService<Project
                     resolve(project);
                 } else {
                     const projects = projectJson.map(p => this.serializer.fromJson(p));
-                    resolve(projects)
+                    resolve(projects);
                 }
             };
         });
