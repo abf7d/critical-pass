@@ -29,6 +29,8 @@ Cypress.Commands.add('mount', mount);
 Cypress.Commands.add('login', (email, password) => {
     console.log('Custom command example: Login', email, password);
 });
+Cypress.Commands.overwrite('log', (message) => cy.task('log', {message}));
+// Cypress.Commands.add('log', (...args) => { console.log(args); });
 //
 // -- This is a child command --
 // Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })

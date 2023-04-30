@@ -4,7 +4,7 @@ import { Project } from '@critical-pass/project/types';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { CORE_CONST } from '@critical-pass/core';
 import { EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
-import { NetworkFileManagerService } from '@critical-pass/shared/file-management';
+import { NetworkFileManagerService, ProjectFileManagerService } from '@critical-pass/shared/file-management';
 import { NodeConnectorService } from '@critical-pass/project/processor';
 import { UTIL_CONST } from '@critical-pass/shared/project-utils';
 @Component({
@@ -22,6 +22,7 @@ export class NetworkButtonsComponent implements OnInit {
         private router: Router,
         private fileManager: NetworkFileManagerService,
         private nodeConnector: NodeConnectorService,
+        private projFileManager: ProjectFileManagerService
     ) {
         this.networkArray$ = this.eventService.get(CORE_CONST.NETWORK_ARRAY_KEY);
         this.filteredNetworkArray$ = this.eventService.get(CORE_CONST.FILTERED_NETWORK_ARRAY_KEY);
