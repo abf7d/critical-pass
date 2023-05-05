@@ -20,7 +20,7 @@ before(function () {
     cy.fixture('project.json').then(function (json) {
         data = serializer.fromJson(json);
         dashboard.updateProject(data, true);
-        cy.task('log', {message: 'This will be output to the terminal ' + JSON.stringify(json.profile.name) + 'test'});
+        cy.task('log', { message: 'This will be output to the terminal ' + JSON.stringify(json.profile.name) + 'test' });
     });
 });
 describe(ArrowChartComponent.name, () => {
@@ -52,18 +52,17 @@ describe(ArrowChartComponent.name, () => {
 function configureDashboard(): DashboardService {
     const graphModels = new GraphFactoryService();
     const validator = new ProjectValidatorService();
-    const criticalPathUtils = new CriticalPathUtilsService( )
+    const criticalPathUtils = new CriticalPathUtilsService();
     const graphBuilder = new VertexGraphBuilderService(graphModels);
     const statsCalc = new StatsCalculatorService();
-    const nodeConstructor = new NodeConnectorService()
-    const dateUtils = new DateUtilsService()
-    const projectUtils = new DanglingArrowService()
-    const riskCompiler = new RiskCompilerService(validator, statsCalc, criticalPathUtils, graphBuilder)
-    const completionCalc = new CompletionCalcService()
-    const activityValidato = new ActivityValidatorService(statsCalc)
+    const nodeConstructor = new NodeConnectorService();
+    const dateUtils = new DateUtilsService();
+    const projectUtils = new DanglingArrowService();
+    const riskCompiler = new RiskCompilerService(validator, statsCalc, criticalPathUtils, graphBuilder);
+    const completionCalc = new CompletionCalcService();
+    const activityValidato = new ActivityValidatorService(statsCalc);
     const projSerializer = new ProjectSerializerService();
     const compiler = new ProjectCompilerService(nodeConstructor, dateUtils, projectUtils, riskCompiler, completionCalc, activityValidato);
     const dashboard = new DashboardService(projSerializer, compiler);
     return dashboard;
-
 }
