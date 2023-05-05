@@ -20,7 +20,7 @@ before(function () {
     cy.fixture('project.json').then(function (json) {
         data = serializer.fromJson(json);
         dashboard.updateProject(data, true);
-        cy.task('log', { message: 'This will be output to the terminal ' + JSON.stringify(json.profile.name) + 'test' });
+        // cy.task('log', { message: 'This will be output to the terminal ' + JSON.stringify(cy.get("svg .unprocessed"))});
     });
 });
 describe(ArrowChartComponent.name, () => {
@@ -46,6 +46,38 @@ describe(ArrowChartComponent.name, () => {
                 showFastCreator: false,
             },
         });
+        // cy.get("body").realClick({ x: 70, y: 65, clickCount:2 });
+
+        // Create two nodes
+        cy.get("body").realClick({ x: 100, y: 100, clickCount:2 });
+        cy.get("body").realClick({ x: 50, y: 100, clickCount:2 });
+        
+        // Create an arrow between new nodes
+        cy.get(".unprocessed circle").eq(1).realMouseDown();
+        cy.get("body").realMouseMove(100, 100);
+        cy.get(".unprocessed circle").eq(0).realMouseUp();
+
+        // Split a node ctrl + x
+        cy.get("circle").eq(3).realMouseDown();
+        cy.get("svg").trigger('keydown', { keyCode: 17});
+        cy.get("svg").trigger('keydown', { keyCode: 88});
+        cy.get("svg").trigger('keyup', { keyCode: 17});
+        cy.get("svg").trigger('keyup', { keyCode: 88});
+        // cy.realType("{del}");
+
+        // cy.get("svg").trigger('keydown', { keyCode: 17});
+        // cy.get(".unprocessed circle").eq(0).realMouseDown();
+        // // cy.get("svg").realMouseMove(0, 200);
+        // cy.get(".unprocessed circle").eq(0).realMouseUp();
+        // cy.realType("{del}");
+
+
+
+        // cy.get("svg").trigger('keyup', { keyCode: 17});
+        // cy.get('body').trigger('keydown', { keyCode: 46});
+        // cy.wait(500);
+        // cy.get('body').trigger('keyup', { keyCode: 46});
+        // cy.wait(1000)
     });
 });
 
@@ -66,3 +98,11 @@ function configureDashboard(): DashboardService {
     const dashboard = new DashboardService(projSerializer, compiler);
     return dashboard;
 }
+
+// function movePiece (number, x, y) {
+//     cy.get(`.piece-${number}`)
+//     .trigger('mousedown', { which: 1 })
+//     .trigger('mousemove', { clientX: x, clientY: y })
+//     .trigger('mouseup', { force: true })
+//   }
+

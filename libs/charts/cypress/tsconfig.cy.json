@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
     "module": "commonjs",
-    "types": ["cypress", "node"]
+    "types": ["cypress", "node", "cypress-real-events"]
   },
   "include": [
     "support/**/*.ts",
