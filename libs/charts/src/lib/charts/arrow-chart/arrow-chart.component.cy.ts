@@ -12,10 +12,12 @@ import { ProjectValidatorService } from 'libs/project/processor/src/lib/project-
 import { VertexGraphBuilderService } from 'libs/project/processor/src/lib/vertex-graph-builder/vertex-graph-builder.service';
 import { ArrowChartComponent } from './arrow-chart.component';
 import { ArrowChartModule } from './arrow-chart.module';
+import { ArrowStateService } from './arrow-state/arrow-state';
 
 let data: Project | undefined;
 let serializer = new ProjectSerializerService();
 let dashboard = configureDashboard();
+let state = new ArrowStateService();
 before(function () {
     cy.fixture('project.json').then(function (json) {
         data = serializer.fromJson(json);
@@ -31,6 +33,7 @@ describe(ArrowChartComponent.name, () => {
                 providers: [
                     { provide: DASHBOARD_TOKEN, useValue: dashboard },
                     { provide: EVENT_SERVICE_TOKEN, useClass: EventService },
+                    { provide: ArrowStateService, useValue: state },
                 ],
             },
         });
@@ -46,7 +49,6 @@ describe(ArrowChartComponent.name, () => {
                 showFastCreator: false,
             },
         });
-        // cy.get("body").realClick({ x: 70, y: 65, clickCount:2 });
 
         // Create two nodes
         cy.get('body').realClick({ x: 100, y: 100, clickCount: 2 });
@@ -64,12 +66,30 @@ describe(ArrowChartComponent.name, () => {
         cy.get('svg').trigger('keyup', { keyCode: 17 });
         cy.get('svg').trigger('keyup', { keyCode: 88 });
 
+        // Working delete fo middle node
+        // cy.get('circle').eq(0).realMouseDown();
+        // cy.get('circle').eq(0).realMouseUp();
+        // cy.realType("{del}");
+
+        // cy.get('svg').trigger('keydown', { keyCode: 17 });
+        // cy.get("body").realClick({ x: 70, y: 65, clickCount:2 });
+        // state.ctrl_down = true;
+        // cy.get('circle').eq(0).realMouseDown({position: 'center'});
+        // cy.get("body").eq(0).realMouseMove(200, 300);
+        // cy.get('circle').eq(0).realMouseUp();
+        // state.ctrl_down = false;
+        // cy.get('svg').trigger('keyup', { keyCode: 17 });
+
         // Try to press ctrl mouse down on a node, move over another node, and release
-        cy.get('svg').trigger('keydown', { keyCode: 17 });
-        cy.get('circle').eq(20).realMouseDown();
-        cy.get('circle').eq(20).realMouseMove(0, 20);
-        cy.get('circle').eq(20).realMouseUp();
-        cy.get('svg').trigger('keyup', { keyCode: 17 });
+        // cy.get('svg').trigger('keydown', { keyCode: 17 });
+        // cy.realPress("Control");
+        // cy.get('circle').eq(1).realMouseDown();
+        // cy.get('svg').trigger('keydown', { keyCode: 17 });
+        // cy.get('circle').eq(1).realMouseMove(0, 100);
+        // cy.get('circle').eq(1).realMouseUp();
+        // cy.get('svg').trigger('keyup', { keyCode: 17 });
+        // cy.realType("{del}");
+        // cy.get('svg').trigger('keyup', { keyCode: 17 });
 
         // Try using the native cypress drag from the recipe
         // function movePiece (number, x, y) {
