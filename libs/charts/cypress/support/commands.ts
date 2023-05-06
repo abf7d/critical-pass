@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { mount } from 'cypress/angular';
-import "cypress-real-events";
+import 'cypress-real-events';
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
