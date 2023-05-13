@@ -70,7 +70,7 @@ export class ChartElFactory {
         enterNodes
             .on('mousedown', (event: any, d: Integration) => {
                 this.st.allowDeletes = true;
-                const ctrlDown = event.ctrlKey || event.metaKey;
+                const ctrlDown = this.st.ctrl_down || this.st.macMetaDown;
                 this.controller.onNodeGroupMouseDown(d, ctrlDown, d3.select(event.currentTarget), project);
             })
             .on('mouseover', (event: any, d: Integration) => this.controller.onNodeMouseOver(d, d3.select(event.currentTarget)))
@@ -107,7 +107,7 @@ export class ChartElFactory {
             .on('mouseout', (event: any) => d3.select(event.currentTarget).classed('hover', false))
             .on('mousedown', (event: any, d: Activity) => {
                 this.st.allowDeletes = true;
-                this.controller.setMouseDownLink(d, event.ctrlKey, proj);
+                this.controller.setMouseDownLink(d, this.st.ctrl_down, proj);
                 this.dashboard.updateProject(proj, true);
                 event.stopPropagation();
             });
