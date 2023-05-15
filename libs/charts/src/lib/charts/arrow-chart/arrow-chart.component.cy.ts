@@ -27,7 +27,18 @@ before(function () {
     // });
 });
 describe(ArrowChartComponent.name, () => {
+    afterEach(() => {
+        data!.integrations = [];
+        data!.activities = [];
+        dashboard.activeProject$.next(data!);;
+    });
     beforeEach(() => {
+        cy.fixture('project.json').then(function (json) {
+            data = serializer.fromJson(json);
+            dashboard.updateProject(data, true);
+            
+            // cy.task('log', { message: 'This will be output to the terminal ' + JSON.stringify(cy.get("svg .unprocessed"))});
+        });
         TestBed.overrideComponent(ArrowChartComponent, {
             add: {
                 imports: [ArrowChartModule],
@@ -38,14 +49,10 @@ describe(ArrowChartComponent.name, () => {
                 ],
             },
         });
-        cy.fixture('project.json').then(function (json) {
-            data = serializer.fromJson(json);
-            dashboard.updateProject(data, true);
-            // cy.task('log', { message: 'This will be output to the terminal ' + JSON.stringify(cy.get("svg .unprocessed"))});
-        });
+        
     });
 
-    it('renders', () => {
+    it('draw arrow diagram and move one node with ctrl + drag', () => {
         cy.mount(ArrowChartComponent, {
             componentProperties: {
                 id: 0,
@@ -55,8 +62,6 @@ describe(ArrowChartComponent.name, () => {
                 showFastCreator: false,
             },
         });
-
-
         cy.window().then(win => {
             state.ctrl_down = true;
             cy.get('svg').trigger('keydown', { which: 1, keyCode: 17, force: true, view: win });
@@ -80,124 +85,117 @@ describe(ArrowChartComponent.name, () => {
                     force: true,
                     view: win,
                 });
+                cy.get('svg').trigger('keyup', { keyCode: 17 });
         });
-
-        // Create two nodes
-        cy.get('body').realClick({ x: 100, y: 100, clickCount: 2 });
-        cy.get('body').realClick({ x: 50, y: 100, clickCount: 2 });
-
-
-        // clearing cache
-        // cy.exec('localStorage.clear()');
-        // cy.exec('sessionStorage.clear()');
-        // cy.clearCookies();
-
-        // // Create an arrow between new nodes
-        // cy.get('.unprocessed circle').eq(1).realMouseDown();
-        // cy.get('body').realMouseMove(100, 100);
-        // cy.get('.unprocessed circle').eq(0).realMouseUp();
-
-        // // Split a node ctrl + x
-        // cy.get('circle').eq(3).realMouseDown();
-        // cy.get('svg').trigger('keydown', { keyCode: 17 });
-        // cy.get('svg').trigger('keydown', { keyCode: 88 });
-        // cy.get('svg').trigger('keyup', { keyCode: 17 });
-        // cy.get('svg').trigger('keyup', { keyCode: 88 });
-
-        // // Move a node with ctrl + drag (other stale arrows are not cleared)
-        // cy.get('svg').eq(0).realClick({ x: 50, y: 50, clickCount: 1 });
-        // cy.get('svg').eq(0).trigger('mousedown', {
-        //     which: 1,
-        //     force: true,
-        // })
-        //  cy.get('svg').eq(0).realClick({ x: 50, y: 50, clickCount: 1 });
-        
-        
-        // async attempt to ctrl + drag a node        
-        // cy.then(() => {
-        //     cy.get('svg').trigger('keydown', { keyCode: 17 });
-        //     cy.get('body').realClick({ x: 70, y: 65, clickCount: 2 });
-        //     state.ctrl_down = true;
-        //     cy.get('circle').eq(0).realMouseDown({ position: 'center' });
-        //     cy.get('body').eq(0).realMouseMove(1200, 300);
-        //     cy.get('circle').eq(0).realMouseUp();
-        //     state.ctrl_down = false;
-        //     cy.get('svg').trigger('keyup', { keyCode: 17 });
-        // });
-
-        // Try to press ctrl mouse down on a node, move over another node, and release
-        // cy.get('svg').trigger('keydown', { keyCode: 17 });
-        // cy.realPress("Control");
-        // cy.get('circle').eq(1).realMouseDown();
-        // cy.get('svg').trigger('keydown', { keyCode: 17 });
-        // cy.get('circle').eq(1).realMouseMove(0, 100);
-        // cy.get('circle').eq(1).realMouseUp();
-        // cy.get('svg').trigger('keyup', { keyCode: 17 });
-        // cy.realType("{del}");
-        // cy.get('svg').trigger('keyup', { keyCode: 17 });
-
-        // Try using the native cypress drag from the recipe
-        // function movePiece (number, x, y) {
-        //     cy.get(`.piece-${number}`)
-        //     .trigger('mousedown', { which: 1 })
-        //     .trigger('mousemove', { clientX: x, clientY: y })
-        //     .trigger('mouseup', { force: true })
-        //   }
-
-        // cy.realType("{del}");
-
-        // cy.get("svg").trigger('keydown', { keyCode: 17});
-        // cy.get(".unprocessed circle").eq(0).realMouseDown();
-        // // cy.get("svg").realMouseMove(0, 200);
-        // cy.get(".unprocessed circle").eq(0).realMouseUp();
-        // cy.realType("{del}");
-
-        // cy.get("svg").trigger('keyup', { keyCode: 17});
-        // cy.get('body').trigger('keydown', { keyCode: 46});
-        // cy.wait(500);
-        // cy.get('body').trigger('keyup', { keyCode: 46});
-        // cy.wait(1000)
+        cy.wait(2000)
+        cy.pause() 
     });
 
-    it('create 2 nodes, arrow, and cut', () => {
+    it('cut / separate all connectinge arrows into individual nodes', () => {
         cy.mount(ArrowChartComponent, {
             componentProperties: {
                 id: 1,
                 width: 1200,
                 height: 700,
-                rebuild: false,
+                rebuild: true,
                 showFastCreator: false,
             },
         });
-        // cy.wait(10000)
-        // cy.once('uncaught:exception', () => false);
-
-        // Create two nodes
-        cy.get('body').realClick({ x: 100, y: 100, clickCount: 2 });
-        cy.get('body').realClick({ x: 50, y: 100, clickCount: 2 });
-
-        // Create an arrow between new nodes
-        cy.get('.unprocessed circle').eq(1).realMouseDown();
-        cy.get('body').realMouseMove(100, 100);
-        cy.get('.unprocessed circle').eq(0).realMouseUp();
+        cy.wait(2000)
 
         // Split a node ctrl + x
-        cy.get('circle').eq(3).realMouseDown();
+        cy.get('circle').eq(2).realMouseDown();
+        cy.get('circle').eq(2).realMouseUp();
         cy.get('svg').trigger('keydown', { keyCode: 17 });
         cy.get('svg').trigger('keydown', { keyCode: 88 });
         cy.get('svg').trigger('keyup', { keyCode: 17 });
         cy.get('svg').trigger('keyup', { keyCode: 88 });
-
-        // // Move a node with ctrl + drag (other stale arrows are not cleared)
-        // cy.get('svg').eq(0).realClick({ x: 50, y: 50, clickCount: 1 });
-        // cy.get('svg').eq(0).trigger('mousedown', {
-        //     which: 1,
-        //     force: true,
-        // })
-        //  cy.get('svg').eq(0).realClick({ x: 50, y: 50, clickCount: 1 });
-
+        cy.wait(2000)
+        cy.pause()
     });
+
+
+    it('create 2 nodes, draw arrow between them', () => {
+        cy.mount(ArrowChartComponent, {
+            componentProperties: {
+                id: 1,
+                width: 1200,
+                height: 700,
+                rebuild: true,
+                showFastCreator: false,
+            },
+        });
+        // state.prevProjId = 15;
+        cy.wait(2000)
+        // cy.once('uncaught:exception', () => false);
+        // cy.get('svg').dblclick(100, 200, {force: true});
+        // cy.get('svg').dblclick(50, 200, {force: true});
+  
+        // Create two nodes
+        cy.get('svg').realClick({ x: 100, y: 100, clickCount: 2 });
+        cy.get('svg').realClick({ x: 50, y: 100, clickCount: 2 });
+        
+        // Create an arrow between new nodes
+        cy.get('.unprocessed circle').eq(1).realMouseDown();
+        cy.get('body').realMouseMove(50, 0);
+        cy.get('.unprocessed circle').eq(0).realMouseUp();
+        cy.wait(2000)
+        cy.pause()
+    });
+
+    // delete a node
+    it('delete node after selecting it', () => {
+        cy.mount(ArrowChartComponent, {
+            componentProperties: {
+                id: 1,
+                width: 1200,
+                height: 700,
+                rebuild: true,
+                showFastCreator: false,
+            },
+        });
+        // state.prevProjId = 15;
+        cy.wait(2000)
+        cy.get('circle').eq(2).realMouseDown();
+        cy.get('circle').eq(2).realMouseUp();
+        
+        // Press delete key
+        cy.get('svg').trigger('keydown', { keyCode: 46 });
+        cy.get('svg').trigger('keyup', { keyCode: 46 });
+        cy.wait(2000)
+        cy.pause()
+    });
+
+
+    // delete an arrow
+    it('delete arrow after selecting it', () => {
+        cy.mount(ArrowChartComponent, {
+            componentProperties: {
+                id: 1,
+                width: 1200,
+                height: 700,
+                rebuild: true,
+                showFastCreator: false,
+            },
+        });
+        // state.prevProjId = 15;
+        cy.wait(2000)
+        cy.get('path.link.main').eq(2).realMouseDown();
+        cy.get('path.link.main').eq(2).realMouseUp();
+        
+        // Press delete key
+        cy.get('svg').trigger('keydown', { keyCode: 46 });
+        cy.get('svg').trigger('keyup', { keyCode: 46 });
+        cy.wait(2000)
+        cy.pause()
+    });
+    
+    // join two nodes
 });
+
+
+
+
 
 function configureDashboard(): DashboardService {
     const graphModels = new GraphFactoryService();
@@ -216,15 +214,3 @@ function configureDashboard(): DashboardService {
     const dashboard = new DashboardService(projSerializer, compiler);
     return dashboard;
 }
-
-// function movePiece (number, x, y) {
-//     cy.get(`.piece-${number}`)
-//     .trigger('mousedown', { which: 1 })
-//     .trigger('mousemove', { clientX: x, clientY: y })
-//     .trigger('mouseup', { force: true })
-//   }
-
-
-
-
-
