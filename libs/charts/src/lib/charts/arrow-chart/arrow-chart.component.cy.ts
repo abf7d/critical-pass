@@ -30,13 +30,13 @@ describe(ArrowChartComponent.name, () => {
     afterEach(() => {
         data!.integrations = [];
         data!.activities = [];
-        dashboard.activeProject$.next(data!);;
+        dashboard.activeProject$.next(data!);
     });
     beforeEach(() => {
         cy.fixture('project.json').then(function (json) {
             data = serializer.fromJson(json);
             dashboard.updateProject(data, true);
-            
+
             // cy.task('log', { message: 'This will be output to the terminal ' + JSON.stringify(cy.get("svg .unprocessed"))});
         });
         TestBed.overrideComponent(ArrowChartComponent, {
@@ -49,7 +49,6 @@ describe(ArrowChartComponent.name, () => {
                 ],
             },
         });
-        
     });
 
     it('draw arrow diagram and move one node with ctrl + drag', () => {
@@ -85,10 +84,10 @@ describe(ArrowChartComponent.name, () => {
                     force: true,
                     view: win,
                 });
-                cy.get('svg').trigger('keyup', { keyCode: 17 });
+            cy.get('svg').trigger('keyup', { keyCode: 17 });
         });
-        cy.wait(2000)
-        cy.pause() 
+        cy.wait(2000);
+        cy.pause();
     });
 
     it('cut / separate all connectinge arrows into individual nodes', () => {
@@ -101,7 +100,7 @@ describe(ArrowChartComponent.name, () => {
                 showFastCreator: false,
             },
         });
-        cy.wait(2000)
+        cy.wait(2000);
 
         // Split a node ctrl + x
         cy.get('circle').eq(2).realMouseDown();
@@ -110,10 +109,9 @@ describe(ArrowChartComponent.name, () => {
         cy.get('svg').trigger('keydown', { keyCode: 88 });
         cy.get('svg').trigger('keyup', { keyCode: 17 });
         cy.get('svg').trigger('keyup', { keyCode: 88 });
-        cy.wait(2000)
-        cy.pause()
+        cy.wait(2000);
+        cy.pause();
     });
-
 
     it('create 2 nodes, draw arrow between them', () => {
         cy.mount(ArrowChartComponent, {
@@ -126,21 +124,21 @@ describe(ArrowChartComponent.name, () => {
             },
         });
         // state.prevProjId = 15;
-        cy.wait(2000)
+        cy.wait(2000);
         // cy.once('uncaught:exception', () => false);
         // cy.get('svg').dblclick(100, 200, {force: true});
         // cy.get('svg').dblclick(50, 200, {force: true});
-  
+
         // Create two nodes
         cy.get('svg').realClick({ x: 100, y: 100, clickCount: 2 });
         cy.get('svg').realClick({ x: 50, y: 100, clickCount: 2 });
-        
+
         // Create an arrow between new nodes
         cy.get('.unprocessed circle').eq(1).realMouseDown();
         cy.get('body').realMouseMove(50, 0);
         cy.get('.unprocessed circle').eq(0).realMouseUp();
-        cy.wait(2000)
-        cy.pause()
+        cy.wait(2000);
+        cy.pause();
     });
 
     // delete a node
@@ -155,17 +153,16 @@ describe(ArrowChartComponent.name, () => {
             },
         });
         // state.prevProjId = 15;
-        cy.wait(2000)
+        cy.wait(2000);
         cy.get('circle').eq(2).realMouseDown();
         cy.get('circle').eq(2).realMouseUp();
-        
+
         // Press delete key
         cy.get('svg').trigger('keydown', { keyCode: 46 });
         cy.get('svg').trigger('keyup', { keyCode: 46 });
-        cy.wait(2000)
-        cy.pause()
+        cy.wait(2000);
+        cy.pause();
     });
-
 
     // delete an arrow
     it('delete arrow after selecting it', () => {
@@ -179,23 +176,19 @@ describe(ArrowChartComponent.name, () => {
             },
         });
         // state.prevProjId = 15;
-        cy.wait(2000)
+        cy.wait(2000);
         cy.get('path.link.main').eq(2).realMouseDown();
         cy.get('path.link.main').eq(2).realMouseUp();
-        
+
         // Press delete key
         cy.get('svg').trigger('keydown', { keyCode: 46 });
         cy.get('svg').trigger('keyup', { keyCode: 46 });
-        cy.wait(2000)
-        cy.pause()
+        cy.wait(2000);
+        cy.pause();
     });
-    
+
     // join two nodes
 });
-
-
-
-
 
 function configureDashboard(): DashboardService {
     const graphModels = new GraphFactoryService();
