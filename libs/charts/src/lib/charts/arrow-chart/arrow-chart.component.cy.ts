@@ -51,7 +51,6 @@ describe(ArrowChartComponent.name, () => {
         });
     });
 
-    
     it('draw arrow diagram and move one node with ctrl + drag', () => {
         cy.mount(ArrowChartComponent, {
             componentProperties: {
@@ -210,8 +209,6 @@ describe(ArrowChartComponent.name, () => {
         cy.get('svg').trigger('keyup', { keyCode: 88 });
         cy.wait(2000);
 
-        
-
         cy.window().then(win => {
             state.ctrl_down = true;
             cy.get('svg').trigger('keydown', { which: 1, keyCode: 17, force: true, view: win });
@@ -241,8 +238,6 @@ describe(ArrowChartComponent.name, () => {
         cy.wait(2000);
         cy.pause();
     });
-
-
 });
 
 function configureDashboard(): DashboardService {
