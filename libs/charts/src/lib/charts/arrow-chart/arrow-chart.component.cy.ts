@@ -90,7 +90,7 @@ describe(ArrowChartComponent.name, () => {
         cy.pause();
     });
 
-    it('cut / separate all connectinge arrows into individual nodes', () => {
+    it('cut / separate all connecting arrows into individual nodes', () => {
         cy.mount(ArrowChartComponent, {
             componentProperties: {
                 id: 1,
