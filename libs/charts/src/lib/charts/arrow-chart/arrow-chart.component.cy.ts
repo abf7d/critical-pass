@@ -51,6 +51,7 @@ describe(ArrowChartComponent.name, () => {
         });
     });
 
+    
     it('draw arrow diagram and move one node with ctrl + drag', () => {
         cy.mount(ArrowChartComponent, {
             componentProperties: {
@@ -90,7 +91,7 @@ describe(ArrowChartComponent.name, () => {
         cy.pause();
     });
 
-    it('cut / separate all connecting arrows into individual nodes', () => {
+    it('cut / separate all of a nodes connected arrows into individual nodes', () => {
         cy.mount(ArrowChartComponent, {
             componentProperties: {
                 id: 1,
@@ -188,6 +189,60 @@ describe(ArrowChartComponent.name, () => {
     });
 
     // join two nodes
+    it('join two nodes', () => {
+        cy.mount(ArrowChartComponent, {
+            componentProperties: {
+                id: 1,
+                width: 1200,
+                height: 700,
+                rebuild: true,
+                showFastCreator: false,
+            },
+        });
+        cy.wait(2000);
+
+        // Split a node ctrl + x
+        cy.get('circle').eq(2).realMouseDown();
+        cy.get('circle').eq(2).realMouseUp();
+        cy.get('svg').trigger('keydown', { keyCode: 17 });
+        cy.get('svg').trigger('keydown', { keyCode: 88 });
+        cy.get('svg').trigger('keyup', { keyCode: 17 });
+        cy.get('svg').trigger('keyup', { keyCode: 88 });
+        cy.wait(2000);
+
+        
+
+        cy.window().then(win => {
+            state.ctrl_down = true;
+            cy.get('svg').trigger('keydown', { which: 1, keyCode: 17, force: true, view: win });
+            cy.get('circle')
+                .eq(18)
+                .trigger('mousedown', {
+                    which: 1,
+                    force: true,
+                    view: win,
+                })
+                .trigger('mousemove', {
+                    clientX: 123,
+                    clientY: 70,
+                    screenX: 123,
+                    screenY: 70,
+                    pageX: 123,
+                    pageY: 70,
+                    force: true,
+                })
+                .wait(500)
+                .trigger('mouseup', {
+                    force: true,
+                    view: win,
+                });
+            cy.get('svg').trigger('keyup', { keyCode: 17 });
+        });
+        cy.wait(2000);
+        cy.pause();
+    });
+
+
 });
 
 function configureDashboard(): DashboardService {
