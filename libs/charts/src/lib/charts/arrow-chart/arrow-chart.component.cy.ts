@@ -61,6 +61,12 @@ describe(ArrowChartComponent.name, () => {
                 showFastCreator: false,
             },
         });
+
+        // verify the id in the node's text element, we are moving node 18
+        cy.get('.node > g > text').eq(15).should('have.text', '18');
+        // get the node group of the element we are moving and assert the location
+        cy.get('.node > g').eq(15).should('have.attr', 'transform', 'translate(773,189)');
+
         cy.window().then(win => {
             state.ctrl_down = true;
             cy.get('svg').trigger('keydown', { which: 1, keyCode: 17, force: true, view: win });
@@ -86,6 +92,12 @@ describe(ArrowChartComponent.name, () => {
                 });
             cy.get('svg').trigger('keyup', { keyCode: 17 });
         });
+
+        // verify that the node moved is now at the top of the list
+        cy.get('.node > g > text').eq(0).should('have.text', '18');
+        // verify that the node has moved
+        cy.get('.node > g').eq(0).should('have.attr', 'transform', 'translate(480.1973876953125,481.80259704589844)');
+
         cy.wait(2000);
         cy.pause();
     });
@@ -109,6 +121,11 @@ describe(ArrowChartComponent.name, () => {
         cy.get('svg').trigger('keydown', { keyCode: 88 });
         cy.get('svg').trigger('keyup', { keyCode: 17 });
         cy.get('svg').trigger('keyup', { keyCode: 88 });
+
+        // verify that node 15 has replaced 4 and that 20 is at the bottom of the list
+        cy.get('.node > g > text').eq(15).should('have.text', '21');
+        cy.get('.node > g > text').eq(18).should('have.text', '20');
+
         cy.wait(2000);
         cy.pause();
     });
@@ -123,11 +140,7 @@ describe(ArrowChartComponent.name, () => {
                 showFastCreator: false,
             },
         });
-        // state.prevProjId = 15;
         cy.wait(2000);
-        // cy.once('uncaught:exception', () => false);
-        // cy.get('svg').dblclick(100, 200, {force: true});
-        // cy.get('svg').dblclick(50, 200, {force: true});
 
         // Create two nodes
         cy.get('svg').realClick({ x: 100, y: 100, clickCount: 2 });
@@ -138,6 +151,18 @@ describe(ArrowChartComponent.name, () => {
         cy.get('body').realMouseMove(50, 0);
         cy.get('.unprocessed circle').eq(0).realMouseUp();
         cy.wait(2000);
+
+        // verify that the nodes were created
+        cy.get('.node > g > text').eq(0).should('have.text', '20');
+        cy.get('.node > g > text').eq(1).should('have.text', '21');
+
+        // verify that the arrow was created
+        cy.get('.link > g')
+            .eq(28)
+            .within($group => {
+                cy.get('text').eq(0).should('have.text', '29');
+            });
+
         cy.pause();
     });
 
@@ -152,7 +177,6 @@ describe(ArrowChartComponent.name, () => {
                 showFastCreator: false,
             },
         });
-        // state.prevProjId = 15;
         cy.wait(2000);
         cy.get('circle').eq(2).realMouseDown();
         cy.get('circle').eq(2).realMouseUp();
@@ -160,7 +184,11 @@ describe(ArrowChartComponent.name, () => {
         // Press delete key
         cy.get('svg').trigger('keydown', { keyCode: 46 });
         cy.get('svg').trigger('keyup', { keyCode: 46 });
+
+
         cy.wait(2000);
+        // Check for exact match with regex using ^ and $
+        cy.get('.node > g > text').contains(/^4$/).should('not.exist');
         cy.pause();
     });
 
@@ -183,6 +211,8 @@ describe(ArrowChartComponent.name, () => {
         // Press delete key
         cy.get('svg').trigger('keydown', { keyCode: 46 });
         cy.get('svg').trigger('keyup', { keyCode: 46 });
+        cy.get('.link > g > text:contains("Requirements")').should('exist');
+        cy.get('.link > g > text:contains("Project")').should('not.exist');
         cy.wait(2000);
         cy.pause();
     });
@@ -208,7 +238,7 @@ describe(ArrowChartComponent.name, () => {
         cy.get('svg').trigger('keyup', { keyCode: 17 });
         cy.get('svg').trigger('keyup', { keyCode: 88 });
         cy.wait(2000);
-
+        
         cy.window().then(win => {
             state.ctrl_down = true;
             cy.get('svg').trigger('keydown', { which: 1, keyCode: 17, force: true, view: win });
@@ -236,6 +266,10 @@ describe(ArrowChartComponent.name, () => {
             cy.get('svg').trigger('keyup', { keyCode: 17 });
         });
         cy.wait(2000);
+
+        // verify from the join that node 21 was removed and 20 exists
+        cy.get('.node > g > text').contains(/^21$/).should('not.exist');
+        cy.get('.node > g > text').contains(/^20$/).should('exist');
         cy.pause();
     });
 });
