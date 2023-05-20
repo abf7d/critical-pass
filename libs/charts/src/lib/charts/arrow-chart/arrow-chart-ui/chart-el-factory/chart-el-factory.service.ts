@@ -82,7 +82,7 @@ export class ChartElFactory {
         const skipAnimation = this.st.prevProjId !== project.profile.id;
         allNodes
             .style('stroke', (d: Integration) => this.controller.getNodeColor(true, d, project, this.st.nodeRisk, skipAnimation))
-            //.transition(transition) // comment this out to fix component tests
+            .transition(transition) // comment this out to fix component tests
             .style('stroke', (d: Integration) => this.controller.getNodeColor(false, d, project, this.st.nodeRisk, skipAnimation));
 
         this.st.nodes = allNodes;
@@ -127,7 +127,7 @@ export class ChartElFactory {
             .classed('sub-project', (a: Activity) => this.controller.isHighlighted(a, proj))
             // TODO: st.arrowRisk and st.nodeRisk should not be passed into controller, they are on state service which isinjected
             .style('stroke', (d: Activity) => this.controller.getArrowColor(true, d, proj, this.st.arrowRisk, skipAnimation))
-            // .transition(transition) // comment this out to fix component tests
+            .transition(transition) // comment this out to fix component tests
             .style('stroke', (d: Activity) => this.controller.getArrowColor(false, d, proj, this.st.arrowRisk, skipAnimation));
         this.st.links = allLinks;
         proj.profile.view.activeSubProjectId = undefined;
