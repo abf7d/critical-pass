@@ -250,11 +250,11 @@ describe(ArrowChartComponent.name, () => {
                     view: win,
                 })
                 .trigger('mousemove', {
-                    clientX: 123,
+                    clientX: 122,
                     clientY: 70,
-                    screenX: 123,
+                    screenX: 122,
                     screenY: 70,
-                    pageX: 123,
+                    pageX: 122,
                     pageY: 70,
                     force: true,
                 })
