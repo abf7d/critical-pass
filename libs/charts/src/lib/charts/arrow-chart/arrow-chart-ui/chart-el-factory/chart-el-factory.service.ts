@@ -70,7 +70,7 @@ export class ChartElFactory {
         enterNodes
             .on('mousedown', (event: any, d: Integration) => {
                 this.st.allowDeletes = true;
-                const ctrlDown = event.ctrlKey || event.metaKey;
+                const ctrlDown = this.st.ctrl_down || this.st.macMetaDown;
                 this.controller.onNodeGroupMouseDown(d, ctrlDown, d3.select(event.currentTarget), project);
             })
             .on('mouseover', (event: any, d: Integration) => this.controller.onNodeMouseOver(d, d3.select(event.currentTarget)))
@@ -82,7 +82,7 @@ export class ChartElFactory {
         const skipAnimation = this.st.prevProjId !== project.profile.id;
         allNodes
             .style('stroke', (d: Integration) => this.controller.getNodeColor(true, d, project, this.st.nodeRisk, skipAnimation))
-            .transition(transition)
+            .transition(transition) // comment this out to fix component tests
             .style('stroke', (d: Integration) => this.controller.getNodeColor(false, d, project, this.st.nodeRisk, skipAnimation));
 
         this.st.nodes = allNodes;
@@ -107,7 +107,7 @@ export class ChartElFactory {
             .on('mouseout', (event: any) => d3.select(event.currentTarget).classed('hover', false))
             .on('mousedown', (event: any, d: Activity) => {
                 this.st.allowDeletes = true;
-                this.controller.setMouseDownLink(d, event.ctrlKey, proj);
+                this.controller.setMouseDownLink(d, this.st.ctrl_down, proj);
                 this.dashboard.updateProject(proj, true);
                 event.stopPropagation();
             });
@@ -127,7 +127,7 @@ export class ChartElFactory {
             .classed('sub-project', (a: Activity) => this.controller.isHighlighted(a, proj))
             // TODO: st.arrowRisk and st.nodeRisk should not be passed into controller, they are on state service which isinjected
             .style('stroke', (d: Activity) => this.controller.getArrowColor(true, d, proj, this.st.arrowRisk, skipAnimation))
-            .transition(transition)
+            .transition(transition) // comment this out to fix component tests
             .style('stroke', (d: Activity) => this.controller.getArrowColor(false, d, proj, this.st.arrowRisk, skipAnimation));
         this.st.links = allLinks;
         proj.profile.view.activeSubProjectId = undefined;

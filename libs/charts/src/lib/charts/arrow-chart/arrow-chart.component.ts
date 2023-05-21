@@ -17,6 +17,9 @@ import { ArrowPropertyService } from './arrow-controller/arrow-property/arrow-pr
     selector: 'cp-arrow-chart',
     templateUrl: './arrow-chart.component.html',
     styleUrls: ['./arrow-chart.component.scss'],
+    host: {
+        class: 'cp-arrow-chart',
+    },
     providers: [
         ArrowChartUIService,
         ArrowControllerService,
