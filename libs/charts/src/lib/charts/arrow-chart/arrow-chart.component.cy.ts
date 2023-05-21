@@ -61,7 +61,7 @@ describe(ArrowChartComponent.name, () => {
                 showFastCreator: false,
             },
         });
-        
+
         // verify the id in the node's text element, we are moving node 18
         cy.get('.node > g > text').eq(15).should('have.text', '18');
         // get the node group of the element we are moving and assert the location
