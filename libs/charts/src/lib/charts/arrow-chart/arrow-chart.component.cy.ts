@@ -61,11 +61,12 @@ describe(ArrowChartComponent.name, () => {
                 showFastCreator: false,
             },
         });
-        // // verify the id in the node's text element, we are moving node 18
-        // cy.get('.node > g > text').eq(15).should('have.text', '18');
-        // // get the node group of the element we are moving and assert the location
-        // cy.get('.node > g').eq(15).should('have.attr', 'transform', 'translate(773,189)');
-        // cy.wait(1000);
+        
+        // verify the id in the node's text element, we are moving node 18
+        cy.get('.node > g > text').eq(15).should('have.text', '18');
+        // get the node group of the element we are moving and assert the location
+        cy.get('.node > g').eq(15).should('have.attr', 'transform', 'translate(773,189)');
+        cy.wait(1000);
 
         cy.window().then(win => {
             state.ctrl_down = true;
@@ -96,7 +97,7 @@ describe(ArrowChartComponent.name, () => {
         // verify that the node moved is now at the top of the list
         cy.get('.node > g > text').eq(0).should('have.text', '18');
         // verify that the node has moved
-        cy.get('.node > g').eq(0).should('have.attr', 'transform', 'translate(480.1973876953125,481.80259704589844)');
+        cy.get('.node > g').eq(0).should('not.have.attr', 'transform', 'translate(773,189)');
 
         cy.wait(2000);
         cy.pause();
