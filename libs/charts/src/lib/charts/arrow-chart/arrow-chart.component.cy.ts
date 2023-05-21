@@ -250,15 +250,25 @@ describe(ArrowChartComponent.name, () => {
                     view: win,
                 })
                 .trigger('mousemove', {
-                    clientX: 122,
+                    clientX: 121,
                     clientY: 70,
-                    screenX: 122,
+                    screenX: 121,
                     screenY: 70,
-                    pageX: 122,
+                    pageX: 121,
                     pageY: 70,
                     force: true,
                 })
-                .wait(500)
+                .trigger('mousemove', {
+                    clientX: 119,
+                    clientY: 70,
+                    screenX: 119,
+                    screenY: 70,
+                    pageX: 119,
+                    pageY: 70,
+                    force: true,
+                })
+                .wait(2500)
+                .realHover()
                 .trigger('mouseup', {
                     force: true,
                     view: win,
