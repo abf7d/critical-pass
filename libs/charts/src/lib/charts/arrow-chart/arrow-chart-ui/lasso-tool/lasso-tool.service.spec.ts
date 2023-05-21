@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LassoToolService } from '../arrow-chart-ui/lasso-tool/lasso-tool.service';
+import { LassoToolService } from '../lasso-tool/lasso-tool.service';
 
 describe('LassoToolService', () => {
     let service: LassoToolService;
