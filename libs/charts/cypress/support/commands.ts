@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 import { mount } from 'cypress/angular';
 import 'cypress-real-events';
+import { addMatchImageSnapshotCommand } from '@simonsmith/cypress-image-snapshot/command';
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -42,3 +43,18 @@ Cypress.Commands.overwrite('log', message => cy.task('log', { message }));
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+addMatchImageSnapshotCommand();
+addMatchImageSnapshotCommand({
+    failureThreshold: 0.2,
+});
+
+// https://www.npmjs.com/package/@simonsmith/cypress-image-snapshot/v/7.0.0
+/*cy.matchImageSnapshot({
+  // options for jest-image-snapshot
+  failureThreshold: 0.2,
+  comparisonMethod: 'ssim',
+
+  // options for Cypress.screenshot()
+  capture: 'viewport',
+  blackout: ['.some-element'],
+}*/

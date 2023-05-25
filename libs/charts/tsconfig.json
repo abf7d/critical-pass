@@ -10,7 +10,7 @@
     "noFallthroughCasesInSwitch": true
   },
   "files": [],
-  "include": [],
+  "include": ["@simonsmith/cypress-image-snapshot"],
   "references": [
     {
       "path": "./tsconfig.lib.json"

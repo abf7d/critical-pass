@@ -99,6 +99,21 @@ describe(ArrowChartComponent.name, () => {
         // verify that the node has moved
         cy.get('.node > g').eq(0).should('not.have.attr', 'transform', 'translate(773,189)');
 
+        // snapshot name will be the test title
+        // cy.matchImageSnapshot();
+
+        // snapshot name will be the name passed in
+        cy.matchImageSnapshot('moveNode');
+
+        // // options object passed in
+        // cy.matchImageSnapshot({
+        //   failureThreshold: 0.4
+        //   blur: 10
+        // });
+
+        // match element snapshot
+        // cy.get('#login').matchImageSnapshot();
+
         cy.wait(2000);
         cy.pause();
     });

@@ -32,6 +32,7 @@
     "@azure/msal-browser": "^2.32.1",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@nrwl/angular": "15.3.0",
+    "@simonsmith/cypress-image-snapshot": "^7.0.0",
     "ag-grid-angular": "^29.0.0",
     "ag-grid-community": "^29.0.0",
     "bootstrap": "^4.6.2",
