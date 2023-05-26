@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
+import { DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import { RiskCurveComponent } from './risk-curve.component';
 import { RiskCurveModule } from './risk-curve.module';
 
 import { Project } from '@critical-pass/project/types';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { configureDashboard } from 'libs/charts/cypress/support/utils';
-import { NgZone } from '@angular/core';
 
 let data: Project | undefined;
 let serializer = new ProjectSerializerService();

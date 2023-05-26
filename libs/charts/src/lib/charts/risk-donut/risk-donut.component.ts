@@ -7,6 +7,9 @@ import { RiskDonutUiService } from './risk-donut-ui/risk-donut-ui.service';
     template: `<div #chart class="risk-donut"></div>`,
     styleUrls: ['./risk-donut.component.scss'],
     providers: [RiskDonutUiService],
+    host: {
+        class: 'cp-risk-donut',
+    },
     encapsulation: ViewEncapsulation.None,
 })
 export class RiskDonutComponent implements OnInit {
