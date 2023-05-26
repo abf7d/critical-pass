@@ -7,6 +7,9 @@ import { ShallowSUiService } from './shallow-s-ui/shallow-s-ui.service';
     templateUrl: './shallow-s.component.html',
     styleUrls: ['./shallow-s.component.scss'],
     providers: [ShallowSUiService],
+    host: {
+        class: 'cp-shallow-s',
+    },
     encapsulation: ViewEncapsulation.None,
 })
 export class ShallowSComponent implements OnInit, OnDestroy {

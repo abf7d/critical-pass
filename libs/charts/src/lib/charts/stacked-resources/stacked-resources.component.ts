@@ -11,6 +11,9 @@ import { StackedResourcesUiService } from './stacked-resources-ui/stacked-resour
     </div>`,
     styleUrls: ['./stacked-resources.component.scss'],
     providers: [StackedResourcesUiService],
+    host: {
+        class: 'cp-stacked-resources',
+    },
     encapsulation: ViewEncapsulation.None,
 })
 export class StackedResourcesComponent implements OnInit {

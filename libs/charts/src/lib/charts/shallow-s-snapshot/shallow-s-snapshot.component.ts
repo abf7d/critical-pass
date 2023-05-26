@@ -15,6 +15,9 @@ import { ShallowSSnapshotUiService } from './shallow-s-snapshot-ui/shallow-s-sna
     `,
     styleUrls: ['./shallow-s-snapshot.component.scss'],
     providers: [ShallowSSnapshotUiService],
+    host: {
+        class: 'cp-shallow-s-snapshot',
+    },
     encapsulation: ViewEncapsulation.None,
 })
 export class ShallowSSnapshotComponent implements OnInit {
