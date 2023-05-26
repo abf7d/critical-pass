@@ -1,12 +1,18 @@
 import { Component, ElementRef, inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { StatsCalculatorService } from '@critical-pass/project/processor';
 import { BehaviorSubject } from 'rxjs';
+import { RiskCurveDecompressorService } from './risk-curve-decompressor/risk-curve-decompressor.service';
+import { RiskCurveStateFactory } from './risk-curve-state/risk-curve-state';
 import { RiskCurveUiService } from './risk-curve-ui/risk-curve-ui.service';
 
 @Component({
     selector: 'cp-risk-curve',
     templateUrl: './risk-curve.component.html',
     styleUrls: ['./risk-curve.component.scss'],
-    providers: [RiskCurveUiService],
+    providers: [RiskCurveUiService, RiskCurveDecompressorService, StatsCalculatorService],
+    host: {
+        class: 'cp-risk-curve',
+    },
     encapsulation: ViewEncapsulation.None,
 })
 export class RiskCurveComponent implements OnInit {
