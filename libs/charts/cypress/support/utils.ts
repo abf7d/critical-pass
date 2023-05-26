@@ -9,7 +9,6 @@ import { GraphFactoryService } from 'libs/project/processor/src/lib/path-factori
 import { ProjectValidatorService } from 'libs/project/processor/src/lib/project-validator/project-validator.service';
 import { VertexGraphBuilderService } from 'libs/project/processor/src/lib/vertex-graph-builder/vertex-graph-builder.service';
 
-
 export function configureDashboard(): DashboardService {
     const graphModels = new GraphFactoryService();
     const validator = new ProjectValidatorService();
