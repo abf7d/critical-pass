@@ -103,7 +103,6 @@ describe(ArrowChartComponent.name, () => {
         // cy.matchImageSnapshot();
 
         // snapshot name will be the name passed in
-        cy.matchImageSnapshot('moveNode');
 
         // // options object passed in
         // cy.matchImageSnapshot({
@@ -115,7 +114,8 @@ describe(ArrowChartComponent.name, () => {
         // cy.get('#login').matchImageSnapshot();
 
         cy.wait(2000);
-        cy.pause();
+        cy.matchImageSnapshot('moveNode');
+        // cy.pause();
     });
 
     it('cut / separate all of a nodes connected arrows into individual nodes', () => {
@@ -143,7 +143,8 @@ describe(ArrowChartComponent.name, () => {
         cy.get('.node > g > text').eq(18).should('have.text', '20');
 
         cy.wait(2000);
-        cy.pause();
+        cy.matchImageSnapshot('splitNode');
+        // cy.pause();
     });
 
     it('create 2 nodes, draw arrow between them', () => {
@@ -178,8 +179,9 @@ describe(ArrowChartComponent.name, () => {
             .within($group => {
                 cy.get('text').eq(0).should('have.text', '29');
             });
-
-        cy.pause();
+        cy.wait(2000);
+        cy.matchImageSnapshot('create2NodesAnd1Arrow');
+        // cy.pause();
     });
 
     // delete a node
@@ -204,7 +206,8 @@ describe(ArrowChartComponent.name, () => {
         cy.wait(2000);
         // Check for exact match with regex using ^ and $
         cy.get('.node > g > text').contains(/^4$/).should('not.exist');
-        cy.pause();
+        cy.matchImageSnapshot('deleteNode');
+        // cy.pause();
     });
 
     // delete an arrow
@@ -228,8 +231,10 @@ describe(ArrowChartComponent.name, () => {
         cy.get('svg').trigger('keyup', { keyCode: 46 });
         cy.get('.link > g > text:contains("Requirements")').should('exist');
         cy.get('.link > g > text:contains("Project")').should('not.exist');
+
         cy.wait(2000);
-        cy.pause();
+        cy.matchImageSnapshot('deleteArrow');
+        // cy.pause();
     });
 
     // join two nodes
@@ -295,7 +300,8 @@ describe(ArrowChartComponent.name, () => {
         // verify from the join that node 21 was removed and 20 exists
         cy.get('.node > g > text').contains(/^21$/).should('not.exist');
         cy.get('.node > g > text').contains(/^20$/).should('exist');
-        cy.pause();
+        cy.matchImageSnapshot('join2Nodes');
+        // cy.pause();
     });
 });
 

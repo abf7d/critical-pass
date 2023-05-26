@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress';
 import { nxComponentTestingPreset } from '@nrwl/angular/plugins/component-testing';
-import {addMatchImageSnapshotPlugin} from '@simonsmith/cypress-image-snapshot/plugin';
+import { addMatchImageSnapshotPlugin } from '@simonsmith/cypress-image-snapshot/plugin';
 
 export default defineConfig({
     component: {
@@ -12,7 +12,7 @@ export default defineConfig({
                     return null;
                 },
             });
-            addMatchImageSnapshotPlugin(on);    
+            addMatchImageSnapshotPlugin(on);
         },
     },
 });
