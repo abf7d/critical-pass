@@ -37,7 +37,7 @@ describe(StackedResourcesComponent.name, () => {
                 barWidth: 60,
                 showAxes: true,
                 id: 0,
-                margin: {top:20, right: 50, left: 20, bottom: 130}
+                margin: { top: 20, right: 50, left: 20, bottom: 130 },
             },
         });
         cy.matchImageSnapshot('renderStackedResources large');
@@ -58,5 +58,3 @@ describe(StackedResourcesComponent.name, () => {
         cy.matchImageSnapshot('renderStackedResources small');
     });
 });
-
-

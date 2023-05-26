@@ -21,7 +21,7 @@ describe(ShallowSSnapshotComponent.name, () => {
             add: {
                 imports: [ShallowSSnapshotModule],
                 providers: [
-                    { provide: DASHBOARD_TOKEN, useValue: dashboard  },
+                    { provide: DASHBOARD_TOKEN, useValue: dashboard },
                     { provide: EVENT_SERVICE_TOKEN, useClass: EventService },
                 ],
             },
@@ -39,6 +39,3 @@ describe(ShallowSSnapshotComponent.name, () => {
         cy.matchImageSnapshot('renderShallowSSnapshot');
     });
 });
-
-
-

@@ -41,7 +41,3 @@ describe(ShallowSComponent.name, () => {
         cy.matchImageSnapshot('renderShallowS');
     });
 });
-
-
-
-
