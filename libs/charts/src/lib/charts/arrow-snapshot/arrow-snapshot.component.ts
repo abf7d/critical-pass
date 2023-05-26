@@ -6,6 +6,9 @@ import { Project } from '@critical-pass/project/types';
     template: `<div #chart class="arrow-snapshot"></div>`,
     styleUrls: ['./arrow-snapshot.component.scss'],
     providers: [ArrowSnapshotUiService],
+    host: {
+        class: 'cp-arrow-snapshot',
+    },
     encapsulation: ViewEncapsulation.None,
 })
 export class ArrowSnapshotComponent implements OnInit, OnDestroy, OnChanges {
