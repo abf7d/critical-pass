@@ -15,7 +15,7 @@ export class TreeOperationsService {
         private projSerializer: ProjectSerializerService,
         private treeNodeSerializer: ProjectTreeNodeSerializerService,
         private nodeConnector: NodeConnectorService,
-        private st: ProjectTreeStateService
+        private st: ProjectTreeStateService,
     ) {}
 
     public initializeHeadNode(project: Project): void {

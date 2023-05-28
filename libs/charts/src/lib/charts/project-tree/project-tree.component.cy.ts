@@ -19,7 +19,7 @@ describe(ProjectTreeComponent.name, () => {
     beforeEach(() => {
         cy.fixture('tree.json').then(function (json) {
             nodes = json;
-            eventService.get(CONST.LOAD_TREE_KEY).next(json)
+            eventService.get(CONST.LOAD_TREE_KEY).next(json);
         });
         cy.fixture('project.json').then(function (json) {
             data = serializer.toJson(json);
