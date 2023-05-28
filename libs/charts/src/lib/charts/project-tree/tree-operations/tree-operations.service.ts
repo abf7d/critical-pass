@@ -4,23 +4,20 @@ import { Project, ProjectMetadata, TreeNode } from '@critical-pass/project/types
 import { DashboardService, DASHBOARD_TOKEN } from '@critical-pass/shared/data-access';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectTreeNodeSerializerService } from '../../../services/project-tree-node-serializer/project-tree-node-serializer.service';
-import { ProjectTreeState } from '../project-tree-state/project-tree-state';
+import { ProjectTreeStateService } from '../project-tree-state/project-tree-state';
 import * as CONST from '../../../constants/constants';
 @Injectable({
     providedIn: 'root',
 })
 export class TreeOperationsService {
-    public st!: ProjectTreeState;
     constructor(
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
         private projSerializer: ProjectSerializerService,
         private treeNodeSerializer: ProjectTreeNodeSerializerService,
         private nodeConnector: NodeConnectorService,
+        private st: ProjectTreeStateService
     ) {}
 
-    public setState(st: ProjectTreeState) {
-        this.st = st;
-    }
     public initializeHeadNode(project: Project): void {
         const factory = this.projSerializer;
         const copy = factory.fromJson(project);
@@ -163,17 +160,17 @@ export class TreeOperationsService {
         }
     }
 
-    public loadState(st: ProjectTreeState, nodes: TreeNode[]): Project {
+    public loadState(nodes: TreeNode[]): Project {
         const first = nodes.find(x => x.id === 0);
         const selected = this.copyNode(first!);
         selected.data = this.projSerializer.fromJson(first!.data);
-        st.head = selected;
-        st.selected = selected;
-        st.seedProject = this.projSerializer.fromJson(st.head.data);
+        this.st.head = selected;
+        this.st.selected = selected;
+        this.st.seedProject = this.projSerializer.fromJson(this.st.head.data);
         const ids = nodes.map(n => n.id);
-        st.latestId = Math.max(...ids) + 1;
-        st.latestGroupId = CONST.INITIAL_NODE_COUNT;
-        this.buildBranch(st.head, nodes, null);
+        this.st.latestId = Math.max(...ids) + 1;
+        this.st.latestGroupId = CONST.INITIAL_NODE_COUNT;
+        this.buildBranch(this.st.head, nodes, null);
         nodes.forEach(n => this.nodeConnector.connectArrowsToNodes(n.data!));
         return this.projSerializer.fromJson(first!.data);
     }

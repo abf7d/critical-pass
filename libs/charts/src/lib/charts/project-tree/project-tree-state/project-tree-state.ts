@@ -1,36 +1,37 @@
+import { Injectable } from '@angular/core';
 import { Project, TreeNode } from '@critical-pass/project/types';
 
-export interface ProjectTreeState {
-    svg: any;
-    mainG: any;
-    innerWidth: number | null;
-    innerHeight: number | null;
-    focusLine: any;
-    margin: { top: number; bottom: number; left: number; right: number };
-    scales: { x: any; y: any } | null;
+@Injectable({
+    providedIn: 'root',
+})
+export class ProjectTreeStateService {
+    svg: any = null;
+    mainG: any = null;
+    innerWidth: number | null = null;
+    innerHeight: number | null = null;
+    focusLine: any = null;
+    margin: { top: number; bottom: number; left: number; right: number } = { top: 60, right: 90, bottom: 100, left: 90 };
+    scales: { x: any; y: any } | null = null;
 
-    selected: TreeNode | null;
-    head: TreeNode | null;
-    latestId: number;
-    latestGroupId: number;
-    seedProject: Project | null;
-}
+    selected: TreeNode | null = null;
+    head: TreeNode | null = null;
+    latestId: number = 0;
+    latestGroupId: number = 0;
+    seedProject: Project | null = null;
 
-export class ProjectTreeFactory {
-    create(): ProjectTreeState {
-        return {
-            svg: null,
-            mainG: null,
-            innerWidth: null,
-            innerHeight: null,
-            margin: { top: 60, right: 90, bottom: 100, left: 90 },
-            scales: null,
-            focusLine: null,
-            selected: null,
-            head: null,
-            latestId: 0,
-            latestGroupId: 0,
-            seedProject: null,
-        };
+    reset() {
+        this.svg = null;
+        this.mainG = null;
+        this.innerWidth = null;
+        this.innerHeight = null;
+        this.focusLine = null;
+        this.margin = { top: 60, right: 90, bottom: 100, left: 90 };
+        this.scales = null;
+
+        this.selected = null;
+        this.head = null;
+        this.latestId = 0;
+        this.latestGroupId = 0;
+        this.seedProject = null;
     }
 }

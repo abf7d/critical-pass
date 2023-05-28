@@ -1,7 +1,7 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ProjectTreeFactory, ProjectTreeState } from '../project-tree-state/project-tree-state';
+import { ProjectTreeStateService } from '../project-tree-state/project-tree-state';
 import * as d3 from 'd3';
 import { TreeOperationsService } from '../tree-operations/tree-operations.service';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
@@ -13,15 +13,14 @@ import { ProjectSerializerService } from '@critical-pass/shared/serializers';
     providedIn: 'root',
 })
 export class ProjectTreeUiService {
-    private commitSub: Subscription;
-    private branchSub: Subscription;
-    private resetSub: Subscription;
-    private loadTreeSub: Subscription;
-    private st!: ProjectTreeState;
+    private commitSub!: Subscription;
+    private branchSub!: Subscription;
+    private resetSub!: Subscription;
+    private loadTreeSub!: Subscription;
     private id!: number;
     private project!: Project;
     private isInitialized = false;
-    private selectedNode$: Subject<number>;
+    private selectedNode$!: Subject<number>;
 
     constructor(
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
@@ -29,7 +28,10 @@ export class ProjectTreeUiService {
         private projectSerializer: ProjectSerializerService,
         private ops: TreeOperationsService,
         private ngZone: NgZone,
-    ) {
+        private st: ProjectTreeStateService,
+    ) {}
+
+    private initSubs() {
         this.selectedNode$ = this.eventService.get(CONST.SELECTED_TREE_NODE_KEY);
 
         this.commitSub = this.eventService
@@ -52,7 +54,7 @@ export class ProjectTreeUiService {
             .pipe(filter(x => !!x))
             .subscribe(nodes => this.loadTree(nodes));
 
-        this.selectedNode$.pipe(filter(x => !!x)).subscribe(id => this.selectNode(id));
+        this.selectedNode$.pipe(filter(x => x !== undefined)).subscribe(id => this.selectNode(id));
     }
 
     private commit() {
@@ -85,10 +87,11 @@ export class ProjectTreeUiService {
     }
 
     private loadTree(nodes: TreeNode[]) {
-        const workingProj = this.ops.loadState(this.st, nodes);
+        const workingProj = this.ops.loadState(nodes);
         this.dashboard.updateProject(workingProj, true);
         this.eventService.get(CONST.HISTORY_ARRAY_KEY).next(nodes);
         this.drawChart();
+        this.selectedNode$.next(this.st.selected?.id!);
     }
 
     private selectNode(id: number) {
@@ -101,18 +104,17 @@ export class ProjectTreeUiService {
 
     public init(width: number, height: number, id: number, el: any): void {
         this.id = id;
-        this.st = new ProjectTreeFactory().create();
         this.st.latestId = CONST.INITIAL_NODE_COUNT;
         this.st.innerHeight = height - this.st.margin.top - this.st.margin.bottom;
         this.st.innerWidth = width - this.st.margin.left - this.st.margin.right;
-        this.ops.setState(this.st);
         this.initSvg(width, height, el);
         this.initZoom();
+        this.initSubs();
         this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(project => {
             this.ngZone.runOutsideAngular(() => {
                 this.project = project;
                 if (!this.isInitialized) {
-                    this.ops.initializeHeadNode(project);
+                    if (!this.st.head) this.ops.initializeHeadNode(project);
                     this.drawChart();
                 }
                 this.isInitialized = true;
@@ -123,7 +125,7 @@ export class ProjectTreeUiService {
     public initZoom() {
         const zoom = d3
             .zoom()
-            .on('zoom', (event, d) => {
+            .on('zoom', (event: any, d: any) => {
                 this.st.mainG.attr('transform', event.transform);
             })
             .scaleExtent([1, 1]);
@@ -132,6 +134,16 @@ export class ProjectTreeUiService {
         // this fixes a jump when you first drag the chart. The transform translate
         // in initSvg moves the elements, but this inits the zoom enviornment
         d3.zoom().translateBy(this.st.svg, this.st.margin.left, this.st.margin.top);
+    }
+
+    public clearEventState() {
+        this.eventService.get(CONST.COMMIT_KEY).next(undefined);
+
+        this.eventService.get(CONST.BRANCH_KEY).next(undefined);
+
+        this.eventService.get(CONST.RESET_KEY).next(undefined);
+
+        this.eventService.get(CONST.LOAD_TREE_KEY).next(undefined);
     }
 
     public destroy(): void {
@@ -148,6 +160,9 @@ export class ProjectTreeUiService {
         if (this.loadTreeSub) {
             this.loadTreeSub.unsubscribe();
         }
+        this.st.reset();
+        this.isInitialized = false;
+        this.clearEventState();
     }
 
     public initSvg(width: number, height: number, el: any): void {
