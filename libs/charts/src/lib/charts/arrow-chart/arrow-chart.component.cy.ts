@@ -12,12 +12,6 @@ let serializer = new ProjectSerializerService();
 let dashboard = configureDashboard();
 let state = new ArrowStateService();
 before(function () {
-    // cy.fixture('project.json').then(function (json) {
-    //     data = serializer.fromJson(json);
-    //     // state.ctrl_down = true;
-    //     dashboard.updateProject(data, true);
-    //     // cy.task('log', { message: 'This will be output to the terminal ' + JSON.stringify(cy.get("svg .unprocessed"))});
-    // });
 });
 describe(ArrowChartComponent.name, () => {
     afterEach(() => {
@@ -29,7 +23,6 @@ describe(ArrowChartComponent.name, () => {
         cy.fixture('project.json').then(function (json) {
             data = serializer.fromJson(json);
             dashboard.updateProject(data, true);
-            // cy.task('log', { message: 'This will be output to the terminal ' + JSON.stringify(cy.get("svg .unprocessed"))});
         });
         TestBed.overrideComponent(ArrowChartComponent, {
             add: {
@@ -91,23 +84,9 @@ describe(ArrowChartComponent.name, () => {
         // verify that the node has moved
         cy.get('.node > g').eq(0).should('not.have.attr', 'transform', 'translate(773,189)');
 
-        // snapshot name will be the test title
-        // cy.matchImageSnapshot();
-
-        // snapshot name will be the name passed in
-
-        // // options object passed in
-        // cy.matchImageSnapshot({
-        //   failureThreshold: 0.4
-        //   blur: 10
-        // });
-
-        // match element snapshot
-        // cy.get('#login').matchImageSnapshot();
-
         cy.wait(2000);
-        cy.matchImageSnapshot('moveNode');
-        // cy.pause();
+        cy.get('svg').matchImageSnapshot('moveNode');
+        cy.pause();
     });
 
     it('cut / separate all of a nodes connected arrows into individual nodes', () => {
@@ -135,8 +114,8 @@ describe(ArrowChartComponent.name, () => {
         cy.get('.node > g > text').eq(18).should('have.text', '20');
 
         cy.wait(2000);
-        cy.matchImageSnapshot('splitNode');
-        // cy.pause();
+        cy.get('svg').matchImageSnapshot('splitNode');
+        cy.pause();
     });
 
     it('create 2 nodes, draw arrow between them', () => {
@@ -172,8 +151,8 @@ describe(ArrowChartComponent.name, () => {
                 cy.get('text').eq(0).should('have.text', '29');
             });
         cy.wait(2000);
-        cy.matchImageSnapshot('create2NodesAnd1Arrow');
-        // cy.pause();
+        cy.get('svg').matchImageSnapshot('create2NodesAnd1Arrow');
+        cy.pause();
     });
 
     // delete a node
@@ -198,8 +177,8 @@ describe(ArrowChartComponent.name, () => {
         cy.wait(2000);
         // Check for exact match with regex using ^ and $
         cy.get('.node > g > text').contains(/^4$/).should('not.exist');
-        cy.matchImageSnapshot('deleteNode');
-        // cy.pause();
+        cy.get('svg').matchImageSnapshot('deleteNode');
+        cy.pause();
     });
 
     // delete an arrow
@@ -225,8 +204,8 @@ describe(ArrowChartComponent.name, () => {
         cy.get('.link > g > text:contains("Project")').should('not.exist');
 
         cy.wait(2000);
-        cy.matchImageSnapshot('deleteArrow');
-        // cy.pause();
+        cy.get('svg').matchImageSnapshot('deleteArrow');
+        cy.pause();
     });
 
     // join two nodes
@@ -292,7 +271,7 @@ describe(ArrowChartComponent.name, () => {
         // verify from the join that node 21 was removed and 20 exists
         cy.get('.node > g > text').contains(/^21$/).should('not.exist');
         cy.get('.node > g > text').contains(/^20$/).should('exist');
-        cy.matchImageSnapshot('join2Nodes');
-        // cy.pause();
+        cy.get('svg').matchImageSnapshot('join2Nodes');
+        cy.pause();
     });
 });

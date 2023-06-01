@@ -43,18 +43,10 @@ Cypress.Commands.overwrite('log', message => cy.task('log', { message }));
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-addMatchImageSnapshotCommand();
 addMatchImageSnapshotCommand({
     failureThreshold: 0.2,
+    comparisonMethod: 'ssim',
+    customDiffConfig: {
+        ssim: 'fast',
+    },
 });
-
-// https://www.npmjs.com/package/@simonsmith/cypress-image-snapshot/v/7.0.0
-/*cy.matchImageSnapshot({
-  // options for jest-image-snapshot
-  failureThreshold: 0.2,
-  comparisonMethod: 'ssim',
-
-  // options for Cypress.screenshot()
-  capture: 'viewport',
-  blackout: ['.some-element'],
-}*/
