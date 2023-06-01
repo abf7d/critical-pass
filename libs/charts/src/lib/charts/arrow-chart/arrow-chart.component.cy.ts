@@ -11,8 +11,7 @@ let data: Project | undefined;
 let serializer = new ProjectSerializerService();
 let dashboard = configureDashboard();
 let state = new ArrowStateService();
-before(function () {
-});
+before(function () {});
 describe(ArrowChartComponent.name, () => {
     afterEach(() => {
         data!.integrations = [];
