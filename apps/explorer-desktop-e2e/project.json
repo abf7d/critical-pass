@@ -1,0 +1,33 @@
+{
+    "name": "explorer-desktop-e2e",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "apps/explorer-desktop-e2e/src",
+    "projectType": "application",
+    "targets": {
+        "e2e": {
+            "executor": "@nx/cypress:cypress",
+            "options": {
+                "cypressConfig": "apps/explorer-desktop-e2e/cypress.config.ts",
+                "devServerTarget": "explorer-desktop:serve:development",
+                "testingType": "e2e"
+            },
+            "configurations": {
+                "production": {
+                    "devServerTarget": "explorer-desktop:serve:production"
+                },
+                "ci": {
+                    "devServerTarget": "explorer-desktop:serve-static"
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["apps/explorer-desktop-e2e/**/*.{js,ts}"]
+            }
+        }
+    },
+    "tags": [],
+    "implicitDependencies": ["explorer-desktop"]
+}
