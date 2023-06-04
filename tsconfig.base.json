@@ -15,10 +15,11 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
+            "@critical-pass/app-libs/desktop-core": ["libs/app-libs/desktop-core/src/index.ts"],
+            "@critical-pass/app-libs/web-core": ["libs/app-libs/web-core/src/index.ts"],
             "@critical-pass/auth": ["libs/auth/src/index.ts"],
             "@critical-pass/charts": ["libs/charts/src/index.ts"],
             "@critical-pass/core": ["libs/core/src/index.ts"],
-            "@critical-pass/explorer-lib": ["libs/explorer-lib/src/index.ts"],
             "@critical-pass/features/history": ["libs/features/history/src/index.ts"],
             "@critical-pass/features/jira": ["libs/features/jira/src/index.ts"],
             "@critical-pass/features/landing": ["libs/features/landing/src/index.ts"],

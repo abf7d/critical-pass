@@ -4,7 +4,7 @@ import { HomeComponent } from '@critical-pass/features/landing';
 import { WelcomeComponent } from '@critical-pass/features/landing';
 import { AuthorizedUserGuard } from '@critical-pass/auth';
 
-const routes: Routes = [
+export const desktopRoutes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     {
         path: 'home',
@@ -17,42 +17,42 @@ const routes: Routes = [
     {
         path: 'library',
         loadChildren: () => import('@critical-pass/features/library').then(m => m.LibraryModule),
-        canLoad: [AuthorizedUserGuard],
+        // canLoad: [AuthorizedUserGuard],
     },
     {
         path: 'profile',
         loadChildren: () => import('@critical-pass/features/profile').then(m => m.ProfileModule),
-        canLoad: [AuthorizedUserGuard],
+        // canLoad: [AuthorizedUserGuard],
     },
     {
         path: 'history',
         loadChildren: () => import('@critical-pass/features/history').then(m => m.HistoryModule),
-        canLoad: [AuthorizedUserGuard],
+        // canLoad: [AuthorizedUserGuard],
     },
     {
         path: 'network',
         loadChildren: () => import('@critical-pass/features/network').then(m => m.NetworkModule),
-        canLoad: [AuthorizedUserGuard],
+        // canLoad: [AuthorizedUserGuard],
     },
     {
         path: 'import',
         loadChildren: () => import('@critical-pass/features/spreadsheet').then(m => m.SpreadsheetModule),
-        canLoad: [AuthorizedUserGuard],
+        // canLoad: [AuthorizedUserGuard],
     },
     {
         path: 'resources',
         loadChildren: () => import('@critical-pass/features/resources').then(m => m.ResourcesModule),
-        canLoad: [AuthorizedUserGuard],
+        // canLoad: [AuthorizedUserGuard],
     },
     {
         path: 'jira',
         loadChildren: () => import('@critical-pass/features/jira').then(m => m.JiraModule),
-        canLoad: [AuthorizedUserGuard],
+        // canLoad: [AuthorizedUserGuard],
     },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(/*desktopRoutes*/[])],
     exports: [RouterModule],
 })
-export class ExplorerRoutingModule {}
+export class DesktopRoutingModule {}
