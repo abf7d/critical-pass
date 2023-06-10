@@ -52,7 +52,7 @@ export const desktopRoutes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(/*desktopRoutes*/[])],
+    imports: [RouterModule.forRoot(/*desktopRoutes*/ [])],
     exports: [RouterModule],
 })
 export class DesktopRoutingModule {}

@@ -23,8 +23,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 })
 export class DesktopCoreModule {}
 
-
-
 @NgModule({
     providers: [
         {
