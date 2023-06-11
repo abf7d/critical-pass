@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LibraryStoreService } from '../library-store/library-store.service';
 import * as CONST from '../constants';
-import { ProjectApiService } from '@critical-pass/shared/data-access';
+import { ProjectApi, PROJECT_API_TOKEN } from '@critical-pass/shared/data-access';
 import { NodeConnectorService } from '@critical-pass/project/processor';
 @Component({
     selector: 'cp-library-grid',
@@ -19,9 +19,9 @@ export class LibraryGridComponent implements OnInit, OnDestroy {
     public subscription!: Subscription;
     public pageNumSub!: Subscription;
     constructor(
+        @Inject(PROJECT_API_TOKEN) private projectApi: ProjectApi,
         private router: Router,
         private libraryStore: LibraryStoreService,
-        private projectApi: ProjectApiService,
         private nodeConnector: NodeConnectorService,
     ) {}
 

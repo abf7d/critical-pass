@@ -12,7 +12,7 @@ import { ProjectLibrary } from '../../types/project-library';
 @Injectable({
     providedIn: 'root',
 })
-export class ProjectApiService implements ProjectApi {
+export class DesktopProjectApiService implements ProjectApi {
     private baseUrl!: string;
     constructor(private httpClient: HttpClient, private serializer: ProjectSerializerService) {
         this.baseUrl = environment.criticalPathApi;
@@ -22,7 +22,7 @@ export class ProjectApiService implements ProjectApi {
         return this.httpClient.get(urlJoin(this.baseUrl, CONST.PROJECT_ENDPOINT, id.toString())).pipe(map((data: any) => this.serializer.fromJson(data)));
     }
     public list(page: number, pageSize: number): Observable<ProjectLibrary> {
-        console.log('web-project-api.service.ts: list()');
+        console.log('desktop-project-api.service.ts: list()');
         return this.httpClient
             .get(urlJoin(this.baseUrl, CONST.LIBRARY_ENDPOINT, page.toString(), pageSize.toString()), {
                 observe: 'response' as 'body',

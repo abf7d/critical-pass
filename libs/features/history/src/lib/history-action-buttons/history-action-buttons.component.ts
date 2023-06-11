@@ -7,8 +7,9 @@ import {
     EVENT_SERVICE_TOKEN,
     EventService,
     ProjectStorageApiService,
-    ProjectApiService,
+    ProjectApi,
     API_CONST,
+    PROJECT_API_TOKEN,
 } from '@critical-pass/shared/data-access';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
@@ -32,7 +33,7 @@ export class HistoryActionButtonsComponent extends ActionButtonsComponent {
         sanitizer: ProjectSanatizerService,
         toastr: ToastrService,
         storageApi: ProjectStorageApiService,
-        projectApi: ProjectApiService,
+        @Inject(PROJECT_API_TOKEN) projectApi: ProjectApi,
         private fileManager: HistoryFileManagerService,
         private treeNodeSerializer: ProjectTreeNodeSerializerService,
     ) {

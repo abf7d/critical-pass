@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { lightFormat } from 'date-fns';
-import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN, API_CONST, ProjectApiService } from '@critical-pass/shared/data-access';
+import { DashboardService, DASHBOARD_TOKEN, EventService, ProjectApi, EVENT_SERVICE_TOKEN, PROJECT_API_TOKEN } from '@critical-pass/shared/data-access';
 import { MilestoneFactoryService, ParentCompilerService, UTIL_CONST } from '@critical-pass/shared/project-utils';
 import { Activity, Integration, Project } from '@critical-pass/project/types';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
@@ -19,9 +19,9 @@ export class SelectedActivityControllerService {
     constructor(
         @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
         @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
+        @Inject(PROJECT_API_TOKEN) private projectApi: ProjectApi,
         private parentCompiler: ParentCompilerService,
         private milestoneFactory: MilestoneFactoryService,
-        private projectApi: ProjectApiService,
         private projectSerializer: ProjectSerializerService,
     ) {}
 

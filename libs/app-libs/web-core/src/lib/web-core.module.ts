@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { WebRoutingModule } from './web.routes';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthHttpInterceptor } from '@critical-pass/auth';
-import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
+import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN, ProjectApiService, PROJECT_API_TOKEN } from '@critical-pass/shared/data-access';
 import { CanDeactivateGuard } from '@critical-pass/core';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -20,6 +20,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
         },
         { provide: DASHBOARD_TOKEN, useClass: DashboardService },
         { provide: EVENT_SERVICE_TOKEN, useClass: EventService },
+        { provide: PROJECT_API_TOKEN, useClass: ProjectApiService },
         CanDeactivateGuard,
         // { provide: 'LoggerBase', useClass: LoggerService },
         // { provide: 'HistoryFileManagerService', useClass: HistoryFileManagerService},

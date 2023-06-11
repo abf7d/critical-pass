@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { API_CONST, ProjectApiService } from '@critical-pass/shared/data-access';
+import { API_CONST, ProjectApi, PROJECT_API_TOKEN } from '@critical-pass/shared/data-access';
 import { DashboardService, DASHBOARD_TOKEN, EventService, EVENT_SERVICE_TOKEN } from '@critical-pass/shared/data-access';
 import { Project } from '@critical-pass/project/types';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
@@ -35,7 +35,7 @@ export class ActionButtonsComponent implements OnInit, OnDestroy {
         private sanitizer: ProjectSanatizerService,
         public toastr: ToastrService,
         protected storageApi: ProjectStorageApiService,
-        protected projectApi: ProjectApiService,
+        @Inject(PROJECT_API_TOKEN) protected projectApi: ProjectApi,
     ) {
         this.showHelp = false;
         this.actionText = '';

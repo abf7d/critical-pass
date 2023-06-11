@@ -1,5 +1,7 @@
 export * from './lib/constants/tokens';
-export * from './lib/models/cp.config';
+export * from './lib/types/cp.config';
+export * from './lib/types/project-library';
+export * from './lib/types/project-api';
 export * from './lib/api/project-api/project-api.service';
 export * from './lib/api/claims-api/claims-api.service';
 export * from './lib/dashboard/dashboard.service';
@@ -7,4 +9,5 @@ export * from './lib/api/project-storage-api/project-storage-api.service';
 export * from './lib/project-resolver/project-resolver';
 export * from './lib/event-service/event.service';
 export * from './lib/api/zametek-api/zametek-api.service';
+export * from './lib/api/desktop-project-api/desktop-project-api.service';
 export * as API_CONST from './lib/constants/constants';
