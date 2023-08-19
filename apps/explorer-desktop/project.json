@@ -56,7 +56,10 @@
                     "browserTarget": "explorer-desktop:build:development"
                 }
             },
-            "defaultConfiguration": "development"
+            "defaultConfiguration": "development",
+            "options": {
+                "proxyConfig": "apps/explorer-desktop/proxy.conf.json"
+            }
         },
         "extract-i18n": {
             "executor": "@angular-devkit/build-angular:extract-i18n",
