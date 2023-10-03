@@ -48,6 +48,7 @@ export class ArrowChartComponent implements OnInit, OnDestroy {
     public activityCreator!: Subject<boolean>;
     public creationMode: string = CONST.MULTI_ARROW_CREATION_MODE;
     public autoArrange: boolean = false;
+    public showList: boolean = false;
     private ui: ArrowChartUIService;
 
     constructor() {

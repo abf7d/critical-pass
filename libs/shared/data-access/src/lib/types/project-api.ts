@@ -1,6 +1,6 @@
-import { Project } from "@critical-pass/project/types";
-import { Observable } from "rxjs";
-import { ProjectLibrary } from "./project-library";
+import { Project } from '@critical-pass/project/types';
+import { Observable } from 'rxjs';
+import { ProjectLibrary } from './project-library';
 
 export interface ProjectApi {
     get(id: number): Observable<Project>;

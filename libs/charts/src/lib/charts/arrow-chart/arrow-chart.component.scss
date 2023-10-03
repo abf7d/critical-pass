@@ -54,7 +54,7 @@
     }
 
     // Nodes
-    .node{
+    .node {
         .risk-0 {
             stroke-opacity: 0.5;
         }
@@ -82,7 +82,6 @@
             stroke-opacity: 0.5;
         }
     }
-
 
     .risk-undefined {
         stroke: #bbb;
@@ -349,5 +348,26 @@
     .unprocessed.possible path.link {
         fill: #ec888c;
         stroke: #ec888c;
+    }
+    .arrow-list {
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: flex;
+    }
+    .toggle {
+        padding: 5px;
+    }
+    .arrow-list {
+        height: 100%;
+    }
+    .list {
+        padding-left:5px;
+        height: 100%;
+        width: 350px;
+        overflow-y: auto;
+        -webkit-box-shadow: -6px 0px 6px -4px rgba(0, 0, 0, 0.25); 
+        box-shadow: -6px 0px 6px -4px rgba(0, 0, 0, 0.25);
+        background-color: white;
     }
 }

@@ -38,7 +38,6 @@ autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDa
     dialog.showMessageBox(dialogOpts).then(returnValue => {
         if (returnValue.response === 0) autoUpdater.quitAndInstall();
     });
-    
 });
 
 autoUpdater.on('checking-for-update', () => {

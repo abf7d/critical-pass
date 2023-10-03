@@ -32,4 +32,10 @@
         outsideClick
         class="arrow-chart-container"
     ></div>
+    <div class="arrow-list">
+        <div [hidden]="!showList" class="list">
+            <cp-arrow-list></cp-arrow-list>
+        </div>
+        <i class="toggle fas fa-list" (click)="showList = !showList"></i>
+    </div>
 </div>
