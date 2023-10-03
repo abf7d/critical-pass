@@ -1,0 +1,15 @@
+.activity {
+    display: flex;
+}
+input {
+    border-left: none;
+    border-top: none;
+    border-right: none;
+    border-bottom: 1px solid #999;
+}
+.cursor-pointer {
+    cursor: pointer;
+    flex-basis: 25px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
