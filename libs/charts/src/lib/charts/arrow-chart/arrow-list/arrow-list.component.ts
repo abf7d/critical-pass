@@ -11,21 +11,18 @@ import { filter, Subscription } from 'rxjs';
 export class ArrowListComponent {
     private sub?: Subscription;
     public project?: Project;
-    constructor(
-      @Inject(DASHBOARD_TOKEN) private dashboard: DashboardService,
-      @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService,
-    ) {}
+    constructor(@Inject(DASHBOARD_TOKEN) private dashboard: DashboardService, @Inject(EVENT_SERVICE_TOKEN) private eventService: EventService) {}
     public ngOnInit(): void {
         this.sub = this.dashboard.activeProject$.pipe(filter(x => !!x)).subscribe(project => {
             this.project = project; //.activities[0].profile.n;
             console.log('project', project);
         });
     }
-    public selectActivity(activity:Activity) {
-      this.project!.profile.view.selectedActivity = activity;
-      this.dashboard.updateProject(this.project!);
+    public selectActivity(activity: Activity) {
+        this.project!.profile.view.selectedActivity = activity;
+        this.dashboard.updateProject(this.project!);
     }
     public ngOnDestroy(): void {
-      this.sub?.unsubscribe();
+        this.sub?.unsubscribe();
     }
 }
