@@ -11,8 +11,14 @@ import { ProjectTreeNodeSerializerService } from '@critical-pass/charts';
     providedIn: 'root',
 })
 export class JsonFileManagerService implements FileManagerBaseService<TreeNode[]> {
-    constructor(private storageApi: ProjectStorageApiService, private mapper: HistoryMapperService, private projSerializer: ProjectSerializerService,private treeSerializer: ProjectTreeNodeSerializerService,  private sanitizer: ProjectSanatizerService) {}
-    
+    constructor(
+        private storageApi: ProjectStorageApiService,
+        private mapper: HistoryMapperService,
+        private projSerializer: ProjectSerializerService,
+        private treeSerializer: ProjectTreeNodeSerializerService,
+        private sanitizer: ProjectSanatizerService,
+    ) {}
+
     public import(file: File): Promise<TreeNode[]> {
         return new Promise<TreeNode[]>((resolve, reject) => {
             const reader: FileReader = new FileReader();
@@ -25,14 +31,13 @@ export class JsonFileManagerService implements FileManagerBaseService<TreeNode[]
                     return projSerializer.fromJson(x);
                 });
                 const head = this.mapper.createTreeHeadNode();
-                const innerNodes = projects.map(x => this.mapper.mapProjectToNode(x))
+                const innerNodes = projects.map(x => this.mapper.mapProjectToNode(x));
                 const treeNodes = [head, ...innerNodes];
                 resolve(treeNodes);
             };
         });
     }
     public export(content: TreeNode[]): void {
-
         // If you wish to save project list instead of treenodes, skip node serialization
         const newNodes = content.map(x => {
             const node = this.treeSerializer.fromJson(x);
@@ -52,7 +57,6 @@ export class JsonFileManagerService implements FileManagerBaseService<TreeNode[]
         downloadLink.href = window.URL.createObjectURL(blob);
         downloadLink.download = 'data.json'; // Specify the desired filename
         downloadLink.click();
-
     }
 
     // TODO: Finish this. It pulls tree nodes from the file, I need to serialize
