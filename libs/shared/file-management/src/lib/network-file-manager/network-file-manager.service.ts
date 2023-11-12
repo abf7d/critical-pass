@@ -122,7 +122,7 @@ export class NetworkFileManagerService implements FileManagerBaseService<Project
                     subProjectData,
                 };
 
-                const nodes = profileData.map(profileEntry => this.mapper.getNode(profileEntry, workbook));
+                const nodes = profileData.map(profileEntry => this.mapper.mapProject(profileEntry, workbook));
                 resolve(nodes);
             };
         });

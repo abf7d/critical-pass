@@ -1,11 +1,11 @@
 <div class="btn-row">
     <div>
-        <button class="btn btn-secondary library"  [class.disabled]="disableButtons" (click)="saveAsNew()" >Save to Library</button>
+        <button class="btn btn-secondary library" [class.disabled]="disableButtons" (click)="saveAsNew()">Save to Library</button>
     </div>
     <div>
         <div class="stash">
-           <a class="btn border-right" href="javascript:void(0)"  [class.disabled]="disableButtons" (click)="!disableButtons && stash()">Stash</a>
-            <a class="btn" href="javascript:void(0)"  [class.disabled]="disableButtons" (click)="!disableButtons && unstashTree()"> Unstash</a>
+            <a class="btn border-right" href="javascript:void(0)" [class.disabled]="disableButtons" (click)="!disableButtons && stash()">Stash</a>
+            <a class="btn" href="javascript:void(0)" [class.disabled]="disableButtons" (click)="!disableButtons && unstashTree()"> Unstash</a>
             <a class="btn" href="javascript:void(0)"
                 ><i class="fas fa-chevron-up" *ngIf="showPeek" (click)="showPeek = false"></i>
                 <i class="fas fa-chevron-down" *ngIf="!showPeek" (click)="showPeek = true; peekStorage()"></i>
@@ -14,21 +14,35 @@
                 <cp-arrow-snapshot [project]="peekProj" [width]="390" [height]="250"></cp-arrow-snapshot>
             </div>
         </div>
-        <button class="btn btn-secondary" (click)="uploadFile.value=''; uploadFile.click()" [class.disabled]="disableButtons">Load from File</button>
-        <input class="file-input" type="file" #uploadFile (change)="loadFile($event.target)" accept=".xlsx" />
-    
-        
+        <button class="btn btn-secondary" (click)="uploadFile.value = ''; uploadFile.click()" [class.disabled]="disableButtons">Load from File</button>
+        <input class="file-input" type="file" #uploadFile (change)="loadFile($event.target)" accept=".xlsx, .json" />
+
         <div class="right">
-            <div #tooltip="matTooltip" matTooltip="Go to Parent to enable buttons. Your changes will be preserved." [matTooltipDisabled]="!disableButtons" >
-                <button class="btn btn-primary"  (click)="downloadHistory()" [class.disabled]="disableButtons">Download As File</button>
+            <div #tooltip="matTooltip" matTooltip="Go to Parent to enable buttons. Your changes will be preserved." [matTooltipDisabled]="!disableButtons">
+                <button class="btn btn-primary" (click)="downloadHistory()" [class.disabled]="disableButtons">Download As File</button>
+                <a class="btn pos-rel" href="javascript:void(0)"
+                    ><i class="fas fa-chevron-up" *ngIf="isSelFileType" (click)="isSelFileType = false"></i>
+                    <i class="fas fa-chevron-down" *ngIf="!isSelFileType" (click)="isSelFileType = true"></i>
+                    <div class="peek file-types" *ngIf="isSelFileType">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" id="multi" name="create" [checked]="fileType === 'json'" (change)="fileType = 'json'" value="multi" />
+                            <label class="custom-control-label" for="multi">json</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" id="arrange" [checked]="fileType === 'xlsx'" (change)="fileType = 'xslx'" />
+                            <label class="custom-control-label" for="arrange">xlsx</label>
+                        </div>
+                    </div>
+                </a>
+                
             </div>
             <div class="btns">
                 <i class="fas fa-times"></i>
-                <i class="fas fa-question-circle help-btn"(click)="showHelp = !showHelp"></i>
-                    <div class="help" [hidden]="!showHelp">
-                      <i class="fa fa-times help-close"  (click)="showHelp = !showHelp"></i>
-                      <h4>Help</h4>
-                      <ol class="help-list">
+                <i class="fas fa-question-circle help-btn" (click)="showHelp = !showHelp"></i>
+                <div class="help" [hidden]="!showHelp">
+                    <i class="fa fa-times help-close" (click)="showHelp = !showHelp"></i>
+                    <h4>Help</h4>
+                    <ol class="help-list">
                         <li><b>Create Node:</b> Double click on arrow diagram background</li>
                         <li><b>Move Node:</b> Hold Ctrl key + drag node. (On Mac: Hold Command key + drag node)</li>
                         <li><b>Create Arrow:</b> Single click on one node and drag to another</li>
@@ -39,15 +53,26 @@
                         <li><b>Split Node:</b> Click to select a Node with multiple in / out arrows then press Ctrl + X keys (Command + X keys on Mac)</li>
                         <li><b>Make Node Dummy:</b> Click to select Node and press Ctrl + D keys.(Command + D keys on Mac)</li>
                         <li><b>Make Node Milestone:</b> Click to select Node and press Ctrl + M keys.(Command + M keys on Mac)</li>
-                        <li><b>Load Sub Project:</b> Click to select an Arrow with a '*' in the text above arrow. Click on 'Load Sub Graph' button in selected Activity info on left hand side</li>
+                        <li>
+                            <b>Load Sub Project:</b> Click to select an Arrow with a '*' in the text above arrow. Click on 'Load Sub Graph' button in selected
+                            Activity info on left hand side
+                        </li>
                         <li><b>Pan the arrow chart:</b> Single click and drag background</li>
-                        <li><b>Initalize Risk:</b> To calculate the arrow diagram risk, add start / end nodes in the lower right hand corner. To auto set the start and end nodes click 'Calculate Risk'</li>
-                        <li><b>Arrange Nodes:</b> To arrange the nodes in a readable format click the 'Arrange Nodes' button to the bottom left of the arrow diagram </li>
-                      </ol>
-                    </div>
+                        <li>
+                            <b>Initalize Risk:</b> To calculate the arrow diagram risk, add start / end nodes in the lower right hand corner. To auto set the
+                            start and end nodes click 'Calculate Risk'
+                        </li>
+                        <li>
+                            <b>Arrange Nodes:</b> To arrange the nodes in a readable format click the 'Arrange Nodes' button to the bottom left of the arrow
+                            diagram
+                        </li>
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<div class="alert-msg" [class.success]="alertMessage =='Saved'" [class.error]="alertMessage =='Error'" [hidden]="alertMessage == ''">{{alertMessage}}</div>
-<div class="overlay" [hidden]="actionText === ''"><div class="overlay-txt">{{actionText}}</div></div>
+<div class="alert-msg" [class.success]="alertMessage == 'Saved'" [class.error]="alertMessage == 'Error'" [hidden]="alertMessage == ''">{{ alertMessage }}</div>
+<div class="overlay" [hidden]="actionText === ''">
+    <div class="overlay-txt">{{ actionText }}</div>
+</div>

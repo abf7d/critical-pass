@@ -66,6 +66,22 @@ export class HistoryMapperService {
         return (target[key] = source[key]);
     }
 
+    public mapProjectToNode(project: Project): TreeNode {
+        const treeNode = this.treeNodeSerializer.fromJson();
+        treeNode.parentNodeId = 0;
+        treeNode.id = project.profile.id;
+        treeNode.data = project;
+        return treeNode;
+    }
+
+    public createTreeHeadNode(): TreeNode {
+        const treeNode = this.treeNodeSerializer.fromJson();
+        treeNode.parentNodeId = null;
+        treeNode.id = 0;
+        treeNode.data = this.projectSerializer.fromJson();
+        return treeNode;
+    }
+
     public getNode(profileEntry: unknown, workbook: HistoryWorkbook): TreeNode {
         const projProfile = this.projProfSerializer.fromJson();
 
@@ -74,11 +90,9 @@ export class HistoryMapperService {
             const projkeys = Object.keys(profileEntry);
             for (const attr of projkeys) {
                 if (projProfile.hasOwnProperty(attr)) {
-                    // projProfile[attr] = profileEntry[attr];
                     this.setProp<ProjectProfile>(projProfile, profileEntry, attr as keyof ProjectProfile);
                 }
                 if (treeNode.hasOwnProperty(attr)) {
-                    // treeNode[attr] = profileEntry[attr];
                     this.setProp<TreeNode>(treeNode, profileEntry, attr as keyof TreeNode);
                 }
                 treeNode.parentNodeId = (profileEntry as any)[CONST.PARENT_NODE_ID_COL] ?? null;

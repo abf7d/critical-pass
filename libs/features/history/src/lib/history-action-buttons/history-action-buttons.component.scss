@@ -32,6 +32,9 @@
             margin: 0 7px;
         }
     }
+    div.file-types {
+        display: block;
+    }
     .right {
         & > * {
             margin: 0 5px;
@@ -68,7 +71,17 @@
     align-items: center;
     justify-content: center;
 }
-.stash {
+.file-types{
+    width: 88px;
+    height: 50px;
+    position: absolute;
+    border: 1px solid #e9e9e9;
+    z-index: 1;
+    background-color: #f9f9f9;
+    top: 34px;
+    margin-left: -20px;
+}
+.stash, .pos-rel {
     position: relative;
 }
 

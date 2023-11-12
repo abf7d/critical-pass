@@ -29,6 +29,10 @@ export const ACTIVITY_TAG_WS_NAME = 'Activity Tags';
 export const PARENT_NODE_ID_COL = 'parentNodeId';
 export const NODE_ID_COL = 'nodeId';
 export const RESOURCE_TAG_GROUP = 'Jira Assignee';
+export class EXT {
+    public static readonly XLSX = 'xlsx';
+    public static readonly JSON = 'json';
+}
 
 export type ImportData = Array<Array<any>>;
 export interface Worksheet {

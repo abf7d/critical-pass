@@ -68,7 +68,7 @@ export class NetworkMapperService {
         return (target[key] = source[key]);
     }
 
-    public getNode(profileEntry: unknown, workbook: HistoryWorkbook): Project {
+    public mapProject(profileEntry: unknown, workbook: HistoryWorkbook): Project {
         const projProfile = this.projProfSerializer.fromJson();
 
         const treeNode = this.treeNodeSerializer.fromJson();

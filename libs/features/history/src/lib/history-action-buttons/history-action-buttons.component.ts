@@ -12,10 +12,11 @@ import {
 } from '@critical-pass/shared/data-access';
 import { ProjectSerializerService } from '@critical-pass/shared/serializers';
 import { ProjectSanatizerService } from '@critical-pass/shared/project-utils';
-import { HistoryFileManagerService } from '@critical-pass/shared/file-management';
+import { HistoryFileManagerService, JsonFileManagerService } from '@critical-pass/shared/file-management';
 import { TreeNode } from '@critical-pass/project/types';
 import { CHART_KEYS, ProjectTreeNodeSerializerService } from '@critical-pass/charts';
 import { ActionButtonsComponent } from '@critical-pass/shared/components';
+import { EXT } from 'libs/shared/file-management/src/lib/constants';
 
 @Component({
     selector: 'cp-history-action-buttons',
@@ -23,7 +24,9 @@ import { ActionButtonsComponent } from '@critical-pass/shared/components';
     styleUrls: ['./history-action-buttons.component.scss'],
 })
 export class HistoryActionButtonsComponent extends ActionButtonsComponent {
+    public fileType = EXT.XLSX;
     private history!: TreeNode[];
+    public isSelFileType = false;
     constructor(
         router: Router,
         @Inject(DASHBOARD_TOKEN) dashboard: DashboardService,
@@ -34,6 +37,7 @@ export class HistoryActionButtonsComponent extends ActionButtonsComponent {
         storageApi: ProjectStorageApiService,
         projectApi: ProjectApiService,
         private fileManager: HistoryFileManagerService,
+        private jsonFileManager: JsonFileManagerService,
         private treeNodeSerializer: ProjectTreeNodeSerializerService,
     ) {
         super(router, dashboard, eventService, serializer, sanitizer, toastr, storageApi, projectApi);
@@ -63,16 +67,29 @@ export class HistoryActionButtonsComponent extends ActionButtonsComponent {
     }
 
     public downloadHistory() {
-        this.fileManager.export(this.history);
+        if (this.fileType === EXT.XLSX) {
+            this.fileManager.export(this.history);
+        } else if (this.fileType === EXT.JSON) {
+            // This maps all json including the nodes
+            this.jsonFileManager.export(this.history);
+        }
     }
     public loadFile(event: any) {
         const files = event.files as FileList;
         const firstFile = files.item(0);
 
         if (firstFile !== null && files.length > 0) {
-            this.fileManager.import(firstFile).then(nodes => {
-                this.eventService.get(CHART_KEYS.LOAD_TREE_KEY).next(nodes);
-            });
+            const extension = firstFile.name.split('.').pop();
+            if (extension === EXT.XLSX) {
+                this.fileManager.import(firstFile).then(nodes => {
+                    this.eventService.get(CHART_KEYS.LOAD_TREE_KEY).next(nodes);
+                });
+            } else if (extension === EXT.JSON) {
+                // TODO: Pull nodes from files (not just projs) when loading json
+                this.jsonFileManager.import(firstFile).then(nodes => {
+                    this.eventService.get(CHART_KEYS.LOAD_TREE_KEY).next(nodes);
+                });
+            }
         }
     }
 }
